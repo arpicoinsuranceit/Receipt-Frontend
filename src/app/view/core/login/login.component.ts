@@ -53,36 +53,17 @@ export class LoginComponent implements OnInit {
   }
 
   singin() {
-    this.loginService.login(this.userName.value, this.password.value).subscribe(response => {
-      try {
-        console.log(response.json());
-
-        this.loginResponse.FailCount = response.json().failCount;
-        this.loginResponse.IsFail = response.json().fail;
-        this.loginResponse.IsExpired = response.json().expired;
-        this.loginResponse.IsInactive = response.json().inactive;
-        this.loginResponse.IsLock = response.json().lock;
-        this.loginResponse.IsLogin = response.json().login;
-        this.loginResponse.IsNeedChange = response.json().needChange;
-        this.loginResponse.JwtToken = response.json().jwtToken;
-
+    this.loginResponse = this.loginService.login(this.userName.value, this.password.value);
+      
         if (this.loginResponse.IsLogin) {
           if (this.loginResponse.IsExpired == false) {
 
           } else {
             this.password.setValue("");
           }
-          //...................Redirect Home Page
         } else {
 
         }
-
-      } catch (error) {
-        console.log(error);
-      }
-    }, error => {
-      console.log(error);
-    });
   }
 
   changePassword() {

@@ -1,9 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import '~material-design-icons/iconfont/material-icons.css';
 
 body {
     background: #F5F5F5;
+    margin: 0;
 }
 
 .voffset-5{
