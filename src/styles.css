@@ -1,0 +1,24 @@
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import '~material-design-icons/iconfont/material-icons.css';
+
+body {
+    background: #F5F5F5;
+    margin: 0;
+}
+
+.voffset-5{
+    margin-top: 5px;
+}
+.voffset-10{
+    margin-top: 10px;
+}
+
+.error-div{
+    display: flex;  
+    height: 20px;         
+    flex-direction: column;  
+    justify-content: center; 
+    align-items: center; 
+    background: #ffd3d3;
+    width: 100%;
+}
