@@ -1,25 +1,30 @@
-import { LoginResponse } from './../../model/loginresponse';
 import { Injectable } from '@angular/core';
+import { LoginResponse } from './../../model/loginresponse';
 import { Http, URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
-export class LoginService {
+export class AuthService {
 
   private loginResponse: LoginResponse = new LoginResponse();
 
-  private loggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+ // private isLogin: boolean = false;
 
   get isLoggedIn() {
-    return this.loggedIn.asObservable();
+   
+    if(sessionStorage.getItem("token")){
+      return true;
+    }
+
+    return false;
+    
   }
+  
+  constructor(private http: Http, private router: Router) { }
 
-
-  constructor(private http : Http, private router: Router) { }
-
-  login(userName : string, password : string){
+  login(userName: string, password: string) {
     let urlSearchParams = new URLSearchParams();
     urlSearchParams.append('userName', userName);
     urlSearchParams.append('password', password);
@@ -38,9 +43,10 @@ export class LoginService {
 
         if (this.loginResponse.IsLogin) {
           if (this.loginResponse.IsExpired == false) {
-            this.loggedIn.next(true);
-            this.router.navigate(['/']);
-          } 
+            //this.isLogin = true;
+            sessionStorage.setItem("token", this.loginResponse.JwtToken);
+            this.router.navigate(['/home/home']);
+          }
         }
       } catch (error) {
         console.log(error);
@@ -52,8 +58,8 @@ export class LoginService {
     return this.loginResponse;
   }
 
-  changePassword(userName : string, password : string, newPassword : string, confirmNewPassword : string){
-    
+  changePassword(userName: string, password: string, newPassword: string, confirmNewPassword: string) {
+
     let urlSearchParams = new URLSearchParams();
     urlSearchParams.append('userName', userName);
     urlSearchParams.append('password', password);
@@ -62,8 +68,10 @@ export class LoginService {
     return this.http.post("http://localhost:8086/changePassword/", urlSearchParams);
   }
 
-  logout(){
-    this.loggedIn.next(false);
+  logout() {
+    //this.isLogin = false;
+    sessionStorage.removeItem("token");
     this.router.navigate(['/login']);
   }
+
 }

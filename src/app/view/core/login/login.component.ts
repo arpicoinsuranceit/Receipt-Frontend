@@ -1,11 +1,12 @@
-import { LoginService } from './../../../service/login/login.service';
-import { LoginResponse } from './../../../model/loginresponse';
+import { AuthService } from './../../../service/auth-service/auth.service';
+
 import { Component, OnInit } from '@angular/core';
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router/';
+import { LoginResponse } from '../../../model/loginresponse';
 
 
 @Component({
@@ -15,7 +16,7 @@ import { Router, ActivatedRoute } from '@angular/router/';
 })
 export class LoginComponent implements OnInit {
 
-  private loginResponse: LoginResponse = new LoginResponse();
+  loginResponse: LoginResponse = new LoginResponse();
 
   loginForm = new FormGroup({
     userName: new FormControl("", Validators.required),
@@ -40,7 +41,7 @@ export class LoginComponent implements OnInit {
     return this.loginForm.get("newPasswordConfirm");
   }
 
-  constructor(private loginService: LoginService) {
+  constructor(private loginService: AuthService, private router :Router) {
     this.loginResponse.IsNeedChange = false;
     this.loginResponse.IsExpired = false;
     this.loginResponse.IsFail = false;
@@ -57,7 +58,7 @@ export class LoginComponent implements OnInit {
       
         if (this.loginResponse.IsLogin) {
           if (this.loginResponse.IsExpired == false) {
-
+            
           } else {
             this.password.setValue("");
           }

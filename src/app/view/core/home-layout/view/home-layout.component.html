@@ -1,0 +1,45 @@
+<mat-drawer-container class="container" autosize>
+    <mat-drawer #drawer class="sidenav" opened mode="side">
+        <mat-card class="nav-header">
+            <mat-card-title class="nav-header-title" style="margin: 0; padding: 0;">
+                <img class="nav-header-title-image" mat-carad-image src="assets/images/logo.png" alt="ARPICO INSURANCE">
+            </mat-card-title>
+        </mat-card>
+
+
+        <button mat-button [matMenuTriggerFor]="animals" style="width: 210px; margin: 10px; text-align: left;">Animal index</button>
+
+        <mat-menu #animals="matMenu">
+            <button mat-menu-item [matMenuTriggerFor]="vertebrates">Vertebrates</button>
+            <button mat-menu-item [matMenuTriggerFor]="invertebrates">Invertebrates</button>
+        </mat-menu>
+
+        <mat-menu #vertebrates="matMenu">
+            <button mat-menu-item>Fishes</button>
+            <button mat-menu-item>Amphibians</button>
+            <button mat-menu-item>Reptiles</button>
+            <button mat-menu-item>Birds</button>
+            <button mat-menu-item>Mammals</button>
+        </mat-menu>
+
+        <mat-menu #invertebrates="matMenu">
+            <button mat-menu-item>Insects</button>
+            <button mat-menu-item>Molluscs</button>
+            <button mat-menu-item>Crustaceans</button>
+            <button mat-menu-item>Corals</button>
+            <button mat-menu-item>Arachnids</button>
+            <button mat-menu-item>Velvet worms</button>
+            <button mat-menu-item>Horseshoe crabs</button>
+        </mat-menu>
+
+    </mat-drawer>
+
+    <div class="sidenav-content">
+        <mat-toolbar color="primary">
+            <button mat-mini-fab color="primary" (click)="drawer.toggle()">
+                <i class="material-icons">more_vert</i>
+            </button>
+        </mat-toolbar>
+        <router-outlet></router-outlet>
+    </div>
+</mat-drawer-container>
