@@ -1,0 +1,128 @@
+<div class="container" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+    <div fxFlex="50%">
+        <mat-card class="main-card">
+
+            <mat-card-header>
+            </mat-card-header>
+
+            <mat-card-content>
+                <form class="quotation-receipt-form" [formGroup]="quoReceiptForm">
+                    <mat-form-field>
+                        <input matInput placeholder="Quotation No. *" aria-label="Quotation No." [matAutocomplete]="quoNumbers" formControlName="quoNo"
+                            (keyup)="LoadQuotations()" (blur)="getQuoDetails(quoNumbers)">
+                        <mat-autocomplete #quoNumbers="matAutocomplete">
+
+                            <mat-option *ngFor="let quotation of filteredQuotations | async" [value]="quotation.QuoCombine">
+                                <span> {{ quotation.QuotationId }} </span> |
+                                <small> {{ quotation.quotationDetailId }} </small>
+                            </mat-option>
+
+                        </mat-autocomplete>
+                    </mat-form-field>
+                    <br>
+
+                    <mat-form-field >
+                        <input matInput placeholder="User Code" aria-label="User Code" formControlName="agentCode">
+                    </mat-form-field>
+
+                    <mat-form-field *ngIf="pickAgent" class="full-width">
+                        <input matInput placeholder="Agent Code *" aria-label="Agent Code" (keyup)="getAgents()" [matAutocomplete]="agentNumbers" formControlName="pickAgentCode">
+                        <mat-autocomplete #agentNumbers="matAutocomplete">
+
+                            <mat-option *ngFor="let agent of filteredAgents | async" [value]="agent.AgentCombine">
+                                <span> {{ agent.AgentCode }} </span> |
+                                <small> {{ agent.AgentName }} </small> |
+                                <small> {{ agent.Location }} </small>
+                            </mat-option>
+
+                        </mat-autocomplete>
+                    </mat-form-field>
+                    <br>
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="Bank Code *" aria-label="Bank Code" [matAutocomplete]="bank" formControlName="bankCode">
+                        <mat-autocomplete #bank="matAutocomplete">
+                            <mat-option *ngFor="let bank of filteredBanks | async" [value]="bank.BankCode">
+                                <span> {{ bank.BankName }} </span> |
+                                <small> {{ bank.BankCode }} </small>
+                            </mat-option>
+
+                        </mat-autocomplete>
+                    </mat-form-field>
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="Remark" aria-label="Remark" formControlName="remark">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-select placeholder="Payment Mode" aria-label="Payment Mode" formControlName="paymode">
+                            <mat-option value="cash">
+                                CASH
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="Amount" type="number" aria-label="Amount" class="right-align" formControlName="amount" (blur)="convertAmountToWord()">
+                        <span matPrefix>Rs.</span>
+                        <span matSuffix>.00</span>
+                    </mat-form-field>
+
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="Amount in Word" aria-label="Amount in Word" formControlName="amountInWord">
+                    </mat-form-field>
+
+
+
+                </form>
+            </mat-card-content>
+
+            <mat-card-actions style="border-top: solid #C4C4C4 1px; display: flex; 
+            justify-content: space-between;">
+                <button mat-raised-button color="warn" (click) = "newReceipt()">NEW</button>
+                <button mat-raised-button color="primary" (click) = "saveReceipt()">SAVE</button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+    <div fxFlex="50%">
+        <mat-card class="main-card">
+            <mat-card-header >
+                <mat-card-title>
+                    Basic Quotation Details
+                </mat-card-title>
+            </mat-card-header>
+
+            <mat-card-content class="flex_box">
+                <table style="width: 75%; " >
+                    <tr>
+                        <td style="width: 30%;">Quotation ID</td>
+                        <td style="width: 5%;"> :</td>
+                        <td style="width: 65%;">{{basicDetail.QuotationId}}</td>
+                    </tr>
+                    <tr>
+                        <td>Sequence No</td>
+                        <td> :</td>
+                        <td>{{basicDetail.QuotationDetailId}}</td>
+                    </tr>
+                    <tr>
+                        <td>Customer Name</td>
+                        <td> :</td>
+                        <td>{{basicDetail.CustTitle}} {{basicDetail.CustomerName}}</td>
+                    </tr>
+                    <tr>
+                        <td>Agent Code</td>
+                        <td> :</td>
+                        <td>{{basicDetail.AgentCode}}</td>
+                    </tr>
+                    <tr>
+                        <td>Product</td>
+                        <td> :</td>
+                        <td>{{basicDetail.productCode}}      {{basicDetail.productName}}</td>
+                    </tr>
+                    
+                </table>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card class="main-card">
+
+        </mat-card>
+
+    </div>
+</div>

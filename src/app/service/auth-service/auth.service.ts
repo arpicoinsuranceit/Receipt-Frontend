@@ -10,18 +10,18 @@ export class AuthService {
 
   private loginResponse: LoginResponse = new LoginResponse();
 
- // private isLogin: boolean = false;
+  // private isLogin: boolean = false;
 
   get isLoggedIn() {
-   
-    if(sessionStorage.getItem("token")){
+
+    if (sessionStorage.getItem("token")) {
       return true;
     }
 
     return false;
-    
+
   }
-  
+
   constructor(private http: Http, private router: Router) { }
 
   login(userName: string, password: string) {

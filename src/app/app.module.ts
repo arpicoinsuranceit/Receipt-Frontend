@@ -1,3 +1,4 @@
+import { CommonService } from './service/common-service/common.service';
 import { AuthGuard } from './service/auth-service/auth.guard';
 import { AuthService } from './service/auth-service/auth.service';
 import { AppRoutingModule } from './app-routing.module';
@@ -27,7 +28,7 @@ import { RouterModule, Routes } from '@angular/router';
     AppRoutingModule,
     RouterModule
   ],
-  providers: [AuthService, AuthGuard],
+  providers: [AuthService, AuthGuard, CommonService],
   bootstrap: [AppComponent]
 })
 export class AppModule { 

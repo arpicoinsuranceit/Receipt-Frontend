@@ -8,6 +8,9 @@ body {
     margin: 0px;
 }
 
+.full-width {
+    width: 100%;
+}
 
 
 .voffset-5{
@@ -16,3 +19,14 @@ body {
 .voffset-10{
     margin-top: 10px;
 }
+
+.container {
+    min-height: 100%;
+    width: 100%;
+}
+
+.main-card{
+    margin: 10px;
+}
+
+

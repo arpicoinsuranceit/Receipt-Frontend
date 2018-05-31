@@ -2,34 +2,23 @@
     <mat-drawer #drawer class="sidenav" opened mode="side">
         <mat-card class="nav-header">
             <mat-card-title class="nav-header-title" style="margin: 0; padding: 0;">
-                <img class="nav-header-title-image" mat-carad-image src="assets/images/logo.png" alt="ARPICO INSURANCE">
+                <img class="nav-header-title-image"  routerLink="home" mat-carad-image src="assets/images/logo.png" alt="ARPICO INSURANCE">
             </mat-card-title>
         </mat-card>
 
 
-        <button mat-button [matMenuTriggerFor]="animals" style="width: 210px; margin: 10px; text-align: left;">Animal index</button>
+        <button mat-button [matMenuTriggerFor]="receipt" style="width: 210px; margin: 10px; text-align: left;">RECEIPT</button>
 
-        <mat-menu #animals="matMenu">
-            <button mat-menu-item [matMenuTriggerFor]="vertebrates">Vertebrates</button>
-            <button mat-menu-item [matMenuTriggerFor]="invertebrates">Invertebrates</button>
+        <mat-menu #receipt="matMenu" yPosition="below" xPosition="before" >
+            <button mat-menu-item >POLICY RECEIPT</button>
+            <button mat-menu-item routerLink="proposalreceipt">PROPOSAL RECEIPT</button>
+            <button mat-menu-item routerLink="quoreceipt">QUOTATION RECEIPT</button>
         </mat-menu>
 
-        <mat-menu #vertebrates="matMenu">
-            <button mat-menu-item>Fishes</button>
-            <button mat-menu-item>Amphibians</button>
-            <button mat-menu-item>Reptiles</button>
-            <button mat-menu-item>Birds</button>
-            <button mat-menu-item>Mammals</button>
-        </mat-menu>
+        <button mat-button [matMenuTriggerFor]="underwrite" style="width: 210px; margin: 10px; text-align: left;">UNDERWRITE</button>
 
-        <mat-menu #invertebrates="matMenu">
-            <button mat-menu-item>Insects</button>
-            <button mat-menu-item>Molluscs</button>
-            <button mat-menu-item>Crustaceans</button>
-            <button mat-menu-item>Corals</button>
-            <button mat-menu-item>Arachnids</button>
-            <button mat-menu-item>Velvet worms</button>
-            <button mat-menu-item>Horseshoe crabs</button>
+        <mat-menu #underwrite="matMenu" yPosition="below" xPosition="before" >
+            <button mat-menu-item>UNDERWRITE</button>
         </mat-menu>
 
     </mat-drawer>
