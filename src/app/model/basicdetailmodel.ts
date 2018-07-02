@@ -1,6 +1,6 @@
 export class BasicDetail {
     constructor(private branchCode?: string, private agentCode?: string, private custTitle?: string, private customerName?: string,
-        private quotationDetailId?: number, private quotationId?: number, private productCode?: string, private productName?: string) { }
+        private seqNo?: number, private id?: number, private productCode?: string, private productName?: string) { }
 
     set BranchCode(branchCode: string) {
         this.branchCode = branchCode;
@@ -34,20 +34,20 @@ export class BasicDetail {
         return this.customerName;
     }
 
-    set QuotationDetailId(quotationDetailId: number) {
-        this.quotationDetailId = quotationDetailId;
+    set SeqNo(seqNo: number) {
+        this.seqNo = seqNo;
     }
 
-    get QuotationDetailId() {
-        return this.quotationDetailId;
+    get SeqNo() {
+        return this.seqNo;
     }
 
-    set QuotationId(quotationId: number) {
-        this.quotationId = quotationId;
+    set Id(id: number) {
+        this.id = id;
     }
 
-    get QuotationId() {
-        return this.quotationId;
+    get Id() {
+        return this.id;
     }
 
     set ProductCode(productCode: string) {

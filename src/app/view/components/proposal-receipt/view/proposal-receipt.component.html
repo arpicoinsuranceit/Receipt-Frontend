@@ -1,81 +1,172 @@
 <div class="container" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
     <div fxFlex="50%">
-        <mat-card class="main-card">
-            <form class="proposal-receipt-form" [formGroup]="proposalReceiptForm">
-                <mat-form-field>
-                    <input matInput placeholder="Proposal No. *" aria-label="Proposal No." [matAutocomplete]="quoNumbers" formControlName="proposalNo">
-                    <mat-autocomplete #quoNumbers="matAutocomplete">
+        <mat-card class="main-card"  style="height: 720px;">
 
-                    </mat-autocomplete>
-                </mat-form-field>
-                <br>
-                <mat-form-field>
-                    <input matInput placeholder="Agent Code *" aria-label="Agent Code" [matAutocomplete]="agent" formControlName="agentCode">
-                    <mat-autocomplete #quoNumbers="matAutocomplete">
+            <mat-card-header>
+                <mat-card-title>
+                    <h3>Proposal Receipt</h3>
+                </mat-card-title>
+            </mat-card-header>
 
-                    </mat-autocomplete>
-                </mat-form-field>
-                <br>
-                <mat-form-field>
-                    <input matInput placeholder="Bank Code *" aria-label="Bank Code" [matAutocomplete]="bank" formControlName="bankCode">
-                    <mat-autocomplete #bank="matAutocomplete">
+            <mat-card-content>
+                <form class="quotation-receipt-form" [formGroup]="quoReceiptForm">
+                    <mat-form-field>
+                        <input matInput placeholder="Proposal No. *" aria-label="Quotation No." [matAutocomplete]="propNumbers" formControlName="propNo"
+                            (keyup)="LoadProposals()" (blur)="getProposalDetails(propNumbers)">
+                        <mat-autocomplete #propNumbers="matAutocomplete">
 
-                    </mat-autocomplete>
-                </mat-form-field>
-                <mat-form-field class="full-width">
-                    <input matInput placeholder="Remark" aria-label="Remark" formControlName="remark">
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-select placeholder="Payment Mode">
-                        <mat-option value="cash">
-                            CASH
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field class="full-width">
-                    <input matInput placeholder="Amount" type="number" aria-label="Amount" class="right-align" formControlName="amount" (blur)="convertAmountToWord()">
-                    <span matPrefix>Rs.</span>
-                    <span matSuffix>.00</span>
-                </mat-form-field>
+                            <mat-option *ngFor="let proposal of filteredProposals | async" [value]="proposal.ProposalCombine">
+                                <span> {{ proposal.ProposalId }} </span> |
+                                <small> {{ proposal.ProposalDetailId }} </small>
+                            </mat-option>
 
-                <mat-form-field class="full-width">
-                    <input matInput placeholder="Amount in Word" aria-label="Amount in Word" formControlName="amountInWord">
-                </mat-form-field>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                    <br>
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="Bank Code *" aria-label="Bank Code" [matAutocomplete]="bank" formControlName="bankCode">
+                        <mat-autocomplete #bank="matAutocomplete">
+                            <mat-option *ngFor="let bank of filteredBanks | async" [value]="bank.BankCode">
+                                <span> {{ bank.BankName }} </span> |
+                                <small> {{ bank.BankCode }} </small>
+                            </mat-option>
+
+                        </mat-autocomplete>
+                    </mat-form-field>
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="Remark" aria-label="Remark" formControlName="remark">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-select placeholder="Payment Mode" aria-label="Payment Mode" formControlName="paymode">
+                            <mat-option value="CS">
+                                CASH
+                            </mat-option>
+                            <mat-option value="CQ">
+                                CHEQUE
+                            </mat-option>
+                            <mat-option value="CR">
+                                CREDIT CARD
+                            </mat-option>
+                            <mat-option value="DD">
+                                DIRECT DEPOSIT
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-card *ngIf="PayMode.value == 'CQ'" style="margin-bottom: 10px;">
+                        <mat-form-field class="half-width">
+                            <input matInput placeholder="Cheque No" aria-label="Cheque No" formControlName="chequeno">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput [matDatepicker]="picker" placeholder="Cheque Date" formControlName="chequedate">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="Bank" aria-label="Bank" formControlName="chequebank">
+                        </mat-form-field>
+                    </mat-card>
+                    <mat-card *ngIf="PayMode.value == 'CR'" style="margin-bottom: 10px;">
+                        <mat-form-field class="half-width">
+                            <input matInput placeholder="Credit Transfer No" aria-label="Credit Transfer No" formControlName="credittransferno">
+                        </mat-form-field>
+                    </mat-card>
+
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="Amount" type="number" aria-label="Amount" class="right-align" formControlName="amount" (blur)="convertAmountToWord()">
+                        <span matPrefix>Rs.</span>
+                        <span matSuffix>.00</span>
+                    </mat-form-field>
+
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="Amount in Word" aria-label="Amount in Word" formControlName="amountInWord">
+                    </mat-form-field>
 
 
-            </form>
+
+                </form>
+            </mat-card-content>
+
+            <mat-card-actions style="border-top: solid #C4C4C4 1px; display: flex; 
+            justify-content: space-between;">
+                <button mat-raised-button color="warn" (click)="newReceipt()">CLEAR</button>
+                <button mat-raised-button color="primary" (click)="saveReceipt()">SAVE</button>
+            </mat-card-actions>
         </mat-card>
     </div>
     <div fxFlex="50%">
         <mat-card class="main-card">
-            <div class="example-container mat-elevation-z8">
-                <table mat-table #table>
-                    <ng-container matColumnDef="position">
-                        <th mat-header-cell *matHeaderCellDef> No. </th>
-                        <td mat-cell *matCellDef="let element"> {{element.position}} </td>
-                    </ng-container>
+            <mat-card-header>
+                <mat-card-title>
+                    <h3>Basic Proposal Details</h3>
+                </mat-card-title>
+            </mat-card-header>
 
-                    <!-- Name Column -->
-                    <ng-container matColumnDef="name">
-                        <th mat-header-cell *matHeaderCellDef> Name </th>
-                        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-                    </ng-container>
+            <mat-card-content class="flex_box voffset-10">
+                <table style="width: 75%; ">
+                    <tr>
+                        <td style="width: 30%;">Proposal ID</td>
+                        <td style="width: 5%;"> :</td>
+                        <td style="width: 65%;">{{basicDetail.Id}}</td>
+                    </tr>
+                    <tr>
+                        <td>Sequence No</td>
+                        <td> :</td>
+                        <td>{{basicDetail.SeqNo}}</td>
+                    </tr>
+                    <tr>
+                        <td>Customer Name</td>
+                        <td> :</td>
+                        <td>{{basicDetail.CustTitle}} {{basicDetail.CustomerName}}</td>
+                    </tr>
+                    <tr>
+                        <td>Agent Code</td>
+                        <td> :</td>
+                        <td>{{basicDetail.AgentCode}}</td>
+                    </tr>
+                    <tr>
+                        <td>Product</td>
+                        <td> :</td>
+                        <td>{{basicDetail.productCode}} {{basicDetail.productName}}</td>
+                    </tr>
 
-                    <!-- Weight Column -->
-                    <ng-container matColumnDef="weight">
-                        <th mat-header-cell *matHeaderCellDef> Weight </th>
-                        <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
-                    </ng-container>
-
-                    <!-- Symbol Column -->
-                    <ng-container matColumnDef="symbol">
-                        <th mat-header-cell *matHeaderCellDef> Symbol </th>
-                        <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
-                    </ng-container>
-
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                 </table>
-            </div>
+            </mat-card-content>
         </mat-card>
+
+        <mat-card class="main-card" style="height: 497px;">
+            <mat-table #table [dataSource]="data">
+                <ng-container matColumnDef="doccod">
+                    <mat-header-cell *matHeaderCellDef> Type </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.Doccod}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="docnum">
+                    <mat-header-cell *matHeaderCellDef> Receipt No </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.Docnum}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="credat">
+                    <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.Credat}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="pprnum">
+                    <mat-header-cell *matHeaderCellDef style="text-align: right"> Proposal No </mat-header-cell>
+                    <mat-cell *matCellDef="let element"  style="text-align: right"> {{element.Pprnum}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="polnum">
+                    <mat-header-cell *matHeaderCellDef style="text-align: right"> Policy No </mat-header-cell>
+                    <mat-cell *matCellDef="let element" style="text-align: right"> {{element.Polnum}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="topprm">
+                    <mat-header-cell *matHeaderCellDef style="text-align: right"> Amount </mat-header-cell>
+                    <mat-cell *matCellDef="let element" style="text-align: right"> {{element.Topprm}} </mat-cell>
+                </ng-container>
+
+                
+
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+        </mat-card>
+
     </div>
 </div>

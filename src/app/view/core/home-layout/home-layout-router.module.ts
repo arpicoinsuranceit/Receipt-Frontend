@@ -1,3 +1,4 @@
+import { PolicyReceiptModule } from './../../components/policy-receipt/policy-receipt.module';
 import { ProposalReceiptModule } from './../../components/proposal-receipt/proposal-receipt.module';
 import { HomeModule } from './../../components/home/home.module';
 import { NgModule } from '@angular/core';
@@ -22,6 +23,10 @@ const routes: Routes = [
       {
         path: 'proposalreceipt',
         loadChildren : ()=> ProposalReceiptModule
+      },
+      {
+        path: 'policyreceipt',
+        loadChildren : ()=> PolicyReceiptModule
       }
     ]
   }

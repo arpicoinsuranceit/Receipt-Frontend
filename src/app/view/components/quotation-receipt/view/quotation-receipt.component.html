@@ -1,15 +1,17 @@
 <div class="container" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
     <div fxFlex="50%">
-        <mat-card class="main-card">
+        <mat-card class="main-card" style="height: 720px;">
 
             <mat-card-header>
+                <mat-card-title>
+                    <h3>Quotation Receipt</h3>
+                </mat-card-title>
             </mat-card-header>
-
             <mat-card-content>
                 <form class="quotation-receipt-form" [formGroup]="quoReceiptForm">
                     <mat-form-field>
                         <input matInput placeholder="Quotation No. *" aria-label="Quotation No." [matAutocomplete]="quoNumbers" formControlName="quoNo"
-                            (keyup)="LoadQuotations()" (blur)="getQuoDetails(quoNumbers)">
+                            (keyup)="LoadQuotations($event)" (blur)="getQuoDetails(quoNumbers)">
                         <mat-autocomplete #quoNumbers="matAutocomplete">
 
                             <mat-option *ngFor="let quotation of filteredQuotations | async" [value]="quotation.QuoCombine">
@@ -21,12 +23,13 @@
                     </mat-form-field>
                     <br>
 
-                    <mat-form-field >
+                    <mat-form-field>
                         <input matInput placeholder="User Code" aria-label="User Code" formControlName="agentCode">
                     </mat-form-field>
 
                     <mat-form-field *ngIf="pickAgent" class="full-width">
-                        <input matInput placeholder="Agent Code *" aria-label="Agent Code" (keyup)="getAgents()" [matAutocomplete]="agentNumbers" formControlName="pickAgentCode">
+                        <input matInput placeholder="Agent Code *" aria-label="Agent Code" (keyup)="getAgents($event)" [matAutocomplete]="agentNumbers"
+                            formControlName="pickAgentCode">
                         <mat-autocomplete #agentNumbers="matAutocomplete">
 
                             <mat-option *ngFor="let agent of filteredAgents | async" [value]="agent.AgentCombine">
@@ -53,11 +56,38 @@
                     </mat-form-field>
                     <mat-form-field>
                         <mat-select placeholder="Payment Mode" aria-label="Payment Mode" formControlName="paymode">
-                            <mat-option value="cash">
+                            <mat-option value="CS">
                                 CASH
+                            </mat-option>
+                            <mat-option value="CQ">
+                                CHEQUE
+                            </mat-option>
+                            <mat-option value="CR">
+                                CREDIT CARD
+                            </mat-option>
+                            <mat-option value="DD">
+                                DIRECT DEPOSIT
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
+                    <mat-card *ngIf="PayMode.value == 'CQ'" style="margin-bottom: 10px;">
+                        <mat-form-field class="half-width">
+                            <input matInput placeholder="Cheque No" aria-label="Cheque No" formControlName="chequeno">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput [matDatepicker]="picker" placeholder="Cheque Date" formControlName="chequedate">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="Bank" aria-label="Bank" formControlName="chequebank">
+                        </mat-form-field>
+                    </mat-card>
+                    <mat-card *ngIf="PayMode.value == 'CR'" style="margin-bottom: 10px;">
+                        <mat-form-field class="half-width">
+                            <input matInput placeholder="Credit Transfer No" aria-label="Credit Transfer No" formControlName="credittransferno">
+                        </mat-form-field>
+                    </mat-card>
                     <mat-form-field class="full-width">
                         <input matInput placeholder="Amount" type="number" aria-label="Amount" class="right-align" formControlName="amount" (blur)="convertAmountToWord()">
                         <span matPrefix>Rs.</span>
@@ -75,30 +105,30 @@
 
             <mat-card-actions style="border-top: solid #C4C4C4 1px; display: flex; 
             justify-content: space-between;">
-                <button mat-raised-button color="warn" (click) = "newReceipt()">NEW</button>
-                <button mat-raised-button color="primary" (click) = "saveReceipt()">SAVE</button>
+                <button mat-raised-button color="warn" (click)="newReceipt()">CLEAR</button>
+                <button mat-raised-button color="primary" (click)="saveReceipt()">SAVE</button>
             </mat-card-actions>
         </mat-card>
     </div>
     <div fxFlex="50%">
         <mat-card class="main-card">
-            <mat-card-header >
+            <mat-card-header>
                 <mat-card-title>
-                    Basic Quotation Details
+                    <h3>Basic Quotation Details</h3>
                 </mat-card-title>
             </mat-card-header>
 
-            <mat-card-content class="flex_box">
-                <table style="width: 75%; " >
+            <mat-card-content class="flex_box voffset-10">
+                <table style="width: 75%; ">
                     <tr>
                         <td style="width: 30%;">Quotation ID</td>
                         <td style="width: 5%;"> :</td>
-                        <td style="width: 65%;">{{basicDetail.QuotationId}}</td>
+                        <td style="width: 65%;">{{basicDetail.Id}}</td>
                     </tr>
                     <tr>
                         <td>Sequence No</td>
                         <td> :</td>
-                        <td>{{basicDetail.QuotationDetailId}}</td>
+                        <td>{{basicDetail.SeqNo}}</td>
                     </tr>
                     <tr>
                         <td>Customer Name</td>
@@ -113,15 +143,45 @@
                     <tr>
                         <td>Product</td>
                         <td> :</td>
-                        <td>{{basicDetail.productCode}}      {{basicDetail.productName}}</td>
+                        <td>{{basicDetail.productCode}} {{basicDetail.productName}}</td>
                     </tr>
-                    
+
                 </table>
             </mat-card-content>
         </mat-card>
 
-        <mat-card class="main-card">
+        <mat-card class="main-card" style="height: 497px;">
+            <mat-table #table [dataSource]="data">
+                <ng-container matColumnDef="doccod">
+                    <mat-header-cell *matHeaderCellDef> Type </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.Doccod}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="docnum">
+                    <mat-header-cell *matHeaderCellDef> Receipt No </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.Docnum}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="credat">
+                    <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.Credat}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="pprnum">
+                    <mat-header-cell *matHeaderCellDef style="text-align: right"> Proposal No </mat-header-cell>
+                    <mat-cell *matCellDef="let element"  style="text-align: right"> {{element.Pprnum}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="polnum">
+                    <mat-header-cell *matHeaderCellDef style="text-align: right"> Policy No </mat-header-cell>
+                    <mat-cell *matCellDef="let element" style="text-align: right"> {{element.Polnum}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="topprm">
+                    <mat-header-cell *matHeaderCellDef style="text-align: right"> Amount </mat-header-cell>
+                    <mat-cell *matCellDef="let element" style="text-align: right"> {{element.Topprm}} </mat-cell>
+                </ng-container>
 
+                
+
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
         </mat-card>
 
     </div>

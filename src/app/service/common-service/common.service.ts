@@ -28,4 +28,11 @@ export class CommonService {
     urlParams.append('agentCode', agentCode);
     return this.http.post("http://localhost:8088/getAgents/" , urlParams);
   }
+
+  getLastReceipts(){
+    let token : string = sessionStorage.getItem("token");
+    let urlParams = new URLSearchParams();
+    urlParams.append('token', token);
+    return this.http.post("http://localhost:8088/getLastReceipts/" , urlParams);
+  }
 }

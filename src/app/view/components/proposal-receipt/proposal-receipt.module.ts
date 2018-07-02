@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { MatCommonModule } from '@angular/material/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ProposalReceiptRouterModule } from './proposal-receipt-router.module';
+import { ProposalReceiptService } from '../../../service/proposal-receipt-service/proposal-receipt.service';
 
 @NgModule({
   imports: [
@@ -16,6 +17,7 @@ import { ProposalReceiptRouterModule } from './proposal-receipt-router.module';
     FormsModule,
     ReactiveFormsModule,
   ],
-  declarations: [ProposalReceiptComponent]
+  declarations: [ProposalReceiptComponent],
+  providers : [ProposalReceiptService]
 })
 export class ProposalReceiptModule { }

@@ -1,3 +1,6 @@
+import { ActivatedRoute } from '@angular/router/';
+import { element } from 'protractor';
+import { LastReceipt } from './../../../../model/lastreceipt';
 import { AgentModel } from './../../../../model/agentmodel';
 import { SaveReceiptModel } from './../../../../model/savereceiptmodel';
 import { BasicDetail } from './../../../../model/basicdetailmodel';
@@ -15,7 +18,11 @@ import { QuotationModel } from '../../../../model/quotationmodel';
   templateUrl: './quotation-receipt.component.html',
   styleUrls: ['./quotation-receipt.component.css']
 })
+
+
 export class QuotationReceiptComponent implements OnInit {
+
+  displayedColumns = ['doccod', 'docnum', 'credat', 'pprnum', 'polnum', 'topprm'];
 
   basicDetail: BasicDetail = new BasicDetail("", "", "", "", 0, 0);
 
@@ -27,6 +34,8 @@ export class QuotationReceiptComponent implements OnInit {
   filteredQuotations: Observable<any[]>;
   filteredAgents: Observable<any[]>;
 
+  data: LastReceipt[] = new Array();
+
   pickAgent: boolean = false;
 
   quoReceiptForm = new FormGroup({
@@ -34,6 +43,10 @@ export class QuotationReceiptComponent implements OnInit {
     agentCode: new FormControl("", Validators.required),
     paymode: new FormControl(""),
     bankCode: new FormControl("", Validators.required),
+    chequedate: new FormControl(""),
+    chequebank: new FormControl(""),
+    credittransferno: new FormControl(""),
+    chequeno: new FormControl(""),
     remark: new FormControl(""),
     amount: new FormControl(""),
     amountInWord: new FormControl(""),
@@ -53,6 +66,9 @@ export class QuotationReceiptComponent implements OnInit {
   get BankCode() {
     return this.quoReceiptForm.get("bankCode");
   }
+  get PickAgentCode() {
+    return this.quoReceiptForm.get("pickAgentCode");
+  }
   get Remark() {
     return this.quoReceiptForm.get("remark");
   }
@@ -62,19 +78,32 @@ export class QuotationReceiptComponent implements OnInit {
   get AmountInWord() {
     return this.quoReceiptForm.get("amountInWord");
   }
-  get PickAgentCode() {
-    return this.quoReceiptForm.get("pickAgentCode");
+  get Chequedate() {
+    return this.quoReceiptForm.get("chequedate");
   }
 
+  get Chequebank() {
+    return this.quoReceiptForm.get("chequebank");
+  }
 
-  constructor(private commonService: CommonService, private quotationReceiptService: QuotationReceiptService) { }
+  get Chequeno() {
+    return this.quoReceiptForm.get("chequeno");
+  }
+
+  get Credittransferno() {
+    return this.quoReceiptForm.get("credittransferno");
+  }
+
+  constructor(private commonService: CommonService, private quotationReceiptService: QuotationReceiptService) {
+
+  }
 
   ngOnInit() {
     this.getBanks();
+    this.loadLastReceipts();
   }
 
   convertAmountToWord() {
-    alert(this.Amount.value);
     this.commonService.convertNumberToWord(this.Amount.value).subscribe(response => {
       this.AmountInWord.setValue(response.text());
     });
@@ -102,8 +131,10 @@ export class QuotationReceiptComponent implements OnInit {
     });
   }
 
-  getAgents() {
-    if (this.PickAgentCode.value.length == 2) {
+  getAgents(event) {
+    if (this.PickAgentCode.value.length == 2 && event.key != "Enter" && event.key != "ArrowUp"
+      && event.key != "ArrowDown" && event.key != "ArrowLeft" && event.key != "ArrowRight" &&
+      event.key != "Tab" && event.key != "Enter" && event.key != "Backspace") {
       this.agentList = new Array();
       this.commonService.getAgent(this.PickAgentCode.value).subscribe(response => {
         console.log(response.json());
@@ -130,8 +161,11 @@ export class QuotationReceiptComponent implements OnInit {
     }
   }
 
-  LoadQuotations() {
-    if (this.QuoNo.value.length == 3) {
+  LoadQuotations(event) {
+    console.log(event.key);
+    if (this.QuoNo.value.length == 3 && event.key != "Enter" && event.key != "ArrowUp"
+      && event.key != "ArrowDown" && event.key != "ArrowLeft" && event.key != "ArrowRight" &&
+      event.key != "Tab" && event.key != "Enter" && event.key != "Backspace") {
       this.quotationList = new Array();
       this.quotationReceiptService.loadQuotation(this.QuoNo.value).subscribe(response => {
         console.log(response.json());
@@ -157,8 +191,13 @@ export class QuotationReceiptComponent implements OnInit {
   }
 
   filterBanks(name: string) {
-    return this.bankList.filter(bank =>
-      bank.BankName.toLowerCase().indexOf(name.toLowerCase()) === 0);
+    try {
+      return this.bankList.filter(bank =>
+        bank.BankName.toLowerCase().indexOf(name.toLowerCase()) === 0);
+    } catch (error) {
+      return null;
+    }
+   
   }
 
   filterQuotation(id: string) {
@@ -185,8 +224,8 @@ export class QuotationReceiptComponent implements OnInit {
           this.basicDetail.AgentCode = response.json().agentCode;
           this.basicDetail.CustomerName = response.json().customerName;
           this.basicDetail.CustTitle = response.json().custTitle;
-          this.basicDetail.QuotationDetailId = response.json().quotationDetailId;
-          this.basicDetail.QuotationId = response.json().quotationId;
+          this.basicDetail.SeqNo = response.json().quotationDetailId;
+          this.basicDetail.Id = response.json().quotationId;
           this.basicDetail.ProductCode = response.json().productCode;
           this.basicDetail.ProductName = response.json().productName;
           this.basicDetail.BranchCode = response.json().branchCode;
@@ -205,6 +244,21 @@ export class QuotationReceiptComponent implements OnInit {
 
   saveReceipt() {
 
+    if(!this.quoReceiptForm.valid){
+      if(!this.QuoNo.valid){
+        alert("Quotation Number not Valied");
+        return;
+      }
+      if(!this.AgentCode.valid){
+        alert("Agent Code not Valied");
+        return;
+      }
+      if(!this.BankCode.valid){
+        alert("Bank Code not Valied");
+        return;
+      }
+    }
+    
     let quoCombination: string = this.QuoNo.value;
     let qId: number;
     let qdId: number;
@@ -215,9 +269,11 @@ export class QuotationReceiptComponent implements OnInit {
         qId = parseInt(str[0]);
         qdId = parseInt(str[1]);
       } else {
-        return;
+         alert("Enter Quotation Number Correctly");
+         return;
       }
     } else {
+      alert("Enter Quotation Number Correctly");
       return;
     }
 
@@ -231,6 +287,13 @@ export class QuotationReceiptComponent implements OnInit {
     saveReceiptModel.Remark = this.Remark.value;
     saveReceiptModel.ProductCode = this.basicDetail.ProductCode;
     saveReceiptModel.BranchCode = this.basicDetail.BranchCode;
+    saveReceiptModel.Chequeno = this.Chequeno.value;
+    saveReceiptModel.Chequebank = this.Chequebank.value;
+    saveReceiptModel.Chequedate = this.Chequedate.value;
+    saveReceiptModel.Transferno = this.Credittransferno.value;
+    saveReceiptModel.Token = sessionStorage.getItem("token");
+
+    
 
     if (isNaN(this.AgentCode.value)) {
       let agentCombination: string = this.PickAgentCode.value;
@@ -243,7 +306,7 @@ export class QuotationReceiptComponent implements OnInit {
         } else {
           saveReceiptModel.AgentCode = tempArr[0];
         }
-      }else{
+      } else {
         alert("select agent code");
       }
     } else {
@@ -254,12 +317,70 @@ export class QuotationReceiptComponent implements OnInit {
 
     this.quotationReceiptService.saveQupReceipt(saveReceiptModel).subscribe(response => {
       console.log(response.text());
+      if (response.text() == "WORK") {
+        this.newReceipt();
+        this.loadLastReceipts();
+      }
     });
   }
 
   newReceipt() {
     //this.quoReceiptForm.reset();
     this.basicDetail = new BasicDetail("", "", "", "", 0, 0);
+    
+   
+    this.quotationList = new Array();
+    this.filteredQuotations = this.QuoNo.valueChanges
+      .pipe(
+        startWith(''),
+        map(quotation => this.filterQuotation(quotation))
+      );
+    this.QuoNo.reset();
+    this.AgentCode.reset();
+    this.PickAgentCode.setValue("");
+    this.agentList = new Array();
+    this.filteredAgents = this.PickAgentCode.valueChanges
+      .pipe(
+        startWith(''),
+        map(agent => this.filterAgents(agent))
+      );
+    this.PickAgentCode.reset();
+    this.filteredBanks = this.BankCode.valueChanges
+        .pipe(
+          startWith(''),
+          map(bank => this.filterBanks(bank))
+        );
+    this.BankCode.reset();
+    this.Amount.reset();
+    this.AmountInWord.reset();
+    this.Chequebank.reset();
+    this.Chequedate.reset();
+    this.Chequeno.reset();
+    this.Credittransferno.reset();
+    this.Remark.reset();
   }
 
+  loadLastReceipts() {
+    this.commonService.getLastReceipts().subscribe(response => {
+      this.data = new Array();
+
+      console.log(response.json());
+
+      response.json().forEach(element => {
+        let lastReceipt: LastReceipt = new LastReceipt();
+        lastReceipt.Credat = element.creadt;
+        lastReceipt.Doccod = element.doccod;
+        lastReceipt.Docnum = element.doctyp;
+        lastReceipt.Polnum = element.polnum;
+        lastReceipt.Pprnum = element.pprnum;
+        lastReceipt.Topprm = element.amount;
+
+        this.data.push(lastReceipt);
+      });
+
+    });
+  }
+
+
 }
+

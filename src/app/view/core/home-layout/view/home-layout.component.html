@@ -10,7 +10,7 @@
         <button mat-button [matMenuTriggerFor]="receipt" style="width: 210px; margin: 10px; text-align: left;">RECEIPT</button>
 
         <mat-menu #receipt="matMenu" yPosition="below" xPosition="before" >
-            <button mat-menu-item >POLICY RECEIPT</button>
+            <button mat-menu-item routerLink="policyreceipt">POLICY RECEIPT</button>
             <button mat-menu-item routerLink="proposalreceipt">PROPOSAL RECEIPT</button>
             <button mat-menu-item routerLink="quoreceipt">QUOTATION RECEIPT</button>
         </mat-menu>
