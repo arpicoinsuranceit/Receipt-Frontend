@@ -1,4 +1,5 @@
-import { PolicyReceiptModule } from './../../components/policy-receipt/policy-receipt.module';
+import { BranchUnderwriteModule } from './../../components/branch-underwrite/branch-underwrite.module';
+//import { PolicyReceiptModule } from './../../components/policy-receipt/policy-receipt.module';
 import { ProposalReceiptModule } from './../../components/proposal-receipt/proposal-receipt.module';
 import { HomeModule } from './../../components/home/home.module';
 import { NgModule } from '@angular/core';
@@ -25,8 +26,8 @@ const routes: Routes = [
         loadChildren : ()=> ProposalReceiptModule
       },
       {
-        path: 'policyreceipt',
-        loadChildren : ()=> PolicyReceiptModule
+        path: 'underwrite',
+        loadChildren : ()=> BranchUnderwriteModule
       }
     ]
   }
