@@ -1,0 +1,8 @@
+.mat-radio-button ~ .mat-radio-button {
+    
+    padding-top : 10px;
+}
+
+table {
+    width: 100%;
+  }
