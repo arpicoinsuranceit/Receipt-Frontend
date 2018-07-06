@@ -1,6 +1,6 @@
 export class BasicDetail {
     constructor(private branchCode?: string, private agentCode?: string, private custTitle?: string, private customerName?: string,
-        private seqNo?: number, private id?: number, private productCode?: string, private productName?: string) { }
+        private seqNo?: number, private id?: number, private productCode?: string, private productName?: string, private premium?: number,private payAmount?: number) { }
 
     set BranchCode(branchCode: string) {
         this.branchCode = branchCode;
@@ -64,6 +64,24 @@ export class BasicDetail {
 
     get ProductName() {
         return this.productName;
+    }
+
+    
+    set Premium(premium: number) {
+        this.premium = premium;
+    }
+
+    get Premium() {
+        return this.premium;
+    }
+
+    
+    set PayAmount(payAmount: number) {
+        this.payAmount = payAmount;
+    }
+
+    get PayAmount() {
+        return this.payAmount;
     }
 
 }

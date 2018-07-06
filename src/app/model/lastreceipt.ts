@@ -1,6 +1,6 @@
 export class LastReceipt {
     constructor(private doccod? : string, private docnum? : string, private credat? : string,
-         private pprnum? : string, private polnum? : string, private topprm? : number){}
+         private pprnum? : string, private polnum? : string, private topprm? : number, private chqrel? : string, private paymod? : string){}
 
     get Doccod(){
         return this.doccod;
@@ -39,4 +39,17 @@ export class LastReceipt {
     set Topprm(topprm: number){
         this.topprm = topprm;
     }
+    get Chqrel(){
+        return this.chqrel;
+    }
+    set Chqrel(chqrel: string){
+        this.chqrel = chqrel;
+    }
+    get Paymod(){
+        return this.paymod;
+    }
+    set Paymod(paymod: string){
+        this.paymod = paymod;
+    }
+
 }

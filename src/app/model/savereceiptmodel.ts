@@ -1,11 +1,27 @@
 export class SaveReceiptModel {
     constructor(private quotationId?: number, private quotationDetailId?: number, private propId?: number, private propSeq?: number,
-         private bankCode?: string, private remark?: string, private payMode?: string, private amount?: number, private payAmountWord?: string,
-        private productCode? : string, private branchCode? : string, private agentCode? : string, 
-        private chequeno? : string, private chequedate? : string, private chequebank? : string, private transferno? : string,
-        private token? : string) { }
+        private bankCode?: string, private remark?: string, private payMode?: string, private amount?: number, private payAmountWord?: string,
+        private productCode?: string, private branchCode?: string, private agentCode?: string,
+        private chequeno?: string, private chequedate?: string, private chequebank?: string, private transferno?: string,
+        private token?: string, private polId?: number, private polSeq?: number) { }
 
-    set QuotationId(quotationId : number) {
+    set PolId(polId: number) {
+        this.polId = polId;
+    }
+
+    get PolId() {
+        return this.polId;
+    }
+    set PolSeq(polSeq: number) {
+        this.polSeq = polSeq;
+    }
+
+    get PolSeq() {
+        return this.polSeq;
+    }
+
+
+    set QuotationId(quotationId: number) {
         this.quotationId = quotationId;
     }
 
@@ -13,7 +29,7 @@ export class SaveReceiptModel {
         return this.quotationId;
     }
 
-    set QuotationDetailId(quotationDetailId : number) {
+    set QuotationDetailId(quotationDetailId: number) {
         this.quotationDetailId = quotationDetailId;
     }
 
@@ -21,7 +37,7 @@ export class SaveReceiptModel {
         return this.quotationDetailId;
     }
 
-    set PropId(propId : number) {
+    set PropId(propId: number) {
         this.propId = propId;
     }
 
@@ -29,7 +45,7 @@ export class SaveReceiptModel {
         return this.propId;
     }
 
-    set PropSeq(propSeq : number) {
+    set PropSeq(propSeq: number) {
         this.propSeq = propSeq;
     }
 
@@ -37,7 +53,7 @@ export class SaveReceiptModel {
         return this.propSeq;
     }
 
-    set BankCode(bankCode : string) {
+    set BankCode(bankCode: string) {
         this.bankCode = bankCode;
     }
 
@@ -45,7 +61,7 @@ export class SaveReceiptModel {
         return this.bankCode;
     }
 
-    set Remark(remark : string) {
+    set Remark(remark: string) {
         this.remark = remark;
     }
 
@@ -53,7 +69,7 @@ export class SaveReceiptModel {
         return this.remark;
     }
 
-    set PayMode(payMode : string) {
+    set PayMode(payMode: string) {
         this.payMode = payMode;
     }
 
@@ -61,7 +77,7 @@ export class SaveReceiptModel {
         return this.payMode;
     }
 
-    set Amount(amount : number) {
+    set Amount(amount: number) {
         this.amount = amount;
     }
 
@@ -69,7 +85,7 @@ export class SaveReceiptModel {
         return this.amount;
     }
 
-    set PayAmountWord(payAmountWord : string) {
+    set PayAmountWord(payAmountWord: string) {
         this.payAmountWord = payAmountWord;
     }
 
@@ -77,7 +93,7 @@ export class SaveReceiptModel {
         return this.payAmountWord;
     }
 
-    set ProductCode(productCode : string) {
+    set ProductCode(productCode: string) {
         this.productCode = productCode;
     }
 
@@ -85,7 +101,7 @@ export class SaveReceiptModel {
         return this.productCode;
     }
 
-    set BranchCode(branchCode : string) {
+    set BranchCode(branchCode: string) {
         this.branchCode = branchCode;
     }
 
@@ -93,7 +109,7 @@ export class SaveReceiptModel {
         return this.branchCode;
     }
 
-    set AgentCode(agentCode : string) {
+    set AgentCode(agentCode: string) {
         this.agentCode = agentCode;
     }
 
@@ -101,7 +117,7 @@ export class SaveReceiptModel {
         return this.agentCode;
     }
 
-    set Chequeno(chequeno : string) {
+    set Chequeno(chequeno: string) {
         this.chequeno = chequeno;
     }
 
@@ -109,7 +125,7 @@ export class SaveReceiptModel {
         return this.chequeno;
     }
 
-    set Chequebank(chequebank : string) {
+    set Chequebank(chequebank: string) {
         this.chequebank = chequebank;
     }
 
@@ -117,7 +133,7 @@ export class SaveReceiptModel {
         return this.chequebank;
     }
 
-    set Transferno(transferno : string) {
+    set Transferno(transferno: string) {
         this.transferno = transferno;
     }
 
@@ -125,19 +141,19 @@ export class SaveReceiptModel {
         return this.transferno;
     }
 
-    set Chequedate(chequedate : string) {
+    set Chequedate(chequedate: string) {
         this.chequedate = chequedate;
     }
 
     get Chequedate() {
         return this.chequedate;
     }
-    set Token(token : string) {
+    set Token(token: string) {
         this.token = token;
     }
 
     get Token() {
         return this.token;
     }
- 
+
 }

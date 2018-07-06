@@ -1,6 +1,6 @@
 <div class="container" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
     <div fxFlex="50%">
-        <mat-card class="main-card" style="height: 720px;">
+        <mat-card class="main-card" style="height: 741px;">
 
             <mat-card-header>
                 <mat-card-title>
@@ -111,7 +111,7 @@
         </mat-card>
     </div>
     <div fxFlex="50%">
-        <mat-card class="main-card">
+        <mat-card class="main-card"  style="height: 425px;">
             <mat-card-header>
                 <mat-card-title>
                     <h3>Basic Quotation Details</h3>
@@ -119,9 +119,9 @@
             </mat-card-header>
 
             <mat-card-content class="flex_box voffset-10">
-                <table style="width: 75%; ">
+                <table style="width: 100%; ">
                     <tr>
-                        <td style="width: 30%;">Quotation ID</td>
+                        <td style="width: 30%;">Proposal ID</td>
                         <td style="width: 5%;"> :</td>
                         <td style="width: 65%;">{{basicDetail.Id}}</td>
                     </tr>
@@ -143,14 +143,68 @@
                     <tr>
                         <td>Product</td>
                         <td> :</td>
-                        <td>{{basicDetail.productCode}} {{basicDetail.productName}}</td>
+                        <td>{{basicDetail.ProductCode}} {{basicDetail.ProductName}}</td>
+                    </tr>
+                    <tr>
+                        <td>Premium</td>
+                        <td> :</td>
+                        <td>{{basicDetail.Premium}}</td>
+                    </tr>
+                    <tr>
+                        <td>Payble Amount</td>
+                        <td> :</td>
+                        <td>{{basicDetail.PayAmount}}</td>
                     </tr>
 
                 </table>
+
+                <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+                    <div fxFlex="50%">
+                        <mat-card class="small-card" style="background: #d6fcec">
+                            <mat-card-header style="border-color: palegreen">
+                                <mat-card-title>Receipt No : {{lastReceipt[0].Docnum}}</mat-card-title>
+                                <mat-card-subtitle>{{lastReceipt[0].Credat}}</mat-card-subtitle>
+                            </mat-card-header>
+                            <mat-card-content>
+                                <h3 style="width: 100%; text-align: right">Rs. {{lastReceipt[0].Topprm}}</h3>
+                                <div style="display: flex;  justify-content: space-between;">
+                                    <p style="text-align: Left">
+                                        <span>{{lastReceipt[0].Doccod}}</span>
+                                    </p>
+                                    <p style="text-align: right">Mode :
+                                        <span>{{lastReceipt[0].Paymod}}</span>
+                                    </p>
+                                </div>
+
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                    <div fxFlex="50%">
+                        <mat-card class="small-card" style="background: #d6fcec">
+                            <mat-card-header style="border-color: palegreen">
+                                <mat-card-title>Receipt No : {{lastReceipt[1].Docnum}}</mat-card-title>
+                                <mat-card-subtitle>{{lastReceipt[1].Credat}}</mat-card-subtitle>
+                            </mat-card-header>
+                            <mat-card-content>
+                                <h3 style="width: 100%; text-align: right">Rs. {{lastReceipt[1].Topprm}}</h3>
+                                <div style="display: flex;  justify-content: space-between;">
+                                    <p style="text-align: Left">
+                                        <span>{{lastReceipt[1].Doccod}}</span>
+                                    </p>
+                                    <p style="text-align: right">Mode :
+                                        <span>{{lastReceipt[1].Paymod}}</span>
+                                    </p>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                </div>
+
+
             </mat-card-content>
         </mat-card>
 
-        <mat-card class="main-card" style="height: 497px;">
+        <mat-card class="main-card" style="height: 258px;">
             <mat-table #table [dataSource]="data">
                 <ng-container matColumnDef="doccod">
                     <mat-header-cell *matHeaderCellDef> Type </mat-header-cell>
