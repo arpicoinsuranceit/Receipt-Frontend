@@ -13,6 +13,10 @@ export class QuotationReceiptService {
     return this.http.get("http://localhost:8084/quotationsearch/" + id);
   }
 
+  loadQuotationProp(id){
+    return this.http.get("http://localhost:8084/quotationsearchprop/" + id);
+  }
+
   getQuoDetails(quoId): any {
     return this.http.get("http://localhost:8084/getquotationdetail/"+quoId);
   }

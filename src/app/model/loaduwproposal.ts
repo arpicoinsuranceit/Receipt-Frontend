@@ -1,6 +1,6 @@
 export class LoadUWProposals{
     
-    constructor (private proposalNo? : string, private sequenceNo? : string, private policyNo? : string,private customer? : string , private proposedName? : string,
+    constructor (private proposalNo? : number, private sequenceNo? : number, private policyNo? : number,private customer? : string , private proposedName? : string,
         private agent? : string,private policyBranch? : string,private agentBranch? : string,private nic? : string){
 
         }
@@ -9,7 +9,7 @@ export class LoadUWProposals{
         return this.proposalNo;
     }
 
-    set ProposalNo (proposalNo : string){
+    set ProposalNo (proposalNo : number){
         this.proposalNo = proposalNo;
     }
 
@@ -17,7 +17,7 @@ export class LoadUWProposals{
         return this.sequenceNo;
     }
 
-    set SequenceNo (sequenceNo : string){
+    set SequenceNo (sequenceNo : number){
         this.sequenceNo = sequenceNo;
     }
 
@@ -25,7 +25,7 @@ export class LoadUWProposals{
         return this.policyNo;
     }
 
-    set PolicyNo (policyNo : string) {
+    set PolicyNo (policyNo : number) {
         this.policyNo = policyNo;
     }
 

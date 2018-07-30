@@ -11,17 +11,17 @@
       <mat-card-content>
         <mat-horizontal-stepper [linear]="isLinear" #stepper>
           <mat-step [stepControl]="firstFormGroup">
-              <mat-card style="margin-bottom: 10px;height: 420px;max-height: 430px;overflow-x: auto;">
+              <mat-card>
                 <!-- <mat-card-header>
                   <mat-card-title>
                     <h3>ARPICO INVESTMENT PLAN (INVP)</h3>
                   </mat-card-title>
                 </mat-card-header> -->
-                <mat-card-content>
+                <mat-card-content  style="max-height: 380px;overflow-x: auto;">
                   <ng-template matStepLabel>Find</ng-template>
-                  <div fxFlex="100%">
+                  <div fxFlex="100%" style="margin-bottom: 10px;max-height: 430px;overflow-x: auto;">
                    
-                      <mat-table [dataSource]="dataSourceProposal" class="mat-elevation-z8" style="padding: 20px;">
+                      <mat-table [dataSource]="proposalArray" class="mat-elevation-z8" style="padding: 20px;">
                           <ng-container matColumnDef="proposalNo">
                             <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Proposal No </mat-header-cell>
                             <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.proposalNo}} </mat-cell>
@@ -41,13 +41,13 @@
 
 
                           <ng-container matColumnDef="customer">
-                            <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;"> Customer </mat-header-cell>
-                            <mat-cell *matCellDef="let element" style="flex: 0 0 20%;"> {{element.customer}} </mat-cell>
+                            <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Customer </mat-header-cell>
+                            <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.customer}} </mat-cell>
                           </ng-container>
 
                           <ng-container matColumnDef="proposedName">
-                            <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Proposed Name </mat-header-cell>
-                            <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.proposedName}} </mat-cell>
+                            <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;"> Proposed Name </mat-header-cell>
+                            <mat-cell *matCellDef="let element" style="flex: 0 0 20%;"> {{element.proposedName}} </mat-cell>
                           </ng-container>
 
                           <ng-container matColumnDef="agent">
@@ -71,7 +71,7 @@
                           </ng-container>
 
                           <mat-header-row *matHeaderRowDef="displayedColumnsProposal"></mat-header-row>
-                          <mat-row *matRowDef="let row; columns: displayedColumnsProposal;"></mat-row>
+                          <mat-row *matRowDef="let row; columns: displayedColumnsProposal;" (dblclick)="loadData(row.proposalNo,row.sequenceNo,row.policyBranch)"></mat-row>
                         </mat-table>
                   </div>
                 </mat-card-content>
@@ -86,28 +86,28 @@
             <mat-card>
               <mat-card-header>
                 <mat-card-title>
-                  <h3>ARPICO INVESTMENT PLAN (INVP)</h3>
+                  <h3>{{generalInfo.Product}} ({{generalInfo.ProductCode}})</h3>
                 </mat-card-title>
               </mat-card-header>
               <mat-card-content>
                 <ng-template matStepLabel>General Info</ng-template>
                 <div fxFlex="50%">
-                  <table style="width: 50%; padding: 10px;">
+                  <table style="width: 90%; padding: 10px;">
                     <tr>
                       <td style="width: 10%;">Proposal No</td>
                       <td style="width: 2%;"> :</td>
-                      <td style="width: 10%;">12345</td>
+                      <td style="width: 10%;">{{generalInfo.ProposalNo}}</td>
 
                     </tr>
                     <tr>
                       <td>Policy No</td>
                       <td> :</td>
-                      <td>148963</td>
+                      <td>{{generalInfo.PolicyNo}}</td>
                     </tr>
                     <tr>
                       <td>Branch Code</td>
                       <td> :</td>
-                      <td>ANC</td>
+                      <td>{{generalInfo.BranchCode}}</td>
                     </tr>
                     <tr>
                       <td>Commencement Date</td>
@@ -118,6 +118,18 @@
                       <td>Expiry Date</td>
                       <td> :</td>
                       <td>2018-01-01</td>
+                    </tr>
+                    <tr>
+                      <td>Quotation Sequene No</td>
+                      <td> :</td>
+                      <td>
+                        <mat-select placeholder="Quotation Sequence" aria-label="Quotation Sequence" [(ngModel)]="quotationDetailId" (change)="loadQuotationDetails()">
+                             <mat-option *ngFor="let quotation of quotationDetailIdList" [value]="quotation">
+                                {{ quotation }}
+                            </mat-option> 
+                            <!-- <mat-option value="1">MR</mat-option> -->
+                        </mat-select>
+                      </td>
                     </tr>
 
                   </table>
@@ -259,11 +271,21 @@
                               </mat-form-field>
 
                               <mat-form-field class="full-width" style="width: 70%;">
-                                <mat-select placeholder="Occupation" aria-label="Occupation" formControlName="occupation">
-                                  <mat-option value="NOT SPECIFIED">
+                                <!-- <mat-select placeholder="Occupation" aria-label="Occupation" formControlName="occupation">
+                                  <mat-option value="259">
                                     NOT SPECIFIED
                                   </mat-option>
-                                </mat-select>
+                                </mat-select> -->
+
+                                <input matInput placeholder="Occupation" aria-label="Occupation" [matAutocomplete]="occupation" formControlName="occupation">
+                                <mat-autocomplete #occupation="matAutocomplete">
+                                    <mat-option *ngFor="let occupation of filteredOccupations | async" [value]="occupation.ocupationName">
+                                        <span> {{ occupation.ocupationName }} </span> |
+                                        <small> {{ occupation.ocupationCode }} </small>
+                                    </mat-option>
+
+                                </mat-autocomplete>
+
                               </mat-form-field>
                             </td>
                           </tr>
@@ -272,11 +294,20 @@
                           <tr>
                             <td>
                               <mat-form-field class="full-width">
-                                <mat-select placeholder="Bank Code" aria-label="Bank Code" formControlName="bankCode">
+                                <!-- <mat-select placeholder="Bank Code" aria-label="Bank Code" formControlName="bankCode">
                                   <mat-option value="YES">
                                     Sampath Bank
                                   </mat-option>
-                                </mat-select>
+                                </mat-select> -->
+
+                                <input matInput placeholder="Bank Code" aria-label="Bank Code" [matAutocomplete]="bank" formControlName="bankCode">
+                                <mat-autocomplete #bank="matAutocomplete">
+                                    <mat-option *ngFor="let bank of filteredBanks | async" [value]="bank.BankCode">
+                                        <span> {{ bank.BankName }} </span> |
+                                        <small> {{ bank.BankCode }} </small>
+                                    </mat-option>
+
+                                </mat-autocomplete>
                               </mat-form-field>
                             </td>
                             <td>
@@ -351,8 +382,8 @@
                             </td>
                             <td>
                               <mat-radio-group class="full-width" formControlName="smoker">
-                                <mat-radio-button value="M" color="primary">Yes</mat-radio-button>
-                                <mat-radio-button value="F" color="primary">No</mat-radio-button>
+                                <mat-radio-button value="Yes" color="primary">Yes</mat-radio-button>
+                                <mat-radio-button value="No" color="primary">No</mat-radio-button>
                               </mat-radio-group>
                             </td>
 
@@ -470,11 +501,20 @@
                           <tr>
                             <td>
                               <mat-form-field class="full-width" style="width: 70%;">
-                                <mat-select placeholder="Occupation" aria-label="Occupation" formControlName="occupationSpouse">
+                                <!-- <mat-select placeholder="Occupation" aria-label="Occupation" formControlName="occupationSpouse">
                                   <mat-option value="NOT SPECIFIED">
                                     NOT SPECIFIED
                                   </mat-option>
-                                </mat-select>
+                                </mat-select> -->
+
+                                <input matInput placeholder="Occupation" aria-label="Occupation" [matAutocomplete]="occupationSpouse" formControlName="occupationSpouse">
+                                <mat-autocomplete #occupationSpouse="matAutocomplete">
+                                    <mat-option *ngFor="let occupation of filteredOccupations | async" [value]="occupation.ocupationName">
+                                        <span> {{ occupation.ocupationName }} </span> |
+                                        <small> {{ occupation.ocupationCode }} </small>
+                                    </mat-option>
+
+                                </mat-autocomplete>
                               </mat-form-field>
                             </td>
                           </tr>
@@ -545,7 +585,7 @@
                         <mat-step [stepControl]="firstFormGroup">
                           <ng-template matStepLabel>BENEFICIARY</ng-template>
 
-                          <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+                          <mat-table [dataSource]="childrenArray" class="mat-elevation-z8">
 
                             <ng-container matColumnDef="name">
                               <mat-header-cell *matHeaderCellDef style="flex: 0 0 30%;"> Name </mat-header-cell>
@@ -608,7 +648,7 @@
                         <mat-step [stepControl]="firstFormGroup">
                           <ng-template matStepLabel>BENEFITS</ng-template>
 
-                          <mat-table [dataSource]="dataSourceChildBenefits" class="mat-elevation-z8">
+                          <mat-table [dataSource]="childBenefitsArray" class="mat-elevation-z8">
 
                             <ng-container matColumnDef="ridercode">
                               <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Rider Code </mat-header-cell>
@@ -643,7 +683,7 @@
                           </mat-table>
                         </mat-step>
 
-                      </mat-horizontal-stepper>
+                      </mat-horizontal-stepper> 
                     </mat-card>
                   </div>
 
@@ -720,13 +760,152 @@
           </mat-step>
 
           <mat-step [stepControl]="fifthFormGroup">
-            <form>
-              <ng-template matStepLabel>Pre./Ben.Details</ng-template>
-              <div>
-                <button mat-raised-button matStepperPrevious matTooltip="Go to Children Details " color="warn">Back</button>
-                <button mat-raised-button matStepperNext matTooltip="Go to Nominee Details " color="primary" style="float: right;">Next</button>
-              </div>
-            </form>
+            <mat-card>
+              <!-- <mat-card-header>
+                    <mat-card-title>
+                      <h3>INSURED DETAILS</h3>
+                    </mat-card-title>
+                  </mat-card-header> -->
+              <mat-card-content>
+
+                <ng-template matStepLabel>Pre./Ben.Details</ng-template>
+
+                <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+
+                  <div fxFlex="100">
+                    <mat-card style="margin-bottom: 10px;height: 420px;max-height: 430px;overflow-x: auto;">
+
+                        <mat-horizontal-stepper [linear]="isLinear" #stepper>
+                            <mat-step [stepControl]="firstFormGroup">
+                              <ng-template matStepLabel>MAIN LIFE</ng-template>
+    
+                              <mat-table [dataSource]="childBenefitsArray" class="mat-elevation-z8">
+    
+                                  <ng-container matColumnDef="ridercode">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Rider Code </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.ridercode}} </mat-cell>
+                                  </ng-container>
+      
+      
+                                  <ng-container matColumnDef="ridername">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 40%;"> Name </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 40%;"> {{element.ridername}} </mat-cell>
+                                  </ng-container>
+      
+      
+                                  <ng-container matColumnDef="term">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 5%;"> Term </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 5%;"> {{element.term}} </mat-cell>
+                                  </ng-container>
+      
+      
+                                  <ng-container matColumnDef="sumassured">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 25%;"> Sum Assured</mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 25%;"> {{element.sumassured}} </mat-cell>
+                                  </ng-container>
+      
+                                  <ng-container matColumnDef="premium">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;"> Premium </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 20%;"> {{element.premium}} </mat-cell>
+                                  </ng-container>
+      
+                                  <mat-header-row *matHeaderRowDef="displayedColumnsMainLifeBenefits"></mat-header-row>
+                                  <mat-row *matRowDef="let row; columns: displayedColumnsMainLifeBenefits;"></mat-row>
+                                </mat-table>
+                            </mat-step>
+    
+                            <mat-step [stepControl]="firstFormGroup">
+                              <ng-template matStepLabel>SPOUSE</ng-template>
+    
+                              <mat-table [dataSource]="childBenefitsArray" class="mat-elevation-z8">
+    
+                                <ng-container matColumnDef="ridercode">
+                                  <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Rider Code </mat-header-cell>
+                                  <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.ridercode}} </mat-cell>
+                                </ng-container>
+    
+    
+                                <ng-container matColumnDef="ridername">
+                                  <mat-header-cell *matHeaderCellDef style="flex: 0 0 40%;"> Name </mat-header-cell>
+                                  <mat-cell *matCellDef="let element" style="flex: 0 0 40%;"> {{element.ridername}} </mat-cell>
+                                </ng-container>
+    
+    
+                                <ng-container matColumnDef="term">
+                                  <mat-header-cell *matHeaderCellDef style="flex: 0 0 5%;"> Term </mat-header-cell>
+                                  <mat-cell *matCellDef="let element" style="flex: 0 0 5%;"> {{element.term}} </mat-cell>
+                                </ng-container>
+    
+    
+                                <ng-container matColumnDef="sumassured">
+                                  <mat-header-cell *matHeaderCellDef style="flex: 0 0 25%;"> Sum Assured</mat-header-cell>
+                                  <mat-cell *matCellDef="let element" style="flex: 0 0 25%;"> {{element.sumassured}} </mat-cell>
+                                </ng-container>
+    
+                                <ng-container matColumnDef="premium">
+                                  <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;"> Premium </mat-header-cell>
+                                  <mat-cell *matCellDef="let element" style="flex: 0 0 20%;"> {{element.premium}} </mat-cell>
+                                </ng-container>
+    
+                                <mat-header-row *matHeaderRowDef="displayedColumnsMainLifeBenefits"></mat-header-row>
+                                <mat-row *matRowDef="let row; columns: displayedColumnsMainLifeBenefits;"></mat-row>
+                              </mat-table>
+                            </mat-step>
+
+                            <mat-step [stepControl]="firstFormGroup">
+                                <ng-template matStepLabel>SCHEDULE</ng-template>
+      
+                                <mat-table [dataSource]="childBenefitsArray" class="mat-elevation-z8">
+      
+                                  <ng-container matColumnDef="ridercode">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Rider Code </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.ridercode}} </mat-cell>
+                                  </ng-container>
+      
+      
+                                  <ng-container matColumnDef="ridername">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 40%;"> Name </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 40%;"> {{element.ridername}} </mat-cell>
+                                  </ng-container>
+      
+      
+                                  <ng-container matColumnDef="term">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 5%;"> Term </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 5%;"> {{element.term}} </mat-cell>
+                                  </ng-container>
+      
+      
+                                  <ng-container matColumnDef="sumassured">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 25%;"> Sum Assured</mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 25%;"> {{element.sumassured}} </mat-cell>
+                                  </ng-container>
+      
+                                  <ng-container matColumnDef="premium">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;"> Premium </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 20%;"> {{element.premium}} </mat-cell>
+                                  </ng-container>
+      
+                                  <mat-header-row *matHeaderRowDef="displayedColumnsChildBenefits"></mat-header-row>
+                                  <mat-row *matRowDef="let row; columns: displayedColumnsChildBenefits;"></mat-row>
+                                </mat-table>
+                              </mat-step>
+    
+                          </mat-horizontal-stepper> 
+
+                        <button mat-raised-button matTooltip="Edit Quotation Sequence " color="primary" style="margin-top: 10px;" (click)="editQuotation();">Edit Quotation</button>
+                      <!-- <iframe [src] = iframeURL style="width:100%;height: 100%;" frameborder="0"></iframe> -->
+                    </mat-card>
+                  </div>
+
+                </div>
+              </mat-card-content>
+
+              <mat-card-footer style="border-top: solid #C4C4C4 1px;  display: flex; 
+                              justify-content: space-between; vertical-align: bottom;">
+                <button mat-raised-button matStepperPrevious matTooltip="Go to Children Details " color="warn" style="margin-top: 10px;">Back</button>
+                <button mat-raised-button matStepperNext matTooltip="Go to Nominee Details " color="primary" style="float: right;margin-top: 10px;">Next</button>
+              </mat-card-footer>
+            </mat-card>
           </mat-step>
 
           <mat-step [stepControl]="sixthFormGroup">
