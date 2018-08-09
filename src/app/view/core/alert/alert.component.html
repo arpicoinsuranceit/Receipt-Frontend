@@ -1,0 +1,10 @@
+<h2 mat-dialog-title style="text-align: center;border-bottom:solid #C4C4C4 1px">{{modalTitle}}</h2>
+<mat-dialog-content align="center" style="min-width: 250px;">
+  <img *ngIf = "modelType == 'success'" src="assets/images/checkmark.gif" style="width: 70px; height: 70px;">
+  <img *ngIf = "modelType == 'error'" src="assets/images/giphy.gif" style="width: 70px; height: 70px;">  <br>
+  {{modelMessage}}
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+  <button *ngIf = "modelType == 'success'" mat-button mat-dialog-close style="background: #77B43F; color: white">Ok</button>
+  <button *ngIf = "modelType == 'error'" mat-button mat-dialog-close style="background: #AA0001; color: white">Ok</button>
+</mat-dialog-actions>

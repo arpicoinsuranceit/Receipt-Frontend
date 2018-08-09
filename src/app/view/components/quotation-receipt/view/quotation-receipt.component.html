@@ -16,10 +16,14 @@
 
                             <mat-option *ngFor="let quotation of filteredQuotations | async" [value]="quotation.QuoCombine">
                                 <span> {{ quotation.QuotationId }} </span> |
-                                <small> {{ quotation.quotationDetailId }} </small>
+                                <small> {{ quotation.SeqId }} </small>
                             </mat-option>
 
                         </mat-autocomplete>
+                        <mat-error *ngIf="QuoNo.hasError('incorrect')">
+                            Policy Number is
+                            <strong>INCORRECT</strong>
+                        </mat-error>
                     </mat-form-field>
                     <br>
 
@@ -50,6 +54,10 @@
                             </mat-option>
 
                         </mat-autocomplete>
+                        <mat-error *ngIf="BankCode.hasError('required')">
+                            Bank is
+                            <strong>REQUIRED</strong>
+                        </mat-error>
                     </mat-form-field>
                     <mat-form-field class="full-width">
                         <input matInput placeholder="Remark" aria-label="Remark" formControlName="remark">
@@ -69,6 +77,10 @@
                                 DIRECT DEPOSIT
                             </mat-option>
                         </mat-select>
+                        <mat-error *ngIf="PayMode.hasError('required')">
+                            Pay Mode is
+                            <strong>REQUIRED</strong>
+                        </mat-error>
                     </mat-form-field>
                     <mat-card *ngIf="PayMode.value == 'CQ'" style="margin-bottom: 10px;">
                         <mat-form-field class="half-width">
@@ -92,6 +104,10 @@
                         <input matInput placeholder="Amount" type="number" aria-label="Amount" class="right-align" formControlName="amount" (blur)="convertAmountToWord()">
                         <span matPrefix>Rs.</span>
                         <span matSuffix>.00</span>
+                        <mat-error *ngIf="Amount.hasError('required')">
+                            Amount is
+                            <strong>REQUIRED</strong>
+                        </mat-error>
                     </mat-form-field>
 
                     <mat-form-field class="full-width">
@@ -107,11 +123,14 @@
             justify-content: space-between;">
                 <button mat-raised-button color="warn" (click)="newReceipt()">CLEAR</button>
                 <button mat-raised-button color="primary" (click)="saveReceipt()">SAVE</button>
+                
             </mat-card-actions>
+            <div *ngIf= "success == 1" style="background: #458e45; height: 50px;display: flex; justify-content: center;"><p style="color: white">Success</p></div>
+            <div *ngIf= "error == 1" style="background: #F44336; height: 50px;display: flex; justify-content: center;"><p style="color: white">{{ errorMessage }}</p></div>
         </mat-card>
     </div>
     <div fxFlex="50%">
-        <mat-card class="main-card"  style="height: 425px;">
+        <mat-card class="main-card"  style="height: 225px;">
             <mat-card-header>
                 <mat-card-title>
                     <h3>Basic Quotation Details</h3>
@@ -158,7 +177,7 @@
 
                 </table>
 
-                <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+                <!-- <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
                     <div fxFlex="50%">
                         <mat-card class="small-card" style="background: #d6fcec">
                             <mat-card-header style="border-color: palegreen">
@@ -198,13 +217,13 @@
                             </mat-card-content>
                         </mat-card>
                     </div>
-                </div>
+                </div> -->
 
 
             </mat-card-content>
         </mat-card>
 
-        <mat-card class="main-card" style="height: 258px;">
+        <mat-card class="main-card" style="height: 458px;">
             <mat-table #table [dataSource]="data">
                 <ng-container matColumnDef="doccod">
                     <mat-header-cell *matHeaderCellDef> Type </mat-header-cell>

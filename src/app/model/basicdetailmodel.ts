@@ -1,6 +1,6 @@
 export class BasicDetail {
     constructor(private branchCode?: string, private agentCode?: string, private custTitle?: string, private customerName?: string,
-        private seqNo?: number, private id?: number, private productCode?: string, private productName?: string, private premium?: number,private payAmount?: number) { }
+        private seqNo?: number, private id?: number, private productCode?: string, private productName?: string, private premium?: number,private payAmount?: number, private polfee? :number) { }
 
     set BranchCode(branchCode: string) {
         this.branchCode = branchCode;
@@ -82,6 +82,14 @@ export class BasicDetail {
 
     get PayAmount() {
         return this.payAmount;
+    }
+
+    set Polfee(polfee: number) {
+        this.polfee = polfee;
+    }
+
+    get Polfee() {
+        return this.polfee;
     }
 
 }

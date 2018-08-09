@@ -1,3 +1,4 @@
+import { AlertComponent } from './../../core/alert/alert.component';
 import { QuotationReceiptService } from './../../../service/quotation-receipt-service/quotation-receipt.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatComponentsModule } from './../../../mat-components.module';
@@ -15,7 +16,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MatComponentsModule,
     FlexLayoutModule,
     FormsModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule
   ],
   declarations: [QuotationReceiptComponent],
   providers: [QuotationReceiptService]

@@ -1,3 +1,5 @@
+import { MatDialogConfig, MatDialog } from '@angular/material';
+import { AlertComponent } from './../../../core/alert/alert.component';
 import { SaveReceiptModel } from './../../../../model/savereceiptmodel';
 import { PolicyReceiptService } from './../../../../service/policy-receipt-service/policy-receipt.service';
 import { BasicDetail } from './../../../../model/basicdetailmodel';
@@ -81,7 +83,7 @@ export class PolicyReceiptComponent implements OnInit {
   }
 
 
-  constructor(private commonService: CommonService, private policyReceiptService: PolicyReceiptService) { }
+  constructor(private commonService: CommonService, private policyReceiptService: PolicyReceiptService, public dialog: MatDialog) { }
 
   ngOnInit() {
     this.getBanks();
@@ -215,7 +217,8 @@ export class PolicyReceiptComponent implements OnInit {
           this.basicDetail.PayAmount = response.json().amtPayble;
           this.lastReceipt = new Array();
 
-          this.Amount.setValue( this.basicDetail.PayAmount);
+          this.Amount.setValue( this.basicDetail.Premium
+          );
           this.convertAmountToWord();
 
           response.json().lastReceiptSummeryDtos.forEach(element => {
@@ -230,6 +233,13 @@ export class PolicyReceiptComponent implements OnInit {
               lastReceipt.Paymod = element.paymod;
               this.lastReceipt.push(lastReceipt);
           });
+          let lastReceiptSize : number = this.lastReceipt.length;
+
+          if(lastReceiptSize < 2){
+            for(let i = lastReceiptSize; i<2; i++){
+              this.lastReceipt.push(new LastReceipt("...", "...", "...", "...", "...", 0.00, "...", "..."));
+            }
+          }
 
         });
       } else {
@@ -263,7 +273,17 @@ export class PolicyReceiptComponent implements OnInit {
 
     this.policyReceiptService.savePolReceipt(saveReceiptModel).subscribe(response => {
       console.log(response.text());
-     
+      if (response.text() == "Success") {
+        this.newReceipt();
+        this.loadLastReceipts();
+
+        this.alert("Success", "Successfully Added Receipt", "success");
+
+      } else {
+        this.alert("Oopz...", "Error occour", "error");
+      }
+    }, async error => {
+      this.alert("Oopz...", "Error occour", "error");   
     });
   }
 
@@ -291,6 +311,26 @@ export class PolicyReceiptComponent implements OnInit {
     this.Chequeno.reset();
     this.Credittransferno.reset();
     this.Remark.reset();
+  }
+
+  alert(title: string, message: string, type: string) {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      id: 1,
+      title: title,
+      message: message,
+      type: type
+    };
+
+    const dialogRef = this.dialog.open(AlertComponent, dialogConfig);
+
+    // dialogRef.afterClosed().subscribe(result => {
+    //   alert("response: " + result)
+    // });
+
   }
 
 }

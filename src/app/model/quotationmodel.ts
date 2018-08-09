@@ -1,6 +1,6 @@
 export class QuotationModel{
 
-    constructor (private quotationId? : string, private quotationDetailId? : string, private quoCombine? : string){}
+    constructor (private quotationId? : string, private quotationDetailId? : string, private seqId? : string, private quoCombine? : string){}
 
     get QuotationId (){
         return this.quotationId;
@@ -21,5 +21,12 @@ export class QuotationModel{
     }
     set QuoCombine (quoCombine : string){
         this.quoCombine = quoCombine;
+    }
+
+    get SeqId (){
+        return this.seqId;
+    }
+    set SeqId (seqId : string){
+        this.seqId = seqId;
     }
 }
