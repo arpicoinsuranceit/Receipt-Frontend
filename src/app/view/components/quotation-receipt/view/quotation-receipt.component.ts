@@ -1,3 +1,5 @@
+import { async } from '@angular/core/testing';
+import { AlertComponent } from './../../../core/alert/alert.component';
 import { ActivatedRoute } from '@angular/router/';
 import { element } from 'protractor';
 import { LastReceipt } from './../../../../model/lastreceipt';
@@ -12,6 +14,9 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { map, startWith, sample } from 'rxjs/operators';
 import { QuotationModel } from '../../../../model/quotationmodel';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { delay } from 'q';
+import { MatDialogConfig, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-quotation-receipt',
@@ -21,6 +26,10 @@ import { QuotationModel } from '../../../../model/quotationmodel';
 
 
 export class QuotationReceiptComponent implements OnInit {
+
+  success: number = 0;
+  error: number = 0;
+  errorMessage: string = "";
 
   displayedColumns = ['doccod', 'docnum', 'credat', 'pprnum', 'polnum', 'topprm'];
 
@@ -38,17 +47,19 @@ export class QuotationReceiptComponent implements OnInit {
 
   pickAgent: boolean = false;
 
+  lastReceipt: LastReceipt[] = new Array();
+
   quoReceiptForm = new FormGroup({
     quoNo: new FormControl("", Validators.required),
     agentCode: new FormControl("", Validators.required),
-    paymode: new FormControl(""),
+    paymode: new FormControl("", Validators.required),
     bankCode: new FormControl("", Validators.required),
     chequedate: new FormControl(""),
     chequebank: new FormControl(""),
     credittransferno: new FormControl(""),
     chequeno: new FormControl(""),
     remark: new FormControl(""),
-    amount: new FormControl(""),
+    amount: new FormControl("", Validators.required),
     amountInWord: new FormControl(""),
     pickAgentCode: new FormControl("")
   });
@@ -94,13 +105,17 @@ export class QuotationReceiptComponent implements OnInit {
     return this.quoReceiptForm.get("credittransferno");
   }
 
-  constructor(private commonService: CommonService, private quotationReceiptService: QuotationReceiptService) {
+  constructor(private commonService: CommonService, private quotationReceiptService: QuotationReceiptService, public dialog: MatDialog) {
 
   }
 
   ngOnInit() {
     this.getBanks();
     this.loadLastReceipts();
+    this.AgentCode.disable();
+    for (var i = 0; i < 2; i++) {
+      this.lastReceipt.push(new LastReceipt("...", "...", "...", "...", "...", 0.00, "...", "..."))
+    }
   }
 
   convertAmountToWord() {
@@ -174,8 +189,8 @@ export class QuotationReceiptComponent implements OnInit {
           let quotationModel: QuotationModel = new QuotationModel();
           quotationModel.QuotationDetailId = quoTemp.quotationDetailId;
           quotationModel.QuotationId = quoTemp.quotationId;
-          quotationModel.QuoCombine = quoTemp.quotationId + " | " + quoTemp.quotationDetailId;
-
+          quotationModel.SeqId = quoTemp.seqId;
+          quotationModel.QuoCombine = quoTemp.quotationId + " | " + quoTemp.seqId;
           this.quotationList.push(quotationModel);
         }
 
@@ -197,7 +212,7 @@ export class QuotationReceiptComponent implements OnInit {
     } catch (error) {
       return null;
     }
-   
+
   }
 
   filterQuotation(id: string) {
@@ -215,28 +230,46 @@ export class QuotationReceiptComponent implements OnInit {
   getQuoDetails(e: any) {
     let quoNoTemp: string = this.QuoNo.value;
     if (!e.isOpen) {
-      let quoNo = quoNoTemp.split("|")[1];
+      
+      let quoNo = quoNoTemp.split("|")[0];
+      let seqNo = quoNoTemp.split("|")[1];
 
-      if (quoNo != null && quoNo != undefined && quoNo.length != 0) {
-        this.quotationReceiptService.getQuoDetails(quoNo.trim()).subscribe(response => {
-          console.log(response.json());
+      console.log(quoNo);
+      console.log(seqNo);
 
-          this.basicDetail.AgentCode = response.json().agentCode;
-          this.basicDetail.CustomerName = response.json().customerName;
-          this.basicDetail.CustTitle = response.json().custTitle;
-          this.basicDetail.SeqNo = response.json().quotationDetailId;
-          this.basicDetail.Id = response.json().quotationId;
-          this.basicDetail.ProductCode = response.json().productCode;
-          this.basicDetail.ProductName = response.json().productName;
-          this.basicDetail.BranchCode = response.json().branchCode;
+      if (quoNo != null && quoNo != undefined && quoNo.length != 0 &&
+        seqNo != null && seqNo != undefined && seqNo.length != 0 ) {
+        this.quotationReceiptService.getQuoDetails(quoNo.trim(), seqNo.trim()).subscribe(response => {
+          try{
+            this.basicDetail.AgentCode = response.json().agentCode;
+            this.basicDetail.CustomerName = response.json().customerName;
+            this.basicDetail.CustTitle = response.json().custTitle;
+            this.basicDetail.SeqNo = response.json().quotationDetailId;
+            this.basicDetail.Id = response.json().quotationId;
+            this.basicDetail.ProductCode = response.json().productCode;
+            this.basicDetail.ProductName = response.json().productName;
+            this.basicDetail.BranchCode = response.json().branchCode;
+            this.basicDetail.Polfee = response.json().polfeePremium;
+            this.basicDetail.Premium = response.json().premium;
+  
+            this.Amount.setValue(this.basicDetail.Polfee);
+            this.convertAmountToWord();
+  
+            this.AgentCode.setValue(this.basicDetail.AgentCode);
+  
+            let isAgentCode: number = parseInt(this.basicDetail.AgentCode);
+  
+            this.pickAgent = isNaN(isAgentCode) ? true : false;
+          } catch {
+            this.alert("Oopz...", "Error occour, Check Quotation Number and Sequence Number", "error");
+          }
+         
 
-          this.AgentCode.setValue(this.basicDetail.AgentCode);
-
-          let isAgentCode: number = parseInt(this.basicDetail.AgentCode);
-
-          this.pickAgent = isNaN(isAgentCode) ? true : false;
-
+        },async error => {
+          this.alert("Oopz...", "Error occour, Check Quotation Number and Sequence Number", "error");
         });
+      } else {
+        this.QuoNo.setErrors({ 'incorrect': true });
       }
     }
 
@@ -244,21 +277,20 @@ export class QuotationReceiptComponent implements OnInit {
 
   saveReceipt() {
 
-    if(!this.quoReceiptForm.valid){
-      if(!this.QuoNo.valid){
-        alert("Quotation Number not Valied");
+    if (!this.quoReceiptForm.valid) {
+      if (!this.QuoNo.valid) {
+        this.QuoNo.setErrors({ 'incorrect': true });
         return;
       }
-      if(!this.AgentCode.valid){
-        alert("Agent Code not Valied");
+      if (!this.AgentCode.valid) {
+        this.AgentCode.setErrors({ 'incorrect': true });
         return;
       }
-      if(!this.BankCode.valid){
-        alert("Bank Code not Valied");
+      if (!this.BankCode.valid) {
+        this.BankCode.setErrors({ 'incorrect': true });
         return;
       }
     }
-    
     let quoCombination: string = this.QuoNo.value;
     let qId: number;
     let qdId: number;
@@ -269,11 +301,11 @@ export class QuotationReceiptComponent implements OnInit {
         qId = parseInt(str[0]);
         qdId = parseInt(str[1]);
       } else {
-         alert("Enter Quotation Number Correctly");
-         return;
+        this.QuoNo.setErrors({ 'incorrect': true });
+        return;
       }
     } else {
-      alert("Enter Quotation Number Correctly");
+      this.QuoNo.setErrors({ 'incorrect': true });
       return;
     }
 
@@ -283,6 +315,7 @@ export class QuotationReceiptComponent implements OnInit {
     saveReceiptModel.PayAmountWord = this.AmountInWord.value;
     saveReceiptModel.PayMode = this.PayMode.value;
     saveReceiptModel.QuotationDetailId = qdId;
+    saveReceiptModel.SeqNo = qdId;
     saveReceiptModel.QuotationId = qId;
     saveReceiptModel.Remark = this.Remark.value;
     saveReceiptModel.ProductCode = this.basicDetail.ProductCode;
@@ -293,7 +326,7 @@ export class QuotationReceiptComponent implements OnInit {
     saveReceiptModel.Transferno = this.Credittransferno.value;
     saveReceiptModel.Token = sessionStorage.getItem("token");
 
-    
+
 
     if (isNaN(this.AgentCode.value)) {
       let agentCombination: string = this.PickAgentCode.value;
@@ -301,34 +334,41 @@ export class QuotationReceiptComponent implements OnInit {
       if (tempArr.length > 2) {
         let no = parseInt(tempArr[0].trim());
         if (isNaN(no)) {
-          alert("fake");
+          this.AgentCode.setErrors({ 'incorrect': true });
           return;
         } else {
           saveReceiptModel.AgentCode = tempArr[0];
         }
       } else {
-        alert("select agent code");
+        this.AgentCode.setErrors({ 'incorrect': true });
       }
     } else {
       saveReceiptModel.AgentCode = this.AgentCode.value;
     }
-
     console.log(saveReceiptModel);
 
-    this.quotationReceiptService.saveQupReceipt(saveReceiptModel).subscribe(response => {
+    this.quotationReceiptService.saveQupReceipt(saveReceiptModel).subscribe(async response => {
       console.log(response.text());
-      if (response.text() == "WORK") {
+      if (response.text() == "Work") {
         this.newReceipt();
         this.loadLastReceipts();
+
+        this.alert("Success", "Successfully Added Receipt", "success");
+
+      } else {
+        this.alert("Oopz...", "Error occour", "error");
       }
+    }, async error => {
+      this.alert("Oopz...", "Error occour", "error");
     });
   }
+
 
   newReceipt() {
     //this.quoReceiptForm.reset();
     this.basicDetail = new BasicDetail("", "", "", "", 0, 0);
-    
-   
+
+
     this.quotationList = new Array();
     this.filteredQuotations = this.QuoNo.valueChanges
       .pipe(
@@ -346,10 +386,10 @@ export class QuotationReceiptComponent implements OnInit {
       );
     this.PickAgentCode.reset();
     this.filteredBanks = this.BankCode.valueChanges
-        .pipe(
-          startWith(''),
-          map(bank => this.filterBanks(bank))
-        );
+      .pipe(
+        startWith(''),
+        map(bank => this.filterBanks(bank))
+      );
     this.BankCode.reset();
     this.Amount.reset();
     this.AmountInWord.reset();
@@ -367,20 +407,41 @@ export class QuotationReceiptComponent implements OnInit {
       console.log(response.json());
 
       response.json().forEach(element => {
-        let lastReceipt: LastReceipt = new LastReceipt();
-        lastReceipt.Credat = element.creadt;
-        lastReceipt.Doccod = element.doccod;
-        lastReceipt.Docnum = element.doctyp;
-        lastReceipt.Polnum = element.polnum;
-        lastReceipt.Pprnum = element.pprnum;
-        lastReceipt.Topprm = element.amount;
-
-        this.data.push(lastReceipt);
+        if (this.data.length < 8) {
+          let lastReceipt: LastReceipt = new LastReceipt();
+          lastReceipt.Credat = element.creadt;
+          lastReceipt.Doccod = element.doccod;
+          lastReceipt.Docnum = element.doctyp;
+          lastReceipt.Polnum = element.polnum;
+          lastReceipt.Pprnum = element.pprnum;
+          lastReceipt.Topprm = element.amount;
+          lastReceipt.Chqrel = element.chqrel;
+          lastReceipt.Paymod = element.paymod;
+          this.data.push(lastReceipt);
+        }
       });
 
     });
   }
 
+  alert(title: string, message: string, type: string) {
+    const dialogConfig = new MatDialogConfig();
 
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      id: 1,
+      title: title,
+      message: message,
+      type: type
+    };
+
+    const dialogRef = this.dialog.open(AlertComponent, dialogConfig);
+
+    // dialogRef.afterClosed().subscribe(result => {
+    //   alert("response: " + result)
+    // });
+
+  }
 }
 

@@ -1,5 +1,5 @@
 export class SaveReceiptModel {
-    constructor(private quotationId?: number, private quotationDetailId?: number, private propId?: number, private propSeq?: number,
+    constructor(private quotationId?: number, private seqNo?: number, private quotationDetailId?: number, private propId?: number, private propSeq?: number,
         private bankCode?: string, private remark?: string, private payMode?: string, private amount?: number, private payAmountWord?: string,
         private productCode?: string, private branchCode?: string, private agentCode?: string,
         private chequeno?: string, private chequedate?: string, private chequebank?: string, private transferno?: string,
@@ -12,6 +12,15 @@ export class SaveReceiptModel {
     get PolId() {
         return this.polId;
     }
+
+    set SeqNo(seqNo: number) {
+        this.seqNo = seqNo;
+    }
+
+    get SeqNo() {
+        return this.seqNo;
+    }
+
     set PolSeq(polSeq: number) {
         this.polSeq = polSeq;
     }

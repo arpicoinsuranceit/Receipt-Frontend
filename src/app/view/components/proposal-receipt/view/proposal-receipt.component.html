@@ -9,9 +9,9 @@
             </mat-card-header>
 
             <mat-card-content>
-                <form class="quotation-receipt-form" [formGroup]="quoReceiptForm">
+                <form class="proposal-receipt-form" [formGroup]="quoReceiptForm">
                     <mat-form-field>
-                        <input matInput placeholder="Proposal No. *" aria-label="Quotation No." [matAutocomplete]="propNumbers" formControlName="propNo"
+                        <input matInput placeholder="Proposal No. *" aria-label="Proposal No." [matAutocomplete]="propNumbers" formControlName="propNo"
                             (keyup)="LoadProposals($event)" (blur)="getProposalDetails(propNumbers)">
                         <mat-autocomplete #propNumbers="matAutocomplete">
 
@@ -19,8 +19,12 @@
                                 <span> {{ proposal.ProposalId }} </span> |
                                 <small> {{ proposal.ProposalDetailId }} </small>
                             </mat-option>
-
+                            
                         </mat-autocomplete>
+                        <mat-error *ngIf="PropNo.hasError('incorrect')">
+                            Propsal Number is
+                            <strong>INCORRECT</strong>
+                        </mat-error>
                     </mat-form-field>
                     <br>
                     <mat-form-field class="full-width">
@@ -30,8 +34,11 @@
                                 <span> {{ bank.BankName }} </span> |
                                 <small> {{ bank.BankCode }} </small>
                             </mat-option>
-
                         </mat-autocomplete>
+                        <mat-error *ngIf="BankCode.hasError('required')">
+                            Bank is
+                            <strong>REQUIRED</strong>
+                        </mat-error>
                     </mat-form-field>
                     <mat-form-field class="full-width">
                         <input matInput placeholder="Remark" aria-label="Remark" formControlName="remark">
@@ -51,6 +58,10 @@
                                 DIRECT DEPOSIT
                             </mat-option>
                         </mat-select>
+                        <mat-error *ngIf="PayMode.hasError('required')">
+                            Pay Mode is
+                            <strong>REQUIRED</strong>
+                        </mat-error>
                     </mat-form-field>
 
                     <mat-card *ngIf="PayMode.value == 'CQ'" style="margin-bottom: 10px;">
@@ -76,6 +87,10 @@
                         <input matInput placeholder="Amount" type="number" aria-label="Amount" class="right-align" formControlName="amount" (blur)="convertAmountToWord()">
                         <span matPrefix>Rs.</span>
                         <span matSuffix>.00</span>
+                        <mat-error *ngIf="Amount.hasError('required')">
+                            Amount is
+                            <strong>REQUIRED</strong>
+                        </mat-error>
                     </mat-form-field>
 
                     <mat-form-field class="full-width">

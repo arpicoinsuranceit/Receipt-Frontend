@@ -1,3 +1,5 @@
+import { AlertComponent } from './../../../core/alert/alert.component';
+import { MatDialogConfig ,MatDialog} from '@angular/material';
 import { SaveReceiptModel } from './../../../../model/savereceiptmodel';
 import { LastReceipt } from './../../../../model/lastreceipt';
 import { ProposalReceiptService } from './../../../../service/proposal-receipt-service/proposal-receipt.service';
@@ -32,19 +34,21 @@ export class ProposalReceiptComponent implements OnInit {
 
   data: LastReceipt[] = new Array();
 
+  lastReceipt: LastReceipt[] = new Array();
+
   pickAgent: boolean = false;
 
   quoReceiptForm = new FormGroup({
     propNo: new FormControl("", Validators.required),
     agentCode: new FormControl("", Validators.required),
     bankCode: new FormControl("", Validators.required),
-    paymode: new FormControl(""),
+    paymode: new FormControl("", Validators.required),
     chequedate: new FormControl(""),
     chequebank: new FormControl(""),
     credittransferno: new FormControl(""),
     chequeno: new FormControl(""),
     remark: new FormControl(""),
-    amount: new FormControl(""),
+    amount: new FormControl("", Validators.required),
     amountInWord: new FormControl(""),
     pickAgentCode: new FormControl("")
   });
@@ -83,11 +87,18 @@ export class ProposalReceiptComponent implements OnInit {
   get Credittransferno() {
     return this.quoReceiptForm.get("credittransferno");
   }
-  constructor(private commonService: CommonService, private proposalReceiptService: ProposalReceiptService) { }
+  constructor(private commonService: CommonService, private proposalReceiptService: ProposalReceiptService, public dialog: MatDialog) { 
+
+    for(var i = 0 ; i<2 ; i++){
+      this.lastReceipt.push(new LastReceipt("...", "...", "...", "...", "...", 0.00, "...", "..."));
+    }
+  }
 
   ngOnInit() {
     this.getBanks();
     this.loadLastReceipts();
+    this.AmountInWord.disable();
+   
   }
 
   convertAmountToWord() {
@@ -166,15 +177,18 @@ export class ProposalReceiptComponent implements OnInit {
       console.log(response.json());
 
       response.json().forEach(element => {
-        let lastReceipt: LastReceipt = new LastReceipt();
-        lastReceipt.Credat = element.creadt;
-        lastReceipt.Doccod = element.doccod;
-        lastReceipt.Docnum = element.doctyp;
-        lastReceipt.Polnum = element.polnum;
-        lastReceipt.Pprnum = element.pprnum;
-        lastReceipt.Topprm = element.amount;
-
-        this.data.push(lastReceipt);
+        if(this.data.length<4){
+          let lastReceipt: LastReceipt = new LastReceipt();
+          lastReceipt.Credat = element.creadt;
+          lastReceipt.Doccod = element.doccod;
+          lastReceipt.Docnum = element.doctyp;
+          lastReceipt.Polnum = element.polnum;
+          lastReceipt.Pprnum = element.pprnum;
+          lastReceipt.Topprm = element.amount;
+          lastReceipt.Chqrel = element.chqrel;
+          lastReceipt.Paymod = element.paymod;
+          this.data.push(lastReceipt);
+        }
       });
 
     });
@@ -196,9 +210,36 @@ export class ProposalReceiptComponent implements OnInit {
           this.basicDetail.ProductName = response.json().product;
           this.basicDetail.Id = response.json().proposalNo;
           this.basicDetail.SeqNo = response.json().seqNo;
+          this.basicDetail.Premium = response.json().premium;
+          this.basicDetail.PayAmount = response.json().amtPayble;
+          this.lastReceipt = new Array();
+
+          this.Amount.setValue( this.basicDetail.PayAmount);
+          this.convertAmountToWord();
+
+          response.json().lastReceiptSummeryDtos.forEach(element => {
+              let lastReceipt: LastReceipt = new LastReceipt();
+              lastReceipt.Credat = element.creadt;
+              lastReceipt.Doccod = element.doccod;
+              lastReceipt.Docnum = element.doctyp;
+              lastReceipt.Polnum = element.polnum;
+              lastReceipt.Pprnum = element.pprnum;
+              lastReceipt.Topprm = element.amount;
+              lastReceipt.Chqrel = element.chqrel;
+              lastReceipt.Paymod = element.paymod;
+              this.lastReceipt.push(lastReceipt);
+          });
+
+          let lastReceiptSize : number = this.lastReceipt.length;
+
+          if(lastReceiptSize < 2){
+            for(let i = lastReceiptSize; i<2; i++){
+              this.lastReceipt.push(new LastReceipt("...", "...", "...", "...", "...", 0.00, "...", "..."));
+            }
+          }
         });
       }else{
-        alert("fake");
+        this.PropNo.setErrors({'incorrect': true});
       }
     }
 
@@ -229,7 +270,17 @@ export class ProposalReceiptComponent implements OnInit {
 
     this.proposalReceiptService.savePropReceipt(saveReceiptModel).subscribe(response => {
       console.log(response.text());
-     
+      if (response.text() == "Success") {
+        this.newReceipt();
+        this.loadLastReceipts();
+
+        this.alert("Success", "Successfully Added Receipt", "success");
+
+      } else {
+        this.alert("Oopz...", "Error occour", "error");
+      }
+    }, async error => {
+      this.alert("Oopz...", "Error occour", "error");   
     });
   }
 
@@ -258,6 +309,26 @@ export class ProposalReceiptComponent implements OnInit {
     this.Chequeno.reset();
     this.Credittransferno.reset();
     this.Remark.reset();
+  }
+
+  alert(title: string, message: string, type: string) {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      id: 1,
+      title: title,
+      message: message,
+      type: type
+    };
+
+    const dialogRef = this.dialog.open(AlertComponent, dialogConfig);
+
+    // dialogRef.afterClosed().subscribe(result => {
+    //   alert("response: " + result)
+    // });
+
   }
 }
 

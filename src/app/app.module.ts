@@ -13,10 +13,11 @@ import { FormControl } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { LoginComponent } from './view/core/login/login.component';
 import { RouterModule, Routes } from '@angular/router';
+import { AlertComponent } from './view/core/alert/alert.component';
 
 @NgModule({
   declarations: [
-    AppComponent, LoginComponent
+    AppComponent, LoginComponent, AlertComponent
   ],
   imports: [
     BrowserModule,
@@ -29,7 +30,8 @@ import { RouterModule, Routes } from '@angular/router';
     RouterModule
   ],
   providers: [AuthService, AuthGuard, CommonService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [AlertComponent]
 })
 export class AppModule { 
 }

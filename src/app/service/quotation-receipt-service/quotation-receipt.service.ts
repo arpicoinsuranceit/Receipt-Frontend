@@ -13,8 +13,8 @@ export class QuotationReceiptService {
     return this.http.get("http://localhost:8084/quotationsearch/" + id);
   }
 
-  getQuoDetails(quoId): any {
-    return this.http.get("http://localhost:8084/getquotationdetail/"+quoId);
+  getQuoDetails(quoId, seqNo): any {
+    return this.http.get("http://localhost:8084/getquotationdetail/"+quoId+"/"+seqNo);
   }
 
   saveQupReceipt(data : SaveReceiptModel): any {
