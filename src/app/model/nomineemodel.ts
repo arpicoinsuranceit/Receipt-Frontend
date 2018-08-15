@@ -2,7 +2,7 @@ export class NomineeModel{
     
     constructor (private type? : string, private name? : string, private relationship? : string,private dob? : string , private share? : string,
         private nic? : string,private guardianName? : string,private guardianNic? : string,private guardianDOB? : string
-        ,private guardianRelation? : string){
+        ,private guardianRelation? : string,private nomineeDateofBirth?: string){
 
         }
 
@@ -84,5 +84,13 @@ export class NomineeModel{
 
     set GuardianRelation (guardianRelation : string) {
         this.guardianRelation = guardianRelation;
+    }
+
+    get NomineeDateofBirth(){
+        return this.nomineeDateofBirth;
+    }
+
+    set NomineeDateofBirth(nomineeDateofBirth:string){
+        this.nomineeDateofBirth=nomineeDateofBirth;
     }
 }

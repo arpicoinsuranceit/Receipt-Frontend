@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { MatComponentsModule } from '../../../mat-components.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UppercaseDirective } from '../../../direvtives/uppercase.directive';
 
 @NgModule({
   imports: [
@@ -17,7 +18,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FormsModule,
     ReactiveFormsModule,
   ],
-  declarations: [BranchUnderwriteComponent],
+  declarations: [BranchUnderwriteComponent,UppercaseDirective],
   providers : [BranchUnderwriteService,QuotationReceiptService]
 
 })

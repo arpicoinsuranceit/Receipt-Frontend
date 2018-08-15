@@ -1,3 +1,4 @@
+import { SaveUnderwriteModel } from './../../model/saveunderwritemodel';
 import { Injectable } from '@angular/core';
 import { Http } from '../../../../node_modules/@angular/http';
 
@@ -23,6 +24,42 @@ export class BranchUnderwriteService {
     console.log("-------------------");
     console.log(qdId + "'" + qId);
     return this.http.get("http://localhost:8088/getQuotationDetails/"+qdId+"/"+qId);
+  }
+
+  loadQuotationIdFormSeqNo(seqNo : number,qId : number): any {
+    console.log("-------------------");
+    console.log(seqNo + "'" + qId);
+    return this.http.get("http://localhost:8088/getQuotationDetailFromSeqNo/"+seqNo+"/"+qId);
+  }
+
+  loadNominee(qdId : number): any {
+    console.log("-------------------");
+    console.log(qdId);
+    return this.http.get("http://localhost:8088/getNominee/"+qdId);
+  }
+
+  loadShedule(qdId : number): any {
+    console.log("-------------------");
+    console.log(qdId );
+    return this.http.get("http://localhost:8088/getShedule/"+qdId);
+  }
+
+  loadPensionShedule(qdId : number): any {
+    console.log("-------------------");
+    console.log(qdId );
+    return this.http.get("http://localhost:8088/getPensionShedule/"+qdId);
+  }
+
+  loadSurrenderVals(qdId : number): any {
+    console.log("-------------------");
+    console.log(qdId );
+    return this.http.get("http://localhost:8088/getSurrenderVals/"+qdId);
+  }
+
+  saveUnderwrite(saveUnderwriteModel : SaveUnderwriteModel){
+    console.log(saveUnderwriteModel);
+
+    return this.http.post("http://localhost:8088/saveUnderwrite/",saveUnderwriteModel);
   }
 
 }
