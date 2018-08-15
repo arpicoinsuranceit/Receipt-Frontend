@@ -11,17 +11,18 @@
       <mat-card-content>
         <mat-horizontal-stepper [linear]="isLinear" #stepper>
           <mat-step [stepControl]="firstFormGroup">
-              <mat-card style="margin-bottom: 10px;height: 420px;max-height: 430px;overflow-x: auto;">
+              <form [formGroup]="firstFormGroup">
+              <mat-card>
                 <!-- <mat-card-header>
                   <mat-card-title>
                     <h3>ARPICO INVESTMENT PLAN (INVP)</h3>
                   </mat-card-title>
                 </mat-card-header> -->
-                <mat-card-content>
+                <mat-card-content  style="max-height: 380px;overflow-x: auto;">
                   <ng-template matStepLabel>Find</ng-template>
-                  <div fxFlex="100%">
+                  <div fxFlex="100%" style="margin-bottom: 10px;max-height: 430px;overflow-x: auto;">
                    
-                      <mat-table [dataSource]="dataSourceProposal" class="mat-elevation-z8" style="padding: 20px;">
+                      <mat-table [dataSource]="proposalArray" class="mat-elevation-z8" style="padding: 20px;">
                           <ng-container matColumnDef="proposalNo">
                             <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Proposal No </mat-header-cell>
                             <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.proposalNo}} </mat-cell>
@@ -41,13 +42,13 @@
 
 
                           <ng-container matColumnDef="customer">
-                            <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;"> Customer </mat-header-cell>
-                            <mat-cell *matCellDef="let element" style="flex: 0 0 20%;"> {{element.customer}} </mat-cell>
+                            <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Customer </mat-header-cell>
+                            <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.customer}} </mat-cell>
                           </ng-container>
 
                           <ng-container matColumnDef="proposedName">
-                            <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Proposed Name </mat-header-cell>
-                            <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.proposedName}} </mat-cell>
+                            <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;"> Proposed Name </mat-header-cell>
+                            <mat-cell *matCellDef="let element" style="flex: 0 0 20%;"> {{element.proposedName}} </mat-cell>
                           </ng-container>
 
                           <ng-container matColumnDef="agent">
@@ -71,7 +72,7 @@
                           </ng-container>
 
                           <mat-header-row *matHeaderRowDef="displayedColumnsProposal"></mat-header-row>
-                          <mat-row *matRowDef="let row; columns: displayedColumnsProposal;"></mat-row>
+                          <mat-row *matRowDef="let row; columns: displayedColumnsProposal;" (dblclick)="loadData(row.proposalNo,row.sequenceNo,row.policyBranch,row.agent)"></mat-row>
                         </mat-table>
                   </div>
                 </mat-card-content>
@@ -80,34 +81,35 @@
                   <button mat-raised-button matStepperNext matTooltip="Go to General Info " color="primary" style="float: right;margin-top: 10px;">Next</button>
                 </mat-card-footer>
               </mat-card>
-  
+              </form>
             </mat-step>
-          <mat-step [stepControl]="firstFormGroup">
+          <mat-step [stepControl]="branchUWGeneralInfo">
+              <form [formGroup]="branchUWGeneralInfo">
             <mat-card>
               <mat-card-header>
                 <mat-card-title>
-                  <h3>ARPICO INVESTMENT PLAN (INVP)</h3>
+                  <h3>{{generalInfo.Product}} {{generalInfo.ProductCode}}</h3>
                 </mat-card-title>
               </mat-card-header>
               <mat-card-content>
                 <ng-template matStepLabel>General Info</ng-template>
                 <div fxFlex="50%">
-                  <table style="width: 50%; padding: 10px;">
+                  <table style="width: 90%; padding: 10px;">
                     <tr>
                       <td style="width: 10%;">Proposal No</td>
                       <td style="width: 2%;"> :</td>
-                      <td style="width: 10%;">12345</td>
+                      <td style="width: 10%;">{{generalInfo.ProposalNo}}</td>
 
                     </tr>
                     <tr>
                       <td>Policy No</td>
                       <td> :</td>
-                      <td>148963</td>
+                      <td>{{generalInfo.PolicyNo}}</td>
                     </tr>
                     <tr>
                       <td>Branch Code</td>
                       <td> :</td>
-                      <td>ANC</td>
+                      <td>{{generalInfo.BranchCode}}</td>
                     </tr>
                     <tr>
                       <td>Commencement Date</td>
@@ -119,7 +121,40 @@
                       <td> :</td>
                       <td>2018-01-01</td>
                     </tr>
+                    <!-- <tr>
+                      <td>Agent Code</td>
+                      <td>:</td>
+                      <td>
+                        <mat-form-field class="full-width" style="width: 70%;">
+                          <input matInput placeholder="Agent Code" aria-label="Agent Code" [matAutocomplete]="agent" formControlName="agent">
+                          <mat-autocomplete #agent="matAutocomplete">
+                              <mat-option *ngFor="let occupation of filteredOccupations | async" [value]="occupation.ocupationName">
+                                  <span> {{ occupation.ocupationName }} </span> |
+                                  <small> {{ occupation.ocupationCode }} </small>
+                              </mat-option>
 
+                          </mat-autocomplete>     
+
+                        </mat-form-field>
+                      </td>
+                    </tr> -->
+                    <tr>
+                      <td>Quotation Sequence No</td>
+                      <td> :</td>
+                      <td>
+                        <mat-select placeholder="Quotation Sequence" aria-label="Quotation Sequence" formControlName="quotationDetailId" [(ngModel)]="sequenceNo" (change)="loadQuotationDetails()">
+                             <mat-option *ngFor="let quotation of quotationSeqIdList" [value]="quotation">
+                                {{ quotation }}
+                            </mat-option> 
+                            <!-- <mat-option value="1">MR</mat-option> -->
+                        </mat-select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td><button mat-raised-button matTooltip="Load All Sequence " color="primary" style="margin-top: 10px;" (click)="loadSequnceId();">Refresh Sequence</button></td>
+                    </tr>
                   </table>
                 </div>
               </mat-card-content>
@@ -130,9 +165,9 @@
                 
               </mat-card-footer>
             </mat-card>
-
+            </form>
           </mat-step>
-          <mat-step [stepControl]="secondFormGroup">
+          <mat-step [stepControl]="branchUWInsureForm">
             <mat-card>
               <!-- <mat-card-header>
                 <mat-card-title>
@@ -149,7 +184,7 @@
                       <mat-card style="margin-bottom: 10px;height: 420px;max-height: 430px;overflow-x: auto;">
 
                         <mat-form-field style="width: 60px;">
-                          <mat-select placeholder="Title" aria-label="Title" formControlName="title">
+                          <mat-select placeholder="Title" aria-label="Title" formControlName="title" [disabled]="true">
                             <mat-option value="MR">MR</mat-option>
                             <mat-option value="MRS">MRS</mat-option>
                             <mat-option value="MS">MS</mat-option>
@@ -165,12 +200,12 @@
                           <tr>
                             <td>
                               <mat-form-field class="full-width">
-                                <input matInput placeholder="Full Name" aria-label="Full Name" formControlName="fullNameInsured">
+                                <input matInput placeholder="Full Name" aria-label="Full Name" formControlName="fullNameInsured" [(uppercase)]='_Name' [(ngModel)]="_Name">
                               </mat-form-field>
                             </td>
                             <td>
                               <mat-form-field class="full-width">
-                                <input matInput placeholder="Name With Initials" aria-label="Name With Initials" formControlName="initialNameInsured">
+                                <input matInput placeholder="Name With Initials" aria-label="Name With Initials" formControlName="initialNameInsured" [(uppercase)]='_initName' [(ngModel)]="_initName">
                               </mat-form-field>
                             </td>
                           </tr>
@@ -179,12 +214,12 @@
                           <tr>
                             <td>
                               <mat-form-field class="full-width">
-                                <input matInput placeholder="Address1" aria-label="Address1" formControlName="address1">
+                                <input matInput placeholder="Address1" aria-label="Address1" formControlName="address1" [(uppercase)]='_Address1' [(ngModel)]="_Address1">
                               </mat-form-field>
                             </td>
                             <td>
                               <mat-form-field class="full-width">
-                                <input matInput placeholder="Address2" aria-label="Address2" formControlName="address2">
+                                <input matInput placeholder="Address2" aria-label="Address2" formControlName="address2" [(uppercase)]='_Address2' [(ngModel)]="_Address2">
                               </mat-form-field>
                             </td>
                           </tr>
@@ -193,7 +228,7 @@
                           <tr>
                             <td>
                               <mat-form-field class="half-width">
-                                <input matInput placeholder="Address3" aria-label="Address3" formControlName="address3">
+                                <input matInput placeholder="Address3" aria-label="Address3" formControlName="address3" [(uppercase)]='_Address3' [(ngModel)]="_Address3">
                               </mat-form-field>
                             </td>
                           </tr>
@@ -202,18 +237,18 @@
                           <tr>
                             <td>
                               <mat-form-field class="full-width">
-                                <input matInput placeholder="N.I.C. No" aria-label="N.I.C. No" formControlName="nicInsured">
+                                <input matInput placeholder="N.I.C. No" aria-label="N.I.C. No" formControlName="nicInsured" [readonly]="true" [(uppercase)]='_Nic' [(ngModel)]="_Nic">
                               </mat-form-field>
                             </td>
                             <td>
                               <mat-form-field class="full-width">
-                                <input matInput placeholder="Date Of Birth" aria-label="Date Of Birth" formControlName="dateOfBirth">
+                                <input matInput placeholder="Date Of Birth" aria-label="Date Of Birth" formControlName="dateOfBirth" [readonly]="true">
                               </mat-form-field>
                             </td>
 
                             <td>
                               <mat-form-field class="full-width" style="width: 40px;">
-                                <input matInput placeholder="Age Next Birthday" aria-label="Age Next Birthday" formControlName="ageNextBirthday">
+                                <input matInput placeholder="Age Next Birthday" aria-label="Age Next Birthday" formControlName="ageNextBirthday" [readonly]="true">
                               </mat-form-field>
                             </td>
                           </tr>
@@ -259,11 +294,21 @@
                               </mat-form-field>
 
                               <mat-form-field class="full-width" style="width: 70%;">
-                                <mat-select placeholder="Occupation" aria-label="Occupation" formControlName="occupation">
-                                  <mat-option value="NOT SPECIFIED">
+                                <!-- <mat-select placeholder="Occupation" aria-label="Occupation" formControlName="occupation">
+                                  <mat-option value="259">
                                     NOT SPECIFIED
                                   </mat-option>
-                                </mat-select>
+                                </mat-select> -->
+
+                                <input matInput placeholder="Occupation" aria-label="Occupation" [matAutocomplete]="occupation" formControlName="occupation" [readonly]="true">
+                                <mat-autocomplete #occupation="matAutocomplete">
+                                    <mat-option *ngFor="let occupation of filteredOccupations | async" [value]="occupation.ocupationName">
+                                        <span> {{ occupation.ocupationName }} </span> |
+                                        <small> {{ occupation.ocupationCode }} </small>
+                                    </mat-option>
+
+                                </mat-autocomplete>
+
                               </mat-form-field>
                             </td>
                           </tr>
@@ -272,11 +317,20 @@
                           <tr>
                             <td>
                               <mat-form-field class="full-width">
-                                <mat-select placeholder="Bank Code" aria-label="Bank Code" formControlName="bankCode">
+                                <!-- <mat-select placeholder="Bank Code" aria-label="Bank Code" formControlName="bankCode">
                                   <mat-option value="YES">
                                     Sampath Bank
                                   </mat-option>
-                                </mat-select>
+                                </mat-select> -->
+
+                                <input matInput placeholder="Bank Code" aria-label="Bank Code" [matAutocomplete]="bank" formControlName="bankCode">
+                                <mat-autocomplete #bank="matAutocomplete">
+                                    <mat-option *ngFor="let bank of filteredBanks | async" [value]="bank.BankCode">
+                                        <span> {{ bank.BankName }} </span> |
+                                        <small> {{ bank.BankCode }} </small>
+                                    </mat-option>
+
+                                </mat-autocomplete>
                               </mat-form-field>
                             </td>
                             <td>
@@ -312,7 +366,7 @@
                             </td>
                             <td>
                               <mat-radio-group class="full-width" formControlName="ageAdmitted">
-                                <mat-radio-button value="YES" color="primary">YES</mat-radio-button>
+                                <mat-radio-button value="YES" color="primary" checked>YES</mat-radio-button>
                                 <mat-radio-button value="NO" color="primary">NO</mat-radio-button>
                               </mat-radio-group>
                             </td>
@@ -324,7 +378,7 @@
                               <label>Gender </label>
                             </td>
                             <td>
-                              <mat-radio-group class="full-width" formControlName="gender">
+                              <mat-radio-group class="full-width" formControlName="gender" [disabled]="true">
 
                                 <mat-radio-button value="M" color="primary">Male</mat-radio-button>
                                 <mat-radio-button value="F" color="primary">Female</mat-radio-button>
@@ -351,8 +405,8 @@
                             </td>
                             <td>
                               <mat-radio-group class="full-width" formControlName="smoker">
-                                <mat-radio-button value="M" color="primary">Yes</mat-radio-button>
-                                <mat-radio-button value="F" color="primary">No</mat-radio-button>
+                                <mat-radio-button value="Yes" color="primary" checked>Yes</mat-radio-button>
+                                <mat-radio-button value="No" color="primary">No</mat-radio-button>
                               </mat-radio-group>
                             </td>
 
@@ -364,7 +418,7 @@
                             </td>
                             <td>
                               <mat-radio-group class="full-width" formControlName="preferredLanguage">
-                                <mat-radio-button value="M" color="primary">Sinhala</mat-radio-button>
+                                <mat-radio-button value="M" color="primary" checked>Sinhala</mat-radio-button>
                                 <mat-radio-button value="F" color="primary">English</mat-radio-button>
                               </mat-radio-group>
                             </td>
@@ -386,7 +440,7 @@
 
           <!-- Spouse Details tab-->
 
-          <mat-step [stepControl]="thirdFormGroup">
+          <mat-step [stepControl]="branchUWSpouseForm">
             <mat-card>
               <!-- <mat-card-header>
                     <mat-card-title>
@@ -403,7 +457,7 @@
                       <mat-card style="margin-bottom: 10px;height: 420px;max-height: 430px;overflow-x: auto;">
 
                         <mat-form-field style="width: 60px;">
-                          <mat-select placeholder="Title" aria-label="Title" formControlName="titleSpouse">
+                          <mat-select placeholder="Title" aria-label="Title" formControlName="titleSpouse" [disabled]="true">
                             <mat-option value="MR">MR</mat-option>
                             <mat-option value="MRS">MRS</mat-option>
                             <mat-option value="MS">MS</mat-option>
@@ -419,12 +473,12 @@
                           <tr>
                             <td>
                               <mat-form-field class="full-width">
-                                <input matInput placeholder="Full Name" aria-label="Full Name" formControlName="fullNameSpouse">
+                                <input matInput placeholder="Full Name" aria-label="Full Name" formControlName="fullNameSpouse" [(uppercase)]='_sName' [(ngModel)]="_sName">
                               </mat-form-field>
                             </td>
                             <td>
                               <mat-form-field class="full-width">
-                                <input matInput placeholder="Name With Initials" aria-label="Name With Initials" formControlName="initialNameSpouse">
+                                <input matInput placeholder="Name With Initials" aria-label="Name With Initials" formControlName="initialNameSpouse" [(uppercase)]='_sInitName' [(ngModel)]="_sInitName">
                               </mat-form-field>
                             </td>
                           </tr>
@@ -434,18 +488,18 @@
                           <tr>
                             <td>
                               <mat-form-field class="full-width">
-                                <input matInput placeholder="N.I.C. No" aria-label="N.I.C. No" formControlName="nicSpouse">
+                                <input matInput placeholder="N.I.C. No" aria-label="N.I.C. No" formControlName="nicSpouse" [readonly]="true" [(uppercase)]='_sNic' [(ngModel)]="_sNic">
                               </mat-form-field>
                             </td>
                             <td>
                               <mat-form-field class="full-width">
-                                <input matInput placeholder="Date Of Birth" aria-label="Date Of Birth" formControlName="dateOfBirthSpouse">
+                                <input matInput placeholder="Date Of Birth" aria-label="Date Of Birth" formControlName="dateOfBirthSpouse" [readonly]="true">
                               </mat-form-field>
                             </td>
 
                             <td>
                               <mat-form-field class="full-width" style="width: 40px;">
-                                <input matInput placeholder="Age Next Birthday" aria-label="Age Next Birthday" formControlName="ageNextBirthdaySpouse">
+                                <input matInput placeholder="Age Next Birthday" aria-label="Age Next Birthday" formControlName="ageNextBirthdaySpouse" [readonly]="true">
                               </mat-form-field>
                             </td>
                           </tr>
@@ -470,11 +524,20 @@
                           <tr>
                             <td>
                               <mat-form-field class="full-width" style="width: 70%;">
-                                <mat-select placeholder="Occupation" aria-label="Occupation" formControlName="occupationSpouse">
+                                <!-- <mat-select placeholder="Occupation" aria-label="Occupation" formControlName="occupationSpouse">
                                   <mat-option value="NOT SPECIFIED">
                                     NOT SPECIFIED
                                   </mat-option>
-                                </mat-select>
+                                </mat-select> -->
+
+                                <input matInput placeholder="Occupation" aria-label="Occupation" [matAutocomplete]="occupationSpouse" formControlName="occupationSpouse" [readonly]="true">
+                                <mat-autocomplete #occupationSpouse="matAutocomplete">
+                                    <mat-option *ngFor="let occupation of filteredOccupations | async" [value]="occupation.ocupationName">
+                                        <span> {{ occupation.ocupationName }} </span> |
+                                        <small> {{ occupation.ocupationCode }} </small>
+                                    </mat-option>
+
+                                </mat-autocomplete>
                               </mat-form-field>
                             </td>
                           </tr>
@@ -487,7 +550,7 @@
                             </td>
                             <td>
                               <mat-radio-group class="full-width" formControlName="ageAdmittedSpouse">
-                                <mat-radio-button value="YES" color="primary">YES</mat-radio-button>
+                                <mat-radio-button value="YES" color="primary" checked>YES</mat-radio-button>
                                 <mat-radio-button value="NO" color="primary">NO</mat-radio-button>
                               </mat-radio-group>
                             </td>
@@ -499,7 +562,7 @@
                               <label>Gender </label>
                             </td>
                             <td>
-                              <mat-radio-group class="full-width" formControlName="genderSpouse">
+                              <mat-radio-group class="full-width" formControlName="genderSpouse" [disabled]="true">
 
                                 <mat-radio-button value="M" color="primary">Male</mat-radio-button>
                                 <mat-radio-button value="F" color="primary">Female</mat-radio-button>
@@ -526,7 +589,7 @@
 
           <!-- Child Details Tab-->
 
-          <mat-step [stepControl]="forthFormGroup">
+          <mat-step [stepControl]="branchUWChildForm">
             <mat-card>
               <!-- <mat-card-header>
                     <mat-card-title>
@@ -545,11 +608,11 @@
                         <mat-step [stepControl]="firstFormGroup">
                           <ng-template matStepLabel>BENEFICIARY</ng-template>
 
-                          <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+                          <mat-table [dataSource]="childrenArray" class="mat-elevation-z8">
 
                             <ng-container matColumnDef="name">
                               <mat-header-cell *matHeaderCellDef style="flex: 0 0 30%;"> Name </mat-header-cell>
-                              <mat-cell *matCellDef="let element" style="flex: 0 0 30%;"> {{element.name}} </mat-cell>
+                              <mat-cell *matCellDef="let element" style="flex: 0 0 30%;"> {{element._cName}} </mat-cell>
                             </ng-container>
 
 
@@ -561,18 +624,18 @@
 
                             <ng-container matColumnDef="dob">
                               <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Date Of Birth </mat-header-cell>
-                              <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.dob}} </mat-cell>
+                              <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element._cDob}} </mat-cell>
                             </ng-container>
 
 
                             <ng-container matColumnDef="age">
                               <mat-header-cell *matHeaderCellDef style="flex: 0 0 7%;"> Age </mat-header-cell>
-                              <mat-cell *matCellDef="let element" style="flex: 0 0 7%;"> {{element.age}} </mat-cell>
+                              <mat-cell *matCellDef="let element" style="flex: 0 0 7%;"> {{element._cAge}} </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="nic">
                               <mat-header-cell *matHeaderCellDef style="flex: 0 0 7%;"> Nic </mat-header-cell>
-                              <mat-cell *matCellDef="let element" style="flex: 0 0 7%;"> {{element.nic}} </mat-cell>
+                              <mat-cell *matCellDef="let element" style="flex: 0 0 7%;"> {{element._cNic}} </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="gender">
@@ -601,14 +664,14 @@
                             </ng-container>
 
                             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                            <mat-row *matRowDef="let row; columns: displayedColumns;" (dblclick)="loadChildData(row.relationship,row._cName,row._cNic,row._cDob,row._cAge,row)"></mat-row>
                           </mat-table>
                         </mat-step>
 
                         <mat-step [stepControl]="firstFormGroup">
                           <ng-template matStepLabel>BENEFITS</ng-template>
 
-                          <mat-table [dataSource]="dataSourceChildBenefits" class="mat-elevation-z8">
+                          <mat-table [dataSource]="childBenefitsArray" class="mat-elevation-z8">
 
                             <ng-container matColumnDef="ridercode">
                               <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Rider Code </mat-header-cell>
@@ -643,7 +706,7 @@
                           </mat-table>
                         </mat-step>
 
-                      </mat-horizontal-stepper>
+                      </mat-horizontal-stepper> 
                     </mat-card>
                   </div>
 
@@ -651,7 +714,7 @@
                     <mat-card style="margin-bottom: 10px;height: 420px;max-height: 430px;">
                       <form class="branch-uw-form" [formGroup]="branchUWChildForm">
                         <mat-form-field style="width: 60px;">
-                          <mat-select placeholder="Title" aria-label="Title" formControlName="titleChild">
+                          <mat-select placeholder="Title" aria-label="Title" formControlName="titleChild" [disabled]="true">
                             <mat-option value="Son">Son</mat-option>
                             <mat-option value="Daughter">Daughter</mat-option>
                           </mat-select>
@@ -661,7 +724,7 @@
                           <tr>
                             <td>
                               <mat-form-field class="half-width" style="width: 80%;">
-                                <input matInput placeholder="Full Name" aria-label="Full Name" formControlName="fullNameChild">
+                                <input matInput placeholder="Full Name" aria-label="Full Name" formControlName="fullNameChild" [(uppercase)]='_cName' [(ngModel)]="_cName">
                               </mat-form-field>
                             </td>
                           </tr>
@@ -671,7 +734,7 @@
                           <tr>
                             <td>
                               <mat-form-field class="half-width" style="width: 80%;">
-                                <input matInput placeholder="N.I.C. No" aria-label="N.I.C. No" formControlName="nicChild">
+                                <input matInput placeholder="N.I.C. No" aria-label="N.I.C. No" formControlName="nicChild" [readonly]="true" [(uppercase)]='_cNic' [(ngModel)]="_cNic">
                               </mat-form-field>
                             </td>
                           </tr>
@@ -681,7 +744,7 @@
                           <tr>
                             <td>
                               <mat-form-field class="half-width" style="width: 80%;">
-                                <input matInput placeholder="Date Of Birth" aria-label="Date Of Birth" formControlName="dateOfBirthChild">
+                                <input matInput placeholder="Date Of Birth" aria-label="Date Of Birth" formControlName="dateOfBirthChild" [readonly]="true">
                               </mat-form-field>
                             </td>
                           </tr>
@@ -691,7 +754,7 @@
                           <tr>
                             <td>
                               <mat-form-field class="half-width" style="width: 40%;">
-                                <input matInput placeholder="Age Next Birthday" aria-label="Age Next Birthday" formControlName="ageNextBirthdayChild">
+                                <input matInput placeholder="Age Next Birthday" aria-label="Age Next Birthday" formControlName="ageNextBirthdayChild" [readonly]="true">
                               </mat-form-field>
                             </td>
                           </tr>
@@ -701,8 +764,8 @@
 
                       <mat-card-footer style="border-top: solid #C4C4C4 1px;  display: flex; 
                               justify-content: space-between; vertical-align: bottom;margin-top: 100px;">
-                        <button mat-raised-button matStepperPrevious matTooltip="Delete" color="warn" style="margin-top: 10px;margin-left: 5px;">Delete</button>
-                        <button mat-raised-button matStepperNext matTooltip="Edit" color="primary" style="float: right;margin-top: 10px;margin-right: 5px;">Edit</button>
+                        <button mat-raised-button matTooltip="Delete" color="warn" style="margin-top: 10px;margin-left: 5px;">Delete</button>
+                        <button mat-raised-button matTooltip="Edit" color="primary" style="float: right;margin-top: 10px;margin-right: 5px;" (click)="editChildRow()">Edit</button>
                       </mat-card-footer>
 
                     </mat-card>
@@ -719,17 +782,264 @@
             </mat-card>
           </mat-step>
 
-          <mat-step [stepControl]="fifthFormGroup">
-            <form>
-              <ng-template matStepLabel>Pre./Ben.Details</ng-template>
-              <div>
-                <button mat-raised-button matStepperPrevious matTooltip="Go to Children Details " color="warn">Back</button>
-                <button mat-raised-button matStepperNext matTooltip="Go to Nominee Details " color="primary" style="float: right;">Next</button>
-              </div>
-            </form>
+          <mat-step [stepControl]="branchUWBenefitDetails">
+            <mat-card>
+              <!-- <mat-card-header>
+                    <mat-card-title>
+                      <h3>INSURED DETAILS</h3>
+                    </mat-card-title>
+                  </mat-card-header> -->
+              <mat-card-content>
+
+                <ng-template matStepLabel>Pre./Ben.Details</ng-template>
+
+                <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+
+                  <div fxFlex="100">
+                    <mat-card style="margin-bottom: 10px;height: 420px;max-height: 430px;overflow-x: auto;">
+
+                        <mat-horizontal-stepper [linear]="isLinear" #stepper>
+                            <mat-step [stepControl]="firstFormGroup">
+                              <ng-template matStepLabel>MAIN LIFE</ng-template>
+    
+                              <mat-table [dataSource]="mainLifeBenefitsArray" class="mat-elevation-z8">
+    
+                                  <ng-container matColumnDef="ridercode">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Rider Code </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.ridercode}} </mat-cell>
+                                  </ng-container>
+      
+      
+                                  <ng-container matColumnDef="ridername">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 40%;"> Name </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 40%;"> {{element.ridername}} </mat-cell>
+                                  </ng-container>
+      
+      
+                                  <ng-container matColumnDef="term">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 5%;"> Term </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 5%;"> {{element.term}} </mat-cell>
+                                  </ng-container>
+      
+      
+                                  <ng-container matColumnDef="sumassured">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 25%;"> Sum Assured</mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 25%;"> {{element.sumassured}} </mat-cell>
+                                  </ng-container>
+      
+                                  <ng-container matColumnDef="premium">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;"> Premium </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 20%;"> {{element.premium}} </mat-cell>
+                                  </ng-container>
+      
+                                  <mat-header-row *matHeaderRowDef="displayedColumnsMainLifeBenefits"></mat-header-row>
+                                  <mat-row *matRowDef="let row; columns: displayedColumnsMainLifeBenefits;"></mat-row>
+                                </mat-table>
+                            </mat-step>
+    
+                            <mat-step [stepControl]="firstFormGroup">
+                              <ng-template matStepLabel>SPOUSE</ng-template>
+    
+                              <mat-table [dataSource]="spouseBenefitsArray" class="mat-elevation-z8">
+    
+                                <ng-container matColumnDef="ridercode">
+                                  <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Rider Code </mat-header-cell>
+                                  <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.ridercode}} </mat-cell>
+                                </ng-container>
+    
+    
+                                <ng-container matColumnDef="ridername">
+                                  <mat-header-cell *matHeaderCellDef style="flex: 0 0 40%;"> Name </mat-header-cell>
+                                  <mat-cell *matCellDef="let element" style="flex: 0 0 40%;"> {{element.ridername}} </mat-cell>
+                                </ng-container>
+    
+    
+                                <ng-container matColumnDef="term">
+                                  <mat-header-cell *matHeaderCellDef style="flex: 0 0 5%;"> Term </mat-header-cell>
+                                  <mat-cell *matCellDef="let element" style="flex: 0 0 5%;"> {{element.term}} </mat-cell>
+                                </ng-container>
+    
+    
+                                <ng-container matColumnDef="sumassured">
+                                  <mat-header-cell *matHeaderCellDef style="flex: 0 0 25%;"> Sum Assured</mat-header-cell>
+                                  <mat-cell *matCellDef="let element" style="flex: 0 0 25%;"> {{element.sumassured}} </mat-cell>
+                                </ng-container>
+    
+                                <ng-container matColumnDef="premium">
+                                  <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;"> Premium </mat-header-cell>
+                                  <mat-cell *matCellDef="let element" style="flex: 0 0 20%;"> {{element.premium}} </mat-cell>
+                                </ng-container>
+    
+                                <mat-header-row *matHeaderRowDef="displayedColumnsMainLifeBenefits"></mat-header-row>
+                                <mat-row *matRowDef="let row; columns: displayedColumnsMainLifeBenefits;"></mat-row>
+                              </mat-table>
+                            </mat-step>
+
+                            <mat-step [stepControl]="firstFormGroup">
+                                <ng-template matStepLabel>SCHEDULE</ng-template>
+      
+                                <mat-table [dataSource]="sheduleArray" class="mat-elevation-z8" *ngIf="productCode == 'DTA' || productCode == 'DTAPL'">
+      
+                                  <ng-container matColumnDef="policyYear">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Policy Year </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.policyYear}} </mat-cell>
+                                  </ng-container>
+      
+      
+                                  <ng-container matColumnDef="outYear">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Out Term </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.outYear}} </mat-cell>
+                                  </ng-container>
+      
+      
+                                  <ng-container matColumnDef="outSum">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 30%;"> Sum at Risk </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 30%;"> {{element.outSum}} </mat-cell>
+                                  </ng-container>
+      
+      
+                                  <ng-container matColumnDef="lorned">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 30%;"> Reduction </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 30%;"> {{element.lorned}} </mat-cell>
+                                  </ng-container>
+      
+                                  <ng-container matColumnDef="premiumRate">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Rate </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.premiumRate}} </mat-cell>
+                                  </ng-container>
+
+                                  <ng-container matColumnDef="premium">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Premium </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.premium}} </mat-cell>
+                                  </ng-container>
+      
+                                  <mat-header-row *matHeaderRowDef="displayedColumnsShedule"></mat-header-row>
+                                  <mat-row *matRowDef="let row; columns: displayedColumnsShedule;"></mat-row>
+                                </mat-table>
+
+                                <mat-table [dataSource]="sheduleArray" class="mat-elevation-z8" *ngIf="productCode == 'ARP'">
+      
+                                  <ng-container matColumnDef="polyer">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Policy Year </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.polyer}} </mat-cell>
+                                  </ng-container>
+      
+      
+                                  <ng-container matColumnDef="padtrm">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Paid Term </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.padtrm}} </mat-cell>
+                                  </ng-container>
+      
+      
+                                  <ng-container matColumnDef="prmpyr">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 16%;"> Premium Per Year </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 16%;"> {{element.prmpyr}} </mat-cell>
+                                  </ng-container>
+      
+      
+                                  <ng-container matColumnDef="prmpad">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 16%;"> Total Premium Paid </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 16%;"> {{element.prmpad}} </mat-cell>
+                                  </ng-container>
+      
+                                  <ng-container matColumnDef="isumas">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 16%;"> Inc:Sum:Assu </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 16%;"> {{element.isumas}} </mat-cell>
+                                  </ng-container>
+
+                                  <ng-container matColumnDef="paidup">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 16%;"> Paid Up </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 16%;"> {{element.paidup}} </mat-cell>
+                                  </ng-container>
+
+                                  <ng-container matColumnDef="surrnd">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 16%;"> Surrender </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 16%;"> {{element.surrnd}} </mat-cell>
+                                  </ng-container>
+      
+                                  <mat-header-row *matHeaderRowDef="displayedColumnsShedule"></mat-header-row>
+                                  <mat-row *matRowDef="let row; columns: displayedColumnsShedule;"></mat-row>
+                                </mat-table>
+
+                                <mat-table [dataSource]="sheduleArray" class="mat-elevation-z8" *ngIf="productCode == 'ARTM'">
+      
+                                  <ng-container matColumnDef="polyer">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Policy Year </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.polyer}} </mat-cell>
+                                  </ng-container>
+      
+      
+                                  <ng-container matColumnDef="month">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Month </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.month}} </mat-cell>
+                                  </ng-container>
+      
+      
+                                  <ng-container matColumnDef="contribution">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Contribution </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.contribution}} </mat-cell>
+                                  </ng-container>
+      
+      
+                                  <ng-container matColumnDef="fndBeforeInt">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Fund Balance <br> Before Interest </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.fndBeforeInt}} </mat-cell>
+                                  </ng-container>
+      
+                                  <ng-container matColumnDef="intRat1">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Assumed Annual<br> Dividend <br> rate of 7% </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.intRat1}} </mat-cell>
+                                  </ng-container>
+
+                                  <ng-container matColumnDef="clsFnd1">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Closing Fund <br> Balance <br> rate of 7% </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.clsFnd1}} </mat-cell>
+                                  </ng-container>
+
+                                  <ng-container matColumnDef="intRat2">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Assumed Annual <br> Dividend <br>rate of 8% </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.intRat2}} </mat-cell>
+                                  </ng-container>
+
+                                  <ng-container matColumnDef="clsFnd2">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Closing Fund<br> Balance <br>rate of 8% </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.clsFnd2}} </mat-cell>
+                                  </ng-container>
+
+                                  <ng-container matColumnDef="intRat3">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Assumed Annual<br> Dividend <br>rate of 9% </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.intRat3}} </mat-cell>
+                                  </ng-container>
+
+                                  <ng-container matColumnDef="clsFnd3">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Closing Fund<br> Balance <br>rate of 9% </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.clsFnd3}} </mat-cell>
+                                  </ng-container>
+      
+                                  <mat-header-row *matHeaderRowDef="displayedColumnsShedule"></mat-header-row>
+                                  <mat-row *matRowDef="let row; columns: displayedColumnsShedule;"></mat-row>
+                                </mat-table>
+
+                              </mat-step>
+    
+                          </mat-horizontal-stepper> 
+
+                        <button mat-raised-button matTooltip="Edit Quotation Sequence " color="primary" style="margin-top: 10px;" (click)="editQuotation();">Edit Quotation</button>
+                    </mat-card>
+                  </div>
+
+                </div>
+              </mat-card-content>
+
+              <mat-card-footer style="border-top: solid #C4C4C4 1px;  display: flex; 
+                              justify-content: space-between; vertical-align: bottom;">
+                <button mat-raised-button matStepperPrevious matTooltip="Go to Children Details " color="warn" style="margin-top: 10px;">Back</button>
+                <button mat-raised-button matStepperNext matTooltip="Go to Nominee Details " color="primary" style="float: right;margin-top: 10px;">Next</button>
+              </mat-card-footer>
+            </mat-card>
           </mat-step>
 
-          <mat-step [stepControl]="sixthFormGroup">
+          <mat-step [stepControl]="branchUWNomineeForm">
               <mat-card>
                   <!-- <mat-card-header>
                         <mat-card-title>
@@ -744,11 +1054,11 @@
     
                       <div fxFlex="80">
                         <mat-card style="margin-bottom: 10px;height: 420px;max-height: 430px;overflow-x: auto;">
-                          <mat-horizontal-stepper [linear]="isLinear" #stepper>
+                          <mat-horizontal-stepper [linear]="true" #stepper>
                             <mat-step [stepControl]="firstFormGroup">
                               <ng-template matStepLabel>Details Of Nominee</ng-template>
     
-                              <mat-table [dataSource]="dataSourceNominee" class="mat-elevation-z8">
+                              <mat-table [dataSource]="nomineeArray" class="mat-elevation-z8">
     
                                 <ng-container matColumnDef="type">
                                   <mat-header-cell *matHeaderCellDef style="flex: 0 0 5%;"> Type </mat-header-cell>
@@ -775,7 +1085,7 @@
     
                                 <ng-container matColumnDef="dob">
                                   <mat-header-cell *matHeaderCellDef style="flex: 0 0 7%;"> Date Of Birth </mat-header-cell>
-                                  <mat-cell *matCellDef="let element" style="flex: 0 0 7%;"> {{element.dob}} </mat-cell>
+                                  <mat-cell *matCellDef="let element" style="flex: 0 0 7%;"> {{element.NomineeDateofBirth}} </mat-cell>
                                 </ng-container>
     
                                 <ng-container matColumnDef="share">
@@ -804,7 +1114,7 @@
                                 </ng-container>
     
                                 <mat-header-row *matHeaderRowDef="displayedColumnsNominee"></mat-header-row>
-                                <mat-row *matRowDef="let row; columns: displayedColumnsNominee;"></mat-row>
+                                <mat-row *matRowDef="let row; columns: displayedColumnsNominee;" (dblclick)="loadNomineeData(row)"></mat-row>
                               </mat-table>
                             </mat-step>
     
@@ -816,7 +1126,7 @@
                         <mat-card style="margin-bottom: 10px;height: 420px;max-height: 430px;overflow-x: auto;">
                           <form class="branch-uw-form" [formGroup]="branchUWNomineeForm">
                             <mat-form-field style="width: 80px;">
-                              <mat-select placeholder="Type" aria-label="Type" formControlName="type">
+                              <mat-select placeholder="Type" aria-label="Type" formControlName="type" [disabled]="true">
                                 <mat-option value="NORMAL">NORMAL</mat-option>
                                 <mat-option value="MSFB">MSFB</mat-option>
                               </mat-select>
@@ -826,7 +1136,7 @@
                               <tr>
                                 <td>
                                   <mat-form-field class="half-width" style="width: 80%;">
-                                    <input matInput placeholder="Full Name" aria-label="Full Name" formControlName="fullNameNominee">
+                                    <input matInput placeholder="Full Name" aria-label="Full Name" formControlName="fullNameNominee" [(uppercase)]='_nName' [(ngModel)]="_nName">
                                   </mat-form-field>
                                 </td>
                               </tr>
@@ -836,7 +1146,7 @@
                               <tr>
                                 <td>
                                   <mat-form-field class="half-width" style="width: 80%;">
-                                    <input matInput placeholder="Relationship" aria-label="Relationship" formControlName="relationshipNominee">
+                                    <input matInput placeholder="Relationship" aria-label="Relationship" formControlName="relationshipNominee" [(uppercase)]='_nRel' [(ngModel)]="_nRel">
                                   </mat-form-field>
                                 </td>
                               </tr>
@@ -846,7 +1156,7 @@
                               <tr>
                                 <td>
                                   <mat-form-field class="half-width" style="width: 80%;">
-                                    <input matInput placeholder="N.I.C. No" aria-label="N.I.C. No" formControlName="nicNominee">
+                                    <input matInput placeholder="N.I.C. No" aria-label="N.I.C. No" formControlName="nicNominee" [(uppercase)]='_nNic' [(ngModel)]="_nNic" (blur)="calculateDob()" (keyup.enter)="calculateDob()">
                                   </mat-form-field>
                                 </td>
                               </tr>
@@ -866,7 +1176,7 @@
                               <tr>
                                 <td>
                                   <mat-form-field class="half-width" style="width: 80%;">
-                                    <input matInput placeholder="Share" aria-label="Share" formControlName="share">
+                                    <input matInput placeholder="Share" aria-label="Share %" formControlName="share" pattern="^[0-9]*$">
                                   </mat-form-field>
                                 </td>
                               </tr>
@@ -876,7 +1186,7 @@
                               <tr>
                                 <td>
                                   <mat-form-field class="half-width" style="width: 80%;">
-                                    <input matInput placeholder="Guardian Name" aria-label="Guardian Name" formControlName="guardianName">
+                                    <input matInput placeholder="Guardian Name" aria-label="Guardian Name" formControlName="guardianName" [(uppercase)]='_gName' [(ngModel)]="_gName">
                                   </mat-form-field>
                                 </td>
                               </tr>
@@ -886,7 +1196,7 @@
                               <tr>
                                 <td>
                                   <mat-form-field class="half-width" style="width: 80%;">
-                                    <input matInput placeholder="Guardian Nic" aria-label="Guardian Nic" formControlName="guardianNic">
+                                    <input matInput placeholder="Guardian Nic" aria-label="Guardian Nic" formControlName="guardianNic" [(uppercase)]='_gNic' [(ngModel)]="_gNic" (blur)="calculateGuardDob()" (keyup.enter)="calculateGuardDob()">
                                   </mat-form-field>
                                 </td>
                               </tr>
@@ -906,7 +1216,7 @@
                               <tr>
                                 <td>
                                   <mat-form-field class="half-width" style="width: 80%;">
-                                    <input matInput placeholder="Guardian RelationShip" aria-label="Guardian RelationShip" formControlName="guardianRelation">
+                                    <input matInput placeholder="Guardian RelationShip" aria-label="Guardian RelationShip" formControlName="guardianRelation" [(uppercase)]='_gRel' [(ngModel)]="_gRel">
                                   </mat-form-field>
                                 </td>
                               </tr>
@@ -916,8 +1226,8 @@
     
                           <mat-card-footer style="border-top: solid #C4C4C4 1px;  display: flex; 
                                   justify-content: space-between; vertical-align: bottom;margin-top: 100px;">
-                            <button mat-raised-button matStepperPrevious matTooltip="Delete" color="warn" style="margin-top: 10px;margin-left: 5px;margin-right: 5px;margin-bottom: 5px;">Delete</button>
-                            <button mat-raised-button matStepperNext matTooltip="Edit" color="primary" style="float: right;margin-top: 10px;margin-right: 5px;margin-bottom: 5px">Edit</button>
+                            <button mat-raised-button matTooltip="Edit" color="warn" style="margin-top: 10px;margin-left: 5px;margin-right: 5px;margin-bottom: 5px;" (click)="editNomineeRow()">Edit</button>
+                            <button mat-raised-button matTooltip="Add" color="primary" style="float: right;margin-top: 10px;margin-right: 5px;margin-bottom: 5px" (click)="addNewNominee()">Add</button>
                           </mat-card-footer>
     
                         </mat-card>
@@ -934,156 +1244,55 @@
                 </mat-card>
           </mat-step>
 
-          <mat-step [stepControl]="seventhFormGroup">
-            
-            <mat-card >
-                <!-- <mat-card-header>
-                  <mat-card-title>
-                    <h3>INSURED DETAILS</h3>
-                  </mat-card-title>
-                </mat-card-header> -->
-                <mat-card-content>
-                  <form class="branch-uw-form" >
-                    <ng-template matStepLabel>Settlements</ng-template>
-  
-                    <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
-  
-                      <div fxFlex="50">
-                        <mat-card style="margin-bottom: 10px;height: 420px;max-height: 430px;overflow-x: auto;"> 
-                            <h3>AVAILABLE RECEIPTS</h3>
-                            <mat-table [dataSource]="dataSourceAvailableReceipts" class="mat-elevation-z8" style="padding: 20px;height: 340px;">
-                                
-                                <!-- Checkbox Column -->
-                                <ng-container matColumnDef="select">
-                                  <mat-header-cell *matHeaderCellDef>
-                                    <mat-checkbox color="primary" (change)="$event ? masterToggle() : null"
-                                                  [checked]="selection.hasValue() && isAllSelected()"
-                                                  [indeterminate]="selection.hasValue() && !isAllSelected()">
-                                    </mat-checkbox>
-                                  </mat-header-cell>
-                                  <mat-cell *matCellDef="let row">
-                                    <mat-checkbox color="primary" (click)="$event.stopPropagation()"
-                                                  (change)="$event ? selection.toggle(row) : null"
-                                                  [checked]="selection.isSelected(row)">
-                                    </mat-checkbox>
-                                  </mat-cell>
-                                </ng-container>
-                              
-                                <ng-container matColumnDef="number">
-                                  <mat-header-cell *matHeaderCellDef> Number </mat-header-cell>
-                                  <mat-cell *matCellDef="let element"> {{element.number}} </mat-cell>
-                                </ng-container>
-                              
-                                <ng-container matColumnDef="name">
-                                  <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-                                  <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
-                                </ng-container>
-                              
-                                <ng-container matColumnDef="amount">
-                                  <mat-header-cell *matHeaderCellDef> Amount </mat-header-cell>
-                                  <mat-cell *matCellDef="let element"> {{element.amount}} </mat-cell>
-                                </ng-container>
-                              
-                                <ng-container matColumnDef="branchCode">
-                                  <mat-header-cell *matHeaderCellDef> Branch Code </mat-header-cell>
-                                  <mat-cell *matCellDef="let element"> {{element.branchCode}} </mat-cell>
-                                </ng-container>
-
-                                <ng-container matColumnDef="cheque">
-                                    <mat-header-cell *matHeaderCellDef> Cheque </mat-header-cell>
-                                    <mat-cell *matCellDef="let element"> {{element.cheque}} </mat-cell>
-                                  </ng-container>
-                                
-                                  <ng-container matColumnDef="paymod">
-                                      <mat-header-cell *matHeaderCellDef> Pay Mode </mat-header-cell>
-                                      <mat-cell *matCellDef="let element"> {{element.paymod}} </mat-cell>
-                                    </ng-container>
-                              
-                                <mat-header-row *matHeaderRowDef="displayedColumnsSettlements"></mat-header-row>
-                                <mat-row *matRowDef="let row; columns: displayedColumnsSettlements;"
-                                    (click)="selection.toggle(row)">
-                                </mat-row>
-                              </mat-table>
-                        </mat-card>
-  
-                      </div>
-  
-                      <div fxFlex="50" style="margin-left: 10px;">
-                          <mat-card style="margin-bottom: 10px;height: 420px;max-height: 430px;overflow-x: auto;"> 
-                              <h3>SELECTED RECEIPTS</h3>
-                              <mat-table [dataSource]="dataSourceSelectedReceipts" class="mat-elevation-z8" style="padding: 20px;height: 340px;">
-                                  
-                                  <!-- Checkbox Column -->
-                                  <ng-container matColumnDef="select">
-                                    <mat-header-cell *matHeaderCellDef>
-                                      <mat-checkbox color="primary" (change)="$event ? masterToggleReceipts() : null"
-                                                    [checked]="selection.hasValue() && isAllSelectedReceipts()"
-                                                    [indeterminate]="selection.hasValue() && !isAllSelectedReceipts()">
-                                      </mat-checkbox>
-                                    </mat-header-cell>
-                                    <mat-cell *matCellDef="let row">
-                                      <mat-checkbox color="primary" (click)="$event.stopPropagation()"
-                                                    (change)="$event ? selection.toggle(row) : null"
-                                                    [checked]="selection.isAllSelectedReceipts(row)">
-                                      </mat-checkbox>
-                                    </mat-cell>
-                                  </ng-container>
-                                
-                                  <ng-container matColumnDef="number">
-                                    <mat-header-cell *matHeaderCellDef> Number </mat-header-cell>
-                                    <mat-cell *matCellDef="let element"> {{element.number}} </mat-cell>
-                                  </ng-container>
-                                
-                                  <ng-container matColumnDef="name">
-                                    <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-                                    <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
-                                  </ng-container>
-                                
-                                  <ng-container matColumnDef="amount">
-                                    <mat-header-cell *matHeaderCellDef> Amount </mat-header-cell>
-                                    <mat-cell *matCellDef="let element"> {{element.amount}} </mat-cell>
-                                  </ng-container>
-                                
-                                  <ng-container matColumnDef="branchCode">
-                                    <mat-header-cell *matHeaderCellDef> Branch Code </mat-header-cell>
-                                    <mat-cell *matCellDef="let element"> {{element.branchCode}} </mat-cell>
-                                  </ng-container>
-  
-                                  <ng-container matColumnDef="cheque">
-                                      <mat-header-cell *matHeaderCellDef> Cheque </mat-header-cell>
-                                      <mat-cell *matCellDef="let element"> {{element.cheque}} </mat-cell>
-                                    </ng-container>
-                                  
-                                    <ng-container matColumnDef="paymod">
-                                        <mat-header-cell *matHeaderCellDef> Pay Mode </mat-header-cell>
-                                        <mat-cell *matCellDef="let element"> {{element.paymod}} </mat-cell>
-                                      </ng-container>
-                                
-                                  <mat-header-row *matHeaderRowDef="displayedColumnsSettlements"></mat-header-row>
-                                  <mat-row *matRowDef="let row; columns: displayedColumnsSettlements;"
-                                      (click)="selection.toggle(row)">
-                                  </mat-row>
-                                </mat-table>
-                          </mat-card>
-                      </div>
-                    </div>
-                  </form>
-                </mat-card-content>
-  
-                <mat-card-footer style="border-top: solid #C4C4C4 1px;  display: flex; 
-                            justify-content: space-between; vertical-align: bottom;">
-                    <button mat-raised-button matStepperPrevious matTooltip="Go to Nominee Details " color="warn" style="margin-top: 10px;">Back</button>
-                    <button mat-raised-button matStepperNext matTooltip="Go to Save " color="primary" style="float: right;margin-top: 10px;">Next</button>
-                </mat-card-footer>
-              </mat-card>
-          </mat-step>
           <mat-step>
-            <ng-template matStepLabel>Done</ng-template>
-            You are now finish.
+            <ng-template matStepLabel>Final Decision</ng-template>
+            <form [formGroup]="branchUWFinalDecisionInfo">
+              <mat-card>
+                
+                <mat-card-content>
+                  <!-- <ng-template matStepLabel>General Info</ng-template> -->
+                  <div fxFlex="50%">
+                    <table style="width: 90%; padding: 10px;">
+                      <tr>
+                        <td>Agent Code</td>
+                        <td>:</td>
+                        <td>
+                          <mat-form-field class="full-width" style="width: 70%;">
+                            <input matInput placeholder="Agent Code" aria-label="Agent Code" [matAutocomplete]="agent" formControlName="agent" (keyup)="getAgents($event)">
+                            <mat-autocomplete #agent="matAutocomplete">
+                              <mat-option *ngFor="let agent of filteredAgents | async" [value]="agent.AgentCode">
+                                <span> {{ agent.AgentCode }} </span> |
+                                <small> {{ agent.AgentName }} </small> |
+                                <small> {{ agent.Location }} </small>
+                              </mat-option>
+  
+                            </mat-autocomplete>     
+  
+                          </mat-form-field>
+                        </td>
+                      </tr> 
+                      <tr>
+                        <td>Proposal Date</td>
+                        <td> :</td>
+                        <td>
+                          <mat-form-field>
+                            <input matInput [matDatepicker]="picker" placeholder="Choose a date" name="propDate" formControlName="propDate" [readonly]="true">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker [disabled]="false"></mat-datepicker>
+                          </mat-form-field>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+              </form>
+            
             <div>
               <button mat-raised-button matStepperPrevious color="warn" style="margin-top: 10px;">Back</button>
               <button mat-raised-button (click)="stepper.reset()" color="primary" style="margin-top: 10px;">Reset</button>
-              <button mat-raised-button (click)="stepper.reset()" color="primary" style="margin-top: 10px;">Save</button>
+              <button mat-raised-button (click)="saveUnderwrite()" color="primary"  style="float: right;margin-top: 10px;margin-left: 10px;">Save</button>
+              <mat-checkbox [(ngModel)]="approve" color="primary"  style="float: right;margin-top: 10px;">Send To Approve</mat-checkbox>
             </div>
           </mat-step>
         </mat-horizontal-stepper>
