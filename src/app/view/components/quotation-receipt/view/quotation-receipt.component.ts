@@ -1,3 +1,4 @@
+import { async } from '@angular/core/testing';
 import { AlertComponent } from './../../../core/alert/alert.component';
 import { ActivatedRoute } from '@angular/router/';
 import { element } from 'protractor';
@@ -239,28 +240,33 @@ export class QuotationReceiptComponent implements OnInit {
       if (quoNo != null && quoNo != undefined && quoNo.length != 0 &&
         seqNo != null && seqNo != undefined && seqNo.length != 0 ) {
         this.quotationReceiptService.getQuoDetails(quoNo.trim(), seqNo.trim()).subscribe(response => {
-          console.log(response.json());
+          try{
+            this.basicDetail.AgentCode = response.json().agentCode;
+            this.basicDetail.CustomerName = response.json().customerName;
+            this.basicDetail.CustTitle = response.json().custTitle;
+            this.basicDetail.SeqNo = response.json().quotationDetailId;
+            this.basicDetail.Id = response.json().quotationId;
+            this.basicDetail.ProductCode = response.json().productCode;
+            this.basicDetail.ProductName = response.json().productName;
+            this.basicDetail.BranchCode = response.json().branchCode;
+            this.basicDetail.Polfee = response.json().polfeePremium;
+            this.basicDetail.Premium = response.json().premium;
+  
+            this.Amount.setValue(this.basicDetail.Polfee);
+            this.convertAmountToWord();
+  
+            this.AgentCode.setValue(this.basicDetail.AgentCode);
+  
+            let isAgentCode: number = parseInt(this.basicDetail.AgentCode);
+  
+            this.pickAgent = isNaN(isAgentCode) ? true : false;
+          } catch {
+            this.alert("Oopz...", "Error occour, Check Quotation Number and Sequence Number", "error");
+          }
+         
 
-          this.basicDetail.AgentCode = response.json().agentCode;
-          this.basicDetail.CustomerName = response.json().customerName;
-          this.basicDetail.CustTitle = response.json().custTitle;
-          this.basicDetail.SeqNo = response.json().quotationDetailId;
-          this.basicDetail.Id = response.json().quotationId;
-          this.basicDetail.ProductCode = response.json().productCode;
-          this.basicDetail.ProductName = response.json().productName;
-          this.basicDetail.BranchCode = response.json().branchCode;
-          this.basicDetail.Polfee = response.json().polfeePremium;
-          this.basicDetail.Premium = response.json().premium;
-
-          this.Amount.setValue(this.basicDetail.Polfee);
-          this.convertAmountToWord();
-
-          this.AgentCode.setValue(this.basicDetail.AgentCode);
-
-          let isAgentCode: number = parseInt(this.basicDetail.AgentCode);
-
-          this.pickAgent = isNaN(isAgentCode) ? true : false;
-
+        },async error => {
+          this.alert("Oopz...", "Error occour, Check Quotation Number and Sequence Number", "error");
         });
       } else {
         this.QuoNo.setErrors({ 'incorrect': true });
