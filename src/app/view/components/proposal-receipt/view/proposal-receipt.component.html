@@ -1,6 +1,6 @@
 <div class="container" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
     <div fxFlex="50%">
-        <mat-card class="main-card"  style="height: 741px;">
+        <mat-card class="main-card" style="height: 741px;">
 
             <mat-card-header>
                 <mat-card-title>
@@ -19,7 +19,7 @@
                                 <span> {{ proposal.ProposalId }} </span> |
                                 <small> {{ proposal.ProposalDetailId }} </small>
                             </mat-option>
-                            
+
                         </mat-autocomplete>
                         <mat-error *ngIf="PropNo.hasError('incorrect')">
                             Propsal Number is
@@ -110,7 +110,7 @@
         </mat-card>
     </div>
     <div fxFlex="50%">
-        <mat-card class="main-card"  style="height: 425px;">
+        <mat-card class="main-card" style="height: 425px;">
             <mat-card-header>
                 <mat-card-title>
                     <h3>Basic Proposal Details</h3>
@@ -219,7 +219,7 @@
                 </ng-container>
                 <ng-container matColumnDef="pprnum">
                     <mat-header-cell *matHeaderCellDef style="text-align: right"> Proposal No </mat-header-cell>
-                    <mat-cell *matCellDef="let element"  style="text-align: right"> {{element.Pprnum}} </mat-cell>
+                    <mat-cell *matCellDef="let element" style="text-align: right"> {{element.Pprnum}} </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="polnum">
                     <mat-header-cell *matHeaderCellDef style="text-align: right"> Policy No </mat-header-cell>
@@ -230,7 +230,7 @@
                     <mat-cell *matCellDef="let element" style="text-align: right"> {{element.Topprm}} </mat-cell>
                 </ng-container>
 
-                
+
 
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
