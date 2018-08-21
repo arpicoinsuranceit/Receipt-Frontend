@@ -1,14 +1,14 @@
 import { AlertComponent } from './../../../core/alert/alert.component';
-import { MatDialogConfig ,MatDialog} from '@angular/material';
-import { SaveReceiptModel } from './../../../../model/savereceiptmodel';
-import { LastReceipt } from './../../../../model/lastreceipt';
-import { ProposalReceiptService } from './../../../../service/proposal-receipt-service/proposal-receipt.service';
+import { MatDialogConfig, MatDialog } from '@angular/material';
+import { SaveReceiptModel } from '../../../../model/savereceiptmodel';
+import { LastReceipt } from '../../../../model/lastreceipt';
+import { ProposalReceiptService } from '../../../../service/proposal-receipt-service/proposal-receipt.service';
 import { startWith, map } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
-import { AgentModel } from './../../../../model/agentmodel';
-import { BankModel } from './../../../../model/bankmodel';
-import { BasicDetail } from './../../../../model/basicdetailmodel';
-import { CommonService } from './../../../../service/common-service/common.service';
+import { AgentModel } from '../../../../model/agentmodel';
+import { BankModel } from '../../../../model/bankmodel';
+import { BasicDetail } from '../../../../model/basicdetailmodel';
+import { CommonService } from '../../../../service/common-service/common.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { ProposalModel } from '../../../../model/proposalmodel';
@@ -87,9 +87,9 @@ export class ProposalReceiptComponent implements OnInit {
   get Credittransferno() {
     return this.quoReceiptForm.get("credittransferno");
   }
-  constructor(private commonService: CommonService, private proposalReceiptService: ProposalReceiptService, public dialog: MatDialog) { 
+  constructor(private commonService: CommonService, private proposalReceiptService: ProposalReceiptService, public dialog: MatDialog) {
 
-    for(var i = 0 ; i<2 ; i++){
+    for (var i = 0; i < 2; i++) {
       this.lastReceipt.push(new LastReceipt("...", "...", "...", "...", "...", 0.00, "...", "..."));
     }
   }
@@ -98,7 +98,7 @@ export class ProposalReceiptComponent implements OnInit {
     this.getBanks();
     this.loadLastReceipts();
     this.AmountInWord.disable();
-   
+
   }
 
   convertAmountToWord() {
@@ -136,32 +136,36 @@ export class ProposalReceiptComponent implements OnInit {
     } catch (error) {
       return null;
     }
-    
+
   }
 
-  LoadProposals() {
-    if (this.PropNo.value.length == 3) {
-      this.proposalList = new Array();
-      this.proposalReceiptService.loadProposal(this.PropNo.value).subscribe(response => {
-        console.log(response.json());
-        for (let i in response.json()) {
-          let propTemp = response.json()[i];
-          let proposalModel: ProposalModel = new ProposalModel();
-          proposalModel.ProposalDetailId = propTemp.seqNo;
-          proposalModel.ProposalId = propTemp.proposalNo;
-          proposalModel.ProposalCombine = propTemp.proposalNo + " | " + propTemp.seqNo;
+  LoadProposals(event) {
+    if (this.PropNo.value.length == 3 && event.key != "Enter" && event.key != "ArrowUp"
+      && event.key != "ArrowDown" && event.key != "ArrowLeft" && event.key != "ArrowRight" &&
+      event.key != "Tab" && event.key != "Enter" && event.key != "Backspace") {
+      if (this.PropNo.value.length == 3) {
+        this.proposalList = new Array();
+        this.proposalReceiptService.loadProposal(this.PropNo.value).subscribe(response => {
+          console.log(response.json());
+          for (let i in response.json()) {
+            let propTemp = response.json()[i];
+            let proposalModel: ProposalModel = new ProposalModel();
+            proposalModel.ProposalDetailId = propTemp.seqNo;
+            proposalModel.ProposalId = propTemp.proposalNo;
+            proposalModel.ProposalCombine = propTemp.proposalNo + " | " + propTemp.seqNo;
 
-          this.proposalList.push(proposalModel);
-        }
+            this.proposalList.push(proposalModel);
+          }
 
-        console.log(this.proposalList);
-        this.filteredProposals = this.PropNo.valueChanges
-          .pipe(
-            startWith(''),
-            map(proposal => this.filterProposal(proposal))
-          );
-      });
+          console.log(this.proposalList);
+          this.filteredProposals = this.PropNo.valueChanges
+            .pipe(
+              startWith(''),
+              map(proposal => this.filterProposal(proposal))
+            );
+        });
 
+      }
     }
   }
 
@@ -177,7 +181,7 @@ export class ProposalReceiptComponent implements OnInit {
       console.log(response.json());
 
       response.json().forEach(element => {
-        if(this.data.length<4){
+        if (this.data.length < 4) {
           let lastReceipt: LastReceipt = new LastReceipt();
           lastReceipt.Credat = element.creadt;
           lastReceipt.Doccod = element.doccod;
@@ -200,8 +204,8 @@ export class ProposalReceiptComponent implements OnInit {
       let propNo = propNoTemp.split("|")[0];
       let seqNo = propNoTemp.split("|")[1];
 
-      if (propNo != null && propNo != undefined && propNo.length != 0 && 
-        seqNo != null && seqNo != undefined && seqNo.length != 0 ) {
+      if (propNo != null && propNo != undefined && propNo.length != 0 &&
+        seqNo != null && seqNo != undefined && seqNo.length != 0) {
         this.proposalReceiptService.getPropDetails(propNo.trim(), seqNo.trim()).subscribe(response => {
           console.log(response.json());
           this.basicDetail.AgentCode = response.json().agentCode;
@@ -214,32 +218,32 @@ export class ProposalReceiptComponent implements OnInit {
           this.basicDetail.PayAmount = response.json().amtPayble;
           this.lastReceipt = new Array();
 
-          this.Amount.setValue( this.basicDetail.PayAmount);
+          this.Amount.setValue(this.basicDetail.PayAmount);
           this.convertAmountToWord();
 
           response.json().lastReceiptSummeryDtos.forEach(element => {
-              let lastReceipt: LastReceipt = new LastReceipt();
-              lastReceipt.Credat = element.creadt;
-              lastReceipt.Doccod = element.doccod;
-              lastReceipt.Docnum = element.doctyp;
-              lastReceipt.Polnum = element.polnum;
-              lastReceipt.Pprnum = element.pprnum;
-              lastReceipt.Topprm = element.amount;
-              lastReceipt.Chqrel = element.chqrel;
-              lastReceipt.Paymod = element.paymod;
-              this.lastReceipt.push(lastReceipt);
+            let lastReceipt: LastReceipt = new LastReceipt();
+            lastReceipt.Credat = element.creadt;
+            lastReceipt.Doccod = element.doccod;
+            lastReceipt.Docnum = element.doctyp;
+            lastReceipt.Polnum = element.polnum;
+            lastReceipt.Pprnum = element.pprnum;
+            lastReceipt.Topprm = element.amount;
+            lastReceipt.Chqrel = element.chqrel;
+            lastReceipt.Paymod = element.paymod;
+            this.lastReceipt.push(lastReceipt);
           });
 
-          let lastReceiptSize : number = this.lastReceipt.length;
+          let lastReceiptSize: number = this.lastReceipt.length;
 
-          if(lastReceiptSize < 2){
-            for(let i = lastReceiptSize; i<2; i++){
+          if (lastReceiptSize < 2) {
+            for (let i = lastReceiptSize; i < 2; i++) {
               this.lastReceipt.push(new LastReceipt("...", "...", "...", "...", "...", 0.00, "...", "..."));
             }
           }
         });
-      }else{
-        this.PropNo.setErrors({'incorrect': true});
+      } else {
+        this.PropNo.setErrors({ 'incorrect': true });
       }
     }
 
@@ -247,7 +251,7 @@ export class ProposalReceiptComponent implements OnInit {
 
   saveReceipt() {
 
-   
+
     let saveReceiptModel = new SaveReceiptModel();
     saveReceiptModel.Amount = this.Amount.value;
     saveReceiptModel.AgentCode = this.basicDetail.AgentCode
@@ -264,8 +268,8 @@ export class ProposalReceiptComponent implements OnInit {
     saveReceiptModel.Chequedate = this.Chequedate.value;
     saveReceiptModel.Transferno = this.Credittransferno.value;
     saveReceiptModel.Token = sessionStorage.getItem("token");
-    
- 
+
+
     console.log(saveReceiptModel);
 
     this.proposalReceiptService.savePropReceipt(saveReceiptModel).subscribe(response => {
@@ -280,27 +284,27 @@ export class ProposalReceiptComponent implements OnInit {
         this.alert("Oopz...", "Error occour", "error");
       }
     }, async error => {
-      this.alert("Oopz...", "Error occour", "error");   
+      this.alert("Oopz...", "Error occour", "error");
     });
   }
 
-  newReceipt(){
+  newReceipt() {
     this.basicDetail = new BasicDetail("", "", "", "", 0, 0);
-    
-   
+
+
     this.proposalList = new Array();
     this.filteredProposals = this.PropNo.valueChanges
-          .pipe(
-            startWith(''),
-            map(proposal => this.filterProposal(proposal))
-          );
+      .pipe(
+        startWith(''),
+        map(proposal => this.filterProposal(proposal))
+      );
     this.PropNo.reset();
     this.agentList = new Array();
     this.filteredBanks = this.BankCode.valueChanges
-        .pipe(
-          startWith(''),
-          map(bank => this.filterBanks(bank))
-        );
+      .pipe(
+        startWith(''),
+        map(bank => this.filterBanks(bank))
+      );
     this.BankCode.reset();
     this.Amount.reset();
     this.AmountInWord.reset();

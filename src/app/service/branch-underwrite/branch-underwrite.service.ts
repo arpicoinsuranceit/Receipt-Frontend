@@ -1,6 +1,6 @@
-import { SaveUnderwriteModel } from './../../model/saveunderwritemodel';
+import { SaveUnderwriteModel } from '../../model/saveunderwritemodel';
 import { Injectable } from '@angular/core';
-import { Http } from '../../../../node_modules/@angular/http';
+import { Http } from '@angular/http';
 
 @Injectable()
 export class BranchUnderwriteService {
@@ -11,55 +11,55 @@ export class BranchUnderwriteService {
   loadProposalToUnderwrite(token : string): any {
     console.log("-------------------");
     console.log(token);
-    return this.http.get("http://localhost:8088/loadProposalToUnderwrite/"+token);
+    return this.http.get("http://localhost:8080/Receipt/loadProposalToUnderwrite/"+token);
   }
 
   loadProposalDetails(pprNo : string,seqNo : string): any {
     console.log("-------------------");
     console.log(pprNo + "'" + seqNo);
-    return this.http.get("http://localhost:8088/loadProposalDetails/"+pprNo+"/"+seqNo);
+    return this.http.get("http://localhost:8080/Receipt/loadProposalDetails/"+pprNo+"/"+seqNo);
   }
 
   loadQuotationDetails(seqNo : number,qId : number): any {
     console.log("-------------------");
     console.log(seqNo + "'" + qId);
-    return this.http.get("http://localhost:8088/getQuotationDetails/"+seqNo+"/"+qId);
+    return this.http.get("http://localhost:8080/Receipt/getQuotationDetails/"+seqNo+"/"+qId);
   }
 
   loadQuotationIdFormSeqNo(seqNo : number,qId : number): any {
     console.log("-------------------");
     console.log(seqNo + "'" + qId);
-    return this.http.get("http://localhost:8088/getQuotationDetailFromSeqNo/"+seqNo+"/"+qId);
+    return this.http.get("http://localhost:8080/Receipt/getQuotationDetailFromSeqNo/"+seqNo+"/"+qId);
   }
 
   loadNominee(seqNo : number,qId : number): any {
     console.log("-------------------");
     console.log(seqNo);
-    return this.http.get("http://localhost:8088/getNominee/"+seqNo+"/"+qId);
+    return this.http.get("http://localhost:8080/Receipt/getNominee/"+seqNo+"/"+qId);
   }
 
   loadShedule(seqNo : number,qId : number): any {
     console.log("-------------------");
     console.log(seqNo );
-    return this.http.get("http://localhost:8088/getShedule/"+seqNo+"/"+qId);
+    return this.http.get("http://localhost:8080/Receipt/getShedule/"+seqNo+"/"+qId);
   }
 
   loadPensionShedule(seqNo : number,qId : number): any {
     console.log("-------------------");
     console.log(seqNo );
-    return this.http.get("http://localhost:8088/getPensionShedule/"+seqNo+"/"+qId);
+    return this.http.get("http://localhost:8080/Receipt/getPensionShedule/"+seqNo+"/"+qId);
   }
 
   loadSurrenderVals(seqNo : number,qId : number): any {
     console.log("-------------------");
     console.log(seqNo );
-    return this.http.get("http://localhost:8088/getSurrenderVals/"+seqNo+"/"+qId);
+    return this.http.get("http://localhost:8080/Receipt/getSurrenderVals/"+seqNo+"/"+qId);
   }
 
   saveUnderwrite(saveUnderwriteModel : SaveUnderwriteModel){
     console.log(saveUnderwriteModel);
 
-    return this.http.post("http://localhost:8088/saveUnderwrite/",saveUnderwriteModel);
+    return this.http.post("http://localhost:8080/Receipt/saveUnderwrite/",saveUnderwriteModel);
   }
 
 }

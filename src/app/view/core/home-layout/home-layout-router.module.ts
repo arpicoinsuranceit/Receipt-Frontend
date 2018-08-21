@@ -1,14 +1,14 @@
-import { BranchUnderwriteModule } from './../../components/branch-underwrite/branch-underwrite.module';
+//import { BranchUnderwriteModule } from './../../components/branch-underwrite/branch-underwrite.module';
 //import { PolicyReceiptModule } from './../../components/policy-receipt/policy-receipt.module';
 import { MiscellaneousReceiptModule } from './../../components/miscellaneous-receipt/miscellaneous-receipt.module';
 import { PolicyReceiptModule } from './../../components/policy-receipt/policy-receipt.module';
-import { ProposalReceiptModule } from './../../components/proposal-receipt/proposal-receipt.module';
-import { HomeModule } from './../../components/home/home.module';
+//import { ProposalReceiptModule } from './../../components/proposal-receipt/proposal-receipt.module';
+//import { HomeModule } from './../../components/home/home.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { HomeLayoutComponent } from './view/home-layout.component';
-import { QuotationReceiptModule } from '../../components/quotation-receipt/quotation-receipt.module';
+//import { QuotationReceiptModule } from '../../components/quotation-receipt/quotation-receipt.module';
 
 const routes: Routes = [
   {
@@ -17,27 +17,27 @@ const routes: Routes = [
     children: [
       {
         path: 'home',
-        loadChildren : ()=> HomeModule
+        loadChildren : "app/view/components/home/home.module#HomeModule"
       },
       {
         path: 'quoreceipt',
-        loadChildren : ()=> QuotationReceiptModule
+        loadChildren : "app/view/components/quotation-receipt/quotation-receipt.module#QuotationReceiptModule"
       },
       {
         path: 'proposalreceipt',
-        loadChildren : ()=> ProposalReceiptModule
+        loadChildren : "app/view/components/proposal-receipt/proposal-receipt.module#ProposalReceiptModule"
       },
       {
         path: 'underwrite',
-        loadChildren : ()=> BranchUnderwriteModule
+        loadChildren : "app/view/components/branch-underwrite/branch-underwrite.module#BranchUnderwriteModule"
       },
       {
         path: 'policyreceipt',
-        loadChildren : ()=> PolicyReceiptModule
+        loadChildren : "app/view/components/policy-receipt/policy-receipt.module#PolicyReceiptModule"
       },
       {
         path: 'miscellaneousreceipt',
-        loadChildren : ()=> MiscellaneousReceiptModule
+        loadChildren : "app/view/components/miscellaneous-receipt/miscellaneous-receipt.module#MiscellaneousReceiptModule"
       }
     ]
   }

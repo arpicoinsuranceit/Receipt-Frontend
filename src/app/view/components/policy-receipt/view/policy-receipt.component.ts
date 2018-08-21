@@ -1,14 +1,14 @@
 import { MatDialogConfig, MatDialog } from '@angular/material';
 import { AlertComponent } from './../../../core/alert/alert.component';
-import { SaveReceiptModel } from './../../../../model/savereceiptmodel';
-import { PolicyReceiptService } from './../../../../service/policy-receipt-service/policy-receipt.service';
-import { BasicDetail } from './../../../../model/basicdetailmodel';
+import { SaveReceiptModel } from '../../../../model/savereceiptmodel';
+import { PolicyReceiptService } from '../../../../service/policy-receipt-service/policy-receipt.service';
+import { BasicDetail } from '../../../../model/basicdetailmodel';
 import { startWith, map } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
-import { BankModel } from './../../../../model/bankmodel';
+import { BankModel } from '../../../../model/bankmodel';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { LastReceipt } from './../../../../model/lastreceipt';
-import { CommonService } from './../../../../service/common-service/common.service';
+import { LastReceipt } from '../../../../model/lastreceipt';
+import { CommonService } from '../../../../service/common-service/common.service';
 import { Component, OnInit } from '@angular/core';
 import { PolicyModel } from '../../../../model/policymodel';
 

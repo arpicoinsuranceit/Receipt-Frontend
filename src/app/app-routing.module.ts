@@ -4,7 +4,7 @@ import { AuthGuard } from './service/auth-service/auth.guard';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './view/core/login/login.component';
-import { HomeLayoutModule } from './view/core/home-layout/home-layout.module';
+//import { HomeLayoutModule } from './view/core/home-layout/home-layout.module';
 
 const routes: Routes = [
   
@@ -14,7 +14,7 @@ const routes: Routes = [
   },
   {
     path: 'home',
-    loadChildren : () => HomeLayoutModule,
+    loadChildren : "app/view/core/home-layout/home-layout.module#HomeLayoutModule",
     canActivate: [AuthGuard]
   },
   

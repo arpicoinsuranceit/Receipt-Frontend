@@ -1,9 +1,9 @@
-import { LastReceipt } from './../../../../model/lastreceipt';
+import { LastReceipt } from '../../../../model/lastreceipt';
 import { startWith, map } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { BankModel } from './../../../../model/bankmodel';
-import { CommonService } from './../../../../service/common-service/common.service';
+import { BankModel } from '../../../../model/bankmodel';
+import { CommonService } from '../../../../service/common-service/common.service';
 import { Component, OnInit } from '@angular/core';
 import { Expense } from '../../../../model/expense';
 
@@ -129,4 +129,14 @@ export class MiscellaneousReceiptComponent implements OnInit {
     console.log(e);
     console.log(i);
   }
+
+  convertAmountToWord() {
+    this.commonService.convertNumberToWord(this.Amount.value).subscribe(response => {
+      this.AmountInWord.setValue(response.text());
+    });
+  }
+
+  newReceipt(){}
+
+  saveReceipt(){}
 }

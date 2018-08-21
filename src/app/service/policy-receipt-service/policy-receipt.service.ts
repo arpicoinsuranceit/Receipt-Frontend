@@ -1,4 +1,4 @@
-import { SaveReceiptModel } from './../../model/savereceiptmodel';
+import { SaveReceiptModel } from '../../model/savereceiptmodel';
 import { Injectable } from '@angular/core';
 import { Http, URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
@@ -10,7 +10,7 @@ export class PolicyReceiptService {
   constructor(private http: Http) { }
 
   loadPolicies(id){
-    return this.http.get("http://localhost:8088/policysearch/" + id);
+    return this.http.get("http://localhost:8080/Receipt/policysearch/" + id);
   }
 
   getPolDetails(propId, seqNo) {
@@ -20,11 +20,11 @@ export class PolicyReceiptService {
 
     console.log("called");
 
-    return this.http.post("http://localhost:8088/getpolicydetail/", urlParams);
+    return this.http.post("http://localhost:8080/Receipt/getpolicydetail/", urlParams);
   }
 
   savePolReceipt(saveReceiptModel : SaveReceiptModel){
-    return this.http.post("http://localhost:8088/savereceiptPol/",saveReceiptModel);
+    return this.http.post("http://localhost:8080/Receipt/savereceiptPol/",saveReceiptModel);
   }
 
 }

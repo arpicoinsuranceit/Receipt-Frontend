@@ -1,16 +1,16 @@
-import { MainlifeUnderwriteModel } from './../../../../model/mainlifeUnderwrite';
-import { SaveUnderwriteModel } from './../../../../model/saveunderwritemodel';
-import { Occupation } from './../../../../model/occupation';
+import { MainlifeUnderwriteModel } from '../../../../model/mainlifeUnderwrite';
+import { SaveUnderwriteModel } from '../../../../model/saveunderwritemodel';
+import { Occupation } from '../../../../model/occupation';
 import { startWith, map } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
-import { GeneralInfo } from './../../../../model/generalInfo';
-import { QuotationReceiptService } from './../../../../service/quotation-receipt-service/quotation-receipt.service';
-import { BranchUnderwriteService } from './../../../../service/branch-underwrite/branch-underwrite.service';
-import { Spouse } from './../../../../model/spouse';
-import { MainLife } from './../../../../model/mainlife';
-import { LoadUWProposals } from './../../../../model/loaduwproposal';
-import { BenefitModel } from './../../../../model/benefitmodel';
-import { ChildModel } from './../../../../model/childmodel';
+import { GeneralInfo } from '../../../../model/generalInfo';
+import { QuotationReceiptService } from '../../../../service/quotation-receipt-service/quotation-receipt.service';
+import { BranchUnderwriteService } from '../../../../service/branch-underwrite/branch-underwrite.service';
+import { Spouse } from '../../../../model/spouse';
+import { MainLife } from '../../../../model/mainlife';
+import { LoadUWProposals } from '../../../../model/loaduwproposal';
+import { BenefitModel } from '../../../../model/benefitmodel';
+import { ChildModel } from '../../../../model/childmodel';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NomineeModel } from '../../../../model/nomineemodel';
@@ -18,7 +18,7 @@ import { CommonService } from '../../../../service/common-service/common.service
 import { BankModel } from '../../../../model/bankmodel';
 import { SpouseUnderwriteModel } from '../../../../model/spouseunderwrite';
 import { AgentModel } from '../../../../model/agentmodel';
-import { MatStepper } from '../../../../../../node_modules/@angular/material/stepper';
+import { MatStepper } from '@angular/material/stepper';
 
 @Component({
   selector: 'app-branch-underwrite',
@@ -42,6 +42,25 @@ export class BranchUnderwriteComponent implements OnInit {
   quotationDetailId: number;
   bankList: BankModel[] = new Array();
   occupationsList: Occupation[] = new Array();
+
+  _Name="";
+  _initName="";
+  _Address1="";
+  _Address2="";
+  _Address3="";
+  _Nic="";
+  _sName="";
+  _sInitName="";
+  _sNic="";
+  _cName="";
+  _cNic="";
+  _gName="";
+  _gNic="";
+  _gRel="";
+  _nName="";
+  _nRel="";
+  _nNic="";
+  
 
   filteredBanks: Observable<any[]>;
   filteredOccupations: Observable<any[]>;
@@ -397,7 +416,7 @@ export class BranchUnderwriteComponent implements OnInit {
     }
 
     encodeURIComponent(JSON.stringify(data));
-    window.open("http://localhost:4200?data=" + encodeURIComponent(JSON.stringify(data)), "_blank");
+    window.open("http://localhost:8080/Insurance?data=" + encodeURIComponent(JSON.stringify(data)), "_blank");
   }
 
   loadQuotationDetails() {
