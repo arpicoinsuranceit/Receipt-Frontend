@@ -1,6 +1,6 @@
 import { ProposalReceiptComponent } from './view/proposal-receipt.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatComponentsModule } from './../../../mat-components.module';
+import { MatComponentsModule } from '../../../mat-components.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCommonModule } from '@angular/material/core';

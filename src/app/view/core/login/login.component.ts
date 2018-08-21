@@ -1,11 +1,11 @@
-import { AuthService } from './../../../service/auth-service/auth.service';
+import { AuthService } from '../../../service/auth-service/auth.service';
 
 import { Component, OnInit } from '@angular/core';
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router/';
+import { Router, ActivatedRoute } from '@angular/router';
 import { LoginResponse } from '../../../model/loginresponse';
 
 

@@ -1,6 +1,6 @@
-import { SaveUnderwriteModel } from './../../model/saveunderwritemodel';
+import { SaveUnderwriteModel } from '../../model/saveunderwritemodel';
 import { Injectable } from '@angular/core';
-import { Http } from '../../../../node_modules/@angular/http';
+import { Http } from '@angular/http';
 
 @Injectable()
 export class BranchUnderwriteService {

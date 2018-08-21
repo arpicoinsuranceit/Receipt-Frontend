@@ -1,4 +1,4 @@
-import { MatComponentsModule } from './../../../mat-components.module';
+import { MatComponentsModule } from '../../../mat-components.module';
 import { HomeLayoutRouterModule } from './home-layout-router.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
