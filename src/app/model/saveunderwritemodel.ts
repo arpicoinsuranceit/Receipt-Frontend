@@ -5,7 +5,7 @@ import { SpouseUnderwriteModel } from './spouseunderwrite';
 export class SaveUnderwriteModel {
     constructor(private sendToApprove?:boolean,private proposalNo?:number,private seqNo?:number,private quotationNo?:number,private quotationDetailNo?:number
         ,private token?:string,private propDate?:string,private agentCode?:string, private mainlifeUnderwriteDto?:MainlifeUnderwriteModel , private spouseUnderwriteDto?:SpouseUnderwriteModel
-        , private children?:ChildModel[],private nominee?:NomineeModel[]) { }
+        , private children?:ChildModel[],private nominee?:NomineeModel[],private quoSeqNo?:number) { }
 
     set SendToApprove(sendToApprove: boolean) {
         this.sendToApprove = sendToApprove;
@@ -29,6 +29,14 @@ export class SaveUnderwriteModel {
 
     get SeqNo() {
         return this.seqNo;
+    }
+
+    get QuoSeqNo() {
+        return this.quoSeqNo;
+    }
+
+    set QuoSeqNo(quoSeqNo: number) {
+        this.quoSeqNo = quoSeqNo;
     }
 
     set QuotationNo(quotationNo: number) {

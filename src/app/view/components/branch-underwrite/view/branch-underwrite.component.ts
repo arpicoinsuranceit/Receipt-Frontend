@@ -357,7 +357,7 @@ export class BranchUnderwriteComponent implements OnInit {
         for (let i in response.json()) {
           let quoTemp = response.json()[i];
           console.log(quoTemp)
-          this.quotationSeqIdList.push(quoTemp.quotationSqNo);
+          this.quotationSeqIdList.push(quoTemp.seqId);
         }
       });
 
@@ -371,7 +371,7 @@ export class BranchUnderwriteComponent implements OnInit {
     this.quotationReceiptService.loadQuotationProp(this.quotationNo).subscribe(response => {
       for (let i in response.json()) {
         let quoTemp = response.json()[i];
-        this.quotationSeqIdList.push(quoTemp.quotationSqNo);
+        this.quotationSeqIdList.push(quoTemp.seqId);
       }
     });
   }
@@ -577,7 +577,7 @@ export class BranchUnderwriteComponent implements OnInit {
   }
 
   loadNomineeDetails() {
-    this.branchUnderwriteService.loadNominee(this.seqNo,this.quotationNo).subscribe(response => {
+    this.branchUnderwriteService.loadNominee(this.sequenceNo,this.quotationNo).subscribe(response => {
       console.log(response.json());
       this.branchUWNomineeForm.get("type").setValue("NORMAL");
       let nominee: NomineeModel = new NomineeModel();
@@ -607,7 +607,7 @@ export class BranchUnderwriteComponent implements OnInit {
       this.displayedColumnsShedule = new Array();
       this.displayedColumnsShedule = ['policyYear', 'outYear', 'outSum', 'lorned', 'premiumRate', 'premium'];
 
-      this.branchUnderwriteService.loadShedule(this.seqNo,this.quotationNo).subscribe(response => {
+      this.branchUnderwriteService.loadShedule(this.sequenceNo,this.quotationNo).subscribe(response => {
         console.log(response.json());
         this.sheduleArray = new Array();
         this.sheduleArray = response.json();
@@ -617,7 +617,7 @@ export class BranchUnderwriteComponent implements OnInit {
       this.displayedColumnsShedule = new Array();
       this.displayedColumnsShedule = ['polyer', 'padtrm', 'prmpyr', 'prmpad', 'isumas', 'paidup', 'surrnd'];
 
-      this.branchUnderwriteService.loadSurrenderVals(this.seqNo,this.quotationNo).subscribe(response => {
+      this.branchUnderwriteService.loadSurrenderVals(this.sequenceNo,this.quotationNo).subscribe(response => {
         console.log(response.json());
         this.sheduleArray = new Array();
         this.sheduleArray = response.json();
@@ -626,7 +626,7 @@ export class BranchUnderwriteComponent implements OnInit {
       this.displayedColumnsShedule = new Array();
       this.displayedColumnsShedule = ['polyer', 'month', 'contribution', 'fndBeforeInt', 'intRat1', 'clsFnd1', 'intRat2', 'clsFnd2', 'intRat3', 'clsFnd3'];
 
-      this.branchUnderwriteService.loadPensionShedule(this.seqNo,this.quotationNo).subscribe(response => {
+      this.branchUnderwriteService.loadPensionShedule(this.sequenceNo,this.quotationNo).subscribe(response => {
         console.log(response.json());
         this.sheduleArray = new Array();
         this.sheduleArray = response.json();
@@ -960,6 +960,7 @@ export class BranchUnderwriteComponent implements OnInit {
 
       this.saveUnderwriteModel.ProposalNo = this.proposalNo;
       this.saveUnderwriteModel.SeqNo = this.seqNo;
+      this.saveUnderwriteModel.QuoSeqNo=this.sequenceNo;
       this.saveUnderwriteModel.QuotationDetailNo = this.quotationDetailId;
       this.saveUnderwriteModel.QuotationNo = this.quotationNo;
 
@@ -1020,7 +1021,7 @@ export class BranchUnderwriteComponent implements OnInit {
         }
       } else {
         if (this.branchUWFinalDecisionInfo.valid) {
-          alert("Success..");
+         // alert("Success..");
           return true;
         } else {
           alert("Please Fill Required Details..");
