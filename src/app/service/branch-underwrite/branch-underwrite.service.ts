@@ -20,10 +20,10 @@ export class BranchUnderwriteService {
     return this.http.get("http://localhost:8088/loadProposalDetails/"+pprNo+"/"+seqNo);
   }
 
-  loadQuotationDetails(qdId : number,qId : number): any {
+  loadQuotationDetails(seqNo : number,qId : number): any {
     console.log("-------------------");
-    console.log(qdId + "'" + qId);
-    return this.http.get("http://localhost:8088/getQuotationDetails/"+qdId+"/"+qId);
+    console.log(seqNo + "'" + qId);
+    return this.http.get("http://localhost:8088/getQuotationDetails/"+seqNo+"/"+qId);
   }
 
   loadQuotationIdFormSeqNo(seqNo : number,qId : number): any {
@@ -32,28 +32,28 @@ export class BranchUnderwriteService {
     return this.http.get("http://localhost:8088/getQuotationDetailFromSeqNo/"+seqNo+"/"+qId);
   }
 
-  loadNominee(qdId : number): any {
+  loadNominee(seqNo : number,qId : number): any {
     console.log("-------------------");
-    console.log(qdId);
-    return this.http.get("http://localhost:8088/getNominee/"+qdId);
+    console.log(seqNo);
+    return this.http.get("http://localhost:8088/getNominee/"+seqNo+"/"+qId);
   }
 
-  loadShedule(qdId : number): any {
+  loadShedule(seqNo : number,qId : number): any {
     console.log("-------------------");
-    console.log(qdId );
-    return this.http.get("http://localhost:8088/getShedule/"+qdId);
+    console.log(seqNo );
+    return this.http.get("http://localhost:8088/getShedule/"+seqNo+"/"+qId);
   }
 
-  loadPensionShedule(qdId : number): any {
+  loadPensionShedule(seqNo : number,qId : number): any {
     console.log("-------------------");
-    console.log(qdId );
-    return this.http.get("http://localhost:8088/getPensionShedule/"+qdId);
+    console.log(seqNo );
+    return this.http.get("http://localhost:8088/getPensionShedule/"+seqNo+"/"+qId);
   }
 
-  loadSurrenderVals(qdId : number): any {
+  loadSurrenderVals(seqNo : number,qId : number): any {
     console.log("-------------------");
-    console.log(qdId );
-    return this.http.get("http://localhost:8088/getSurrenderVals/"+qdId);
+    console.log(seqNo );
+    return this.http.get("http://localhost:8088/getSurrenderVals/"+seqNo+"/"+qId);
   }
 
   saveUnderwrite(saveUnderwriteModel : SaveUnderwriteModel){

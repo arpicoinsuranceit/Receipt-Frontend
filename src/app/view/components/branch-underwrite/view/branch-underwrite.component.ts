@@ -407,7 +407,7 @@ export class BranchUnderwriteComponent implements OnInit {
       if (response.text() != null) {
         this.quotationDetailId = response.text();
 
-        this.branchUnderwriteService.loadQuotationDetails(this.quotationDetailId, this.quotationNo).subscribe(response => {
+        this.branchUnderwriteService.loadQuotationDetails(this.sequenceNo, this.quotationNo).subscribe(response => {
           console.log(response.json());
 
           let occup = new Occupation();
@@ -577,7 +577,7 @@ export class BranchUnderwriteComponent implements OnInit {
   }
 
   loadNomineeDetails() {
-    this.branchUnderwriteService.loadNominee(this.quotationDetailId).subscribe(response => {
+    this.branchUnderwriteService.loadNominee(this.seqNo,this.quotationNo).subscribe(response => {
       console.log(response.json());
       this.branchUWNomineeForm.get("type").setValue("NORMAL");
       let nominee: NomineeModel = new NomineeModel();
@@ -607,7 +607,7 @@ export class BranchUnderwriteComponent implements OnInit {
       this.displayedColumnsShedule = new Array();
       this.displayedColumnsShedule = ['policyYear', 'outYear', 'outSum', 'lorned', 'premiumRate', 'premium'];
 
-      this.branchUnderwriteService.loadShedule(this.quotationDetailId).subscribe(response => {
+      this.branchUnderwriteService.loadShedule(this.seqNo,this.quotationNo).subscribe(response => {
         console.log(response.json());
         this.sheduleArray = new Array();
         this.sheduleArray = response.json();
@@ -617,7 +617,7 @@ export class BranchUnderwriteComponent implements OnInit {
       this.displayedColumnsShedule = new Array();
       this.displayedColumnsShedule = ['polyer', 'padtrm', 'prmpyr', 'prmpad', 'isumas', 'paidup', 'surrnd'];
 
-      this.branchUnderwriteService.loadSurrenderVals(this.quotationDetailId).subscribe(response => {
+      this.branchUnderwriteService.loadSurrenderVals(this.seqNo,this.quotationNo).subscribe(response => {
         console.log(response.json());
         this.sheduleArray = new Array();
         this.sheduleArray = response.json();
@@ -626,7 +626,7 @@ export class BranchUnderwriteComponent implements OnInit {
       this.displayedColumnsShedule = new Array();
       this.displayedColumnsShedule = ['polyer', 'month', 'contribution', 'fndBeforeInt', 'intRat1', 'clsFnd1', 'intRat2', 'clsFnd2', 'intRat3', 'clsFnd3'];
 
-      this.branchUnderwriteService.loadPensionShedule(this.quotationDetailId).subscribe(response => {
+      this.branchUnderwriteService.loadPensionShedule(this.seqNo,this.quotationNo).subscribe(response => {
         console.log(response.json());
         this.sheduleArray = new Array();
         this.sheduleArray = response.json();
