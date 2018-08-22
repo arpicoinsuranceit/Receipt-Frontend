@@ -28,7 +28,7 @@ export class AuthService {
     let urlSearchParams = new URLSearchParams();
     urlSearchParams.append('userName', userName);
     urlSearchParams.append('password', password);
-    this.http.post("http://localhost:8080/UserManagement/login/", urlSearchParams).subscribe(response => {
+    this.http.post("http://localhost:8086/login/", urlSearchParams).subscribe(response => {
       try {
         console.log(response.json());
 
@@ -65,7 +65,7 @@ export class AuthService {
     urlSearchParams.append('password', password);
     urlSearchParams.append('newPassword', newPassword);
     urlSearchParams.append('confirmNewPassword', confirmNewPassword);
-    return this.http.post("http://localhost:8080/UserManagement/changePassword/", urlSearchParams);
+    return this.http.post("http://localhost:8086/changePassword/", urlSearchParams);
   }
 
   logout() {

@@ -10,17 +10,17 @@ export class QuotationReceiptService {
   constructor(private http: Http) { }
 
   loadQuotation(id){
-    return this.http.get("http://localhost:8080/Quotation/quotationsearch/" + id);
+    return this.http.get("http://localhost:8084/quotationsearch/" + id);
   }
 
   getQuoDetails(quoId, seqNo): any {
-    return this.http.get("http://localhost:8080/Quotation/getquotationdetail/"+quoId+"/"+seqNo);
+    return this.http.get("http://localhost:8084/getquotationdetail/"+quoId+"/"+seqNo);
   }
   loadQuotationProp(id){
-    return this.http.get("http://localhost:8080/Quotation/quotationsearchprop/" + id);
+    return this.http.get("http://localhost:8084/quotationsearchprop/" + id);
   }
 
   saveQupReceipt(data : SaveReceiptModel): any {
-    return this.http.post("http://localhost:8080/Receipt/savereceiptquo/",data);
+    return this.http.post("http://localhost:8088/savereceiptquo/",data);
   }
 }

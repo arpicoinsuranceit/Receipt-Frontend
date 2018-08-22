@@ -19,6 +19,8 @@ import { BankModel } from '../../../../model/bankmodel';
 import { SpouseUnderwriteModel } from '../../../../model/spouseunderwrite';
 import { AgentModel } from '../../../../model/agentmodel';
 import { MatStepper } from '@angular/material/stepper';
+import { MatPaginator, MatTableDataSource, MatDialogConfig, MatDialog } from '@angular/material';
+import { AlertComponent } from '../../../core/alert/alert.component';
 
 @Component({
   selector: 'app-branch-underwrite',
@@ -70,6 +72,10 @@ export class BranchUnderwriteComponent implements OnInit {
 
   displayedColumnsProposal: string[] = ['proposalNo', 'sequenceNo', 'policyNo', 'customer', 'proposedName', 'agent', 'policyBranch', 'agentBranch',
     'nic'];
+  
+  datasourceProposal = new MatTableDataSource<LoadUWProposals>(this.proposalArray);
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   displayedColumns: string[] = ['name', 'relationship', 'dob', 'age', 'nic', 'gender', 'isGetHcbiOrHcbf', 'isGetShcbi',
     'isGetHbc', 'isGetCic'];
@@ -203,23 +209,26 @@ export class BranchUnderwriteComponent implements OnInit {
   }
 
   constructor(private branchUnderwriteService: BranchUnderwriteService, private quotationReceiptService: QuotationReceiptService,
-    private commonService: CommonService) {
+    private commonService: CommonService, public dialog: MatDialog) {
 
   }
 
   ngOnInit() {
+    //this.datasourceProposal.paginator = this.paginator;
+    this.paginator.pageIndex=0; 
+    this.paginator.pageSize=5;
     this.loadProposalData();
     this.getBanks();
     this.getOccupations();
-
   }
 
   loadProposalData() {
     this.displayedColumnsShedule = new Array();
     
-    this.branchUnderwriteService.loadProposalToUnderwrite(sessionStorage.getItem("token")).subscribe(response => {
+    this.branchUnderwriteService.loadProposalToUnderwrite(sessionStorage.getItem("token"),this.paginator.pageIndex,this.paginator.pageSize).subscribe(response => {
       this.proposalArray = new Array();
-      response.json().forEach(i => {
+      this.paginator.length=response.json().propCount;
+      response.json().inProposalUnderwriteModel.forEach(i => {
         let proposal: LoadUWProposals = new LoadUWProposals();
 
         proposal.Agent = i.agentCode;
@@ -237,7 +246,17 @@ export class BranchUnderwriteComponent implements OnInit {
 
       });
 
+      this.datasourceProposal.data = this.proposalArray;
+
     });
+  }
+
+  applyFilter(filterValue: string) {
+    this.datasourceProposal.filter = filterValue.trim().toLowerCase();
+  }
+
+  loadNextData(){
+    this.loadProposalData();
   }
 
   filterBanks(name: string) {
@@ -616,11 +635,6 @@ export class BranchUnderwriteComponent implements OnInit {
   }
 
   loadSheduleDetails() {
-    //Policy Year	,Out Term	,Sum at Risk,	Reduction,	Rate,	Premium (DTA/DTAPL)
-
-    //Policy Year,	Policy Month,	Opening Fee,	ComCon,	FundAmt,	FndBfi,	IntAmt,	FndBmf,	MgtFee,	FndClo,	ADBCov (AIP)
-
-    //Policy Year	,Paid Term,	Premium Per Year,	Total Premium Paid,	Inc:Sum:Assu,	Paid Up,	Surrender (ARP)
 
     if (sessionStorage.getItem("ProductCode") == "DTA" || sessionStorage.getItem("ProductCode") == "DTAPL") {
       this.displayedColumnsShedule = new Array();
@@ -716,7 +730,6 @@ export class BranchUnderwriteComponent implements OnInit {
   }
 
   loadChildData(relationship, cName, cNic, cDob, cAge, row) {
-    alert(relationship + "," + cName + "," + cNic + "," + cDob + "," + cAge + "," + row);
     console.log(row);
     this.childEditIndex = this.childrenArray.findIndex(x => x == row);
     this.branchUWChildForm.get("titleChild").setValue(relationship);
@@ -782,7 +795,6 @@ export class BranchUnderwriteComponent implements OnInit {
 
                   alreadyShare = parseInt(share) + alreadyShare;
                   if (alreadyShare <= 100) {
-                    alert("success");
 
                     nominee.Relationship = this.branchUWNomineeForm.get("relationshipNominee").value;
                     nominee.Name = this.branchUWNomineeForm.get("fullNameNominee").value;
@@ -801,30 +813,28 @@ export class BranchUnderwriteComponent implements OnInit {
                     this.branchUWNomineeForm.reset();
                     this.branchUWNomineeForm.get("type").setValue("NORMAL");
                   } else {
-                    alert("Out of Share % Limit..");
+                    this.alert("Oopz...", "Out of Share % Limit", "error");
                   }
 
                 } else {
-                  alert("Please Enter Share % ..");
+                  this.alert("Oopz...", "Please Enter Share %", "error");
                 }
-
               } else {
-                alert("Please Enter Guardian Relation..");
+                this.alert("Oopz...", "Please Enter Guardian Relation", "error");
               }
             } else {
-              alert("Please Enter Guardian Name..");
+              this.alert("Oopz...", "Please Enter Guardian Name", "error");
             }
-
           } else {
-            alert("Please Enter Nominee Name..");
+            this.alert("Oopz...", "Please Enter Nominee Name", "error");
           }
 
         } else {
-          alert("Please Enter DOB and Nic Correctly..");
+          this.alert("Oopz...", "Please Enter DOB and Nic Correctly", "error");
         }
 
       } else {
-        alert("Please Enter All Details Correctly..");
+        this.alert("Oopz...", "Please Enter All Details Correctly..", "error");
       }
 
     }
@@ -882,7 +892,6 @@ export class BranchUnderwriteComponent implements OnInit {
 
                   alreadyShare = parseInt(share) + alreadyShare;
                   if (alreadyShare <= 100) {
-                    alert("success");
                     let nominee = new NomineeModel();
                     nominee.Relationship = this.branchUWNomineeForm.get("relationshipNominee").value;
                     nominee.Name = this.branchUWNomineeForm.get("fullNameNominee").value;
@@ -901,28 +910,28 @@ export class BranchUnderwriteComponent implements OnInit {
                     this.branchUWNomineeForm.reset();
                     this.branchUWNomineeForm.get("type").setValue("NORMAL");
                   } else {
-                    alert("Out of Share % Limit..");
+                    this.alert("Oopz...", "Out of Share % Limit", "error");
                   }
 
                 } else {
-                  alert("Please Enter Share % ..");
+                  this.alert("Oopz...", "Please Enter Share %", "error");
                 }
               } else {
-                alert("Please Enter Guardian Relation..");
+                this.alert("Oopz...", "Please Enter Guardian Relation", "error");
               }
             } else {
-              alert("Please Enter Guardian Name..");
+              this.alert("Oopz...", "Please Enter Guardian Name", "error");
             }
           } else {
-            alert("Please Enter Nominee Name..");
+            this.alert("Oopz...", "Please Enter Nominee Name", "error");
           }
 
         } else {
-          alert("Please Enter DOB and Nic Correctly..");
+          this.alert("Oopz...", "Please Enter DOB and Nic Correctly", "error");
         }
 
       } else {
-        alert("Please Enter All Details Correctly..");
+        this.alert("Oopz...", "Please Enter All Details Correctly..", "error");
       }
     }
 
@@ -992,18 +1001,12 @@ export class BranchUnderwriteComponent implements OnInit {
       this.saveUnderwriteModel.AgentCode = this.PickAgentCode.value;
       this.saveUnderwriteModel.PropDate = this.branchUWFinalDecisionInfo.get("propDate").value;
 
-      console.log("this.childrenArray");
-
-      console.log(this.childrenArray);
-
-      console.log("this.mainlifeUnderwrite");
-
       console.log(this.saveUnderwriteModel);
 
       this.branchUnderwriteService.saveUnderwrite(this.saveUnderwriteModel).subscribe(response => {
         console.log(response.text());
         if (response.text() == "Success") {
-          alert("Successfully Underwrite..");
+          this.alert("Success", "Successfully Added Receipt", "success");
           this.generalInfo = new GeneralInfo();
           this.quotationSeqIdList = new Array();
           this.branchUWGeneralInfo.reset();
@@ -1011,10 +1014,13 @@ export class BranchUnderwriteComponent implements OnInit {
           this.resetAllForms();
           this.stepper.selectedIndex = 0;
           this.loadProposalData();
+
         } else {
-          alert("Fail");
+          this.alert("Oopz...", "Error occour", "error");
         }
 
+      }, async error => {
+        this.alert("Oopz...", "Error occour", "error");   
       });
 
     }
@@ -1030,12 +1036,12 @@ export class BranchUnderwriteComponent implements OnInit {
             //alert("Success..");
             return true;
           } else {
-            alert("Please Fill Required Details..");
+            this.alert("Oopz...", "Please Fill Required Details", "error");
             return false;
           }
 
         } else {
-          alert("Please Fill Spouse Required Details..");
+          this.alert("Oopz...", "Please Fill Required Details", "error");
           return false;
         }
       } else {
@@ -1043,13 +1049,13 @@ export class BranchUnderwriteComponent implements OnInit {
          // alert("Success..");
           return true;
         } else {
-          alert("Please Fill Required Details..");
+          this.alert("Oopz...", "Please Fill Required Details", "error");
           return false;
         }
       }
 
     } else {
-      alert("Please Fill Insured Required Details..");
+      this.alert("Oopz...", "Please Fill Required Details", "error");
       return false;
     }
   }
@@ -1068,6 +1074,26 @@ export class BranchUnderwriteComponent implements OnInit {
     this.childrenArray = new Array();
     this.sheduleArray = new Array();
     this.isLinear = true;
+  }
+
+  alert(title: string, message: string, type: string) {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      id: 1,
+      title: title,
+      message: message,
+      type: type
+    };
+
+    const dialogRef = this.dialog.open(AlertComponent, dialogConfig);
+
+    // dialogRef.afterClosed().subscribe(result => {
+    //   alert("response: " + result)
+    // });
+
   }
 
 }

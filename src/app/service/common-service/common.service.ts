@@ -10,7 +10,7 @@ export class CommonService {
   }
 
   convertNumberToWord(number) {
-    return this.http.get("http://localhost:8080/Receipt/convertNumberToWord/" + number);
+    return this.http.get("http://localhost:8088/convertNumberToWord/" + number);
   }
 
   getBank() {
@@ -18,11 +18,11 @@ export class CommonService {
     let urlParams = new URLSearchParams();
     urlParams.append('token', token);
     console.log(token);
-    return this.http.post("http://localhost:8080/Receipt/getbank/", urlParams);
+    return this.http.post("http://localhost:8088/getbank/", urlParams);
   }
 
   getOccupations() {
-    return this.http.get('http://localhost:8080/Quotation/occupation');
+    return this.http.get('http://localhost:8084/occupation');
   }
 
   getAgent(agentCode: any) {
@@ -30,14 +30,14 @@ export class CommonService {
     let urlParams = new URLSearchParams();
     urlParams.append('token', token);
     urlParams.append('agentCode', agentCode);
-    return this.http.post("http://localhost:8080/Receipt/getAgents/", urlParams);
+    return this.http.post("http://localhost:8088/getAgents/", urlParams);
   }
 
   getLastReceipts() {
     let token: string = sessionStorage.getItem("token");
     let urlParams = new URLSearchParams();
     urlParams.append('token', token);
-    return this.http.post("http://localhost:8080/Receipt/getLastReceipts/", urlParams);
+    return this.http.post("http://localhost:8088/getLastReceipts/", urlParams);
   }
 
   loadAgeAndDOBFromNic(nic: string) {
@@ -73,7 +73,7 @@ export class CommonService {
     }
 
     if (nic.length == 12 || nic.length == 9) {
-      return this.http.post('http://localhost:8080/Quotation/ageCalculate', nic);
+      return this.http.post('http://localhost:8084/ageCalculate', nic);
     }
 
   }
