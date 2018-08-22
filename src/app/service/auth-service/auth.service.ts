@@ -28,7 +28,7 @@ export class AuthService {
     let urlSearchParams = new URLSearchParams();
     urlSearchParams.append('userName', userName);
     urlSearchParams.append('password', password);
-    this.http.post("http://localhost:8080/UserManagement/login/", urlSearchParams).subscribe(response => {
+    this.http.post("http://localhost:8086/login/", urlSearchParams).subscribe(response => {
       try {
         console.log(response.json());
 
@@ -40,11 +40,14 @@ export class AuthService {
         this.loginResponse.IsLogin = response.json().login;
         this.loginResponse.IsNeedChange = response.json().needChange;
         this.loginResponse.JwtToken = response.json().jwtToken;
+        this.loginResponse.MenuDtos = response.json().menuDtos;
+
 
         if (this.loginResponse.IsLogin) {
           if (this.loginResponse.IsExpired == false) {
             //this.isLogin = true;
             sessionStorage.setItem("token", this.loginResponse.JwtToken);
+            sessionStorage.setItem("menus", JSON.stringify(this.loginResponse.MenuDtos));
             this.router.navigate(['/home/home']);
           }
         }
@@ -65,7 +68,7 @@ export class AuthService {
     urlSearchParams.append('password', password);
     urlSearchParams.append('newPassword', newPassword);
     urlSearchParams.append('confirmNewPassword', confirmNewPassword);
-    return this.http.post("http://localhost:8080/UserManagement/changePassword/", urlSearchParams);
+    return this.http.post("http://localhost:8086/changePassword/", urlSearchParams);
   }
 
   logout() {

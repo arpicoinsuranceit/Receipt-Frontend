@@ -1,3 +1,4 @@
+import { MenuModel } from './menumodel';
 import { ThrowStmt } from "@angular/compiler";
 
 export class LoginResponse{
@@ -5,7 +6,7 @@ export class LoginResponse{
     
     constructor (private isLogin? : boolean, private isInactive? : boolean,
         private isFail? : boolean, private isLock? : boolean, private isExpired? : boolean,
-        private isNeedChange? : boolean, private jwtToken? : string, private failCount? : number, )
+        private isNeedChange? : boolean, private jwtToken? : string, private failCount? : number, private menuDtos ? : MenuModel[])
     {
 
     }
@@ -72,6 +73,14 @@ export class LoginResponse{
 
     set FailCount (failCount : number) {
         this.failCount = failCount;
+    }
+
+    get MenuDtos () {
+        return this.menuDtos;
+    }
+
+    set MenuDtos (menuDtos : MenuModel[]) {
+        this.menuDtos = menuDtos;
     }
 
     

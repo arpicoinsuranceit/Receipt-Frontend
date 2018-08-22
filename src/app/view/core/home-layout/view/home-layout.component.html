@@ -7,19 +7,19 @@
         </mat-card>
 
 
-        <button mat-button [matMenuTriggerFor]="receipt" style="width: 210px; margin: 10px; text-align: left;">RECEIPT</button>
+        <button *ngIf = "menuList.includes('RECEIPT')" mat-button [matMenuTriggerFor]="receipt" style="width: 210px; margin: 10px; text-align: left;">RECEIPT</button>
 
         <mat-menu #receipt="matMenu" yPosition="below" xPosition="before" >
-            <button mat-menu-item routerLink="policyreceipt">POLICY RECEIPT</button>
-            <button mat-menu-item routerLink="proposalreceipt">PROPOSAL RECEIPT</button>
-            <button mat-menu-item routerLink="quoreceipt">QUOTATION RECEIPT</button>
-            <button mat-menu-item routerLink="miscellaneousreceipt">MISCELLANEOUS RECEIPT</button>
+            <button *ngIf = "menuList.includes('RECEIPT_POLICY')" mat-menu-item routerLink="policyreceipt">POLICY RECEIPT</button>
+            <button *ngIf = "menuList.includes('RECEIPT_PROPOSAL')" mat-menu-item routerLink="proposalreceipt">PROPOSAL RECEIPT</button>
+            <button *ngIf = "menuList.includes('RECEIPT_QUOTATION')" mat-menu-item routerLink="quoreceipt">QUOTATION RECEIPT</button>
+            <button *ngIf = "menuList.includes('RECEIPT_MISCLLANEOUS')" mat-menu-item routerLink="miscellaneousreceipt">MISCELLANEOUS RECEIPT</button>
         </mat-menu>
 
-        <button mat-button [matMenuTriggerFor]="underwrite" style="width: 210px; margin: 10px; text-align: left;">UNDERWRITE</button>
+        <button *ngIf = "menuList.includes('UNDERWRITE')" mat-button [matMenuTriggerFor]="underwrite" style="width: 210px; margin: 10px; text-align: left;">UNDERWRITE</button>
 
         <mat-menu #underwrite="matMenu" yPosition="below" xPosition="before" >
-            <button mat-menu-item routerLink="underwrite">UNDERWRITE</button>
+            <button *ngIf = "menuList.includes('UNDERWRITE_L1')" mat-menu-item routerLink="underwrite">UNDERWRITE</button>
         </mat-menu>
 
     </mat-drawer>
