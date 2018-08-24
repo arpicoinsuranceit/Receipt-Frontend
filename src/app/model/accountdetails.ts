@@ -1,5 +1,5 @@
-export class ReceiptDetails {
-    constructor(private branch? : string, private accNo? : number, private description? : string, private dr? : number, private cr? : number){}
+export class AccountDetails {
+    constructor(private branch? : string, private accNo? : string, private description? : string, private dr? : number, private cr? : number){}
 
     get Branch(){
         return this.branch;
@@ -10,7 +10,7 @@ export class ReceiptDetails {
     get AccNo(){
         return this.accNo;
     }
-    set AccNo(accNo: number){
+    set AccNo(accNo: string){
         this.accNo = accNo;
     }
     get Description(){

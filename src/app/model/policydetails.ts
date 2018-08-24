@@ -1,4 +1,4 @@
-export class ReceiptDetails {
+export class PolicyDetails {
     constructor(private pprnum? : string, private polnum? : string, private polType? : string, private status? : string, private comDate? : string
         , private insMonth? : string, private date? : string, private amount? : number){}
 
