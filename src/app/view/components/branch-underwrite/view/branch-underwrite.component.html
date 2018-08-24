@@ -22,7 +22,7 @@
                   <ng-template matStepLabel>Find</ng-template>
                   <div fxFlex="100%" style="margin-bottom: 10px;max-height: 430px;overflow-x: auto;">
                    
-                      <mat-table [dataSource]="proposalArray" class="mat-elevation-z8" style="padding: 20px;">
+                      <mat-table [dataSource]="datasourceProposal" class="mat-elevation-z8" style="padding: 20px;">
                           <ng-container matColumnDef="proposalNo">
                             <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Proposal No </mat-header-cell>
                             <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.proposalNo}} </mat-cell>
@@ -73,11 +73,14 @@
 
                           <mat-header-row *matHeaderRowDef="displayedColumnsProposal"></mat-header-row>
                           <mat-row *matRowDef="let row; columns: displayedColumnsProposal;" (dblclick)="loadData(row.proposalNo,row.sequenceNo,row.policyBranch,row.agent)"></mat-row>
-                        </mat-table>
+                      </mat-table>
+
                   </div>
                 </mat-card-content>
                 <mat-card-footer style="border-top: solid #C4C4C4 1px;  display: flex; 
                             justify-content: space-between; vertical-align: bottom;margin-top: 10%;">
+                  <mat-paginator [pageSizeOptions]="[5, 10, 25, 50, 100]" (page)="loadNextData();" showFirstLastButtons></mat-paginator>
+
                   <button mat-raised-button matStepperNext matTooltip="Go to General Info " color="primary" style="float: right;margin-top: 10px;">Next</button>
                 </mat-card-footer>
               </mat-card>
