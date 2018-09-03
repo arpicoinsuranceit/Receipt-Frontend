@@ -38,6 +38,10 @@ const routes: Routes = [
       {
         path: 'miscellaneousreceipt',
         loadChildren : "app/view/components/miscellaneous-receipt/miscellaneous-receipt.module#MiscellaneousReceiptModule"
+      },
+      {
+        path: 'receiptcancelation',
+        loadChildren : "app/view/components/receipt-cancelation/receipt-cancelation.module#ReceiptCancelationModule"
       }
     ]
   }
