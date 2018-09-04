@@ -4,7 +4,7 @@ import { BankDetails } from './../../../../model/bankdetails';
 import { PolicyDetails } from './../../../../model/policydetails';
 import { FormGroup } from '@angular/forms';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatTableDataSource,MatPaginator } from '@angular/material';
+import { MatTableDataSource,MatPaginator, MatStepper } from '@angular/material';
 import { ReceiptInquiryService } from '../../../../service/receipt-inquiry/receipt-inquiry.service';
 
 @Component({
@@ -13,6 +13,13 @@ import { ReceiptInquiryService } from '../../../../service/receipt-inquiry/recei
   styleUrls: ['./receipt-inquiry.component.css']
 })
 export class ReceiptInquiryComponent implements OnInit {
+
+  @ViewChild('stepper') stepper: MatStepper;
+
+  loadingRcptDet=true;
+  loadingBankDet=false;
+  loadingPolDet=false;
+  loadingAccDet=false;
 
   firstFormGroup = new FormGroup({
   });
@@ -54,15 +61,22 @@ export class ReceiptInquiryComponent implements OnInit {
   }
 
   loadAllReceiptDetails(){
+    this.loadingRcptDet=true;
     this.inquiryService.loadAllReceiptDetails(this.paginator.pageIndex,this.paginator.pageSize).subscribe(response =>{
       console.log(response.json());
       this.receiptDetailsArray=response.json().receiptDetailsDto;
       this.paginator.length=response.json().receiptCount;
       this.datasourceReceiptDetails.data = this.receiptDetailsArray;
+
+      this.loadingRcptDet=false;
     });
+
+    
   }
   
   loadData(data){
+
+    this.stepper.selectedIndex = 0;
     this.bankDetails=new BankDetails();
     this.policyDetailsArray=new Array();
     this.accountDetailsArray=new Array();
@@ -73,35 +87,44 @@ export class ReceiptInquiryComponent implements OnInit {
   }
 
   loadPolicyDetails(docCode:string,docNum:number){
+    this.loadingPolDet=true;
     this.inquiryService.loadAllPolicyDetails(docCode,docNum).subscribe(response => {
       console.log(response.json());
 
       if(response.json() != null){
         this.policyDetailsArray=response.json();
       }
+      this.loadingPolDet=false;
     });
 
   }
 
   loadAccountDetails(docCode:string,docNum:number){
+    this.loadingAccDet=true;
     this.inquiryService.loadAllAccountDetails(docCode,docNum).subscribe(response => {
       console.log(response.json());
 
       if(response.json() != null){
         this.accountDetailsArray=response.json();
       }
+
+      this.loadingAccDet=false;
       console.log(this.accountDetailsArray);
     });
 
   }
 
   loadBankDetails(docCode:string,docNum:number){
+    this.loadingBankDet=true;
     this.inquiryService.loadAllBankDetails(docCode,docNum).subscribe(response => {
       console.log(response.json());
 
       if(response.json() != null){
         this.bankDetails=response.json();
       }
+
+      this.loadingBankDet=false;
+
     });
 
   }

@@ -15,12 +15,18 @@
                     <mat-card>
                       <mat-card-content  style="max-height: 400px;overflow-x: auto;">
                         <ng-template matStepLabel>RECEIPT DETAILS</ng-template>
-                        <mat-form-field>
-                          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search From Any Field">
-                        </mat-form-field>
-                        <div fxFlex="100%" style="margin-bottom: 10px;max-height: 400px;overflow-x: auto;">
-                            <div class="mat-elevation-z8">
-                                          
+
+                        <div fxFlex="100%" style="margin-bottom: 10px;max-height: 400px;overflow-x: auto;"  >
+                           
+                        <div [hidden]="!loadingRcptDet" class="loader">
+                          <h5>Loading...</h5>
+                          <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                        </div>
+
+                          <div class="mat-elevation-z8" [ngClass]="{'disabled': loadingRcptDet == true}">
+                                <mat-form-field>
+                                  <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search From Any Field">
+                                </mat-form-field>           
                                 <mat-table [dataSource]="datasourceReceiptDetails">
                               
                                   <ng-container matColumnDef="canDate">
@@ -105,7 +111,12 @@
                     <mat-card>
                       <mat-card-content  style="max-height: 400px;overflow-x: auto;">
                         <ng-template matStepLabel>BANK DETAILS</ng-template>
-                        <div fxFlex="100%" style="margin-bottom: 10px;max-height: 400px;overflow-x: auto;">
+                        <div [hidden]="!loadingBankDet" class="loader">
+                          <h5>Loading...</h5>
+                          <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                        </div>
+
+                        <div fxFlex="100%" style="margin-bottom: 10px;max-height: 400px;overflow-x: auto;" [ngClass]="{'disabled': loadingBankDet == true}">
                           <div class="mat-elevation-z8">
                             <table>
                               <tr style="height: 20px;">
@@ -165,7 +176,11 @@
                     <mat-card>
                       <mat-card-content  style="max-height: 400px;overflow-x: auto;">
                         <ng-template matStepLabel>POLICY DETAILS</ng-template>
-                        <div fxFlex="100%" style="margin-bottom: 10px;max-height: 400px;overflow-x: auto;">
+                        <div [hidden]="!loadingPolDet" class="loader">
+                          <h5>Loading...</h5>
+                          <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                        </div>
+                        <div fxFlex="100%" style="margin-bottom: 10px;max-height: 400px;overflow-x: auto;" [ngClass]="{'disabled': loadingPolDet == true}">
                             <div class="mat-elevation-z8">
                                 <mat-table [dataSource]="policyDetailsArray">
                               
@@ -254,7 +269,11 @@
                     <mat-card>
                       <mat-card-content  style="max-height: 400px;overflow-x: auto;">
                         <ng-template matStepLabel>ACCOUNT DETAILS</ng-template>
-                        <div fxFlex="100%" style="margin-bottom: 10px;max-height: 400px;overflow-x: auto;">
+                        <div [hidden]="!loadingAccDet" class="loader">
+                          <h5>Loading...</h5>
+                          <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                        </div>
+                        <div fxFlex="100%" style="margin-bottom: 10px;max-height: 400px;overflow-x: auto;" [ngClass]="{'disabled': loadingAccDet == true}">
                             <div class="mat-elevation-z8">
                                 
                                 <mat-table [dataSource]="accountDetailsArray">
