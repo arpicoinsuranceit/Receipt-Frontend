@@ -27,6 +27,11 @@ import { MatDialogConfig, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 
 export class QuotationReceiptComponent implements OnInit {
 
+  loading_form = true;
+  loading_table = true;
+  loading_details = false;
+  loading_saving = false;
+
   success: number = 0;
   error: number = 0;
   errorMessage: string = "";
@@ -125,8 +130,9 @@ export class QuotationReceiptComponent implements OnInit {
   }
 
   getBanks() {
+    this.loading_form = true;
     this.commonService.getBank().subscribe(response => {
-
+      this.loading_form = false;
       console.log(response.json());
 
       for (let i in response.json()) {
@@ -151,7 +157,9 @@ export class QuotationReceiptComponent implements OnInit {
       && event.key != "ArrowDown" && event.key != "ArrowLeft" && event.key != "ArrowRight" &&
       event.key != "Tab" && event.key != "Enter" && event.key != "Backspace") {
       this.agentList = new Array();
+      this.loading_form = true;
       this.commonService.getAgent(this.PickAgentCode.value).subscribe(response => {
+        this.loading_form = false;
         console.log(response.json());
         for (let i in response.json()) {
           let agnTemp = response.json()[i];
@@ -182,7 +190,9 @@ export class QuotationReceiptComponent implements OnInit {
       && event.key != "ArrowDown" && event.key != "ArrowLeft" && event.key != "ArrowRight" &&
       event.key != "Tab" && event.key != "Enter" && event.key != "Backspace") {
       this.quotationList = new Array();
+      this.loading_form = true;
       this.quotationReceiptService.loadQuotation(this.QuoNo.value).subscribe(response => {
+        this.loading_form = false;
         console.log(response.json());
         for (let i in response.json()) {
           let quoTemp = response.json()[i];
@@ -239,7 +249,9 @@ export class QuotationReceiptComponent implements OnInit {
 
       if (quoNo != null && quoNo != undefined && quoNo.length != 0 &&
         seqNo != null && seqNo != undefined && seqNo.length != 0 ) {
+          this.loading_details = true;
         this.quotationReceiptService.getQuoDetails(quoNo.trim(), seqNo.trim()).subscribe(response => {
+          this.loading_details = false;
           try{
             this.basicDetail.AgentCode = response.json().agentCode;
             this.basicDetail.CustomerName = response.json().customerName;
@@ -346,8 +358,9 @@ export class QuotationReceiptComponent implements OnInit {
       saveReceiptModel.AgentCode = this.AgentCode.value;
     }
     console.log(saveReceiptModel);
-
+    this.loading_saving = true;
     this.quotationReceiptService.saveQupReceipt(saveReceiptModel).subscribe(async response => {
+      this.loading_saving = false;
       console.log(response.text());
       if (response.text() == "Work") {
         this.newReceipt();
@@ -401,7 +414,9 @@ export class QuotationReceiptComponent implements OnInit {
   }
 
   loadLastReceipts() {
+    this.loading_table = true;
     this.commonService.getLastReceipts().subscribe(response => {
+      this.loading_table = false;
       this.data = new Array();
 
       console.log(response.json());

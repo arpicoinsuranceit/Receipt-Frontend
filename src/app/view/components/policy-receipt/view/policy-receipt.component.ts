@@ -19,6 +19,11 @@ import { PolicyModel } from '../../../../model/policymodel';
 })
 export class PolicyReceiptComponent implements OnInit {
 
+  loading_form = true;
+  loading_table = true;
+  loading_details = false;
+  loading_saving = false;
+
   displayedColumns = ['doccod', 'docnum', 'credat', 'pprnum', 'polnum', 'topprm'];
   basicDetail: BasicDetail = new BasicDetail("", "", "", "", 0, 0, "", "", 0.0, 0.0);
 
@@ -30,7 +35,7 @@ export class PolicyReceiptComponent implements OnInit {
   filteredPolicies: Observable<any[]>;
 
   lastReceipt: LastReceipt[] = new Array();
-  
+
 
   receiptForm = new FormGroup({
     propNo: new FormControl("", Validators.required),
@@ -90,7 +95,7 @@ export class PolicyReceiptComponent implements OnInit {
     this.loadLastReceipts();
     this.AmountInWord.disable();
 
-    for(var i = 0 ; i<2 ; i++){
+    for (var i = 0; i < 2; i++) {
       this.lastReceipt.push(new LastReceipt("...", "...", "...", "...", "...", 0.00, "...", "..."))
     }
 
@@ -103,8 +108,9 @@ export class PolicyReceiptComponent implements OnInit {
   }
 
   getBanks() {
+    this.loading_form = true;
     this.commonService.getBank().subscribe(response => {
-
+      this.loading_form = false;
       console.log(response.json());
 
       for (let i in response.json()) {
@@ -135,13 +141,15 @@ export class PolicyReceiptComponent implements OnInit {
   }
 
   loadLastReceipts() {
+    this.loading_table = true;
     this.commonService.getLastReceipts().subscribe(response => {
+      this.loading_table = false;
       this.data = new Array();
 
       console.log(response.json());
 
       response.json().forEach(element => {
-        if(this.data.length<4){
+        if (this.data.length < 4) {
           let lastReceipt: LastReceipt = new LastReceipt();
           lastReceipt.Credat = element.creadt;
           lastReceipt.Doccod = element.doccod;
@@ -153,7 +161,7 @@ export class PolicyReceiptComponent implements OnInit {
           lastReceipt.Paymod = element.paymod;
           this.data.push(lastReceipt);
         }
-        
+
       });
 
     });
@@ -167,7 +175,9 @@ export class PolicyReceiptComponent implements OnInit {
       event.key != "Tab" && event.key != "Enter" && event.key != "Backspace") {
       if (this.PropNo.value.length == 3) {
         this.policyList = new Array();
+        this.loading_form = true;
         this.policyReceiptService.loadPolicies(this.PropNo.value).subscribe(response => {
+          this.loading_form = false;
           console.log(response.json());
           for (let i in response.json()) {
             let propTemp = response.json()[i];
@@ -205,7 +215,9 @@ export class PolicyReceiptComponent implements OnInit {
 
       if (polNo != null && polNo != undefined && polNo.length != 0 &&
         seqNo != null && seqNo != undefined && seqNo.length != 0) {
+        this.loading_details = true;
         this.policyReceiptService.getPolDetails(polNo.trim(), seqNo.trim()).subscribe(response => {
+          this.loading_details = false;
           console.log(response.json());
           this.basicDetail.AgentCode = response.json().agentCode;
           this.basicDetail.CustomerName = response.json().custName;
@@ -217,40 +229,40 @@ export class PolicyReceiptComponent implements OnInit {
           this.basicDetail.PayAmount = response.json().amtPayble;
           this.lastReceipt = new Array();
 
-          this.Amount.setValue( this.basicDetail.Premium
+          this.Amount.setValue(this.basicDetail.Premium
           );
           this.convertAmountToWord();
 
           response.json().lastReceiptSummeryDtos.forEach(element => {
-              let lastReceipt: LastReceipt = new LastReceipt();
-              lastReceipt.Credat = element.creadt;
-              lastReceipt.Doccod = element.doccod;
-              lastReceipt.Docnum = element.doctyp;
-              lastReceipt.Polnum = element.polnum;
-              lastReceipt.Pprnum = element.pprnum;
-              lastReceipt.Topprm = element.amount;
-              lastReceipt.Chqrel = element.chqrel;
-              lastReceipt.Paymod = element.paymod;
-              this.lastReceipt.push(lastReceipt);
+            let lastReceipt: LastReceipt = new LastReceipt();
+            lastReceipt.Credat = element.creadt;
+            lastReceipt.Doccod = element.doccod;
+            lastReceipt.Docnum = element.doctyp;
+            lastReceipt.Polnum = element.polnum;
+            lastReceipt.Pprnum = element.pprnum;
+            lastReceipt.Topprm = element.amount;
+            lastReceipt.Chqrel = element.chqrel;
+            lastReceipt.Paymod = element.paymod;
+            this.lastReceipt.push(lastReceipt);
           });
-          let lastReceiptSize : number = this.lastReceipt.length;
+          let lastReceiptSize: number = this.lastReceipt.length;
 
-          if(lastReceiptSize < 2){
-            for(let i = lastReceiptSize; i<2; i++){
+          if (lastReceiptSize < 2) {
+            for (let i = lastReceiptSize; i < 2; i++) {
               this.lastReceipt.push(new LastReceipt("...", "...", "...", "...", "...", 0.00, "...", "..."));
             }
           }
 
         });
       } else {
-        this.PropNo.setErrors({'incorrect': true});
+        this.PropNo.setErrors({ 'incorrect': true });
       }
     }
   }
 
   saveReceipt() {
 
-   
+
     let saveReceiptModel = new SaveReceiptModel();
     saveReceiptModel.Amount = this.Amount.value;
     saveReceiptModel.AgentCode = this.basicDetail.AgentCode
@@ -267,11 +279,13 @@ export class PolicyReceiptComponent implements OnInit {
     saveReceiptModel.Chequedate = this.Chequedate.value;
     saveReceiptModel.Transferno = this.Credittransferno.value;
     saveReceiptModel.Token = sessionStorage.getItem("token");
-    
- 
+
+
     console.log(saveReceiptModel);
 
+    this.loading_saving = true;
     this.policyReceiptService.savePolReceipt(saveReceiptModel).subscribe(response => {
+      this.loading_saving = false;
       console.log(response.text());
       if (response.text() == "Success") {
         this.newReceipt();
@@ -283,26 +297,26 @@ export class PolicyReceiptComponent implements OnInit {
         this.alert("Oopz...", "Error occour", "error");
       }
     }, async error => {
-      this.alert("Oopz...", "Error occour", "error");   
+      this.alert("Oopz...", "Error occour", "error");
     });
   }
 
-  newReceipt(){
+  newReceipt() {
     this.basicDetail = new BasicDetail("", "", "", "", 0, 0);
-    
-   
+
+
     this.policyList = new Array();
     this.filteredPolicies = this.PropNo.valueChanges
-          .pipe(
-            startWith(''),
-            map(policy => this.filterPolicy(policy))
-          );
+      .pipe(
+        startWith(''),
+        map(policy => this.filterPolicy(policy))
+      );
     this.PropNo.reset();
     this.filteredBanks = this.BankCode.valueChanges
-        .pipe(
-          startWith(''),
-          map(bank => this.filterBanks(bank))
-        );
+      .pipe(
+        startWith(''),
+        map(bank => this.filterBanks(bank))
+      );
     this.BankCode.reset();
     this.Amount.reset();
     this.AmountInWord.reset();

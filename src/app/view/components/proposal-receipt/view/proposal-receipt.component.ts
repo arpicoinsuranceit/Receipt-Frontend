@@ -20,6 +20,11 @@ import { ProposalModel } from '../../../../model/proposalmodel';
 })
 export class ProposalReceiptComponent implements OnInit {
 
+  loading_form = true;
+  loading_table = true;
+  loading_details = false;
+  loading_saving = false;
+
   displayedColumns = ['doccod', 'docnum', 'credat', 'pprnum', 'polnum', 'topprm'];
 
   basicDetail: BasicDetail = new BasicDetail("", "", "", "", 0, 0);
@@ -108,8 +113,9 @@ export class ProposalReceiptComponent implements OnInit {
   }
 
   getBanks() {
+    this.loading_form = true;
     this.commonService.getBank().subscribe(response => {
-
+      this.loading_form = false;
       console.log(response.json());
 
       for (let i in response.json()) {
@@ -145,7 +151,9 @@ export class ProposalReceiptComponent implements OnInit {
       event.key != "Tab" && event.key != "Enter" && event.key != "Backspace") {
       if (this.PropNo.value.length == 3) {
         this.proposalList = new Array();
+        this.loading_form = true;
         this.proposalReceiptService.loadProposal(this.PropNo.value).subscribe(response => {
+          this.loading_form = false;
           console.log(response.json());
           for (let i in response.json()) {
             let propTemp = response.json()[i];
@@ -175,7 +183,9 @@ export class ProposalReceiptComponent implements OnInit {
   }
 
   loadLastReceipts() {
+    this.loading_table = true;
     this.commonService.getLastReceipts().subscribe(response => {
+      this.loading_table = false;
       this.data = new Array();
 
       console.log(response.json());
@@ -206,7 +216,9 @@ export class ProposalReceiptComponent implements OnInit {
 
       if (propNo != null && propNo != undefined && propNo.length != 0 &&
         seqNo != null && seqNo != undefined && seqNo.length != 0) {
+        this.loading_details = true;
         this.proposalReceiptService.getPropDetails(propNo.trim(), seqNo.trim()).subscribe(response => {
+          this.loading_details = false;
           console.log(response.json());
           this.basicDetail.AgentCode = response.json().agentCode;
           this.basicDetail.CustomerName = response.json().custName;
@@ -271,8 +283,9 @@ export class ProposalReceiptComponent implements OnInit {
 
 
     console.log(saveReceiptModel);
-
+    this.loading_saving = true;
     this.proposalReceiptService.savePropReceipt(saveReceiptModel).subscribe(response => {
+      this.loading_saving = false;
       console.log(response.text());
       if (response.text() == "Success") {
         this.newReceipt();
