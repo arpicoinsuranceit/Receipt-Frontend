@@ -1052,7 +1052,7 @@ export class BranchUnderwriteComponent implements OnInit {
         console.log(response.text());
         if (response.text() == "Success") {
           this.loading8=false;
-          this.alert("Success", "Successfully Added Receipt", "success");
+          this.alert("Success", "Successfully Underwrite", "success");
           this.generalInfo = new GeneralInfo();
           this.quotationSeqIdList = new Array();
           this.branchUWGeneralInfo.reset();
