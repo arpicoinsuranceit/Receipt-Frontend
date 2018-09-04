@@ -382,6 +382,7 @@ export class BranchUnderwriteComponent implements OnInit {
 
   loadData(propNo, seqNo, brnCode, agentCode) {
     this.loading2=true;
+    this.stepper.selectedIndex = 1;
     this.sheduleArray=new Array();
     this.displayedColumnsShedule = new Array();
     this.resetAllForms();
@@ -410,7 +411,7 @@ export class BranchUnderwriteComponent implements OnInit {
         }
       });
 
-      this.stepper.selectedIndex = 1;
+      
       this.loading2=false;
     });
 
@@ -426,6 +427,9 @@ export class BranchUnderwriteComponent implements OnInit {
       }
       this.loading2=false;
     });
+
+    this.loading2=false;
+    
   }
 
   editQuotation() {
@@ -626,12 +630,12 @@ export class BranchUnderwriteComponent implements OnInit {
         });
       }
 
-
+      this.loading3=false;
+      this.loading4=false;
+      this.loading5=false;
     });
 
-    this.loading3=false;
-    this.loading4=false;
-    this.loading5=false;
+    
 
   }
 
@@ -652,9 +656,9 @@ export class BranchUnderwriteComponent implements OnInit {
 
         this.nomineeArray.push(nominee);
       });
-
+      this.loading7=false;
     });
-    this.loading7=false;
+    
   }
 
   loadSheduleDetails() {
@@ -669,6 +673,8 @@ export class BranchUnderwriteComponent implements OnInit {
         this.sheduleArray = response.json();
       });
 
+      this.loading6=false;
+
     } else if (sessionStorage.getItem("ProductCode") == "ARP") {
       this.displayedColumnsShedule = new Array();
       this.displayedColumnsShedule = ['polyer', 'padtrm', 'prmpyr', 'prmpad', 'isumas', 'paidup', 'surrnd'];
@@ -678,6 +684,9 @@ export class BranchUnderwriteComponent implements OnInit {
         this.sheduleArray = new Array();
         this.sheduleArray = response.json();
       });
+
+      this.loading6=false;
+
     } else if (sessionStorage.getItem("ProductCode") == "ARTM") {
       this.displayedColumnsShedule = new Array();
       this.displayedColumnsShedule = ['polyer', 'month', 'contribution', 'fndBeforeInt', 'intRat1', 'clsFnd1', 'intRat2', 'clsFnd2', 'intRat3', 'clsFnd3'];
@@ -687,12 +696,14 @@ export class BranchUnderwriteComponent implements OnInit {
         this.sheduleArray = new Array();
         this.sheduleArray = response.json();
       });
+
+      this.loading6=false;
+
     } else {
       this.displayedColumnsShedule = new Array();
       this.sheduleArray = new Array();
+      this.loading6=false;
     }
-
-    this.loading6=false;
 
   }
 
@@ -872,11 +883,12 @@ export class BranchUnderwriteComponent implements OnInit {
         this.branchUWNomineeForm.get("dateOfBirthNominee").setValue(response.json().DOB);
         //this.branchUWNomineeForm.get("dateOfBirthNominee").disable();
       });
+      this.loading7=false;
     } else {
+      this.loading7=false;
       this.branchUWNomineeForm.get("dateOfBirthNominee").enable();
     }
-
-    this.loading7=false;
+    
   }
 
   calculateGuardDob() {
@@ -886,10 +898,12 @@ export class BranchUnderwriteComponent implements OnInit {
         this.branchUWNomineeForm.get("guardianDOB").setValue(response.json().DOB);
         //this.branchUWNomineeForm.get("guardianDOB").disable();
       });
+      this.loading7=false;
     } else {
       this.branchUWNomineeForm.get("guardianDOB").enable();
+      this.loading7=false;
     }
-    this.loading7=false;
+    
   }
 
   addNewNominee() {
@@ -967,6 +981,8 @@ export class BranchUnderwriteComponent implements OnInit {
 
 
   saveUnderwrite() {
+    this.loading8=true;
+
     if (this.checkValidityBeforeSave()) {
       this.loading8=true;
       let occup = new Occupation();
@@ -1055,8 +1071,11 @@ export class BranchUnderwriteComponent implements OnInit {
         this.alert("Oopz...", "Error occour", "error");   
       });
 
+    }else{
+      this.loading8=false;
     }
-    this.loading8=false;
+
+    
 
   }
 
