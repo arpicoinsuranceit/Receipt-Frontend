@@ -31,6 +31,15 @@ export class BranchUnderwriteComponent implements OnInit {
 
   @ViewChild('stepper') stepper: MatStepper;
 
+  loading1=true;
+  loading2=true;
+  loading3=true;
+  loading4=true;
+  loading5=true;
+  loading6=true;
+  loading7=true;
+  loading8=false;
+
   proposalArray: LoadUWProposals[] = new Array();
   childrenArray: ChildModel[];
   childBenefitsArray: BenefitModel[] = new Array();
@@ -223,6 +232,7 @@ export class BranchUnderwriteComponent implements OnInit {
   }
 
   loadProposalData() {
+    this.loading1=true;
     this.displayedColumnsShedule = new Array();
     
     this.branchUnderwriteService.loadProposalToUnderwrite(sessionStorage.getItem("token"),this.paginator.pageIndex,this.paginator.pageSize).subscribe(response => {
@@ -247,6 +257,7 @@ export class BranchUnderwriteComponent implements OnInit {
       });
 
       this.datasourceProposal.data = this.proposalArray;
+      this.loading1=false;
 
     });
   }
@@ -370,7 +381,7 @@ export class BranchUnderwriteComponent implements OnInit {
 
 
   loadData(propNo, seqNo, brnCode, agentCode) {
-
+    this.loading2=true;
     this.sheduleArray=new Array();
     this.displayedColumnsShedule = new Array();
     this.resetAllForms();
@@ -400,17 +411,20 @@ export class BranchUnderwriteComponent implements OnInit {
       });
 
       this.stepper.selectedIndex = 1;
+      this.loading2=false;
     });
 
   }
 
   loadSequnceId() {
+    this.loading2=true;
     this.quotationSeqIdList = new Array();
     this.quotationReceiptService.loadQuotationProp(this.quotationNo).subscribe(response => {
       for (let i in response.json()) {
         let quoTemp = response.json()[i];
         this.quotationSeqIdList.push(quoTemp.seqId);
       }
+      this.loading2=false;
     });
   }
 
@@ -440,6 +454,9 @@ export class BranchUnderwriteComponent implements OnInit {
 
   loadQuotationDetails() {
     this.resetAllForms();
+    this.loading3=true;
+    this.loading4=true;
+    this.loading5=true;
     this.branchUnderwriteService.loadQuotationIdFormSeqNo(this.sequenceNo, this.quotationNo).subscribe(response => {
       //alert(response.text());
       if (response.text() != null) {
@@ -612,9 +629,14 @@ export class BranchUnderwriteComponent implements OnInit {
 
     });
 
+    this.loading3=false;
+    this.loading4=false;
+    this.loading5=false;
+
   }
 
   loadNomineeDetails() {
+    this.loading7=true;
     this.branchUnderwriteService.loadNominee(this.sequenceNo,this.quotationNo).subscribe(response => {
       console.log(response.json());
       this.branchUWNomineeForm.get("type").setValue("NORMAL");
@@ -632,10 +654,11 @@ export class BranchUnderwriteComponent implements OnInit {
       });
 
     });
+    this.loading7=false;
   }
 
   loadSheduleDetails() {
-
+    this.loading6=true;
     if (sessionStorage.getItem("ProductCode") == "DTA" || sessionStorage.getItem("ProductCode") == "DTAPL") {
       this.displayedColumnsShedule = new Array();
       this.displayedColumnsShedule = ['policyYear', 'outYear', 'outSum', 'lorned', 'premiumRate', 'premium'];
@@ -669,7 +692,7 @@ export class BranchUnderwriteComponent implements OnInit {
       this.sheduleArray = new Array();
     }
 
-
+    this.loading6=false;
 
   }
 
@@ -843,6 +866,7 @@ export class BranchUnderwriteComponent implements OnInit {
   }
 
   calculateDob() {
+    this.loading7=true;
     if (this.branchUWNomineeForm.get("nicNominee").value != null && this.branchUWNomineeForm.get("nicNominee").value.length > 0) {
       this.commonService.loadAgeAndDOBFromNic(this.branchUWNomineeForm.get("nicNominee").value).subscribe(response => {
         this.branchUWNomineeForm.get("dateOfBirthNominee").setValue(response.json().DOB);
@@ -851,9 +875,12 @@ export class BranchUnderwriteComponent implements OnInit {
     } else {
       this.branchUWNomineeForm.get("dateOfBirthNominee").enable();
     }
+
+    this.loading7=false;
   }
 
   calculateGuardDob() {
+    this.loading7=true;
     if (this.branchUWNomineeForm.get("guardianNic").value != null && this.branchUWNomineeForm.get("guardianNic").value.length > 0) {
       this.commonService.loadAgeAndDOBFromNic(this.branchUWNomineeForm.get("guardianNic").value).subscribe(response => {
         this.branchUWNomineeForm.get("guardianDOB").setValue(response.json().DOB);
@@ -862,6 +889,7 @@ export class BranchUnderwriteComponent implements OnInit {
     } else {
       this.branchUWNomineeForm.get("guardianDOB").enable();
     }
+    this.loading7=false;
   }
 
   addNewNominee() {
@@ -940,6 +968,7 @@ export class BranchUnderwriteComponent implements OnInit {
 
   saveUnderwrite() {
     if (this.checkValidityBeforeSave()) {
+      this.loading8=true;
       let occup = new Occupation();
       occup = this.occupationsList.find(x => x.OccupationName == this.branchUWInsureForm.get("occupation").value);
 
@@ -1006,6 +1035,7 @@ export class BranchUnderwriteComponent implements OnInit {
       this.branchUnderwriteService.saveUnderwrite(this.saveUnderwriteModel).subscribe(response => {
         console.log(response.text());
         if (response.text() == "Success") {
+          this.loading8=false;
           this.alert("Success", "Successfully Added Receipt", "success");
           this.generalInfo = new GeneralInfo();
           this.quotationSeqIdList = new Array();
@@ -1016,14 +1046,17 @@ export class BranchUnderwriteComponent implements OnInit {
           this.loadProposalData();
 
         } else {
+          this.loading8=false;
           this.alert("Oopz...", "Error occour", "error");
         }
 
       }, async error => {
+        this.loading8=false;
         this.alert("Oopz...", "Error occour", "error");   
       });
 
     }
+    this.loading8=false;
 
   }
 

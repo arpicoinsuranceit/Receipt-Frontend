@@ -1,4 +1,9 @@
-<div class="container" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+
+<div [hidden]="!loading8" class="loader">
+  <h5> Saving...</h5>
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+<div class="container" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center" [ngClass]="{'disabled': loading8 == true}">
   <div fxFlex="100%">
     <mat-card class="main-card" style="height: auto;">
 
@@ -13,15 +18,14 @@
           <mat-step [stepControl]="firstFormGroup">
               <form [formGroup]="firstFormGroup">
               <mat-card>
-                <!-- <mat-card-header>
-                  <mat-card-title>
-                    <h3>ARPICO INVESTMENT PLAN (INVP)</h3>
-                  </mat-card-title>
-                </mat-card-header> -->
                 <mat-card-content  style="max-height: 380px;overflow-x: auto;">
                   <ng-template matStepLabel>Find</ng-template>
-                  <div fxFlex="100%" style="margin-bottom: 10px;max-height: 430px;overflow-x: auto;">
-                   
+                  <div [hidden]="!loading1" class="loader">
+                    <h5>Loading...</h5>
+                    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                  </div>
+                  <div fxFlex="100%" style="margin-bottom: 10px;max-height: 430px;overflow-x: auto;" [ngClass]="{'disabled': loading1 == true}">
+                     
                       <mat-table [dataSource]="datasourceProposal" class="mat-elevation-z8" style="padding: 20px;">
                           <ng-container matColumnDef="proposalNo">
                             <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Proposal No </mat-header-cell>
@@ -96,7 +100,13 @@
               </mat-card-header>
               <mat-card-content>
                 <ng-template matStepLabel>General Info</ng-template>
-                <div fxFlex="50%">
+
+                <div [hidden]="!loading2" class="loader">
+                  <h5>Loading...</h5>
+                  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                </div>
+
+                <div fxFlex="50%" [ngClass]="{'disabled': loading2 == true}">
                   <table style="width: 90%; padding: 10px;">
                     <tr>
                       <td style="width: 10%;">Proposal No</td>
@@ -155,16 +165,16 @@
           </mat-step>
           <mat-step [stepControl]="branchUWInsureForm">
             <mat-card>
-              <!-- <mat-card-header>
-                <mat-card-title>
-                  <h3>INSURED DETAILS</h3>
-                </mat-card-title>
-              </mat-card-header> -->
               <mat-card-content>
                 <form class="branch-uw-form" [formGroup]="branchUWInsureForm">
                   <ng-template matStepLabel>Insured</ng-template>
 
-                  <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+                  <div [hidden]="!loading3" class="loader">
+                    <h5>Loading...</h5>
+                    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                  </div>
+
+                  <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center" [ngClass]="{'disabled': loading3 == true}">
 
                     <div fxFlex="50">
                       <mat-card style="margin-bottom: 10px;height: 420px;max-height: 430px;overflow-x: auto;">
@@ -428,16 +438,16 @@
 
           <mat-step [stepControl]="branchUWSpouseForm">
             <mat-card>
-              <!-- <mat-card-header>
-                    <mat-card-title>
-                      <h3>INSURED DETAILS</h3>
-                    </mat-card-title>
-                  </mat-card-header> -->
               <mat-card-content>
                 <form class="branch-uw-form" [formGroup]="branchUWSpouseForm">
                   <ng-template matStepLabel>Spouse</ng-template>
 
-                  <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+                  <div [hidden]="!loading4" class="loader">
+                    <h5>Loading...</h5>
+                    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                  </div>
+
+                  <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center" [ngClass]="{'disabled': loading4 == true}">
 
                     <div fxFlex="50">
                       <mat-card style="margin-bottom: 10px;height: 420px;max-height: 430px;overflow-x: auto;">
@@ -577,16 +587,14 @@
 
           <mat-step [stepControl]="branchUWChildForm">
             <mat-card>
-              <!-- <mat-card-header>
-                    <mat-card-title>
-                      <h3>INSURED DETAILS</h3>
-                    </mat-card-title>
-                  </mat-card-header> -->
               <mat-card-content>
 
                 <ng-template matStepLabel>Children</ng-template>
-
-                <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+                <div [hidden]="!loading5" class="loader">
+                  <h5>Loading...</h5>
+                  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                </div>
+                <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center" [ngClass]="{'disabled': loading5 == true}">
 
                   <div fxFlex="80">
                     <mat-card style="margin-bottom: 10px;height: 420px;max-height: 430px;overflow-x: auto;">
@@ -770,16 +778,16 @@
 
           <mat-step [stepControl]="branchUWBenefitDetails">
             <mat-card>
-              <!-- <mat-card-header>
-                    <mat-card-title>
-                      <h3>INSURED DETAILS</h3>
-                    </mat-card-title>
-                  </mat-card-header> -->
               <mat-card-content>
 
                 <ng-template matStepLabel>Pre./Ben.Details</ng-template>
 
-                <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+                <div [hidden]="!loading6" class="loader">
+                  <h5>Loading...</h5>
+                  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                </div>
+
+                <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center" [ngClass]="{'disabled': loading6 == true}">
 
                   <div fxFlex="100">
                     <mat-card style="margin-bottom: 10px;height: 420px;max-height: 430px;overflow-x: auto;">
@@ -1027,16 +1035,16 @@
 
           <mat-step [stepControl]="branchUWNomineeForm">
               <mat-card>
-                  <!-- <mat-card-header>
-                        <mat-card-title>
-                          <h3>INSURED DETAILS</h3>
-                        </mat-card-title>
-                      </mat-card-header> -->
                   <mat-card-content>
     
                     <ng-template matStepLabel>Nominee</ng-template>
+
+                    <div [hidden]="!loading7" class="loader">
+                      <h5>Loading...</h5>
+                      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                    </div>
     
-                    <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+                    <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center" [ngClass]="{'disabled': loading7 == true}">
     
                       <div fxFlex="80">
                         <mat-card style="margin-bottom: 10px;height: 420px;max-height: 430px;overflow-x: auto;">
@@ -1236,7 +1244,6 @@
               <mat-card>
                 
                 <mat-card-content>
-                  <!-- <ng-template matStepLabel>General Info</ng-template> -->
                   <div fxFlex="50%">
                     <table style="width: 90%; padding: 10px;">
                       <tr>

@@ -37,6 +37,10 @@ const routes: Routes = [
       {
         path: 'receiptinquiry',
         loadChildren : "app/view/components/receipt-inquiry/receipt-inquiry.module#ReceiptInquiryModule"
+      },
+      {
+        path: 'receiptcancelation',
+        loadChildren : "app/view/components/receipt-cancelation/receipt-cancelation.module#ReceiptCancelationModule"
       }
     ]
   }
