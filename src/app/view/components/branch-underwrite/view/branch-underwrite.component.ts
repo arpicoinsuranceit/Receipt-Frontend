@@ -404,6 +404,7 @@ export class BranchUnderwriteComponent implements OnInit {
       this.generalInfo.ProposalNo = propNo;
       this.quotationNo = response.json().quonum;
       this.quotationReceiptService.loadQuotationProp(this.quotationNo).subscribe(response => {
+        console.log(response.json());
         for (let i in response.json()) {
           let quoTemp = response.json()[i];
           console.log(quoTemp)
@@ -418,17 +419,14 @@ export class BranchUnderwriteComponent implements OnInit {
   }
 
   loadSequnceId() {
-    this.loading2=true;
     this.quotationSeqIdList = new Array();
     this.quotationReceiptService.loadQuotationProp(this.quotationNo).subscribe(response => {
+      console.log(response.json());
       for (let i in response.json()) {
         let quoTemp = response.json()[i];
         this.quotationSeqIdList.push(quoTemp.seqId);
       }
-      this.loading2=false;
     });
-
-    this.loading2=false;
     
   }
 
@@ -453,7 +451,7 @@ export class BranchUnderwriteComponent implements OnInit {
     }
 
     encodeURIComponent(JSON.stringify(data));
-    window.open("http://localhost:8080/Insurance?data=" + encodeURIComponent(JSON.stringify(data)), "_blank");
+    window.open("http://localhost:4200?data=" + encodeURIComponent(JSON.stringify(data)), "_blank");
   }
 
   loadQuotationDetails() {
@@ -915,9 +913,17 @@ export class BranchUnderwriteComponent implements OnInit {
               if (this.branchUWNomineeForm.get("guardianRelation").value != "" && this.branchUWNomineeForm.get("guardianRelation").value != undefined) {
                 if (this.branchUWNomineeForm.get("share").value != "" && this.branchUWNomineeForm.get("share").value != undefined) {
 
-                  if (this.nomineeArray.length == 0) {
-                    this.nomineeArray = new Array();
-                  }
+                  let nomineeArrayTemp=new Array();
+
+                  this.nomineeArray.forEach(n => {
+                    nomineeArrayTemp.push(n);
+                  });
+
+                  this.nomineeArray = new Array();
+
+                  nomineeArrayTemp.forEach(n => {
+                    this.nomineeArray.push(n);
+                  });
 
                   let alreadyShare: number = 0;
                   this.nomineeArray.forEach(n => {

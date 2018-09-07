@@ -9,7 +9,7 @@
         </mat-card-header>
   
         <mat-card-content>
-          <mat-horizontal-stepper [linear]="isLinear" #stepper>
+          <mat-horizontal-stepper [linear]="true" #stepper>
             <mat-step [stepControl]="firstFormGroup">
                 <form [formGroup]="firstFormGroup">
                     <mat-card>
@@ -121,41 +121,41 @@
                             <table>
                               <tr style="height: 20px;">
                                 <th style="width: 20%;text-align: left;">Instrument Type</th>
-                                <td style="width: 20%;">: {{bankDetails.insType}}</td>
+                                <td style="width: 20%;">: {{bankDetails.InsType}}</td>
 
                                 <td style="width: 20%;"></td>
 
                                 <th style="width: 20%;text-align: left;">Collection Bank</th>
-                                <td style="width: 20%;">: {{bankDetails.colBank}}</td>
+                                <td style="width: 20%;">: {{bankDetails.ColBank}}</td>
                               </tr>
 
                               <tr style="height: 20px;">
                                 <th style="width: 20%;text-align: left;">Instrument No</th>
-                                <td style="width: 20%;">: {{bankDetails.insNo}}</td>
+                                <td style="width: 20%;">: {{bankDetails.InsNo}}</td>
 
                                 <td style="width: 20%;"></td>
 
                                 <th style="width: 20%;text-align: left;">Branch Code</th>
-                                <td style="width: 20%;">: {{bankDetails.branchCode}}</td>
+                                <td style="width: 20%;">: {{bankDetails.BranchCode}}</td>
                               </tr>
 
                               <tr style="height: 20px;">
                                 <th style="width: 20%;text-align: left;">Instrument Date</th>
-                                <td style="width: 20%;">: {{bankDetails.insDate}}</td>
+                                <td style="width: 20%;">: {{bankDetails.InsDate}}</td>
 
                                 <td style="width: 20%;"></td>
 
                                 <th style="width: 20%;text-align: left;">Amount</th>
-                                <td style="width: 20%;">: {{bankDetails.amount}}</td>
+                                <td style="width: 20%;">: {{bankDetails.Amount}}</td>
                               </tr>
 
                               <tr style="height: 20px;">
                                 <th style="width: 20%;text-align: left;">Status</th>
-                                <td >: {{bankDetails.status}}</td>
+                                <td >: {{bankDetails.Status}}</td>
                               </tr>
                               <tr style="height: 20px;">
                                 <th style="width: 20%;text-align: left;">Remarks</th>
-                                <td >: {{bankDetails.remarks}}</td>
+                                <td >: {{bankDetails.Remarks}}</td>
                               </tr>
                             </table>
                           </div>
