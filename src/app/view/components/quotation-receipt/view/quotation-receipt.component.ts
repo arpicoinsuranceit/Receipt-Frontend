@@ -17,6 +17,7 @@ import { QuotationModel } from '../../../../model/quotationmodel';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { delay } from 'q';
 import { MatDialogConfig, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-quotation-receipt',

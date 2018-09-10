@@ -21,9 +21,26 @@ export class CommonService {
     return this.http.post("http://localhost:8088/getbank/", urlParams);
   }
 
+  getExpenes() {
+    let token: string = sessionStorage.getItem("token");
+    let urlParams = new URLSearchParams();
+    urlParams.append('token', token);
+    console.log(token);
+    return this.http.post("http://localhost:8088/getexpences/", urlParams);
+  }
+
+  getBranches() {
+    let token: string = sessionStorage.getItem("token");
+    let urlParams = new URLSearchParams();
+    urlParams.append('token', token);
+    console.log(token);
+    return this.http.post("http://localhost:8088/getbranches/", urlParams);
+  }
+
   getOccupations() {
     return this.http.get('http://localhost:8084/occupation');
   }
+  
 
   getAgent(agentCode: any) {
     let token: string = sessionStorage.getItem("token");

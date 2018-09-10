@@ -11,6 +11,7 @@ import { LastReceipt } from '../../../../model/lastreceipt';
 import { CommonService } from '../../../../service/common-service/common.service';
 import { Component, OnInit } from '@angular/core';
 import { PolicyModel } from '../../../../model/policymodel';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-policy-receipt',

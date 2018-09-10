@@ -27,6 +27,10 @@ export class ReceiptInquiryComponent implements OnInit {
   secondFormGroup = new FormGroup({
   });
 
+  thirdFormGroup = new FormGroup({
+    
+  });
+
   receiptDetailsArray:ReceiptDetails[]=new Array();
   policyDetailsArray:PolicyDetails[]=new Array();
   bankDetails:BankDetails=new BankDetails();
@@ -120,7 +124,14 @@ export class ReceiptInquiryComponent implements OnInit {
       console.log(response.json());
 
       if(response.json() != null){
-        this.bankDetails=response.json();
+        this.bankDetails.Amount=response.json().amount;
+        this.bankDetails.BranchCode=response.json().branchCode;
+        this.bankDetails.ColBank=response.json().colBank;
+        this.bankDetails.InsDate=response.json().insDate;
+        this.bankDetails.InsNo=response.json().insNo;
+        this.bankDetails.InsType=response.json().insType;
+        this.bankDetails.Remarks=response.json().remarks;
+        this.bankDetails.Status=response.json().status;
       }
 
       this.loadingBankDet=false;

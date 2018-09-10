@@ -11,7 +11,9 @@
         <form class="proposal-receipt-form" [formGroup]="receiptForm">
           <mat-form-field>
             <mat-select placeholder="Branch">
-              <mat-option>
+              <mat-option *ngFor="let branch of branches" [value]="branch.Id">
+                  <span> {{ branch.Id }} </span> |
+                  <small> {{ branch.Description }} </small>
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -33,8 +35,12 @@
 
           <mat-form-field>
             <mat-select placeholder="Title">
-              <mat-option>
-              </mat-option>
+              <mat-option value = "MR">MR</mat-option>
+              <mat-option value = "MS">MS</mat-option>
+              <mat-option value = "MRS">MRS</mat-option>
+              <mat-option value = "REV">REV.</mat-option>
+              <mat-option value = "HON">HON.</mat-option>
+              
             </mat-select>
           </mat-form-field>
 
@@ -89,7 +95,7 @@
           </mat-card>
 
           <mat-form-field class="full-width">
-            <input matInput placeholder="Amount" type="number" aria-label="Amount" class="right-align" formControlName="amount" (blur)="convertAmountToWord()">
+            <input matInput disabled readonly placeholder="Amount" type="number" aria-label="Amount" class="right-align" formControlName="amount">
             <span matPrefix>Rs.</span>
             <span matSuffix>.00</span>
             <mat-error *ngIf="Amount.hasError('required')">
@@ -99,7 +105,7 @@
           </mat-form-field>
 
           <mat-form-field class="full-width">
-            <input matInput placeholder="Amount in Word" disabled aria-label="Amount in Word" formControlName="amountInWord">
+            <input matInput placeholder="Amount in Word" readonly disabled aria-label="Amount in Word" formControlName="amountInWord">
           </mat-form-field>
 
         </form>
@@ -120,45 +126,62 @@
         </mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <form class="proposal-receipt-form" [formGroup]="receiptForm">
-          <mat-form-field>
-            <mat-select placeholder="Expense Code">
-              <mat-option>
-              </mat-option>
+        <form class="proposal-receipt-form" [formGroup]="expenceForm">
+          <mat-form-field class="full-width">
+            <mat-select placeholder="Expense Code" (change)="fillExpence()" formControlName="expenceId">
+                <mat-option *ngFor="let expence of expences" [value]="expence.expenseId">
+                    <span> {{ expence.ExpenseId }} </span> |
+                    <small> {{ expence.Description }} </small>
+                </mat-option>
             </mat-select>
           </mat-form-field>
           <br>
           <mat-form-field class="full-width">
-            <input matInput placeholder="Description">
+            <input matInput placeholder="Description" formControlName="expenceDescription">
           </mat-form-field>
-          <mat-form-field class="full-width">
-            <input type="number" matInput placeholder="Amount">
+          <mat-form-field class="half-width">
+            <input type="number" matInput placeholder="Amount" formControlName="expenceAmount">
           </mat-form-field>
+          <mat-form-field style="padding-left: 40px;" class="half-width">
+              <input type="number" matInput placeholder="Quantity" formControlName="expenceQty">
+              <mat-error *ngIf="ExpenceQty.hasError('valied')">
+                  Quantity is
+                  <strong>REQUIRED</strong>
+                </mat-error>
+            </mat-form-field>
         </form>
       </mat-card-content>
       <mat-card-actions style="border-top: solid #C4C4C4 1px; display: flex; 
           justify-content: space-between;">
-        <button mat-raised-button color="primary" (click)="saveReceipt()">Add</button>
+        <button mat-raised-button color="warn" (click)="deleteInCart()">Delete</button>
+        <button mat-raised-button color="primary" (click)="addToCart()">Add</button>
       </mat-card-actions>
 
       <mat-card-content>
-        <mat-table #table [dataSource]="expences" style="height: 188px;">
-          <ng-container matColumnDef="expcod">
-            <mat-header-cell *matHeaderCellDef> Expense Code </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.ExpenseId}} </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="desc">
-            <mat-header-cell *matHeaderCellDef> Description </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.Description}} </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="amount">
-            <mat-header-cell *matHeaderCellDef style="text-align: right"> Amount </mat-header-cell>
-            <mat-cell *matCellDef="let element" style="text-align: right"> {{element.Amount}} </mat-cell>
-          </ng-container>
-
-          <mat-header-row *matHeaderRowDef="expColumns"></mat-header-row>
-          <mat-row *matRowDef="let row; columns: expColumns; let i = index;" (click)="loadExp(row, i)"></mat-row>
-        </mat-table>
+        <div style="height: 188px; overflow-y: auto;">
+            <mat-table #table [dataSource]="expencesCart" >
+                <ng-container matColumnDef="expcod">
+                  <mat-header-cell *matHeaderCellDef> Expense Code </mat-header-cell>
+                  <mat-cell *matCellDef="let element"> {{element.ExpenseId}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="desc">
+                    <mat-header-cell *matHeaderCellDef> Description </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.Description}} </mat-cell>
+                  </ng-container>
+                <ng-container matColumnDef="qty">
+                  <mat-header-cell *matHeaderCellDef style="text-align: right"> Quantity </mat-header-cell>
+                  <mat-cell *matCellDef="let element" style="text-align: right"> {{element.Qty}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="amount">
+                  <mat-header-cell *matHeaderCellDef style="text-align: right"> Amount </mat-header-cell>
+                  <mat-cell *matCellDef="let element" style="text-align: right"> {{element.Amount}} </mat-cell>
+                </ng-container>
+      
+                <mat-header-row *matHeaderRowDef="expColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: expColumns; let i = index;" (click)="loadExp(row, i)"></mat-row>
+              </mat-table>
+        </div>
+        
       </mat-card-content>
     </mat-card>
 

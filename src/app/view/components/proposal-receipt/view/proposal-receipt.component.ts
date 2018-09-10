@@ -12,6 +12,7 @@ import { CommonService } from '../../../../service/common-service/common.service
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { ProposalModel } from '../../../../model/proposalmodel';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-proposal-receipt',

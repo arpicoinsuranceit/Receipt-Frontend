@@ -164,12 +164,12 @@
                         <tr>
                             <td>Premium</td>
                             <td> :</td>
-                            <td>{{basicDetail.Premium}}</td>
+                            <td>Rs. {{basicDetail.Premium | number: '.2'}}</td>
                         </tr>
                         <tr>
                             <td>Payble Amount</td>
                             <td> :</td>
-                            <td>{{basicDetail.PayAmount}}</td>
+                            <td>Rs. {{basicDetail.PayAmount | number: '.2'}}</td>
                         </tr>
 
                     </table>
@@ -182,8 +182,8 @@
                                     <mat-card-subtitle>{{lastReceipt[0].Credat}}</mat-card-subtitle>
                                 </mat-card-header>
                                 <mat-card-content>
-                                    <h3 style="width: 100%; text-align: right">Rs. {{lastReceipt[0].Topprm}}</h3>
-                                    <div style="display: flex;  justify-content: space-between;">
+                                    <h3 style="width: 100%; text-align: right">Rs. {{lastReceipt[0].Topprm | number: '.2'}}</h3>
+                                    <div style="display: flex;  justify-content: space-between;"> 
                                         <p style="text-align: Left">
                                             <span>{{lastReceipt[0].Doccod}}</span>
                                         </p>
@@ -202,7 +202,7 @@
                                     <mat-card-subtitle>{{lastReceipt[1].Credat}}</mat-card-subtitle>
                                 </mat-card-header>
                                 <mat-card-content>
-                                    <h3 style="width: 100%; text-align: right">Rs. {{lastReceipt[1].Topprm}}</h3>
+                                    <h3 style="width: 100%; text-align: right">Rs. {{lastReceipt[1].Topprm | number: '.2'}}</h3>
                                     <div style="display: flex;  justify-content: space-between;">
                                         <p style="text-align: Left">
                                             <span>{{lastReceipt[1].Doccod}}</span>
@@ -249,8 +249,8 @@
                         <mat-cell *matCellDef="let element" style="text-align: right"> {{element.Polnum}} </mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="topprm">
-                        <mat-header-cell *matHeaderCellDef style="text-align: right"> Amount </mat-header-cell>
-                        <mat-cell *matCellDef="let element" style="text-align: right"> {{element.Topprm}} </mat-cell>
+                        <mat-header-cell *matHeaderCellDef style="text-align: right; padding-left: 10px;"> Amount </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="text-align: right; padding-left: 10px;"> {{element.Topprm | number: '.2'}} </mat-cell>
                     </ng-container>
 
 

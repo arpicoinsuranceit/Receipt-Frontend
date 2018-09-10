@@ -453,7 +453,7 @@ export class BranchUnderwriteComponent implements OnInit {
     }
 
     encodeURIComponent(JSON.stringify(data));
-    window.open("http://localhost:8080/Insurance?data=" + encodeURIComponent(JSON.stringify(data)), "_blank");
+    window.open("http://10.10.10.120:8084/Insurance?data=" + encodeURIComponent(JSON.stringify(data)), "_blank");
   }
 
   loadQuotationDetails() {

@@ -68,7 +68,7 @@ export class AuthService {
     urlSearchParams.append('password', password);
     urlSearchParams.append('newPassword', newPassword);
     urlSearchParams.append('confirmNewPassword', confirmNewPassword);
-    return this.http.post("http://localhost:8086/changePassword/", urlSearchParams);
+    return this.http.post("http://10.10.10.120:8084/UserManagement/changePassword/", urlSearchParams);
   }
 
   logout() {
