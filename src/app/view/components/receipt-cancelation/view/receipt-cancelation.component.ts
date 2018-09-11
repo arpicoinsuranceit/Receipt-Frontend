@@ -66,6 +66,10 @@ export class ReceiptCancelationComponent implements OnInit {
 
         if(response.text() == "Success"){
           this.alert("Success", "Successfully Send Request", "success");
+          this.receiptCancelationForm.get("receiptNo").setValue('');
+          this.receiptCancelationForm.get("reason").setValue('');
+        }else{
+          this.alert("Oopz...", "Error occour", "error");
         }
         
       });
