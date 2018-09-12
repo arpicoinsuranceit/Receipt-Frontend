@@ -24,7 +24,12 @@
             <button *ngIf = "menuList.includes('UNDERWRITE_L1')" mat-menu-item routerLink="underwrite">UNDERWRITE</button>
         </mat-menu>
 
-        <button mat-button routerLink="receiptinquiry" style="width: 210px; margin: 10px; text-align: left;">RECEIPT INQUIRY</button>
+        <button mat-button [matMenuTriggerFor]="inquiry" style="width: 210px; margin: 10px; text-align: left;">INQUIRY</button>
+
+        <mat-menu #inquiry="matMenu" yPosition="below" xPosition="before" >
+            <button *ngIf = "menuList.includes('RECEIPT_INQUIRY')" mat-menu-item routerLink="receiptinquiry">RECEIPT INQUIRY</button>
+            <button *ngIf = "menuList.includes('RECEIPT_INQUIRY')" mat-menu-item (click)="loadProposalInquiry();">PROPOSAL INQUIRY</button>
+        </mat-menu>
 
     </mat-drawer>
 

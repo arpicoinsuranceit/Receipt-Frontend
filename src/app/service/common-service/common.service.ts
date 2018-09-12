@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Http, URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import { AlertComponent } from '../../view/core/alert/alert.component';
+import { MatDialogConfig, MatDialog } from '@angular/material';
 
 @Injectable()
 export class CommonService {
 
-  constructor(private http: Http) {
+  constructor(private http: Http,public dialog: MatDialog) {
 
   }
 
@@ -44,7 +46,7 @@ export class CommonService {
 
     if (!(nic.length == 12) && !(nic.length == 10)) {
       //swal("Nic Invalid..", "", "error");
-      alert("Nic Invalid");
+      this.alert("Oopz...", "Nic Invalid", "error");
       return;
     }
 
@@ -54,7 +56,7 @@ export class CommonService {
         nic = nic.substring(0, nic.length - 1);
       } else {
         //swal("Nic Invalid..", "", "error");
-        alert("Nic Invalid");
+        this.alert("Oopz...", "Nic Invalid", "error");
         return;
       }
 
@@ -66,7 +68,7 @@ export class CommonService {
 
       } else {
         //swal("Nic Invalid..", "", "error");
-        alert("Nic Invalid");
+        this.alert("Oopz...", "Nic Invalid", "error");
         return;
       }
 
@@ -77,4 +79,25 @@ export class CommonService {
     }
 
   }
+
+  alert(title: string, message: string, type: string) {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      id: 1,
+      title: title,
+      message: message,
+      type: type
+    };
+
+    const dialogRef = this.dialog.open(AlertComponent, dialogConfig);
+
+    // dialogRef.afterClosed().subscribe(result => {
+    //   alert("response: " + result)
+    // });
+
+  }
+  
 }

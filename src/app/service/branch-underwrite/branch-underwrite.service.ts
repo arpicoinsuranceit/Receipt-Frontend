@@ -1,11 +1,13 @@
 import { SaveUnderwriteModel } from '../../model/saveunderwritemodel';
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
+import { AlertComponent } from '../../view/core/alert/alert.component';
+import { MatDialogConfig, MatDialog } from '@angular/material';
 
 @Injectable()
 export class BranchUnderwriteService {
 
-  constructor(private http: Http) { }
+  constructor(private http: Http,public dialog: MatDialog) { }
 
 
   loadProposalToUnderwrite(token : string,pageIndex:number,pageSize:number): any {
@@ -60,6 +62,65 @@ export class BranchUnderwriteService {
     console.log(saveUnderwriteModel);
 
     return this.http.post("http://localhost:8088/saveUnderwrite/",saveUnderwriteModel);
+  }
+
+  checkNicValidation(nic,gender,age,qid,sequenceNo){
+    console.log(nic);
+    console.log(gender);
+    console.log(age);
+    console.log(qid);
+    console.log(sequenceNo);
+
+    if (!(nic.length == 12) && !(nic.length == 10)) {
+      //swal("Nic Invalid..", "", "error");
+      this.alert("Oopz...", "Nic Invalid", "error");
+      return;
+    }
+
+    if (nic.length == 10) {
+      var patt = new RegExp('^\\d{9}[v,V,x,X]{1}');
+      if (patt.test(nic)) {
+        nic = nic.substring(0, nic.length - 1);
+      } else {
+        //swal("Nic Invalid..", "", "error");
+        this.alert("Oopz...", "Nic Invalid", "error");
+        return;
+      }
+
+    }
+
+    if (nic.length == 12) {
+      var patt = new RegExp('^\\d{12}');
+      if (patt.test(nic)) {
+
+      } else {
+        //swal("Nic Invalid..", "", "error");
+        this.alert("Oopz...", "Nic Invalid", "error");
+        return;
+      }
+
+    }
+
+    if (nic.length == 12 || nic.length == 9) {
+      return this.http.get("http://localhost:8088/checkNicValidation/"+nic+"/"+gender+"/"+age+"/"+qid+"/"+sequenceNo);
+    }
+
+  }
+
+  alert(title: string, message: string, type: string) {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      id: 1,
+      title: title,
+      message: message,
+      type: type
+    };
+
+    const dialogRef = this.dialog.open(AlertComponent, dialogConfig);
+
   }
 
 }
