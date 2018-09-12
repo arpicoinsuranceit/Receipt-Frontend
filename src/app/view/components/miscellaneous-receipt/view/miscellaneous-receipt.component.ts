@@ -1,3 +1,8 @@
+import { AlertComponent } from './../../../core/alert/alert.component';
+import { MatDialogConfig, MatDialog } from '@angular/material';
+import { MiscellaneousReceiptInvService } from '../../../../service/miscellaneous-receipy-inv/miscellaneous-receipt-inv.service';
+import { MiscellaneousReceiptModel } from './../../../../model/miscellaneousreceiptmodel';
+import { AgentModel } from './../../../../model/agentmodel';
 import { BranchModel } from './../../../../model/branchmodel';
 import { ExpenseModel } from './../../../../model/expensemodel';
 import { LastReceipt } from '../../../../model/lastreceipt';
@@ -8,6 +13,7 @@ import { BankModel } from '../../../../model/bankmodel';
 import { CommonService } from '../../../../service/common-service/common.service';
 import { Component, OnInit } from '@angular/core';
 import { DISABLED } from '@angular/forms/src/model';
+import { RmsDocTxnmGridModel } from '../../../../model/rmsdoctxnmgridmodel';
 
 @Component({
   selector: 'app-miscellaneous-receipt',
@@ -16,17 +22,26 @@ import { DISABLED } from '@angular/forms/src/model';
 })
 export class MiscellaneousReceiptComponent implements OnInit {
 
-  expColumns = ['expcod', 'desc', 'qty', 'amount'];
-  displayedColumns = ['doccod', 'docnum', 'credat', 'pprnum', 'polnum', 'topprm'];
+  loading_saving = false;
+  loading_form = false;
+  loading_form2 = false;
+  loading_table = false;
 
-  data: LastReceipt[] = new Array();
+  expColumns = ['expcod', 'desc', 'qty', 'amount'];
+  displayedColumns = ['doccod', 'docnum', 'credat', 'agent', 'amount'];
+
+  data: RmsDocTxnmGridModel[] = new Array();
   expences: ExpenseModel[] = new Array();
 
   expencesCart: ExpenseModel[] = new Array();
 
-  branches : BranchModel[] = new Array();
+  branches: BranchModel[] = new Array();
+
+  agentList: AgentModel[] = new Array()
+  filteredAgents: Observable<any[]>;
 
   receiptForm = new FormGroup({
+    branchCode: new FormControl("", Validators.required),
     bankCode: new FormControl("", Validators.required),
     paymode: new FormControl("", Validators.required),
     chequedate: new FormControl(""),
@@ -34,18 +49,23 @@ export class MiscellaneousReceiptComponent implements OnInit {
     chequeno: new FormControl(""),
     remark: new FormControl(""),
     amount: new FormControl("", Validators.required),
-    amountInWord: new FormControl("")
+    amountInWord: new FormControl(""),
+    agentCode: new FormControl("")
   });
 
   expenceForm = new FormGroup({
     expenceId: new FormControl(""),
-    expenceDescription: new FormControl(""),
+    expenseRemark: new FormControl(""),
     expenceAmount: new FormControl(""),
     expenceQty: new FormControl("")
   });
 
   bankList: BankModel[] = new Array();
   filteredBanks: Observable<any[]>;
+
+  get BranchCode() {
+    return this.receiptForm.get("branchCode");
+  }
 
   get BankCode() {
     return this.receiptForm.get("bankCode");
@@ -62,6 +82,11 @@ export class MiscellaneousReceiptComponent implements OnInit {
   get AmountInWord() {
     return this.receiptForm.get("amountInWord");
   }
+
+  get AgentCode() {
+    return this.receiptForm.get("agentCode");
+  }
+
   get Chequedate() {
     return this.receiptForm.get("chequedate");
   }
@@ -78,8 +103,8 @@ export class MiscellaneousReceiptComponent implements OnInit {
     return this.expenceForm.get("expenceId");
   }
 
-  get ExpenceDescription() {
-    return this.expenceForm.get("expenceDescription");
+  get ExpenceRemark() {
+    return this.expenceForm.get("expenseRemark");
   }
 
   get ExpenceAmount() {
@@ -90,7 +115,7 @@ export class MiscellaneousReceiptComponent implements OnInit {
     return this.expenceForm.get("expenceQty");
   }
 
-  constructor(private commonService: CommonService) { }
+  constructor(private commonService: CommonService, private miscellaneousReceiptInvService: MiscellaneousReceiptInvService,public dialog: MatDialog) { }
 
   ngOnInit() {
     this.getBranches();
@@ -99,24 +124,70 @@ export class MiscellaneousReceiptComponent implements OnInit {
     this.loadLastReceipts();
   }
 
-  getBranches(){
+
+  getAgents(event) {
+    if (this.AgentCode.value.length == 2 && event.key != "Enter" && event.key != "ArrowUp"
+      && event.key != "ArrowDown" && event.key != "ArrowLeft" && event.key != "ArrowRight" &&
+      event.key != "Tab" && event.key != "Enter" && event.key != "Backspace") {
+      this.agentList = new Array();
+      this.loading_form = true;
+      this.commonService.getAgent(this.AgentCode.value).subscribe(response => {
+        this.loading_form = false;
+        console.log(response.json());
+        for (let i in response.json()) {
+          let agnTemp = response.json()[i];
+          let agentModel: AgentModel = new AgentModel();
+
+          agentModel.AgentCode = agnTemp.agentCode;
+          agentModel.AgentName = agnTemp.agentName;
+          agentModel.Location = agnTemp.location;
+
+          agentModel.AgentCombine = agnTemp.agentCode + " | " + agnTemp.agentName + " | " + agnTemp.location;
+
+          this.agentList.push(agentModel);
+        }
+
+        console.log(this.agentList);
+        this.filteredAgents = this.AgentCode.valueChanges
+          .pipe(
+            startWith(''),
+            map(agent => this.filterAgents(agent))
+          );
+      }, error => {
+        this.loading_saving = false;
+      });
+    }
+  }
+
+  filterAgents(id: string) {
+    return this.agentList.filter(agent =>
+      agent.AgentCode.toString().toLowerCase().indexOf(id.toString().toLowerCase()) === 0);
+  }
+
+  getBranches() {
+    this.loading_form = true;
     this.commonService.getBranches().subscribe(response => {
+      this.loading_form = false;
       this.branches = new Array();
 
-      for (let i in response.json()){
+      for (let i in response.json()) {
         let e = response.json()[i];
-        let branch : BranchModel = new BranchModel();
+        let branch: BranchModel = new BranchModel();
 
         branch.Id = e.id;
         branch.Description = e.description;
 
         this.branches.push(branch);
       }
+    }, error => {
+      this.loading_saving = false;
     });
   }
 
   getExpences() {
+    this.loading_form2 = true;
     this.commonService.getExpenes().subscribe(response => {
+      this.loading_form2 = false;
       console.log(response.json());
       this.expences = new Array();
 
@@ -133,6 +204,8 @@ export class MiscellaneousReceiptComponent implements OnInit {
 
       console.log(this.expences);
 
+    }, error => {
+      this.loading_saving = false;
     });
   }
 
@@ -155,6 +228,8 @@ export class MiscellaneousReceiptComponent implements OnInit {
           startWith(''),
           map(bank => this.filterBanks(bank))
         );
+    }, error => {
+      this.loading_saving = false;
     });
   }
 
@@ -169,27 +244,26 @@ export class MiscellaneousReceiptComponent implements OnInit {
   }
 
   loadLastReceipts() {
-    this.commonService.getLastReceipts().subscribe(response => {
+    this.loading_table = true;
+    this.commonService.getLastReceiptsMiscell().subscribe(response => {
+      this.loading_table = false;
       this.data = new Array();
 
       console.log(response.json());
 
       response.json().forEach(element => {
         if (this.data.length < 4) {
-          let lastReceipt: LastReceipt = new LastReceipt();
-          lastReceipt.Credat = element.creadt;
-          lastReceipt.Doccod = element.doccod;
-          lastReceipt.Docnum = element.doctyp;
-          lastReceipt.Polnum = element.polnum;
-          lastReceipt.Pprnum = element.pprnum;
-          lastReceipt.Topprm = element.amount;
-          lastReceipt.Chqrel = element.chqrel;
-          lastReceipt.Paymod = element.paymod;
+          let lastReceipt: RmsDocTxnmGridModel = new RmsDocTxnmGridModel();
+          lastReceipt.AgentCode = element.agentCode;
+          lastReceipt.Amount = element.amount;
+          lastReceipt.Date = element.date;
+          lastReceipt.DocCode = element.docCode;
+          lastReceipt.DocNo = element.docNo;
           this.data.push(lastReceipt);
         }
-
       });
-
+    }, error => {
+      this.loading_saving = false;
     });
   }
 
@@ -197,7 +271,7 @@ export class MiscellaneousReceiptComponent implements OnInit {
     console.log(e);
     console.log(i);
     this.ExpenceId.setValue(e.ExpenseId);
-    this.ExpenceDescription.setValue(e.Description);
+    this.ExpenceRemark.setValue(e.Remark);
     this.ExpenceAmount.setValue(e.Amount / e.Qty);
     this.ExpenceQty.setValue(e.Qty);
   }
@@ -212,7 +286,7 @@ export class MiscellaneousReceiptComponent implements OnInit {
 
     this.expences.forEach(e => {
       if (e.ExpenseId == this.ExpenceId.value) {
-        this.ExpenceDescription.setValue(e.Description);
+        //this.ExpenceRemark.setValue(e.Remark);
         this.ExpenceAmount.setValue(e.Amount);
       }
     });
@@ -228,7 +302,7 @@ export class MiscellaneousReceiptComponent implements OnInit {
 
       let expence: ExpenseModel = new ExpenseModel();
       expence.Amount = parseFloat(this.ExpenceAmount.value) * parseInt(this.ExpenceQty.value);
-      expence.Description = this.ExpenceDescription.value;
+      expence.Remark = this.ExpenceRemark.value;
       expence.ExpenseId = this.ExpenceId.value;
       expence.Qty = this.ExpenceQty.value;
 
@@ -247,6 +321,7 @@ export class MiscellaneousReceiptComponent implements OnInit {
 
           e.Qty = e.Qty + expence.Qty;
           e.Amount = e.Amount + expence.Amount;
+          e.Remark = expence.Remark;
 
           this.expencesCart.push(e);
 
@@ -277,7 +352,7 @@ export class MiscellaneousReceiptComponent implements OnInit {
 
   clearExpene() {
     this.ExpenceId.setValue("");
-    this.ExpenceDescription.setValue("");
+    this.ExpenceRemark.setValue("");
     this.ExpenceAmount.setValue("");
     this.ExpenceQty.setValue("");
   }
@@ -307,7 +382,75 @@ export class MiscellaneousReceiptComponent implements OnInit {
     });
   }
 
-  newReceipt() { }
+  newReceipt() {
+    this.clear();
+  }
 
-  saveReceipt() { }
+  saveReceipt() {
+    let miscellaneosReceipt: MiscellaneousReceiptModel = new MiscellaneousReceiptModel();
+
+    miscellaneosReceipt.Branch = this.BranchCode.value;
+    miscellaneosReceipt.Bank = this.BankCode.value;
+    miscellaneosReceipt.Agent = this.AgentCode.value;
+    miscellaneosReceipt.Remark = this.Remark.value;
+    miscellaneosReceipt.Paymode = this.PayMode.value;
+    miscellaneosReceipt.ChqNo = this.Chequeno.value;
+    miscellaneosReceipt.ChqBank = this.Chequebank.value;
+    miscellaneosReceipt.ChqDate = this.Chequedate.value;
+    miscellaneosReceipt.Amount = this.Amount.value;
+    miscellaneosReceipt.AmtInWord = this.AmountInWord.value;
+    miscellaneosReceipt.Expencess = this.expencesCart;
+
+    console.log(miscellaneosReceipt);
+
+    this.loading_saving = true;
+    this.miscellaneousReceiptInvService.saveReceipt(miscellaneosReceipt).subscribe(response => {
+      this.loading_saving = false;
+      console.log(response.json());
+      this.alert("Success", "Successfully Added Receipt NO : " + response.json().message, "success");
+    }, error => {
+      this.loading_saving = false;
+    });
+
+    this.clear();
+    this.loadLastReceipts();
+  }
+
+  clear() {
+    this.BranchCode.setValue("");
+    this.BankCode.setValue("");
+    this.Remark.setValue("");
+    this.PayMode.setValue("");
+    this.Amount.setValue("");
+    this.AmountInWord.setValue("");
+    this.AgentCode.setValue("");
+    this.Chequedate.setValue("");
+    this.Chequebank.setValue("");
+    this.Chequeno.setValue("");
+    this.ExpenceId.setValue("");
+    this.ExpenceRemark.setValue("");
+    this.ExpenceAmount.setValue("");
+    this.ExpenceQty.setValue("");
+    this.expencesCart = new Array();
+  }
+
+  alert(title: string, message: string, type: string) {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      id: 1,
+      title: title,
+      message: message,
+      type: type
+    };
+
+    const dialogRef = this.dialog.open(AlertComponent, dialogConfig);
+
+    // dialogRef.afterClosed().subscribe(result => {
+    //   alert("response: " + result)
+    // });
+
+  }
 }

@@ -1,5 +1,5 @@
 export class ExpenseModel {
-    constructor(private expenseId? : string, private description? : string, private amount? : number,private qty? : number){}
+    constructor(private expenseId? : string, private remark? : string, private description? : string, private amount? : number,private qty? : number){}
 
     get ExpenseId(){
         return this.expenseId;
@@ -7,6 +7,14 @@ export class ExpenseModel {
 
     set ExpenseId(exprnseId : string){
         this.expenseId = exprnseId;
+    }
+
+    get Remark(){
+        return this.remark;
+    }
+
+    set Remark(remark : string){
+        this.remark = remark;
     }
 
     get Description(){

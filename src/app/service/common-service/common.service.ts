@@ -57,6 +57,13 @@ export class CommonService {
     return this.http.post("http://localhost:8088/getLastReceipts/", urlParams);
   }
 
+  getLastReceiptsMiscell(){
+    let token: string = sessionStorage.getItem("token");
+    let urlParams = new URLSearchParams();
+    urlParams.append('token', token);
+    return this.http.post("http://localhost:8088/emsdocmlast/", urlParams);
+  }
+
   loadAgeAndDOBFromNic(nic: string) {
 
     if (!(nic.length == 12) && !(nic.length == 10)) {

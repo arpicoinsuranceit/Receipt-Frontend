@@ -5,6 +5,7 @@ import { MatComponentsModule } from '../../../mat-components.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MiscellaneousReceiptComponent } from './view/miscellaneous-receipt.component';
+import { MiscellaneousReceiptInvService } from '../../../service/miscellaneous-receipy-inv/miscellaneous-receipt-inv.service';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { MiscellaneousReceiptComponent } from './view/miscellaneous-receipt.comp
     ReactiveFormsModule,
     MiscellaneousReceiptRouterModule
   ],
-  declarations: [MiscellaneousReceiptComponent]
+  declarations: [MiscellaneousReceiptComponent],
+  providers : [MiscellaneousReceiptInvService]
 })
 export class MiscellaneousReceiptModule { }

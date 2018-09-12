@@ -28,6 +28,8 @@ export class AuthService {
     let urlSearchParams = new URLSearchParams();
     urlSearchParams.append('userName', userName);
     urlSearchParams.append('password', password);
+    urlSearchParams.append('subSbu', "1");
+
     this.http.post("http://localhost:8086/login/", urlSearchParams).subscribe(response => {
       try {
         console.log(response.json());
