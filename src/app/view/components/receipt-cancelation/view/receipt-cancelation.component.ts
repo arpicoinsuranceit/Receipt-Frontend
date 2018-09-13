@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { startWith, map } from 'rxjs/operators';
 import { ReceiptCancelationService } from '../../../../service/receipt-cancelation-service/receipt-cancelation.service';
+import { MatDialogConfig, MatDialog } from '@angular/material';
+import { AlertComponent } from '../../../core/alert/alert.component';
 
 @Component({
   selector: 'app-receipt-cancelation',
@@ -24,7 +26,7 @@ export class ReceiptCancelationComponent implements OnInit {
     return this.receiptCancelationForm.get("receiptNo");
   }
   
-  constructor(private receiptCancelationService: ReceiptCancelationService) { 
+  constructor(private receiptCancelationService: ReceiptCancelationService, public dialog: MatDialog) { 
   }
 
   ngOnInit() {
@@ -58,12 +60,36 @@ export class ReceiptCancelationComponent implements OnInit {
   }
 
   saveRequest(){
-    alert("called...");
     if(this.receiptCancelationForm.valid){
       this.receiptCancelationService.saveRequest(sessionStorage.getItem("token"),this.ReceiptNo.value,this.receiptCancelationForm.get("reason").value).subscribe(response => {
-        console.log(response);
+        console.log(response.text());
+
+        if(response.text() == "Success"){
+          this.alert("Success", "Successfully Send Request", "success");
+          this.receiptCancelationForm.get("receiptNo").setValue('');
+          this.receiptCancelationForm.get("reason").setValue('');
+        }else{
+          this.alert("Oopz...", "Error occour", "error");
+        }
+        
       });
     }
+  }
+
+  alert(title: string, message: string, type: string) {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      id: 1,
+      title: title,
+      message: message,
+      type: type
+    };
+
+    const dialogRef = this.dialog.open(AlertComponent, dialogConfig);
+
   }
 
 }

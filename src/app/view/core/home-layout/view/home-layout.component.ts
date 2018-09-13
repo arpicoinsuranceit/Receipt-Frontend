@@ -24,4 +24,8 @@ export class HomeLayoutComponent implements OnInit {
     console.log(this.menuList);
   }
 
+  loadProposalInquiry(){
+    window.open("http://10.10.10.120:8084/Insurance?token="+ encodeURIComponent(JSON.stringify(sessionStorage.getItem("token"))), "_blank");
+  }
+
 }

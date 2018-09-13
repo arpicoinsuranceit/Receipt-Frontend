@@ -25,7 +25,9 @@
                     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
                   </div>
                   <div fxFlex="100%" style="margin-bottom: 10px;max-height: 430px;overflow-x: auto;" [ngClass]="{'disabled': loading1 == true}">
-                     
+                      <mat-form-field style="width: 100%;">
+                        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
+                      </mat-form-field>
                       <mat-table [dataSource]="datasourceProposal" class="mat-elevation-z8" style="padding: 20px;">
                           <ng-container matColumnDef="proposalNo">
                             <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Proposal No </mat-header-cell>
@@ -127,12 +129,17 @@
                     <tr>
                       <td>Commencement Date</td>
                       <td> :</td>
-                      <td>2018-01-01</td>
+                      <td></td>
                     </tr>
                     <tr>
                       <td>Expiry Date</td>
                       <td> :</td>
-                      <td>2018-01-01</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>Quotation No</td>
+                      <td> :</td>
+                      <td>{{quotationNo}}</td>
                     </tr>
                     <tr>
                       <td>Quotation Sequence No</td>
@@ -194,8 +201,8 @@
 
                         <table class="full-width" cellspacing="0">
                           <tr>
-                            <td>
-                              <mat-form-field class="full-width">
+                            <td style="padding-right: 20px;">
+                              <mat-form-field class="full-width" >
                                 <input matInput placeholder="Full Name" aria-label="Full Name" formControlName="fullNameInsured" [(uppercase)]='_Name' [(ngModel)]="_Name">
                               </mat-form-field>
                             </td>
@@ -208,7 +215,7 @@
                         </table>
                         <table class="full-width" cellspacing="0">
                           <tr>
-                            <td>
+                            <td style="padding-right: 20px;">
                               <mat-form-field class="full-width">
                                 <input matInput placeholder="Address1" aria-label="Address1" formControlName="address1" [(uppercase)]='_Address1' [(ngModel)]="_Address1">
                               </mat-form-field>
@@ -222,8 +229,8 @@
                         </table>
                         <table class="full-width" cellspacing="0">
                           <tr>
-                            <td>
-                              <mat-form-field class="half-width">
+                            <td >
+                              <mat-form-field class="full-width">
                                 <input matInput placeholder="Address3" aria-label="Address3" formControlName="address3" [(uppercase)]='_Address3' [(ngModel)]="_Address3">
                               </mat-form-field>
                             </td>
@@ -231,13 +238,13 @@
                         </table>
                         <table class="full-width" cellspacing="0">
                           <tr>
-                            <td>
+                            <td style="padding-right: 20px;">
                               <mat-form-field class="full-width">
-                                <input matInput placeholder="N.I.C. No" aria-label="N.I.C. No" formControlName="nicInsured" [readonly]="true" [(uppercase)]='_Nic' [(ngModel)]="_Nic">
+                                <input matInput placeholder="N.I.C. No" aria-label="N.I.C. No" formControlName="nicInsured" [(uppercase)]='_Nic' [(ngModel)]="_Nic" (blur)="checkInsuredNic()" (keyup.enter)="checkInsuredNic()">
                               </mat-form-field>
                             </td>
-                            <td>
-                              <mat-form-field class="full-width">
+                            <td >
+                              <mat-form-field class="half-width">
                                 <input matInput placeholder="Date Of Birth" aria-label="Date Of Birth" formControlName="dateOfBirth" [readonly]="true">
                               </mat-form-field>
                             </td>
@@ -252,7 +259,7 @@
 
                         <table class="full-width" cellspacing="0">
                           <tr>
-                            <td>
+                            <td style="padding-right: 20px;">
                               <mat-form-field class="full-width">
                                 <input matInput placeholder="Tel. No" aria-label="Tel. No" formControlName="telephoneInsured">
                               </mat-form-field>
@@ -284,18 +291,15 @@
 
                         <table class="full-width" cellspacing="0">
                           <tr>
-                            <td>
-                              <mat-form-field style="width: 29%;">
+                            <td style="padding-right: 20px;">
+                              <mat-form-field class="full-width">
                                 <input matInput placeholder="Customer Code" aria-label="Customer Code" formControlName="customerCode">
                               </mat-form-field>
+                            </td>
 
-                              <mat-form-field class="full-width" style="width: 70%;">
-                                <!-- <mat-select placeholder="Occupation" aria-label="Occupation" formControlName="occupation">
-                                  <mat-option value="259">
-                                    NOT SPECIFIED
-                                  </mat-option>
-                                </mat-select> -->
+                            <td>
 
+                              <mat-form-field class="full-width" >
                                 <input matInput placeholder="Occupation" aria-label="Occupation" [matAutocomplete]="occupation" formControlName="occupation" [readonly]="true">
                                 <mat-autocomplete #occupation="matAutocomplete">
                                     <mat-option *ngFor="let occupation of filteredOccupations | async" [value]="occupation.ocupationName">
@@ -311,14 +315,8 @@
                         </table>
                         <table class="full-width" cellspacing="0">
                           <tr>
-                            <td>
+                            <td style="padding-right: 20px;">
                               <mat-form-field class="full-width">
-                                <!-- <mat-select placeholder="Bank Code" aria-label="Bank Code" formControlName="bankCode">
-                                  <mat-option value="YES">
-                                    Sampath Bank
-                                  </mat-option>
-                                </mat-select> -->
-
                                 <input matInput placeholder="Bank Code" aria-label="Bank Code" [matAutocomplete]="bank" formControlName="bankCode">
                                 <mat-autocomplete #bank="matAutocomplete">
                                     <mat-option *ngFor="let bank of filteredBanks | async" [value]="bank.BankCode">
@@ -339,14 +337,14 @@
 
                         <table class="full-width" cellspacing="0">
                           <tr>
-                            <td>
+                            <td style="padding-right: 20px;">
                               <mat-form-field class="full-width">
-                                <input matInput placeholder="Height" aria-label="Height" formControlName="height">
+                                <input matInput placeholder="Height - Cm" aria-label="Height - Cm" formControlName="height" oninput="this.value=this.value.replace(/[^0-9.]/g,'');">
                               </mat-form-field>
                             </td>
                             <td>
                               <mat-form-field class="full-width">
-                                <input matInput placeholder="Weight" aria-label="Weight" formControlName="weight">
+                                <input matInput placeholder="Weight - Kg" aria-label="Weight - Kg" formControlName="weight" oninput="this.value=this.value.replace(/[^0-9.]/g,'');">
                               </mat-form-field>
                             </td>
                           </tr>
@@ -362,7 +360,7 @@
                             </td>
                             <td>
                               <mat-radio-group class="full-width" formControlName="ageAdmitted">
-                                <mat-radio-button value="YES" color="primary" checked>YES</mat-radio-button>
+                                <mat-radio-button value="YES" color="primary">YES</mat-radio-button>
                                 <mat-radio-button value="NO" color="primary">NO</mat-radio-button>
                               </mat-radio-group>
                             </td>
@@ -401,7 +399,7 @@
                             </td>
                             <td>
                               <mat-radio-group class="full-width" formControlName="smoker">
-                                <mat-radio-button value="Yes" color="primary" checked>Yes</mat-radio-button>
+                                <mat-radio-button value="Yes" color="primary">Yes</mat-radio-button>
                                 <mat-radio-button value="No" color="primary">No</mat-radio-button>
                               </mat-radio-group>
                             </td>
@@ -414,8 +412,8 @@
                             </td>
                             <td>
                               <mat-radio-group class="full-width" formControlName="preferredLanguage">
-                                <mat-radio-button value="M" color="primary" checked>Sinhala</mat-radio-button>
-                                <mat-radio-button value="F" color="primary">English</mat-radio-button>
+                                <mat-radio-button value="Sinhala" color="primary">Sinhala</mat-radio-button>
+                                <mat-radio-button value="English" color="primary">English</mat-radio-button>
                               </mat-radio-group>
                             </td>
                           </tr>
@@ -467,7 +465,7 @@
 
                         <table class="full-width" cellspacing="0">
                           <tr>
-                            <td>
+                            <td style="padding-right: 20px;">
                               <mat-form-field class="full-width">
                                 <input matInput placeholder="Full Name" aria-label="Full Name" formControlName="fullNameSpouse" [(uppercase)]='_sName' [(ngModel)]="_sName">
                               </mat-form-field>
@@ -482,9 +480,9 @@
 
                         <table class="full-width" cellspacing="0">
                           <tr>
-                            <td>
+                            <td style="padding-right: 20px;">
                               <mat-form-field class="full-width">
-                                <input matInput placeholder="N.I.C. No" aria-label="N.I.C. No" formControlName="nicSpouse" [readonly]="true" [(uppercase)]='_sNic' [(ngModel)]="_sNic">
+                                <input matInput placeholder="N.I.C. No" aria-label="N.I.C. No" formControlName="nicSpouse"  [(uppercase)]='_sNic' [(ngModel)]="_sNic" (blur)="checkSpouseNic();" (keyup.enter)="checkSpouseNic();">
                               </mat-form-field>
                             </td>
                             <td>
@@ -503,14 +501,14 @@
 
                         <table class="full-width" cellspacing="0">
                           <tr>
-                            <td>
+                            <td style="padding-right: 20px;">
                               <mat-form-field class="full-width">
-                                <input matInput placeholder="Height" aria-label="Height" formControlName="heightSpouse">
+                                <input matInput placeholder="Height - Cm" aria-label="Height - Cm" formControlName="heightSpouse" oninput="this.value=this.value.replace(/[^0-9.]/g,'');">
                               </mat-form-field>
                             </td>
                             <td>
                               <mat-form-field class="full-width">
-                                <input matInput placeholder="Weight" aria-label="Weight" formControlName="weightSpouse">
+                                <input matInput placeholder="Weight - Kg" aria-label="Weight - Kg" formControlName="weightSpouse" oninput="this.value=this.value.replace(/[^0-9.]/g,'');">
                               </mat-form-field>
                             </td>
                           </tr>
@@ -520,13 +518,7 @@
                           <tr>
                             <td>
                               <mat-form-field class="full-width" style="width: 70%;">
-                                <!-- <mat-select placeholder="Occupation" aria-label="Occupation" formControlName="occupationSpouse">
-                                  <mat-option value="NOT SPECIFIED">
-                                    NOT SPECIFIED
-                                  </mat-option>
-                                </mat-select> -->
-
-                                <input matInput placeholder="Occupation" aria-label="Occupation" [matAutocomplete]="occupationSpouse" formControlName="occupationSpouse" [readonly]="true">
+                               <input matInput placeholder="Occupation" aria-label="Occupation" [matAutocomplete]="occupationSpouse" formControlName="occupationSpouse" [readonly]="true">
                                 <mat-autocomplete #occupationSpouse="matAutocomplete">
                                     <mat-option *ngFor="let occupation of filteredOccupations | async" [value]="occupation.ocupationName">
                                         <span> {{ occupation.ocupationName }} </span> |
@@ -546,7 +538,7 @@
                             </td>
                             <td>
                               <mat-radio-group class="full-width" formControlName="ageAdmittedSpouse">
-                                <mat-radio-button value="YES" color="primary" checked>YES</mat-radio-button>
+                                <mat-radio-button value="YES" color="primary">YES</mat-radio-button>
                                 <mat-radio-button value="NO" color="primary">NO</mat-radio-button>
                               </mat-radio-group>
                             </td>
@@ -758,8 +750,8 @@
 
                       <mat-card-footer style="border-top: solid #C4C4C4 1px;  display: flex; 
                               justify-content: space-between; vertical-align: bottom;margin-top: 100px;">
-                        <button mat-raised-button matTooltip="Delete" color="warn" style="margin-top: 10px;margin-left: 5px;">Delete</button>
-                        <button mat-raised-button matTooltip="Edit" color="primary" style="float: right;margin-top: 10px;margin-right: 5px;" (click)="editChildRow()">Edit</button>
+                        <!-- <button mat-raised-button matTooltip="Delete" color="warn" style="margin-top: 10px;margin-left: 5px;">Delete</button> -->
+                        <button mat-raised-button matTooltip="Edit" color="primary" style="float: right;margin-top: 10px;margin-right: 5px;" (click)="editChildRow()">Save</button>
                       </mat-card-footer>
 
                     </mat-card>
@@ -1170,7 +1162,7 @@
                               <tr>
                                 <td>
                                   <mat-form-field class="half-width" style="width: 80%;">
-                                    <input matInput placeholder="Share" aria-label="Share %" formControlName="share" pattern="^[0-9]*$">
+                                    <input matInput placeholder="Share" aria-label="Share %" formControlName="share" oninput="this.value=this.value.replace(/[^0-9.]/g,'');">
                                   </mat-form-field>
                                 </td>
                               </tr>

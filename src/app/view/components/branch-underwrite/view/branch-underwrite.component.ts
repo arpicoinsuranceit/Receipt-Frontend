@@ -31,14 +31,14 @@ export class BranchUnderwriteComponent implements OnInit {
 
   @ViewChild('stepper') stepper: MatStepper;
 
-  loading1=true;
-  loading2=true;
-  loading3=true;
-  loading4=true;
-  loading5=true;
-  loading6=true;
-  loading7=true;
-  loading8=false;
+  loading1 = true;
+  loading2 = true;
+  loading3 = true;
+  loading4 = true;
+  loading5 = true;
+  loading6 = true;
+  loading7 = true;
+  loading8 = false;
 
   proposalArray: LoadUWProposals[] = new Array();
   childrenArray: ChildModel[];
@@ -54,24 +54,24 @@ export class BranchUnderwriteComponent implements OnInit {
   bankList: BankModel[] = new Array();
   occupationsList: Occupation[] = new Array();
 
-  _Name="";
-  _initName="";
-  _Address1="";
-  _Address2="";
-  _Address3="";
-  _Nic="";
-  _sName="";
-  _sInitName="";
-  _sNic="";
-  _cName="";
-  _cNic="";
-  _gName="";
-  _gNic="";
-  _gRel="";
-  _nName="";
-  _nRel="";
-  _nNic="";
-  
+  _Name = "";
+  _initName = "";
+  _Address1 = "";
+  _Address2 = "";
+  _Address3 = "";
+  _Nic = "";
+  _sName = "";
+  _sInitName = "";
+  _sNic = "";
+  _cName = "";
+  _cNic = "";
+  _gName = "";
+  _gNic = "";
+  _gRel = "";
+  _nName = "";
+  _nRel = "";
+  _nNic = "";
+
 
   filteredBanks: Observable<any[]>;
   filteredOccupations: Observable<any[]>;
@@ -81,7 +81,7 @@ export class BranchUnderwriteComponent implements OnInit {
 
   displayedColumnsProposal: string[] = ['proposalNo', 'sequenceNo', 'policyNo', 'customer', 'proposedName', 'agent', 'policyBranch', 'agentBranch',
     'nic'];
-  
+
   datasourceProposal = new MatTableDataSource<LoadUWProposals>(this.proposalArray);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -224,20 +224,20 @@ export class BranchUnderwriteComponent implements OnInit {
 
   ngOnInit() {
     //this.datasourceProposal.paginator = this.paginator;
-    this.paginator.pageIndex=0; 
-    this.paginator.pageSize=5;
+    this.paginator.pageIndex = 0;
+    this.paginator.pageSize = 5;
     this.loadProposalData();
     this.getBanks();
     this.getOccupations();
   }
 
   loadProposalData() {
-    this.loading1=true;
+    this.loading1 = true;
     this.displayedColumnsShedule = new Array();
-    
-    this.branchUnderwriteService.loadProposalToUnderwrite(sessionStorage.getItem("token"),this.paginator.pageIndex,this.paginator.pageSize).subscribe(response => {
+
+    this.branchUnderwriteService.loadProposalToUnderwrite(sessionStorage.getItem("token"), this.paginator.pageIndex, this.paginator.pageSize).subscribe(response => {
       this.proposalArray = new Array();
-      this.paginator.length=response.json().propCount;
+      this.paginator.length = response.json().propCount;
       response.json().inProposalUnderwriteModel.forEach(i => {
         let proposal: LoadUWProposals = new LoadUWProposals();
 
@@ -257,7 +257,7 @@ export class BranchUnderwriteComponent implements OnInit {
       });
 
       this.datasourceProposal.data = this.proposalArray;
-      this.loading1=false;
+      this.loading1 = false;
 
     });
   }
@@ -266,7 +266,7 @@ export class BranchUnderwriteComponent implements OnInit {
     this.datasourceProposal.filter = filterValue.trim().toLowerCase();
   }
 
-  loadNextData(){
+  loadNextData() {
     this.loadProposalData();
   }
 
@@ -381,13 +381,13 @@ export class BranchUnderwriteComponent implements OnInit {
 
 
   loadData(propNo, seqNo, brnCode, agentCode) {
-    this.loading2=true;
+    this.loading2 = true;
     this.stepper.selectedIndex = 1;
-    this.sheduleArray=new Array();
+    this.sheduleArray = new Array();
     this.displayedColumnsShedule = new Array();
     this.resetAllForms();
     this.branchUWGeneralInfo.reset();
-    this.quotationSeqIdList=new Array();
+    this.quotationSeqIdList = new Array();
 
     this.proposalNo = propNo;
     this.seqNo = seqNo;
@@ -404,6 +404,7 @@ export class BranchUnderwriteComponent implements OnInit {
       this.generalInfo.ProposalNo = propNo;
       this.quotationNo = response.json().quonum;
       this.quotationReceiptService.loadQuotationProp(this.quotationNo).subscribe(response => {
+        console.log(response.json());
         for (let i in response.json()) {
           let quoTemp = response.json()[i];
           console.log(quoTemp)
@@ -411,24 +412,45 @@ export class BranchUnderwriteComponent implements OnInit {
         }
       });
 
-      
-      this.loading2=false;
+
+      this.loading2 = false;
     });
 
   }
 
   loadSequnceId() {
-    this.loading2=true;
     this.quotationSeqIdList = new Array();
     this.quotationReceiptService.loadQuotationProp(this.quotationNo).subscribe(response => {
+      console.log(response.json());
       for (let i in response.json()) {
         let quoTemp = response.json()[i];
         this.quotationSeqIdList.push(quoTemp.seqId);
       }
-      this.loading2=false;
     });
 
-    this.loading2=false;
+  }
+
+  checkInsuredNic(){
+    if(this.branchUWInsureForm.get("nicInsured").value != ""){
+      this.branchUnderwriteService.checkNicValidation(this.branchUWInsureForm.get("nicInsured").value,this.branchUWInsureForm.get("gender").value,this.branchUWInsureForm.get("ageNextBirthday").value,this.sequenceNo,this.quotationNo).subscribe(response => {
+        if(response.json() == "204"){
+          this.alert("Oopz...", "Nic not match with age and gender", "error");
+          this.branchUWInsureForm.get("nicInsured").setValue("");
+        }
+      });
+    }
+    
+  }
+
+  checkSpouseNic(){
+    if(this.branchUWSpouseForm.get("nicSpouse").value != ""){
+      this.branchUnderwriteService.checkNicValidation(this.branchUWSpouseForm.get("nicSpouse").value,this.branchUWSpouseForm.get("genderSpouse").value,this.branchUWSpouseForm.get("ageNextBirthdaySpouse").value,this.sequenceNo,this.quotationNo).subscribe(response => {
+        if(response.json() == "204"){
+          this.alert("Oopz...", "Nic not match with age and gender", "error");
+          this.branchUWSpouseForm.get("nicSpouse").setValue("");
+        }
+      });
+    }
     
   }
 
@@ -458,9 +480,9 @@ export class BranchUnderwriteComponent implements OnInit {
 
   loadQuotationDetails() {
     this.resetAllForms();
-    this.loading3=true;
-    this.loading4=true;
-    this.loading5=true;
+    this.loading3 = true;
+    this.loading4 = true;
+    this.loading5 = true;
     this.branchUnderwriteService.loadQuotationIdFormSeqNo(this.sequenceNo, this.quotationNo).subscribe(response => {
       //alert(response.text());
       if (response.text() != null) {
@@ -485,9 +507,10 @@ export class BranchUnderwriteComponent implements OnInit {
           this.branchUWInsureForm.get("occupation").setValue(occup.OccupationName);
           this.branchUWInsureForm.get("smoker").setValue(response.json()._mainlife._mSmoking);
           this.branchUWInsureForm.get("title").setValue(response.json()._mainlife._mTitle);
+          this.branchUWInsureForm.get("preferredLanguage").setValue("Sinhala");
 
           if (response.json()._mainlife._mNic != "" && response.json()._mainlife._mNic != null) {
-            this.branchUWInsureForm.get("nicInsured").disable();
+            //this.branchUWInsureForm.get("nicInsured").disable();
           } else {
             //this.branchUWInsureForm.get("nicInsured").enable();
           }
@@ -510,9 +533,10 @@ export class BranchUnderwriteComponent implements OnInit {
             this.branchUWSpouseForm.get("nicSpouse").setValue(response.json()._spouse._sNic);
             this.branchUWSpouseForm.get("ageNextBirthdaySpouse").setValue(response.json()._spouse._sAge);
             this.branchUWSpouseForm.get("occupationSpouse").setValue(occup.OccupationName);
+            this.branchUWSpouseForm.get("nicSpouse").enable();
 
             if (response.json()._spouse._sNic != "" && response.json()._spouse._sNic != null) {
-              this.branchUWSpouseForm.get("nicSpouse").disable();
+              this.branchUWSpouseForm.get("nicSpouse").enable();
             } else {
               //this.branchUWSpouseForm.get("nicSpouse").enable();
             }
@@ -524,6 +548,8 @@ export class BranchUnderwriteComponent implements OnInit {
             } else {
               this.branchUWSpouseForm.get("genderSpouse").setValue(response.json()._spouse._sGender);
             }
+          }else{
+            this.branchUWSpouseForm.get("nicSpouse").disable();
           }
 
 
@@ -630,18 +656,18 @@ export class BranchUnderwriteComponent implements OnInit {
         });
       }
 
-      this.loading3=false;
-      this.loading4=false;
-      this.loading5=false;
+      this.loading3 = false;
+      this.loading4 = false;
+      this.loading5 = false;
     });
 
-    
+
 
   }
 
   loadNomineeDetails() {
-    this.loading7=true;
-    this.branchUnderwriteService.loadNominee(this.sequenceNo,this.quotationNo).subscribe(response => {
+    this.loading7 = true;
+    this.branchUnderwriteService.loadNominee(this.sequenceNo, this.quotationNo).subscribe(response => {
       console.log(response.json());
       this.branchUWNomineeForm.get("type").setValue("NORMAL");
       let nominee: NomineeModel = new NomineeModel();
@@ -656,53 +682,53 @@ export class BranchUnderwriteComponent implements OnInit {
 
         this.nomineeArray.push(nominee);
       });
-      this.loading7=false;
+      this.loading7 = false;
     });
-    
+
   }
 
   loadSheduleDetails() {
-    this.loading6=true;
+    this.loading6 = true;
     if (sessionStorage.getItem("ProductCode") == "DTA" || sessionStorage.getItem("ProductCode") == "DTAPL") {
       this.displayedColumnsShedule = new Array();
       this.displayedColumnsShedule = ['policyYear', 'outYear', 'outSum', 'lorned', 'premiumRate', 'premium'];
 
-      this.branchUnderwriteService.loadShedule(this.sequenceNo,this.quotationNo).subscribe(response => {
+      this.branchUnderwriteService.loadShedule(this.sequenceNo, this.quotationNo).subscribe(response => {
         console.log(response.json());
         this.sheduleArray = new Array();
         this.sheduleArray = response.json();
       });
 
-      this.loading6=false;
+      this.loading6 = false;
 
     } else if (sessionStorage.getItem("ProductCode") == "ARP") {
       this.displayedColumnsShedule = new Array();
       this.displayedColumnsShedule = ['polyer', 'padtrm', 'prmpyr', 'prmpad', 'isumas', 'paidup', 'surrnd'];
 
-      this.branchUnderwriteService.loadSurrenderVals(this.sequenceNo,this.quotationNo).subscribe(response => {
+      this.branchUnderwriteService.loadSurrenderVals(this.sequenceNo, this.quotationNo).subscribe(response => {
         console.log(response.json());
         this.sheduleArray = new Array();
         this.sheduleArray = response.json();
       });
 
-      this.loading6=false;
+      this.loading6 = false;
 
     } else if (sessionStorage.getItem("ProductCode") == "ARTM") {
       this.displayedColumnsShedule = new Array();
       this.displayedColumnsShedule = ['polyer', 'month', 'contribution', 'fndBeforeInt', 'intRat1', 'clsFnd1', 'intRat2', 'clsFnd2', 'intRat3', 'clsFnd3'];
 
-      this.branchUnderwriteService.loadPensionShedule(this.sequenceNo,this.quotationNo).subscribe(response => {
+      this.branchUnderwriteService.loadPensionShedule(this.sequenceNo, this.quotationNo).subscribe(response => {
         console.log(response.json());
         this.sheduleArray = new Array();
         this.sheduleArray = response.json();
       });
 
-      this.loading6=false;
+      this.loading6 = false;
 
     } else {
       this.displayedColumnsShedule = new Array();
       this.sheduleArray = new Array();
-      this.loading6=false;
+      this.loading6 = false;
     }
 
   }
@@ -801,34 +827,14 @@ export class BranchUnderwriteComponent implements OnInit {
   editNomineeRow() {
     if (this.nomineeEditIndex != undefined && this.nomineeEditIndex != null) {
       if (this.branchUWNomineeForm.valid) {
-        if (this.branchUWNomineeForm.get("dateOfBirthNominee").valid && this.branchUWNomineeForm.get("nicNominee").valid) {
-          if (this.branchUWNomineeForm.get("fullNameNominee").value != "" && this.branchUWNomineeForm.get("fullNameNominee").value != undefined) {
-            if (this.branchUWNomineeForm.get("guardianName").value != "" && this.branchUWNomineeForm.get("guardianName").value != undefined) {
-              if (this.branchUWNomineeForm.get("guardianRelation").value != "" && this.branchUWNomineeForm.get("guardianRelation").value != undefined) {
-                if (this.branchUWNomineeForm.get("share").value != "" && this.branchUWNomineeForm.get("share").value != undefined) {
+        if (this.generalInfo.ProductCode == "ASFP") {
+          if (this.branchUWNomineeForm.get("dateOfBirthNominee").valid && this.branchUWNomineeForm.get("nicNominee").valid) {
+            if (this.branchUWNomineeForm.get("fullNameNominee").value != "" && this.branchUWNomineeForm.get("fullNameNominee").value != undefined) {
+              if (this.branchUWNomineeForm.get("guardianName").value != "" && this.branchUWNomineeForm.get("guardianName").value != undefined) {
+                if (this.branchUWNomineeForm.get("guardianRelation").value != "" && this.branchUWNomineeForm.get("guardianRelation").value != undefined) {
+                  if (this.branchUWNomineeForm.get("share").value != "" && this.branchUWNomineeForm.get("share").value != undefined) {
 
-                  let nominee = this.nomineeArray[this.nomineeEditIndex];
-                  let alreadyShare: number = 0;
-
-                  this.nomineeArray.forEach(n => {
-                    if (n.Share != null && n.Share != undefined && n.Share != "") {
-                      if (n !== nominee) {
-                        if (n.Type != 'MSFB') {
-                          alreadyShare = alreadyShare + parseInt(n.Share);
-                        }
-
-                      }
-
-                    }
-
-                  });
-                  let share = '0';
-                  if (nominee.Type != 'MSFB') {
-                    share = this.branchUWNomineeForm.get("share").value;
-                  }
-
-                  alreadyShare = parseInt(share) + alreadyShare;
-                  if (alreadyShare <= 100) {
+                    let nominee = this.nomineeArray[this.nomineeEditIndex];
 
                     nominee.Relationship = this.branchUWNomineeForm.get("relationshipNominee").value;
                     nominee.Name = this.branchUWNomineeForm.get("fullNameNominee").value;
@@ -846,25 +852,57 @@ export class BranchUnderwriteComponent implements OnInit {
                     this.nomineeEditIndex = null;
                     this.branchUWNomineeForm.reset();
                     this.branchUWNomineeForm.get("type").setValue("NORMAL");
-                  } else {
-                    this.alert("Oopz...", "Out of Share % Limit", "error");
-                  }
 
+                  } else {
+                    this.alert("Oopz...", "Please Enter Share %", "error");
+                  }
                 } else {
-                  this.alert("Oopz...", "Please Enter Share %", "error");
+                  this.alert("Oopz...", "Please Enter Guardian Relation", "error");
                 }
               } else {
-                this.alert("Oopz...", "Please Enter Guardian Relation", "error");
+                this.alert("Oopz...", "Please Enter Guardian Name", "error");
               }
             } else {
-              this.alert("Oopz...", "Please Enter Guardian Name", "error");
+              this.alert("Oopz...", "Please Enter Nominee Name", "error");
             }
-          } else {
-            this.alert("Oopz...", "Please Enter Nominee Name", "error");
-          }
 
+          } else {
+            this.alert("Oopz...", "Please Enter DOB and Nic Correctly", "error");
+          }
         } else {
-          this.alert("Oopz...", "Please Enter DOB and Nic Correctly", "error");
+          if (this.branchUWNomineeForm.get("dateOfBirthNominee").valid && this.branchUWNomineeForm.get("nicNominee").valid) {
+            if (this.branchUWNomineeForm.get("fullNameNominee").value != "" && this.branchUWNomineeForm.get("fullNameNominee").value != undefined) {
+              if (this.branchUWNomineeForm.get("share").value != "" && this.branchUWNomineeForm.get("share").value != undefined) {
+
+                let nominee = this.nomineeArray[this.nomineeEditIndex];
+
+                nominee.Relationship = this.branchUWNomineeForm.get("relationshipNominee").value;
+                nominee.Name = this.branchUWNomineeForm.get("fullNameNominee").value;
+                nominee.Type = this.branchUWNomineeForm.get("type").value;
+                nominee.Nic = this.branchUWNomineeForm.get("nicNominee").value;
+                nominee.DOB = this.branchUWNomineeForm.get("dateOfBirthNominee").value;
+                nominee.NomineeDateofBirth = this.branchUWNomineeForm.get("dateOfBirthNominee").value;
+                nominee.Share = this.branchUWNomineeForm.get("share").value;
+                nominee.GuardianName = this.branchUWNomineeForm.get("guardianName").value;
+                nominee.GuardianDOB = this.branchUWNomineeForm.get("guardianDOB").value;
+                nominee.GuardianNic = this.branchUWNomineeForm.get("guardianNic").value;
+                nominee.GuardianRelation = this.branchUWNomineeForm.get("guardianRelation").value;
+                console.log(nominee);
+                console.log(this.nomineeArray);
+                this.nomineeEditIndex = null;
+                this.branchUWNomineeForm.reset();
+                this.branchUWNomineeForm.get("type").setValue("NORMAL");
+
+              } else {
+                this.alert("Oopz...", "Please Enter Share %", "error");
+              }
+            } else {
+              this.alert("Oopz...", "Please Enter Nominee Name", "error");
+            }
+
+          } else {
+            this.alert("Oopz...", "Please Enter DOB and Nic Correctly", "error");
+          }
         }
 
       } else {
@@ -877,47 +915,107 @@ export class BranchUnderwriteComponent implements OnInit {
   }
 
   calculateDob() {
-    this.loading7=true;
     if (this.branchUWNomineeForm.get("nicNominee").value != null && this.branchUWNomineeForm.get("nicNominee").value.length > 0) {
       this.commonService.loadAgeAndDOBFromNic(this.branchUWNomineeForm.get("nicNominee").value).subscribe(response => {
         this.branchUWNomineeForm.get("dateOfBirthNominee").setValue(response.json().DOB);
         //this.branchUWNomineeForm.get("dateOfBirthNominee").disable();
       });
-      this.loading7=false;
     } else {
-      this.loading7=false;
       this.branchUWNomineeForm.get("dateOfBirthNominee").enable();
     }
-    
+
   }
 
   calculateGuardDob() {
-    this.loading7=true;
     if (this.branchUWNomineeForm.get("guardianNic").value != null && this.branchUWNomineeForm.get("guardianNic").value.length > 0) {
       this.commonService.loadAgeAndDOBFromNic(this.branchUWNomineeForm.get("guardianNic").value).subscribe(response => {
         this.branchUWNomineeForm.get("guardianDOB").setValue(response.json().DOB);
         //this.branchUWNomineeForm.get("guardianDOB").disable();
       });
-      this.loading7=false;
     } else {
       this.branchUWNomineeForm.get("guardianDOB").enable();
-      this.loading7=false;
     }
-    
+
   }
 
   addNewNominee() {
     if (this.nomineeEditIndex == undefined && this.nomineeEditIndex == null) {
       if (this.branchUWNomineeForm.valid) {
-        if (this.branchUWNomineeForm.get("dateOfBirthNominee").valid && this.branchUWNomineeForm.get("nicNominee").valid) {
-          if (this.branchUWNomineeForm.get("fullNameNominee").value != "" && this.branchUWNomineeForm.get("fullNameNominee").value != undefined) {
-            if (this.branchUWNomineeForm.get("guardianName").value != "" && this.branchUWNomineeForm.get("guardianName").value != undefined) {
-              if (this.branchUWNomineeForm.get("guardianRelation").value != "" && this.branchUWNomineeForm.get("guardianRelation").value != undefined) {
+        if (this.generalInfo.ProductCode == "(ASFP)") {
+          if (this.nomineeArray.length < 2) {
+            if (this.branchUWNomineeForm.get("dateOfBirthNominee").valid && this.branchUWNomineeForm.get("nicNominee").valid) {
+              if (this.branchUWNomineeForm.get("fullNameNominee").value != "" && this.branchUWNomineeForm.get("fullNameNominee").value != undefined) {
+                if (this.branchUWNomineeForm.get("guardianName").value != "" && this.branchUWNomineeForm.get("guardianName").value != undefined) {
+                  if (this.branchUWNomineeForm.get("guardianRelation").value != "" && this.branchUWNomineeForm.get("guardianRelation").value != undefined) {
+                    if (this.branchUWNomineeForm.get("share").value != "" && this.branchUWNomineeForm.get("share").value != undefined) {
+
+                      let nomineeArrayTemp = new Array();
+
+                      this.nomineeArray.forEach(n => {
+                        nomineeArrayTemp.push(n);
+                      });
+
+                      this.nomineeArray = new Array();
+
+                      nomineeArrayTemp.forEach(n => {
+                        this.nomineeArray.push(n);
+                      });
+
+                      let nominee = new NomineeModel();
+                      nominee.Relationship = this.branchUWNomineeForm.get("relationshipNominee").value;
+                      nominee.Name = this.branchUWNomineeForm.get("fullNameNominee").value;
+                      nominee.Type = this.branchUWNomineeForm.get("type").value;
+                      nominee.Nic = this.branchUWNomineeForm.get("nicNominee").value;
+                      nominee.DOB = this.branchUWNomineeForm.get("dateOfBirthNominee").value;
+                      nominee.NomineeDateofBirth = this.branchUWNomineeForm.get("dateOfBirthNominee").value;
+                      nominee.Share = this.branchUWNomineeForm.get("share").value;
+                      nominee.GuardianName = this.branchUWNomineeForm.get("guardianName").value;
+                      nominee.GuardianDOB = this.branchUWNomineeForm.get("guardianDOB").value;
+                      nominee.GuardianNic = this.branchUWNomineeForm.get("guardianNic").value;
+                      nominee.GuardianRelation = this.branchUWNomineeForm.get("guardianRelation").value;
+                      console.log(nominee);
+                      this.nomineeArray.push(nominee);
+                      console.log(this.nomineeArray);
+                      this.branchUWNomineeForm.reset();
+                      this.branchUWNomineeForm.get("type").setValue("NORMAL");
+
+                    } else {
+                      this.alert("Oopz...", "Please Enter Share %", "error");
+                    }
+                  } else {
+                    this.alert("Oopz...", "Please Enter Guardian Relation", "error");
+                  }
+                } else {
+                  this.alert("Oopz...", "Please Enter Guardian Name", "error");
+                }
+              } else {
+                this.alert("Oopz...", "Please Enter Nominee Name", "error");
+              }
+
+            } else {
+              this.alert("Oopz...", "Please Enter DOB and Nic Correctly", "error");
+            }
+          } else {
+            this.alert("Oopz...", "Already You Have Add Nominee", "error");
+          }
+
+        } else {
+          if (this.nomineeArray.length < 1) {
+            if (this.branchUWNomineeForm.get("dateOfBirthNominee").valid && this.branchUWNomineeForm.get("nicNominee").valid) {
+              if (this.branchUWNomineeForm.get("fullNameNominee").value != "" && this.branchUWNomineeForm.get("fullNameNominee").value != undefined) {
                 if (this.branchUWNomineeForm.get("share").value != "" && this.branchUWNomineeForm.get("share").value != undefined) {
 
-                  if (this.nomineeArray.length == 0) {
-                    this.nomineeArray = new Array();
-                  }
+                  let nomineeArrayTemp = new Array();
+
+                  this.nomineeArray.forEach(n => {
+                    nomineeArrayTemp.push(n);
+                  });
+
+                  this.nomineeArray = new Array();
+
+                  nomineeArrayTemp.forEach(n => {
+                    this.nomineeArray.push(n);
+                  });
 
                   let alreadyShare: number = 0;
                   this.nomineeArray.forEach(n => {
@@ -959,18 +1057,17 @@ export class BranchUnderwriteComponent implements OnInit {
                   this.alert("Oopz...", "Please Enter Share %", "error");
                 }
               } else {
-                this.alert("Oopz...", "Please Enter Guardian Relation", "error");
+                this.alert("Oopz...", "Please Enter Nominee Name", "error");
               }
-            } else {
-              this.alert("Oopz...", "Please Enter Guardian Name", "error");
-            }
-          } else {
-            this.alert("Oopz...", "Please Enter Nominee Name", "error");
-          }
 
-        } else {
-          this.alert("Oopz...", "Please Enter DOB and Nic Correctly", "error");
+            } else {
+              this.alert("Oopz...", "Please Enter DOB and Nic Correctly", "error");
+            }
+          }else{
+            this.alert("Oopz...", "Already You Have Add Nominee", "error");
+          }
         }
+
 
       } else {
         this.alert("Oopz...", "Please Enter All Details Correctly..", "error");
@@ -981,10 +1078,10 @@ export class BranchUnderwriteComponent implements OnInit {
 
 
   saveUnderwrite() {
-    this.loading8=true;
+    this.loading8 = true;
 
     if (this.checkValidityBeforeSave()) {
-      this.loading8=true;
+      this.loading8 = true;
       let occup = new Occupation();
       occup = this.occupationsList.find(x => x.OccupationName == this.branchUWInsureForm.get("occupation").value);
 
@@ -1033,7 +1130,7 @@ export class BranchUnderwriteComponent implements OnInit {
 
       this.saveUnderwriteModel.ProposalNo = this.proposalNo;
       this.saveUnderwriteModel.SeqNo = this.seqNo;
-      this.saveUnderwriteModel.QuoSeqNo=this.sequenceNo;
+      this.saveUnderwriteModel.QuoSeqNo = this.sequenceNo;
       this.saveUnderwriteModel.QuotationDetailNo = this.quotationDetailId;
       this.saveUnderwriteModel.QuotationNo = this.quotationNo;
 
@@ -1051,7 +1148,7 @@ export class BranchUnderwriteComponent implements OnInit {
       this.branchUnderwriteService.saveUnderwrite(this.saveUnderwriteModel).subscribe(response => {
         console.log(response.text());
         if (response.text() == "Success") {
-          this.loading8=false;
+          this.loading8 = false;
           this.alert("Success", "Successfully Underwrite", "success");
           this.generalInfo = new GeneralInfo();
           this.quotationSeqIdList = new Array();
@@ -1062,20 +1159,20 @@ export class BranchUnderwriteComponent implements OnInit {
           this.loadProposalData();
 
         } else {
-          this.loading8=false;
+          this.loading8 = false;
           this.alert("Oopz...", "Error occour", "error");
         }
 
       }, async error => {
-        this.loading8=false;
-        this.alert("Oopz...", "Error occour", "error");   
+        this.loading8 = false;
+        this.alert("Oopz...", "Error occour", "error");
       });
 
-    }else{
-      this.loading8=false;
+    } else {
+      this.loading8 = false;
     }
 
-    
+
 
   }
 
@@ -1098,7 +1195,7 @@ export class BranchUnderwriteComponent implements OnInit {
         }
       } else {
         if (this.branchUWFinalDecisionInfo.valid) {
-         // alert("Success..");
+          // alert("Success..");
           return true;
         } else {
           this.alert("Oopz...", "Please Fill Required Details", "error");
