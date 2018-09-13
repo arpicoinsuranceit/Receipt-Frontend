@@ -407,7 +407,12 @@ export class MiscellaneousReceiptComponent implements OnInit {
     this.miscellaneousReceiptInvService.saveReceipt(miscellaneosReceipt).subscribe(response => {
       this.loading_saving = false;
       console.log(response.json());
-      this.alert("Success", "Successfully Added Receipt NO : " + response.json().message, "success");
+      if(response.json().code == '200'){
+        this.alert("Success", "Successfully Added Receipt NO : " + response.json().message, "success");
+      } else {
+        this.alert("Error", response.json().message, "error");
+      }
+      
     }, error => {
       this.loading_saving = false;
     });
