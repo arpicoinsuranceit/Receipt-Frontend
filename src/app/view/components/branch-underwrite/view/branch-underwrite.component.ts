@@ -430,28 +430,28 @@ export class BranchUnderwriteComponent implements OnInit {
 
   }
 
-  checkInsuredNic(){
-    if(this.branchUWInsureForm.get("nicInsured").value != ""){
-      this.branchUnderwriteService.checkNicValidation(this.branchUWInsureForm.get("nicInsured").value,this.branchUWInsureForm.get("gender").value,this.branchUWInsureForm.get("ageNextBirthday").value,this.sequenceNo,this.quotationNo).subscribe(response => {
-        if(response.json() == "204"){
+  checkInsuredNic() {
+    if (this.branchUWInsureForm.get("nicInsured").value != "") {
+      this.branchUnderwriteService.checkNicValidation(this.branchUWInsureForm.get("nicInsured").value, this.branchUWInsureForm.get("gender").value, this.branchUWInsureForm.get("ageNextBirthday").value, this.sequenceNo, this.quotationNo).subscribe(response => {
+        if (response.json() == "204") {
           this.alert("Oopz...", "Nic not match with age and gender", "error");
           this.branchUWInsureForm.get("nicInsured").setValue("");
         }
       });
     }
-    
+
   }
 
-  checkSpouseNic(){
-    if(this.branchUWSpouseForm.get("nicSpouse").value != ""){
-      this.branchUnderwriteService.checkNicValidation(this.branchUWSpouseForm.get("nicSpouse").value,this.branchUWSpouseForm.get("genderSpouse").value,this.branchUWSpouseForm.get("ageNextBirthdaySpouse").value,this.sequenceNo,this.quotationNo).subscribe(response => {
-        if(response.json() == "204"){
+  checkSpouseNic() {
+    if (this.branchUWSpouseForm.get("nicSpouse").value != "") {
+      this.branchUnderwriteService.checkNicValidation(this.branchUWSpouseForm.get("nicSpouse").value, this.branchUWSpouseForm.get("genderSpouse").value, this.branchUWSpouseForm.get("ageNextBirthdaySpouse").value, this.sequenceNo, this.quotationNo).subscribe(response => {
+        if (response.json() == "204") {
           this.alert("Oopz...", "Nic not match with age and gender", "error");
           this.branchUWSpouseForm.get("nicSpouse").setValue("");
         }
       });
     }
-    
+
   }
 
   editQuotation() {
@@ -548,7 +548,7 @@ export class BranchUnderwriteComponent implements OnInit {
             } else {
               this.branchUWSpouseForm.get("genderSpouse").setValue(response.json()._spouse._sGender);
             }
-          }else{
+          } else {
             this.branchUWSpouseForm.get("nicSpouse").disable();
           }
 
@@ -827,31 +827,57 @@ export class BranchUnderwriteComponent implements OnInit {
   editNomineeRow() {
     if (this.nomineeEditIndex != undefined && this.nomineeEditIndex != null) {
       if (this.branchUWNomineeForm.valid) {
-        if (this.generalInfo.ProductCode == "ASFP") {
+        if (this.generalInfo.ProductCode == "(ASFP)") {
           if (this.branchUWNomineeForm.get("dateOfBirthNominee").valid && this.branchUWNomineeForm.get("nicNominee").valid) {
             if (this.branchUWNomineeForm.get("fullNameNominee").value != "" && this.branchUWNomineeForm.get("fullNameNominee").value != undefined) {
-              if (this.branchUWNomineeForm.get("guardianName").value != "" && this.branchUWNomineeForm.get("guardianName").value != undefined) {
-                if (this.branchUWNomineeForm.get("guardianRelation").value != "" && this.branchUWNomineeForm.get("guardianRelation").value != undefined) {
+              if (this.branchUWNomineeForm.get("type").value == "NORMAL" || (this.branchUWNomineeForm.get("guardianName").value != "" && this.branchUWNomineeForm.get("guardianName").value != undefined)) {
+                if (this.branchUWNomineeForm.get("type").value == "NORMAL" || (this.branchUWNomineeForm.get("guardianRelation").value != "" && this.branchUWNomineeForm.get("guardianRelation").value != undefined)) {
                   if (this.branchUWNomineeForm.get("share").value != "" && this.branchUWNomineeForm.get("share").value != undefined) {
 
                     let nominee = this.nomineeArray[this.nomineeEditIndex];
 
-                    nominee.Relationship = this.branchUWNomineeForm.get("relationshipNominee").value;
-                    nominee.Name = this.branchUWNomineeForm.get("fullNameNominee").value;
-                    nominee.Type = this.branchUWNomineeForm.get("type").value;
-                    nominee.Nic = this.branchUWNomineeForm.get("nicNominee").value;
-                    nominee.DOB = this.branchUWNomineeForm.get("dateOfBirthNominee").value;
-                    nominee.NomineeDateofBirth = this.branchUWNomineeForm.get("dateOfBirthNominee").value;
-                    nominee.Share = this.branchUWNomineeForm.get("share").value;
-                    nominee.GuardianName = this.branchUWNomineeForm.get("guardianName").value;
-                    nominee.GuardianDOB = this.branchUWNomineeForm.get("guardianDOB").value;
-                    nominee.GuardianNic = this.branchUWNomineeForm.get("guardianNic").value;
-                    nominee.GuardianRelation = this.branchUWNomineeForm.get("guardianRelation").value;
-                    console.log(nominee);
-                    console.log(this.nomineeArray);
-                    this.nomineeEditIndex = null;
-                    this.branchUWNomineeForm.reset();
-                    this.branchUWNomineeForm.get("type").setValue("NORMAL");
+                    let alreadyShare: number = 0;
+                    this.nomineeArray.forEach(n => {
+                      if (n.Share != null && n.Share != undefined && n.Share != "") {
+                        if (n !== nominee) {
+                          if (n.Type != 'MSFB') {
+                            alreadyShare = alreadyShare + parseInt(n.Share);
+                          }
+                        }
+
+                      }
+
+                    });
+
+                    let share = '0';
+
+                    if (nominee.Type != 'MSFB') {
+                      share = this.branchUWNomineeForm.get("share").value;
+                    }
+
+                    alreadyShare = parseInt(share) + alreadyShare;
+                    if (alreadyShare <= 100) {
+
+                      nominee.Relationship = this.branchUWNomineeForm.get("relationshipNominee").value;
+                      nominee.Name = this.branchUWNomineeForm.get("fullNameNominee").value;
+                      nominee.Type = this.branchUWNomineeForm.get("type").value;
+                      nominee.Nic = this.branchUWNomineeForm.get("nicNominee").value;
+                      nominee.DOB = this.branchUWNomineeForm.get("dateOfBirthNominee").value;
+                      nominee.NomineeDateofBirth = this.branchUWNomineeForm.get("dateOfBirthNominee").value;
+                      nominee.Share = this.branchUWNomineeForm.get("share").value;
+                      nominee.GuardianName = this.branchUWNomineeForm.get("guardianName").value;
+                      nominee.GuardianDOB = this.branchUWNomineeForm.get("guardianDOB").value;
+                      nominee.GuardianNic = this.branchUWNomineeForm.get("guardianNic").value;
+                      nominee.GuardianRelation = this.branchUWNomineeForm.get("guardianRelation").value;
+                      console.log(nominee);
+                      console.log(this.nomineeArray);
+                      this.nomineeEditIndex = null;
+                      this.branchUWNomineeForm.reset();
+                      this.branchUWNomineeForm.get("type").setValue("NORMAL");
+
+                    } else {
+                      this.alert("Oopz...", "Out of Share % Limit", "error");
+                    }
 
                   } else {
                     this.alert("Oopz...", "Please Enter Share %", "error");
@@ -876,23 +902,43 @@ export class BranchUnderwriteComponent implements OnInit {
 
                 let nominee = this.nomineeArray[this.nomineeEditIndex];
 
-                nominee.Relationship = this.branchUWNomineeForm.get("relationshipNominee").value;
-                nominee.Name = this.branchUWNomineeForm.get("fullNameNominee").value;
-                nominee.Type = this.branchUWNomineeForm.get("type").value;
-                nominee.Nic = this.branchUWNomineeForm.get("nicNominee").value;
-                nominee.DOB = this.branchUWNomineeForm.get("dateOfBirthNominee").value;
-                nominee.NomineeDateofBirth = this.branchUWNomineeForm.get("dateOfBirthNominee").value;
-                nominee.Share = this.branchUWNomineeForm.get("share").value;
-                nominee.GuardianName = this.branchUWNomineeForm.get("guardianName").value;
-                nominee.GuardianDOB = this.branchUWNomineeForm.get("guardianDOB").value;
-                nominee.GuardianNic = this.branchUWNomineeForm.get("guardianNic").value;
-                nominee.GuardianRelation = this.branchUWNomineeForm.get("guardianRelation").value;
-                console.log(nominee);
-                console.log(this.nomineeArray);
-                this.nomineeEditIndex = null;
-                this.branchUWNomineeForm.reset();
-                this.branchUWNomineeForm.get("type").setValue("NORMAL");
+                let alreadyShare: number = 0;
+                this.nomineeArray.forEach(n => {
+                  if (n.Share != null && n.Share != undefined && n.Share != "") {
+                    if (n !== nominee) {
+                      if (n.Type != 'MSFB') {
+                        alreadyShare = alreadyShare + parseInt(n.Share);
+                      }
+                    }
 
+                  }
+
+                });
+
+                let share = this.branchUWNomineeForm.get("share").value;
+
+                alreadyShare = parseInt(share) + alreadyShare;
+                if (alreadyShare <= 100) {
+
+                  nominee.Relationship = this.branchUWNomineeForm.get("relationshipNominee").value;
+                  nominee.Name = this.branchUWNomineeForm.get("fullNameNominee").value;
+                  nominee.Type = this.branchUWNomineeForm.get("type").value;
+                  nominee.Nic = this.branchUWNomineeForm.get("nicNominee").value;
+                  nominee.DOB = this.branchUWNomineeForm.get("dateOfBirthNominee").value;
+                  nominee.NomineeDateofBirth = this.branchUWNomineeForm.get("dateOfBirthNominee").value;
+                  nominee.Share = this.branchUWNomineeForm.get("share").value;
+                  nominee.GuardianName = this.branchUWNomineeForm.get("guardianName").value;
+                  nominee.GuardianDOB = this.branchUWNomineeForm.get("guardianDOB").value;
+                  nominee.GuardianNic = this.branchUWNomineeForm.get("guardianNic").value;
+                  nominee.GuardianRelation = this.branchUWNomineeForm.get("guardianRelation").value;
+                  console.log(nominee);
+                  console.log(this.nomineeArray);
+                  this.nomineeEditIndex = null;
+                  this.branchUWNomineeForm.reset();
+                  this.branchUWNomineeForm.get("type").setValue("NORMAL");
+                } else {
+                  this.alert("Oopz...", "Out of Share % Limit", "error");
+                }
               } else {
                 this.alert("Oopz...", "Please Enter Share %", "error");
               }
@@ -942,24 +988,39 @@ export class BranchUnderwriteComponent implements OnInit {
     if (this.nomineeEditIndex == undefined && this.nomineeEditIndex == null) {
       if (this.branchUWNomineeForm.valid) {
         if (this.generalInfo.ProductCode == "(ASFP)") {
-          if (this.nomineeArray.length < 2) {
-            if (this.branchUWNomineeForm.get("dateOfBirthNominee").valid && this.branchUWNomineeForm.get("nicNominee").valid) {
-              if (this.branchUWNomineeForm.get("fullNameNominee").value != "" && this.branchUWNomineeForm.get("fullNameNominee").value != undefined) {
-                if (this.branchUWNomineeForm.get("guardianName").value != "" && this.branchUWNomineeForm.get("guardianName").value != undefined) {
-                  if (this.branchUWNomineeForm.get("guardianRelation").value != "" && this.branchUWNomineeForm.get("guardianRelation").value != undefined) {
-                    if (this.branchUWNomineeForm.get("share").value != "" && this.branchUWNomineeForm.get("share").value != undefined) {
+          if (this.branchUWNomineeForm.get("dateOfBirthNominee").valid && this.branchUWNomineeForm.get("nicNominee").valid) {
+            if (this.branchUWNomineeForm.get("fullNameNominee").value != "" && this.branchUWNomineeForm.get("fullNameNominee").value != undefined) {
+              if (this.branchUWNomineeForm.get("type").value == "NORMAL" || (this.branchUWNomineeForm.get("guardianName").value != "" && this.branchUWNomineeForm.get("guardianName").value != undefined)) {
+                if (this.branchUWNomineeForm.get("type").value == "NORMAL" || (this.branchUWNomineeForm.get("guardianRelation").value != "" && this.branchUWNomineeForm.get("guardianRelation").value != undefined)) {
+                  if (this.branchUWNomineeForm.get("share").value != "" && this.branchUWNomineeForm.get("share").value != undefined) {
 
-                      let nomineeArrayTemp = new Array();
+                    let nomineeArrayTemp = new Array();
 
-                      this.nomineeArray.forEach(n => {
-                        nomineeArrayTemp.push(n);
-                      });
+                    this.nomineeArray.forEach(n => {
+                      nomineeArrayTemp.push(n);
+                    });
 
-                      this.nomineeArray = new Array();
+                    this.nomineeArray = new Array();
 
-                      nomineeArrayTemp.forEach(n => {
-                        this.nomineeArray.push(n);
-                      });
+                    nomineeArrayTemp.forEach(n => {
+                      this.nomineeArray.push(n);
+                    });
+
+                    let alreadyShare: number = 0;
+                    this.nomineeArray.forEach(n => {
+                      if (n.Share != null && n.Share != undefined && n.Share != "") {
+                        if (n.Type != 'MSFB') {
+                          alreadyShare = alreadyShare + parseInt(n.Share);
+                        }
+
+                      }
+
+                    });
+
+                    let share = this.branchUWNomineeForm.get("share").value;
+
+                    alreadyShare = parseInt(share) + alreadyShare;
+                    if (alreadyShare <= 100) {
 
                       let nominee = new NomineeModel();
                       nominee.Relationship = this.branchUWNomineeForm.get("relationshipNominee").value;
@@ -978,93 +1039,89 @@ export class BranchUnderwriteComponent implements OnInit {
                       console.log(this.nomineeArray);
                       this.branchUWNomineeForm.reset();
                       this.branchUWNomineeForm.get("type").setValue("NORMAL");
-
                     } else {
-                      this.alert("Oopz...", "Please Enter Share %", "error");
+                      this.alert("Oopz...", "Out of Share % Limit", "error");
                     }
+
                   } else {
-                    this.alert("Oopz...", "Please Enter Guardian Relation", "error");
+                    this.alert("Oopz...", "Please Enter Share %", "error");
                   }
                 } else {
-                  this.alert("Oopz...", "Please Enter Guardian Name", "error");
+                  this.alert("Oopz...", "Please Enter Guardian Relation", "error");
                 }
               } else {
-                this.alert("Oopz...", "Please Enter Nominee Name", "error");
+                this.alert("Oopz...", "Please Enter Guardian Name", "error");
               }
-
             } else {
-              this.alert("Oopz...", "Please Enter DOB and Nic Correctly", "error");
+              this.alert("Oopz...", "Please Enter Nominee Name", "error");
             }
+
           } else {
-            this.alert("Oopz...", "Already You Have Add Nominee", "error");
+            this.alert("Oopz...", "Please Enter DOB and Nic Correctly", "error");
           }
 
         } else {
-          if (this.nomineeArray.length < 1) {
-            if (this.branchUWNomineeForm.get("dateOfBirthNominee").valid && this.branchUWNomineeForm.get("nicNominee").valid) {
-              if (this.branchUWNomineeForm.get("fullNameNominee").value != "" && this.branchUWNomineeForm.get("fullNameNominee").value != undefined) {
-                if (this.branchUWNomineeForm.get("share").value != "" && this.branchUWNomineeForm.get("share").value != undefined) {
+          if (this.branchUWNomineeForm.get("dateOfBirthNominee").valid && this.branchUWNomineeForm.get("nicNominee").valid) {
+            if (this.branchUWNomineeForm.get("fullNameNominee").value != "" && this.branchUWNomineeForm.get("fullNameNominee").value != undefined) {
+              if (this.branchUWNomineeForm.get("share").value != "" && this.branchUWNomineeForm.get("share").value != undefined) {
 
-                  let nomineeArrayTemp = new Array();
+                let nomineeArrayTemp = new Array();
 
-                  this.nomineeArray.forEach(n => {
-                    nomineeArrayTemp.push(n);
-                  });
+                this.nomineeArray.forEach(n => {
+                  nomineeArrayTemp.push(n);
+                });
 
-                  this.nomineeArray = new Array();
+                this.nomineeArray = new Array();
 
-                  nomineeArrayTemp.forEach(n => {
-                    this.nomineeArray.push(n);
-                  });
+                nomineeArrayTemp.forEach(n => {
+                  this.nomineeArray.push(n);
+                });
 
-                  let alreadyShare: number = 0;
-                  this.nomineeArray.forEach(n => {
-                    if (n.Share != null && n.Share != undefined && n.Share != "") {
-                      if (n.Type != 'MSFB') {
-                        alreadyShare = alreadyShare + parseInt(n.Share);
-                      }
-
+                let alreadyShare: number = 0;
+                this.nomineeArray.forEach(n => {
+                  if (n.Share != null && n.Share != undefined && n.Share != "") {
+                    if (n.Type != 'MSFB') {
+                      alreadyShare = alreadyShare + parseInt(n.Share);
                     }
 
-                  });
-
-                  let share = this.branchUWNomineeForm.get("share").value;
-
-                  alreadyShare = parseInt(share) + alreadyShare;
-                  if (alreadyShare <= 100) {
-                    let nominee = new NomineeModel();
-                    nominee.Relationship = this.branchUWNomineeForm.get("relationshipNominee").value;
-                    nominee.Name = this.branchUWNomineeForm.get("fullNameNominee").value;
-                    nominee.Type = this.branchUWNomineeForm.get("type").value;
-                    nominee.Nic = this.branchUWNomineeForm.get("nicNominee").value;
-                    nominee.DOB = this.branchUWNomineeForm.get("dateOfBirthNominee").value;
-                    nominee.NomineeDateofBirth = this.branchUWNomineeForm.get("dateOfBirthNominee").value;
-                    nominee.Share = this.branchUWNomineeForm.get("share").value;
-                    nominee.GuardianName = this.branchUWNomineeForm.get("guardianName").value;
-                    nominee.GuardianDOB = this.branchUWNomineeForm.get("guardianDOB").value;
-                    nominee.GuardianNic = this.branchUWNomineeForm.get("guardianNic").value;
-                    nominee.GuardianRelation = this.branchUWNomineeForm.get("guardianRelation").value;
-                    console.log(nominee);
-                    this.nomineeArray.push(nominee);
-                    console.log(this.nomineeArray);
-                    this.branchUWNomineeForm.reset();
-                    this.branchUWNomineeForm.get("type").setValue("NORMAL");
-                  } else {
-                    this.alert("Oopz...", "Out of Share % Limit", "error");
                   }
 
-                } else {
-                  this.alert("Oopz...", "Please Enter Share %", "error");
-                }
-              } else {
-                this.alert("Oopz...", "Please Enter Nominee Name", "error");
-              }
+                });
 
+                let share = this.branchUWNomineeForm.get("share").value;
+
+                alreadyShare = parseInt(share) + alreadyShare;
+                if (alreadyShare <= 100) {
+                  let nominee = new NomineeModel();
+                  nominee.Relationship = this.branchUWNomineeForm.get("relationshipNominee").value;
+                  nominee.Name = this.branchUWNomineeForm.get("fullNameNominee").value;
+                  nominee.Type = this.branchUWNomineeForm.get("type").value;
+                  nominee.Nic = this.branchUWNomineeForm.get("nicNominee").value;
+                  nominee.DOB = this.branchUWNomineeForm.get("dateOfBirthNominee").value;
+                  nominee.NomineeDateofBirth = this.branchUWNomineeForm.get("dateOfBirthNominee").value;
+                  nominee.Share = this.branchUWNomineeForm.get("share").value;
+                  nominee.GuardianName = this.branchUWNomineeForm.get("guardianName").value;
+                  nominee.GuardianDOB = this.branchUWNomineeForm.get("guardianDOB").value;
+                  nominee.GuardianNic = this.branchUWNomineeForm.get("guardianNic").value;
+                  nominee.GuardianRelation = this.branchUWNomineeForm.get("guardianRelation").value;
+                  console.log(nominee);
+                  this.nomineeArray.push(nominee);
+                  console.log(this.nomineeArray);
+                  this.branchUWNomineeForm.reset();
+                  this.branchUWNomineeForm.get("type").setValue("NORMAL");
+                } else {
+                  this.alert("Oopz...", "Out of Share % Limit", "error");
+                }
+
+              } else {
+                this.alert("Oopz...", "Please Enter Share %", "error");
+              }
             } else {
-              this.alert("Oopz...", "Please Enter DOB and Nic Correctly", "error");
+              this.alert("Oopz...", "Please Enter Nominee Name", "error");
             }
-          }else{
-            this.alert("Oopz...", "Already You Have Add Nominee", "error");
+
+          } else {
+            this.alert("Oopz...", "Please Enter DOB and Nic Correctly", "error");
           }
         }
 
