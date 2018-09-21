@@ -1,3 +1,4 @@
+import { BlobService } from './../../../../service/blob-service/blob.service';
 import { async } from '@angular/core/testing';
 import { AlertComponent } from './../../../core/alert/alert.component';
 import { ActivatedRoute } from '@angular/router';
@@ -111,7 +112,7 @@ export class QuotationReceiptComponent implements OnInit {
     return this.quoReceiptForm.get("credittransferno");
   }
 
-  constructor(private commonService: CommonService, private quotationReceiptService: QuotationReceiptService, public dialog: MatDialog) {
+  constructor(private commonService: CommonService, private quotationReceiptService: QuotationReceiptService, public dialog: MatDialog, private blobService : BlobService) {
 
   }
 
@@ -360,14 +361,31 @@ export class QuotationReceiptComponent implements OnInit {
     }
     console.log(saveReceiptModel);
     this.loading_saving = true;
-    this.quotationReceiptService.saveQupReceipt(saveReceiptModel).subscribe(async response => {
+    this.quotationReceiptService.saveQupReceipt(saveReceiptModel).subscribe(response => {
       this.loading_saving = false;
-      console.log(response.text());
-      if (response.text() == "Work") {
+      console.log(response.json());
+
+      var resp = response.json();
+
+      if (resp.code == "200") {
         this.newReceipt();
         this.loadLastReceipts();
 
         this.alert("Success", "Successfully Added Receipt", "success");
+
+        console.log(resp.data);
+
+        var file = this.blobService.base64toBlob(resp.data, 'application/pdf');
+        var fileURL = URL.createObjectURL(file);
+
+        window.open(fileURL);
+
+        // return this.http.get(url, { responseType: ResponseContentType.Blob }).map((res) => {
+        //   let resp=res.json().data;
+        //   let respo:Response;
+        //   respo.text=res.json().data;
+        //     return new Blob([res.blob()], { type: 'application/pdf' })
+        // });
 
       } else {
         this.alert("Oopz...", "Error occour", "error");
@@ -376,7 +394,6 @@ export class QuotationReceiptComponent implements OnInit {
       this.alert("Oopz...", "Error occour", "error");
     });
   }
-
 
   newReceipt() {
     //this.quoReceiptForm.reset();

@@ -1,11 +1,11 @@
-import { BlobService } from './../../../service/blob-service/blob.service';
-import { MiscellaneousReceiptRouterModule } from './miscellaneous-receipt-router.module';
+import { MiscellaneousReceiptGlrcRouterModule } from './miscellaneous-receipt-glrc-router.module';
+import { MiscellaneousReceiptGlrcComponent } from './view/miscellaneous-receipt-glrc/miscellaneous-receipt-glrc.component';
+import { BlobService } from '../../../service/blob-service/blob.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatComponentsModule } from '../../../mat-components.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MiscellaneousReceiptComponent } from './view/miscellaneous-receipt.component';
 import { MiscellaneousReceiptInvService } from '../../../service/miscellaneous-receipy-inv/miscellaneous-receipt-inv.service';
 
 @NgModule({
@@ -15,9 +15,9 @@ import { MiscellaneousReceiptInvService } from '../../../service/miscellaneous-r
     FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule,
-    MiscellaneousReceiptRouterModule
+    MiscellaneousReceiptGlrcRouterModule
   ],
-  declarations: [MiscellaneousReceiptComponent],
+  declarations: [MiscellaneousReceiptGlrcComponent],
   providers : [MiscellaneousReceiptInvService, BlobService]
 })
-export class MiscellaneousReceiptModule { }
+export class MiscellaneousReceiptGlrcModule { }

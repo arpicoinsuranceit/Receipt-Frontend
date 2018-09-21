@@ -35,6 +35,10 @@ const routes: Routes = [
         loadChildren : "app/view/components/miscellaneous-receipt/miscellaneous-receipt.module#MiscellaneousReceiptModule"
       },
       {
+        path: 'miscellaneousreceiptgl',
+        loadChildren : "app/view/components/miscellaneous-receipt-glrc/miscellaneous-receipt-glrc.module#MiscellaneousReceiptGlrcModule"
+      },
+      {
         path: 'receiptinquiry',
         loadChildren : "app/view/components/receipt-inquiry/receipt-inquiry.module#ReceiptInquiryModule"
       },

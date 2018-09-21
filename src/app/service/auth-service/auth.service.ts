@@ -30,7 +30,7 @@ export class AuthService {
     urlSearchParams.append('password', password);
     urlSearchParams.append('subSbu', "1");
 
-    this.http.post("http://localhost:8086/login/", urlSearchParams).subscribe(response => {
+    this.http.post("http://10.10.10.120:8084/UserManagement/login/", urlSearchParams).subscribe(response => {
       try {
         console.log(response.json());
 

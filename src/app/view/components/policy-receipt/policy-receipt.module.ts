@@ -1,3 +1,4 @@
+import { BlobService } from './../../../service/blob-service/blob.service';
 import { PolicyReceiptService } from '../../../service/policy-receipt-service/policy-receipt.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -18,6 +19,6 @@ import { PolicyReceiptRouterModule } from './policy-receipt-router.module';
     ReactiveFormsModule,
   ],
   declarations: [PolicyReceiptComponent],
-  providers : [PolicyReceiptService]
+  providers : [PolicyReceiptService, BlobService]
 })
 export class PolicyReceiptModule { }

@@ -1,3 +1,4 @@
+import { BlobService } from './../../../service/blob-service/blob.service';
 import { ProposalReceiptComponent } from './view/proposal-receipt.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatComponentsModule } from '../../../mat-components.module';
@@ -18,6 +19,6 @@ import { ProposalReceiptService } from '../../../service/proposal-receipt-servic
     ReactiveFormsModule,
   ],
   declarations: [ProposalReceiptComponent],
-  providers : [ProposalReceiptService]
+  providers : [ProposalReceiptService, BlobService]
 })
 export class ProposalReceiptModule { }

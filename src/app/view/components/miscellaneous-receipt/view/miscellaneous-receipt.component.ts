@@ -1,3 +1,4 @@
+import { BlobService } from './../../../../service/blob-service/blob.service';
 import { AlertComponent } from './../../../core/alert/alert.component';
 import { MatDialogConfig, MatDialog } from '@angular/material';
 import { MiscellaneousReceiptInvService } from '../../../../service/miscellaneous-receipy-inv/miscellaneous-receipt-inv.service';
@@ -115,7 +116,7 @@ export class MiscellaneousReceiptComponent implements OnInit {
     return this.expenceForm.get("expenceQty");
   }
 
-  constructor(private commonService: CommonService, private miscellaneousReceiptInvService: MiscellaneousReceiptInvService,public dialog: MatDialog) { }
+  constructor(private commonService: CommonService, private miscellaneousReceiptInvService: MiscellaneousReceiptInvService, public dialog: MatDialog, private blobService : BlobService) { }
 
   ngOnInit() {
     this.getBranches();
@@ -406,19 +407,26 @@ export class MiscellaneousReceiptComponent implements OnInit {
     this.loading_saving = true;
     this.miscellaneousReceiptInvService.saveReceipt(miscellaneosReceipt).subscribe(response => {
       this.loading_saving = false;
-      console.log(response.json());
-      if(response.json().code == '200'){
-        this.alert("Success", "Successfully Added Receipt NO : " + response.json().message, "success");
+      let resp = response.json();
+      if (resp.code == '200') {
+        this.alert("Success", "Successfully Added Receipt NO : " + resp.message, "success");
+
+        let blob = this.blobService.base64toBlob(resp.data, "application/pdf");
+        var fileURL = URL.createObjectURL(blob);
+
+        window.open(fileURL);
+
+        this.clear();
+        this.loadLastReceipts();
       } else {
-        this.alert("Error", response.json().message, "error");
+        this.alert("Error", resp.message, "error");
       }
-      
+
     }, error => {
       this.loading_saving = false;
     });
 
-    this.clear();
-    this.loadLastReceipts();
+
   }
 
   clear() {

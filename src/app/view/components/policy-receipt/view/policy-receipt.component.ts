@@ -1,3 +1,4 @@
+import { BlobService } from './../../../../service/blob-service/blob.service';
 import { MatDialogConfig, MatDialog } from '@angular/material';
 import { AlertComponent } from './../../../core/alert/alert.component';
 import { SaveReceiptModel } from '../../../../model/savereceiptmodel';
@@ -89,7 +90,7 @@ export class PolicyReceiptComponent implements OnInit {
   }
 
 
-  constructor(private commonService: CommonService, private policyReceiptService: PolicyReceiptService, public dialog: MatDialog) { }
+  constructor(private commonService: CommonService, private policyReceiptService: PolicyReceiptService, public dialog: MatDialog, private blobService : BlobService) { }
 
   ngOnInit() {
     this.getBanks();
@@ -286,18 +287,25 @@ export class PolicyReceiptComponent implements OnInit {
 
     this.loading_saving = true;
     this.policyReceiptService.savePolReceipt(saveReceiptModel).subscribe(response => {
+      console.log("resp received");
       this.loading_saving = false;
-      console.log(response.text());
-      if (response.text() == "Success") {
+      console.log(response.json());
+      let resp = response.json();
+      if (resp.code == "200") {
         this.newReceipt();
         this.loadLastReceipts();
 
         this.alert("Success", "Successfully Added Receipt", "success");
 
+        let blob = this.blobService.base64toBlob(resp.data, "application/pdf");
+        var fileURL = URL.createObjectURL(blob);
+
+        window.open(fileURL);
+
       } else {
         this.alert("Oopz...", "Error occour", "error");
       }
-    }, async error => {
+    }, error => {
       this.alert("Oopz...", "Error occour", "error");
     });
   }

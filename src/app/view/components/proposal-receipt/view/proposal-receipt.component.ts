@@ -1,3 +1,4 @@
+import { BlobService } from './../../../../service/blob-service/blob.service';
 import { AlertComponent } from './../../../core/alert/alert.component';
 import { MatDialogConfig, MatDialog } from '@angular/material';
 import { SaveReceiptModel } from '../../../../model/savereceiptmodel';
@@ -93,7 +94,7 @@ export class ProposalReceiptComponent implements OnInit {
   get Credittransferno() {
     return this.quoReceiptForm.get("credittransferno");
   }
-  constructor(private commonService: CommonService, private proposalReceiptService: ProposalReceiptService, public dialog: MatDialog) {
+  constructor(private commonService: CommonService, private proposalReceiptService: ProposalReceiptService, public dialog: MatDialog, private blobService : BlobService) {
 
     for (var i = 0; i < 2; i++) {
       this.lastReceipt.push(new LastReceipt("...", "...", "...", "...", "...", 0.00, "...", "..."));
@@ -231,7 +232,7 @@ export class ProposalReceiptComponent implements OnInit {
           this.basicDetail.PayAmount = response.json().amtPayble;
           this.lastReceipt = new Array();
 
-          this.Amount.setValue(this.basicDetail.PayAmount);
+          this.Amount.setValue(this.basicDetail.Premium);
           this.convertAmountToWord();
 
           response.json().lastReceiptSummeryDtos.forEach(element => {
@@ -286,18 +287,25 @@ export class ProposalReceiptComponent implements OnInit {
     console.log(saveReceiptModel);
     this.loading_saving = true;
     this.proposalReceiptService.savePropReceipt(saveReceiptModel).subscribe(response => {
+      console.log("resp received");
       this.loading_saving = false;
-      console.log(response.text());
-      if (response.text() == "Success") {
+      console.log(response.json());
+      let resp = response.json();
+      if (resp.code == "200") {
         this.newReceipt();
         this.loadLastReceipts();
 
         this.alert("Success", "Successfully Added Receipt", "success");
 
+        let blob = this.blobService.base64toBlob(resp.data, "application/pdf");
+        var fileURL = URL.createObjectURL(blob);
+
+        window.open(fileURL);
+
       } else {
         this.alert("Oopz...", "Error occour", "error");
       }
-    }, async error => {
+    }, error => {
       this.alert("Oopz...", "Error occour", "error");
     });
   }

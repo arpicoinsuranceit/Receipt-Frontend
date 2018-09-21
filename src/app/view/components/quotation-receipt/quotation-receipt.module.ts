@@ -1,3 +1,4 @@
+import { BlobService } from './../../../service/blob-service/blob.service';
 import { AlertComponent } from './../../core/alert/alert.component';
 import { QuotationReceiptService } from '../../../service/quotation-receipt-service/quotation-receipt.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -19,6 +20,6 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     ReactiveFormsModule
   ],
   declarations: [QuotationReceiptComponent],
-  providers: [QuotationReceiptService]
+  providers: [QuotationReceiptService, BlobService]
 })
 export class QuotationReceiptModule { }
