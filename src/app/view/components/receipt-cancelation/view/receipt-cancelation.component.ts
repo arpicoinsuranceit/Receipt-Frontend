@@ -1,3 +1,4 @@
+import { CanceledReceiptModel } from './../../../../model/canceledreceiptmodel';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
@@ -16,6 +17,11 @@ export class ReceiptCancelationComponent implements OnInit {
   
   filteredReceipts: Observable<any[]>;
   receiptNoList: string[] = new Array();
+  loading_table=true;
+
+  pendingRequestList:CanceledReceiptModel[] = new Array();
+
+  displayedColumns = ['sbuCode', 'locCode', 'receiptNo', 'polNum', 'pprNum', 'reason', 'status', 'requestBy', 'requestDate'];
 
   receiptCancelationForm=new FormGroup({
     receiptNo:new FormControl('',Validators.required),
@@ -26,7 +32,8 @@ export class ReceiptCancelationComponent implements OnInit {
     return this.receiptCancelationForm.get("receiptNo");
   }
   
-  constructor(private receiptCancelationService: ReceiptCancelationService, public dialog: MatDialog) { 
+  constructor(private receiptCancelationService: ReceiptCancelationService, public dialog: MatDialog) {
+    this.loadPendingRequest(); 
   }
 
   ngOnInit() {
@@ -74,6 +81,14 @@ export class ReceiptCancelationComponent implements OnInit {
         
       });
     }
+  }
+
+  loadPendingRequest(){
+    this.receiptCancelationService.loadPendingRequests(sessionStorage.getItem("token")).subscribe(response =>{
+      //console.log(response.json());
+      this.pendingRequestList=response.json();
+      this.loading_table=false;
+    });
   }
 
   alert(title: string, message: string, type: string) {

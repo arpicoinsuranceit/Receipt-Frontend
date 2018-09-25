@@ -1,6 +1,7 @@
 <div class="container" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
-  <div fxFlex="100%">
-    <mat-card class="main-card" style="height: auto;">
+  
+  <div fxFlex="30%">
+    <mat-card class="main-card" style="height: 300px;">
 
       <mat-card-header>
         <mat-card-title>
@@ -30,7 +31,66 @@
             <button mat-raised-button color="primary" (click)="saveRequest()">SEND REQUEST</button>
 
         </form>
+
+        
       </mat-card-content>
     </mat-card>
+  </div>
+
+  <div fxFlex="70%">
+      <mat-card class="main-card" style="height: 300px;">
+          <mat-card-header>
+              <mat-card-title>
+                <h3>Pending Requests</h3>
+              </mat-card-title>
+            </mat-card-header>
+          <div [hidden]="!loading_table" class="loader">
+              <h5>Loading...</h5>
+              <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+          </div>
+          <div [ngClass]="{'disabled2': loading_table == true}" style="max-height: 300px;overflow-x: auto;">
+              <mat-table #table [dataSource]="pendingRequestList">
+                  <ng-container matColumnDef="sbuCode">
+                      <mat-header-cell *matHeaderCellDef> Sbu Code </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.sbuCode}} </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="locCode">
+                      <mat-header-cell *matHeaderCellDef> Loc Code </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.locCode}} </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="receiptNo">
+                      <mat-header-cell *matHeaderCellDef> Receipt No </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.receiptNo}} </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="polNum">
+                      <mat-header-cell *matHeaderCellDef> Policy Num </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.polNum}} </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="pprNum">
+                      <mat-header-cell *matHeaderCellDef> Proposal Num </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.pprNum}} </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="reason">
+                      <mat-header-cell *matHeaderCellDef> Reason </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.reason}} </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="status">
+                      <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.status}} </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="requestBy">
+                      <mat-header-cell *matHeaderCellDef> Request By </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.requestBy}} </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="requestDate">
+                      <mat-header-cell *matHeaderCellDef> Request Date </mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.requestDate}} </mat-cell>
+                  </ng-container>
+
+                  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+              </mat-table>
+          </div>
+      </mat-card>
   </div>
 </div>

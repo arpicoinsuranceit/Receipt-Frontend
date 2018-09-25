@@ -20,4 +20,8 @@ export class ReceiptCancelationService {
     return this.http.get("http://localhost:8088/saveRequest/"+token+"/"+receiptNo+"/"+reason);
   }
 
+  loadPendingRequests(token:string){
+    return this.http.get("http://localhost:8088/getPendingRequest/"+token);
+  }
+
 }
