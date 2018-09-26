@@ -4,8 +4,9 @@ import { BankDetails } from './../../../../model/bankdetails';
 import { PolicyDetails } from './../../../../model/policydetails';
 import { FormGroup } from '@angular/forms';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatTableDataSource,MatPaginator, MatStepper } from '@angular/material';
+import { MatTableDataSource,MatPaginator, MatStepper, MatDialogConfig, MatDialog } from '@angular/material';
 import { ReceiptInquiryService } from '../../../../service/receipt-inquiry/receipt-inquiry.service';
+import { AlertComponent } from '../../../core/alert/alert.component';
 
 @Component({
   selector: 'app-receipt-inquiry',
@@ -47,7 +48,7 @@ export class ReceiptInquiryComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private inquiryService:ReceiptInquiryService){}
+  constructor(private inquiryService:ReceiptInquiryService,public dialog: MatDialog){}
 
   ngOnInit() {
     this.paginator.pageIndex=0; 
@@ -73,6 +74,9 @@ export class ReceiptInquiryComponent implements OnInit {
       this.datasourceReceiptDetails.data = this.receiptDetailsArray;
 
       this.loadingRcptDet=false;
+    },error=>{
+      this.loadingRcptDet=false;
+      this.alert("Error", error.text(), "error");
     });
 
     
@@ -99,6 +103,9 @@ export class ReceiptInquiryComponent implements OnInit {
         this.policyDetailsArray=response.json();
       }
       this.loadingPolDet=false;
+    },error=>{
+      this.loadingPolDet=false;
+      this.alert("Error", error.text(), "error");
     });
 
   }
@@ -114,6 +121,9 @@ export class ReceiptInquiryComponent implements OnInit {
 
       this.loadingAccDet=false;
       console.log(this.accountDetailsArray);
+    },error=>{
+      this.loadingAccDet=false;
+      this.alert("Error", error.text(), "error");
     });
 
   }
@@ -136,7 +146,26 @@ export class ReceiptInquiryComponent implements OnInit {
 
       this.loadingBankDet=false;
 
+    },error=>{
+      this.loadingBankDet=false;
+      this.alert("Error", error.text(), "error");
     });
+
+  }
+
+  alert(title: string, message: string, type: string) {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      id: 1,
+      title: title,
+      message: message,
+      type: type
+    };
+
+    const dialogRef = this.dialog.open(AlertComponent, dialogConfig);
 
   }
 

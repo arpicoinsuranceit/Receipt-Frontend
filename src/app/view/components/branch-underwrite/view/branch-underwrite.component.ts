@@ -259,6 +259,9 @@ export class BranchUnderwriteComponent implements OnInit {
       this.datasourceProposal.data = this.proposalArray;
       this.loading1 = false;
 
+    },error=>{
+      this.loading1 = false;
+      this.alert("Error", error.text(), "error");
     });
   }
 
@@ -321,6 +324,8 @@ export class BranchUnderwriteComponent implements OnInit {
           startWith(''),
           map(bank => this.filterBanks(bank))
         );
+    },error=>{
+      this.alert("Error", error.text(), "error");
     });
   }
 
@@ -346,6 +351,8 @@ export class BranchUnderwriteComponent implements OnInit {
           startWith(''),
           map(occu => this.filterOccupationSpouse(occu))
         );
+    },error=>{
+      this.alert("Error", error.text(), "error");
     });
   }
 
@@ -375,6 +382,8 @@ export class BranchUnderwriteComponent implements OnInit {
             startWith(''),
             map(agent => this.filterAgents(agent))
           );
+      },error=>{
+        this.alert("Error", error.text(), "error");
       });
     }
   }
@@ -410,10 +419,15 @@ export class BranchUnderwriteComponent implements OnInit {
           console.log(quoTemp)
           this.quotationSeqIdList.push(quoTemp.seqId);
         }
+      },error=>{
+        this.alert("Error", error.text(), "error");
       });
 
 
       this.loading2 = false;
+    },error=>{
+      this.loading2 = false;
+      this.alert("Error", error.text(), "error");
     });
 
   }
@@ -426,6 +440,8 @@ export class BranchUnderwriteComponent implements OnInit {
         let quoTemp = response.json()[i];
         this.quotationSeqIdList.push(quoTemp.seqId);
       }
+    },error=>{
+      this.alert("Error", error.text(), "error");
     });
 
   }
@@ -437,6 +453,8 @@ export class BranchUnderwriteComponent implements OnInit {
           this.alert("Oopz...", "Nic not match with age and gender", "error");
           this.branchUWInsureForm.get("nicInsured").setValue("");
         }
+      },error=>{
+        this.alert("Error", error.text(), "error");
       });
     }
 
@@ -449,6 +467,8 @@ export class BranchUnderwriteComponent implements OnInit {
           this.alert("Oopz...", "Nic not match with age and gender", "error");
           this.branchUWSpouseForm.get("nicSpouse").setValue("");
         }
+      },error=>{
+        this.alert("Error", error.text(), "error");
       });
     }
 
@@ -653,12 +673,19 @@ export class BranchUnderwriteComponent implements OnInit {
           this.isLinear = false;
           this.stepper.selectedIndex = 2;
 
+        },error=>{
+          this.alert("Error", error.text(), "error");
         });
       }
 
       this.loading3 = false;
       this.loading4 = false;
       this.loading5 = false;
+    },error=>{
+      this.loading3 = false;
+      this.loading4 = false;
+      this.loading5 = false;
+      this.alert("Error", error.text(), "error");
     });
 
 
@@ -683,6 +710,9 @@ export class BranchUnderwriteComponent implements OnInit {
         this.nomineeArray.push(nominee);
       });
       this.loading7 = false;
+    },error=>{
+      this.loading7 = false;
+      this.alert("Error", error.text(), "error");
     });
 
   }
@@ -697,6 +727,9 @@ export class BranchUnderwriteComponent implements OnInit {
         console.log(response.json());
         this.sheduleArray = new Array();
         this.sheduleArray = response.json();
+      },error=>{
+        this.loading6 = true;
+        this.alert("Error", error.text(), "error");
       });
 
       this.loading6 = false;
@@ -709,6 +742,9 @@ export class BranchUnderwriteComponent implements OnInit {
         console.log(response.json());
         this.sheduleArray = new Array();
         this.sheduleArray = response.json();
+      },error=>{
+        this.loading6 = true;
+        this.alert("Error", error.text(), "error");
       });
 
       this.loading6 = false;
@@ -721,6 +757,9 @@ export class BranchUnderwriteComponent implements OnInit {
         console.log(response.json());
         this.sheduleArray = new Array();
         this.sheduleArray = response.json();
+      },error=>{
+        this.loading6 = true;
+        this.alert("Error", error.text(), "error");
       });
 
       this.loading6 = false;

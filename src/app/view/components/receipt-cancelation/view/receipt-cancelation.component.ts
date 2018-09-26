@@ -61,6 +61,8 @@ export class ReceiptCancelationComponent implements OnInit {
               startWith(''),
               map(receiptNo => this.filterReceipt(receiptNo))
             );
+        },error=>{
+          this.alert("Error", error.text(), "error");
         });
       }
     }
@@ -79,6 +81,8 @@ export class ReceiptCancelationComponent implements OnInit {
           this.alert("Oopz...", "Error occour", "error");
         }
         
+      },error=>{
+        this.alert("Error", error.text(), "error");
       });
     }
   }
@@ -88,6 +92,8 @@ export class ReceiptCancelationComponent implements OnInit {
       //console.log(response.json());
       this.pendingRequestList=response.json();
       this.loading_table=false;
+    },error=>{
+      this.alert("Error", error.text(), "error");
     });
   }
 
