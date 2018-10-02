@@ -12,39 +12,39 @@ const routes: Routes = [
     children: [
       {
         path: 'home',
-        loadChildren : "app/view/components/home/home.module#HomeModule"
+        loadChildren : "src/app/view/components/home/home.module#HomeModule"
       },
       {
         path: 'quoreceipt',
-        loadChildren : "app/view/components/quotation-receipt/quotation-receipt.module#QuotationReceiptModule"
+        loadChildren : "src/app/view/components/quotation-receipt/quotation-receipt.module#QuotationReceiptModule"
       },
       {
         path: 'proposalreceipt',
-        loadChildren : "app/view/components/proposal-receipt/proposal-receipt.module#ProposalReceiptModule"
+        loadChildren : "src/app/view/components/proposal-receipt/proposal-receipt.module#ProposalReceiptModule"
       },
       {
         path: 'underwrite',
-        loadChildren : "app/view/components/branch-underwrite/branch-underwrite.module#BranchUnderwriteModule"
+        loadChildren : "src/app/view/components/branch-underwrite/branch-underwrite.module#BranchUnderwriteModule"
       },
       {
         path: 'policyreceipt',
-        loadChildren : "app/view/components/policy-receipt/policy-receipt.module#PolicyReceiptModule"
+        loadChildren : "src/app/view/components/policy-receipt/policy-receipt.module#PolicyReceiptModule"
       },
       {
         path: 'miscellaneousreceipt',
-        loadChildren : "app/view/components/miscellaneous-receipt/miscellaneous-receipt.module#MiscellaneousReceiptModule"
+        loadChildren : "src/app/view/components/miscellaneous-receipt/miscellaneous-receipt.module#MiscellaneousReceiptModule"
       },
       {
         path: 'miscellaneousreceiptgl',
-        loadChildren : "app/view/components/miscellaneous-receipt-glrc/miscellaneous-receipt-glrc.module#MiscellaneousReceiptGlrcModule"
+        loadChildren : "src/app/view/components/miscellaneous-receipt-glrc/miscellaneous-receipt-glrc.module#MiscellaneousReceiptGlrcModule"
       },
       {
         path: 'receiptinquiry',
-        loadChildren : "app/view/components/receipt-inquiry/receipt-inquiry.module#ReceiptInquiryModule"
+        loadChildren : "src/app/view/components/receipt-inquiry/receipt-inquiry.module#ReceiptInquiryModule"
       },
       {
         path: 'receiptcancelation',
-        loadChildren : "app/view/components/receipt-cancelation/receipt-cancelation.module#ReceiptCancelationModule"
+        loadChildren : "src/app/view/components/receipt-cancelation/receipt-cancelation.module#ReceiptCancelationModule"
       }
     ]
   }

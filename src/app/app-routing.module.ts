@@ -9,7 +9,7 @@ import { LoginComponent } from './view/core/login/login.component';
 const routes: Routes = [
   {
     path: '',
-    loadChildren : "app/view/core/home-layout/home-layout.module#HomeLayoutModule",
+    loadChildren : "src/app/view/core/home-layout/home-layout.module#HomeLayoutModule",
     canActivate: [AuthGuard]
   },
   {
@@ -22,7 +22,7 @@ const routes: Routes = [
   },
   {
     path: 'home',
-    loadChildren : "app/view/core/home-layout/home-layout.module#HomeLayoutModule",
+    loadChildren : "src/app/view/core/home-layout/home-layout.module#HomeLayoutModule",
     canActivate: [AuthGuard]
   },
   

@@ -1,9 +1,9 @@
 <div class="app-layout">
-    <div [hidden]="!loading" class="loader">
-      <h2>Loading...</h2>
-      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-    </div>
-    <div [hidden]="loading" class="router-output">
-      <router-outlet></router-outlet>
-    </div>
+  <div [hidden]="!loading" class="loader">
+    <h2>Loading...</h2>
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  </div>
+  <div [hidden]="loading" class="router-output">
+    <router-outlet></router-outlet>
+  </div>
 </div>

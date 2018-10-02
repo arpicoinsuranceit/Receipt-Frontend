@@ -15,6 +15,7 @@ import { LoginComponent } from './view/core/login/login.component';
 import { RouterModule, Routes } from '@angular/router';
 import { AlertComponent } from './view/core/alert/alert.component';
 
+
 @NgModule({
   declarations: [
     AppComponent, LoginComponent, AlertComponent
@@ -33,5 +34,4 @@ import { AlertComponent } from './view/core/alert/alert.component';
   bootstrap: [AppComponent],
   entryComponents: [AlertComponent]
 })
-export class AppModule { 
-}
+export class AppModule { }
