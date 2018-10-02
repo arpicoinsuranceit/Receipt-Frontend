@@ -129,6 +129,9 @@ export class PolicyReceiptComponent implements OnInit {
           startWith(''),
           map(bank => this.filterBanks(bank))
         );
+    }, error => {
+      this.alert("Oopz...", "Error occour at Bank Loading", "error");
+      this.loading_form = false;
     });
   }
 
@@ -166,6 +169,9 @@ export class PolicyReceiptComponent implements OnInit {
 
       });
 
+    }, error => {
+      this.alert("Oopz...", "Error occour at Loading Last receipts", "error");
+      this.loading_form = false;
     });
   }
 
@@ -197,6 +203,9 @@ export class PolicyReceiptComponent implements OnInit {
               startWith(''),
               map(policy => this.filterPolicy(policy))
             );
+        }, errpr => {
+          this.alert("Oopz...", "Error occour at Load Policies", "error");
+          this.loading_form = false;
         });
       }
 
@@ -255,6 +264,9 @@ export class PolicyReceiptComponent implements OnInit {
             }
           }
 
+        }, errpr => {
+          this.alert("Oopz...", "Error occour at get Policy Details", "error");
+          this.loading_form = false;
         });
       } else {
         this.PropNo.setErrors({ 'incorrect': true });
@@ -303,10 +315,12 @@ export class PolicyReceiptComponent implements OnInit {
         window.open(fileURL);
 
       } else {
-        this.alert("Oopz...", "Error occour", "error");
+        this.alert("Oopz...", "Error occour at Saving", "error");
+        this.loading_saving = false;
       }
     }, error => {
-      this.alert("Oopz...", "Error occour", "error");
+      this.loading_saving = false;
+      this.alert("Oopz...", "Error occour at Saving", "error");
     });
   }
 

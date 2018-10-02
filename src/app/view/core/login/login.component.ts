@@ -16,6 +16,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 
+  loading = false;
+
   loginResponse: LoginResponse = new LoginResponse();
 
   loginForm = new FormGroup({
@@ -41,7 +43,7 @@ export class LoginComponent implements OnInit {
     return this.loginForm.get("newPasswordConfirm");
   }
 
-  constructor(private loginService: AuthService, private router :Router) {
+  constructor(private loginService: AuthService, private router: Router) {
     this.loginResponse.IsNeedChange = false;
     this.loginResponse.IsExpired = false;
     this.loginResponse.IsFail = false;
@@ -54,35 +56,66 @@ export class LoginComponent implements OnInit {
   }
 
   singin() {
-    this.loginResponse = this.loginService.login(this.userName.value, this.password.value);
-      
+    this.loading = true;
+    this.loginService.login(this.userName.value, this.password.value).subscribe(response => {
+      this.loading = false;
+      try {
+        console.log(response.json());
+
+        this.loginResponse.FailCount = response.json().failCount;
+        this.loginResponse.IsFail = response.json().fail;
+        this.loginResponse.IsExpired = response.json().expired;
+        this.loginResponse.IsInactive = response.json().inactive;
+        this.loginResponse.IsLock = response.json().lock;
+        this.loginResponse.IsLogin = response.json().login;
+        this.loginResponse.IsNeedChange = response.json().needChange;
+        this.loginResponse.JwtToken = response.json().jwtToken;
+        this.loginResponse.MenuDtos = response.json().menuDtos;
+        this.loginResponse.UserName = response.json().userName;
+
         if (this.loginResponse.IsLogin) {
           if (this.loginResponse.IsExpired == false) {
-            
-          } else {
-            this.password.setValue("");
+            sessionStorage.setItem("token", this.loginResponse.JwtToken);
+            sessionStorage.setItem("userName", this.loginResponse.UserName);
+            sessionStorage.setItem("menus", JSON.stringify(this.loginResponse.MenuDtos));
+            this.router.navigate(['/home/home']);
           }
-        } else {
-
         }
+      } catch (error) {
+        console.log(error);
+      }
+    }, error => {
+      this.loading = false;
+      console.log(error);
+    });
+
+    if (this.loginResponse.IsLogin) {
+      if (this.loginResponse.IsExpired == false) {
+
+      } else {
+        this.password.setValue("");
+      }
+    } else {
+
+    }
   }
 
   changePassword() {
 
     console.log("change Call");
 
-    if(this.newPassword.value ==  this.newPasswordConfirm.value){
+    if (this.newPassword.value == this.newPasswordConfirm.value) {
       console.log("equal");
-      this.loginService.changePassword(this.userName.value, this.password.value, 
-        this.newPassword.value, this.newPasswordConfirm.value).subscribe( response => {
-          
+      this.loginService.changePassword(this.userName.value, this.password.value,
+        this.newPassword.value, this.newPasswordConfirm.value).subscribe(response => {
+
           this.password.setValue("");
           this.newPassword.setValue("");
           this.newPasswordConfirm.setValue("");
 
           this.loginResponse.IsExpired = response.json().expired;
           this.loginResponse.IsLogin = response.json().login;
-          
+
 
         });
     }

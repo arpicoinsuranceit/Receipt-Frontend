@@ -30,37 +30,9 @@ export class AuthService {
     urlSearchParams.append('password', password);
     urlSearchParams.append('subSbu', "1");
 
-    this.http.post("http://10.10.10.120:8084/UserManagement/login/", urlSearchParams).subscribe(response => {
-      try {
-        console.log(response.json());
+    return this.http.post("http://10.10.10.120:8084/UserManagement/login/", urlSearchParams)
 
-        this.loginResponse.FailCount = response.json().failCount;
-        this.loginResponse.IsFail = response.json().fail;
-        this.loginResponse.IsExpired = response.json().expired;
-        this.loginResponse.IsInactive = response.json().inactive;
-        this.loginResponse.IsLock = response.json().lock;
-        this.loginResponse.IsLogin = response.json().login;
-        this.loginResponse.IsNeedChange = response.json().needChange;
-        this.loginResponse.JwtToken = response.json().jwtToken;
-        this.loginResponse.MenuDtos = response.json().menuDtos;
-
-
-        if (this.loginResponse.IsLogin) {
-          if (this.loginResponse.IsExpired == false) {
-            //this.isLogin = true;
-            sessionStorage.setItem("token", this.loginResponse.JwtToken);
-            sessionStorage.setItem("menus", JSON.stringify(this.loginResponse.MenuDtos));
-            this.router.navigate(['/home/home']);
-          }
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    }, error => {
-      console.log(error);
-    });;
-
-    return this.loginResponse;
+    //return this.loginResponse;
   }
 
   changePassword(userName: string, password: string, newPassword: string, confirmNewPassword: string) {

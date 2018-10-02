@@ -1,10 +1,11 @@
+import { AccountModel } from './accountModel';
 import { ExpenseModel } from './expensemodel';
 
 export class MiscellaneousReceiptModel {
     constructor(private branch?: string, private bank?: string, private agent?: string,
         private remark?: string, private paymode?: string, private chqNo?: string, 
         private chqDate?: string, private chqBank?: string, private amount?: number, 
-        private amtInWord?: string, private expencess?: ExpenseModel[]) { }
+        private amtInWord?: string, private expencess?: ExpenseModel[], private accounts?: AccountModel[]) { }
 
     
     get Branch (){
@@ -93,5 +94,13 @@ export class MiscellaneousReceiptModel {
 
     set Expencess (expencess : ExpenseModel[]) {
         this.expencess = expencess;
+    }
+
+    get Accounts (){
+        return this.accounts;
+    }
+
+    set Accounts (accounts : AccountModel[]) {
+        this.accounts = accounts;
     }
 }

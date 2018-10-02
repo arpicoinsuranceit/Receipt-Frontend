@@ -1,6 +1,7 @@
 import { MenuModel } from './../../../../model/menumodel';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Session } from 'protractor';
 
 @Component({
   selector: 'app-home-layout',
@@ -8,6 +9,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./home-layout.component.css']
 })
 export class HomeLayoutComponent implements OnInit {
+
+  user = sessionStorage.getItem('userName');
 
   menus : MenuModel [] = JSON.parse(sessionStorage.getItem("menus"));
 
@@ -26,6 +29,13 @@ export class HomeLayoutComponent implements OnInit {
 
   loadProposalInquiry(){
     window.open("http://10.10.10.120:8084/Insurance?token="+ encodeURIComponent(JSON.stringify(sessionStorage.getItem("token"))), "_blank");
+  }
+
+  signout(){
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("userName");
+    sessionStorage.removeItem("menus");
+    this.router.navigate(['/login']);
   }
 
 }

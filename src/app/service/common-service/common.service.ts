@@ -31,6 +31,14 @@ export class CommonService {
     return this.http.post("http://localhost:8088/getexpences/", urlParams);
   }
 
+  getAccGL(){
+    let token: string = sessionStorage.getItem("token");
+    let urlParams = new URLSearchParams();
+    urlParams.append('token', token);
+    console.log(token);
+    return this.http.post("http://localhost:8088/getAccounts/", urlParams);
+  }
+
   getBranches() {
     let token: string = sessionStorage.getItem("token");
     let urlParams = new URLSearchParams();
@@ -64,6 +72,13 @@ export class CommonService {
     let urlParams = new URLSearchParams();
     urlParams.append('token', token);
     return this.http.post("http://localhost:8088/emsdocmlast/", urlParams);
+  }
+
+  getLastReceiptsMiscellGL(){
+    let token: string = sessionStorage.getItem("token");
+    let urlParams = new URLSearchParams();
+    urlParams.append('token', token);
+    return this.http.post("http://localhost:8088/recmlast/", urlParams);
   }
 
   loadAgeAndDOBFromNic(nic: string) {

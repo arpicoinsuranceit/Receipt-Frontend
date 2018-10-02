@@ -134,6 +134,9 @@ export class ProposalReceiptComponent implements OnInit {
           startWith(''),
           map(bank => this.filterBanks(bank))
         );
+    }, error => {
+      this.alert("Oopz...", "Error occour at Bank Loading", "error");
+      this.loading_form = false;
     });
   }
 
@@ -173,6 +176,9 @@ export class ProposalReceiptComponent implements OnInit {
               startWith(''),
               map(proposal => this.filterProposal(proposal))
             );
+        }, error => {
+          this.alert("Oopz...", "Error at load Proposals", "error");
+          this.loading_form = false;
         });
 
       }
@@ -207,6 +213,9 @@ export class ProposalReceiptComponent implements OnInit {
         }
       });
 
+    }, error => {
+      this.alert("Oopz...", "Error at load Last Receipts", "error");
+      this.loading_table = false;
     });
   }
 
@@ -255,6 +264,9 @@ export class ProposalReceiptComponent implements OnInit {
               this.lastReceipt.push(new LastReceipt("...", "...", "...", "...", "...", 0.00, "...", "..."));
             }
           }
+        }, error => {
+          this.alert("Oopz...", "Error at get Proposal Details", "error");
+          this.loading_details = false;
         });
       } else {
         this.PropNo.setErrors({ 'incorrect': true });
@@ -306,6 +318,7 @@ export class ProposalReceiptComponent implements OnInit {
         this.alert("Oopz...", "Error occour", "error");
       }
     }, error => {
+      this.loading_saving = false;
       this.alert("Oopz...", "Error occour", "error");
     });
   }

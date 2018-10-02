@@ -151,6 +151,9 @@ export class QuotationReceiptComponent implements OnInit {
           startWith(''),
           map(bank => this.filterBanks(bank))
         );
+    }, error => {
+      this.loading_form = false;
+      this.alert("Oopz...", "Error occour at Loading Bank", "error");
     });
   }
 
@@ -182,6 +185,9 @@ export class QuotationReceiptComponent implements OnInit {
             startWith(''),
             map(agent => this.filterAgents(agent))
           );
+      }, error => {
+        this.loading_form = false;
+        this.alert("Oopz...", "Error occour at Loading Agents", "error");
       });
     }
   }
@@ -212,6 +218,9 @@ export class QuotationReceiptComponent implements OnInit {
             startWith(''),
             map(quotation => this.filterQuotation(quotation))
           );
+      }, error => {
+        this.loading_form = false;
+        this.alert("Oopz...", "Error occour at Loading Quotations", "error");
       });
 
     }
@@ -279,7 +288,7 @@ export class QuotationReceiptComponent implements OnInit {
           }
          
 
-        },async error => {
+        }, error => {
           this.alert("Oopz...", "Error occour, Check Quotation Number and Sequence Number", "error");
         });
       } else {
@@ -380,18 +389,11 @@ export class QuotationReceiptComponent implements OnInit {
 
         window.open(fileURL);
 
-        // return this.http.get(url, { responseType: ResponseContentType.Blob }).map((res) => {
-        //   let resp=res.json().data;
-        //   let respo:Response;
-        //   respo.text=res.json().data;
-        //     return new Blob([res.blob()], { type: 'application/pdf' })
-        // });
-
       } else {
-        this.alert("Oopz...", "Error occour", "error");
+        this.alert("Oopz...", "Error occour at saving receipt", "error");
       }
-    }, async error => {
-      this.alert("Oopz...", "Error occour", "error");
+    },  error => {
+      this.alert("Oopz...", "Error occour at saving receipt", "error");
     });
   }
 
@@ -454,6 +456,9 @@ export class QuotationReceiptComponent implements OnInit {
         }
       });
 
+    }, error => {
+      this.loading_form = false;
+      this.alert("Oopz...", "Error occour at Loading Last Receipts", "error");
     });
   }
 

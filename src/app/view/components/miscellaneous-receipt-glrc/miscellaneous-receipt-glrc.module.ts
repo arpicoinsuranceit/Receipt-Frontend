@@ -1,3 +1,4 @@
+import { MiscellaneousReceiptGlService } from './../../../service/miscellaneous-receipt-gl/miscellaneous-receipt-gl.service';
 import { MiscellaneousReceiptGlrcRouterModule } from './miscellaneous-receipt-glrc-router.module';
 import { MiscellaneousReceiptGlrcComponent } from './view/miscellaneous-receipt-glrc/miscellaneous-receipt-glrc.component';
 import { BlobService } from '../../../service/blob-service/blob.service';
@@ -6,7 +7,6 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatComponentsModule } from '../../../mat-components.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MiscellaneousReceiptInvService } from '../../../service/miscellaneous-receipy-inv/miscellaneous-receipt-inv.service';
 
 @NgModule({
   imports: [
@@ -18,6 +18,6 @@ import { MiscellaneousReceiptInvService } from '../../../service/miscellaneous-r
     MiscellaneousReceiptGlrcRouterModule
   ],
   declarations: [MiscellaneousReceiptGlrcComponent],
-  providers : [MiscellaneousReceiptInvService, BlobService]
+  providers : [MiscellaneousReceiptGlService, BlobService]
 })
 export class MiscellaneousReceiptGlrcModule { }

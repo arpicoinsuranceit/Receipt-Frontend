@@ -84,7 +84,7 @@
             </mat-form-field>
             <mat-card *ngIf="PayMode.value == '01.CHEQUE'" style="margin-bottom: 10px;">
               <mat-form-field class="half-width">
-                <input matInput placeholder="Cheque No" aria-label="Cheque No" formControlName="chequeno">
+                <input matInput type="number" placeholder="Cheque No" aria-label="Cheque No" formControlName="chequeno">
               </mat-form-field>
               <mat-form-field>
                 <input matInput [matDatepicker]="picker" placeholder="Cheque Date" formControlName="chequedate">
@@ -92,7 +92,7 @@
                 <mat-datepicker #picker></mat-datepicker>
               </mat-form-field>
               <mat-form-field class="full-width">
-                <input matInput placeholder="Bank" aria-label="Bank" formControlName="chequebank">
+                <input matInput type="number" placeholder="Bank" aria-label="Bank" formControlName="chequebank">
               </mat-form-field>
             </mat-card>
             <!-- <mat-card *ngIf="PayMode.value == 'CR'" style="margin-bottom: 10px;">
@@ -158,6 +158,8 @@
             </mat-form-field>
             <mat-form-field class="half-width">
               <input readonly type="number" matInput placeholder="Amount" formControlName="expenceAmount">
+              <span matPrefix>Rs.</span>
+              <span matSuffix>.00</span>
             </mat-form-field>
             <mat-form-field style="padding-left: 40px;" class="half-width">
               <input type="number" matInput placeholder="Quantity" formControlName="expenceQty">

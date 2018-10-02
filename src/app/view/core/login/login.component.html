@@ -1,4 +1,9 @@
+<div [hidden]="!loading" class="loader">
+  <h5>Sign In....</h5>
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
 <div class="container">
+
   <mat-card class="login-card">
     <mat-card-header>
       <mat-card-title>
@@ -49,7 +54,8 @@
     </mat-card-content>
     <mat-card-footer>
       <button *ngIf="loginResponse.IsExpired == false" mat-raised-button color="primary" (click)="singin()">Sign in</button>
-      <button *ngIf="loginResponse.IsExpired == true" mat-raised-button color="primary" (click)="changePassword()">Change Password</button>
+      <button *ngIf="loginResponse.IsExpired == true" mat-raised-button color="primary" (click)="changePassword()">Change
+        Password</button>
     </mat-card-footer>
   </mat-card>
 </div>

@@ -40,6 +40,11 @@
             <button mat-mini-fab color="primary" (click)="drawer.toggle()">
                 <i class="material-icons">more_vert</i>
             </button>
+            <span class="spacer"></span>
+            <button mat-button [matMenuTriggerFor]="menu">{{user}}</button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item (click) = "signout()">Sign out</button>
+            </mat-menu>
         </mat-toolbar>
         <router-outlet></router-outlet>
     </div>

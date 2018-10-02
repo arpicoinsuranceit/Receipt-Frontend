@@ -155,7 +155,8 @@ export class MiscellaneousReceiptComponent implements OnInit {
             map(agent => this.filterAgents(agent))
           );
       }, error => {
-        this.loading_saving = false;
+        this.loading_form = false;
+        this.alert("Oopz...", "Error occour at Loading Agents", "error");
       });
     }
   }
@@ -181,7 +182,8 @@ export class MiscellaneousReceiptComponent implements OnInit {
         this.branches.push(branch);
       }
     }, error => {
-      this.loading_saving = false;
+      this.loading_form = false;
+      this.alert("Oopz...", "Error occour at Loading Branches", "error");
     });
   }
 
@@ -206,13 +208,15 @@ export class MiscellaneousReceiptComponent implements OnInit {
       console.log(this.expences);
 
     }, error => {
-      this.loading_saving = false;
+      this.loading_form2 = false;
+      this.alert("Oopz...", "Error occour at Loading Expenses", "error");
     });
   }
 
   getBanks() {
+    this.loading_form = true;
     this.commonService.getBank().subscribe(response => {
-
+      this.loading_form = false;
       console.log(response.json());
 
       for (let i in response.json()) {
@@ -230,7 +234,8 @@ export class MiscellaneousReceiptComponent implements OnInit {
           map(bank => this.filterBanks(bank))
         );
     }, error => {
-      this.loading_saving = false;
+      this.loading_form = false;
+      this.alert("Oopz...", "Error occour at Loading Banks", "error");
     });
   }
 
@@ -264,7 +269,8 @@ export class MiscellaneousReceiptComponent implements OnInit {
         }
       });
     }, error => {
-      this.loading_saving = false;
+      this.loading_table = false;
+      this.alert("Oopz...", "Error occour at Loading Banks", "error");
     });
   }
 
@@ -424,6 +430,7 @@ export class MiscellaneousReceiptComponent implements OnInit {
 
     }, error => {
       this.loading_saving = false;
+      this.alert("Oopz...", "Error occour at save receipts", "error");
     });
 
 

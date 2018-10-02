@@ -7,9 +7,17 @@ import { LoginComponent } from './view/core/login/login.component';
 //import { HomeLayoutModule } from './view/core/home-layout/home-layout.module';
 
 const routes: Routes = [
-  
   {
     path: '',
+    loadChildren : "app/view/core/home-layout/home-layout.module#HomeLayoutModule",
+    canActivate: [AuthGuard]
+  },
+  {
+    path: '',
+    component : LoginComponent,
+  },
+  {
+    path: 'login',
     component : LoginComponent,
   },
   {

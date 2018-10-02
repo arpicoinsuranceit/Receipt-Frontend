@@ -6,7 +6,7 @@ export class LoginResponse{
     
     constructor (private isLogin? : boolean, private isInactive? : boolean,
         private isFail? : boolean, private isLock? : boolean, private isExpired? : boolean,
-        private isNeedChange? : boolean, private jwtToken? : string, private failCount? : number, private menuDtos ? : MenuModel[])
+        private isNeedChange? : boolean, private jwtToken? : string, private failCount? : number, private menuDtos ? : MenuModel[], private userName? : string)
     {
 
     }
@@ -81,6 +81,14 @@ export class LoginResponse{
 
     set MenuDtos (menuDtos : MenuModel[]) {
         this.menuDtos = menuDtos;
+    }
+
+    get UserName () {
+        return this.userName;
+    }
+
+    set UserName (userName : string) {
+        this.userName = userName;
     }
 
     
