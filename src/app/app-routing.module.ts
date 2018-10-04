@@ -9,7 +9,7 @@ import { LoginComponent } from './view/core/login/login.component';
 const routes: Routes = [
   {
     path: '',
-    loadChildren : "src/app/view/core/home-layout/home-layout.module#HomeLayoutModule",
+    loadChildren : "app/view/core/home-layout/home-layout.module#HomeLayoutModule",
     canActivate: [AuthGuard]
   },
   {
@@ -22,7 +22,7 @@ const routes: Routes = [
   },
   {
     path: 'home',
-    loadChildren : "src/app/view/core/home-layout/home-layout.module#HomeLayoutModule",
+    loadChildren : "app/view/core/home-layout/home-layout.module#HomeLayoutModule",
     canActivate: [AuthGuard]
   },
   
@@ -32,7 +32,7 @@ const routes: Routes = [
 @NgModule({
   imports: [
     CommonModule,
-    [RouterModule.forRoot(routes)]
+    [RouterModule.forRoot(routes, {useHash: true})]
   ],
   declarations: []
 })

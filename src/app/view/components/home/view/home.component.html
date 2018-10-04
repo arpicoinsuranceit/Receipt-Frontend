@@ -1,4 +1,141 @@
-<p>
-  home works!
-  
-</p>
+<div [ngClass]="{'disabled': loading_saving == true}" class="container" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
+  fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+
+  <div fxFlex="100%">
+    <mat-card class="main-card" style="min-height: 741px;">
+      <div fxLayout="row" style="border-bottom: solid 4px #3F51B5; " fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+        <div fxFlex="100%" style="min-height: 70px; ">
+          <div>
+            <mat-form-field style="padding-right: 10px;">
+              <input matInput [matDatepicker]="dp" placeholder="From" [formControl]="fromdate">
+              <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+              <mat-datepicker #dp></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput [matDatepicker]="dp1" placeholder="To" [formControl]="todate">
+              <mat-datepicker-toggle matSuffix [for]="dp1"></mat-datepicker-toggle>
+              <mat-datepicker #dp1></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+      <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+        <div fxFlex="25%" style="height: 200px;" fxLayoutAlign="center">
+          <ngx-charts-pie-chart [view]="pieChartView" [scheme]="colorScheme" [results]="single" [legend]="false"
+            [explodeSlices]="true" [labels]="false" [doughnut]="true" [gradient]="true" (select)="onSelect($event)">
+          </ngx-charts-pie-chart>
+        </div>
+
+        <div fxFlex="75%" style="min-height: 200px;">
+          <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+            <div fxFlex="20%">
+              <div class="advpiediv1" style="border-left: solid 5px #1FC1ED; background: #b3edfc; margin-top: 0px;">
+                <p style="padding: 5px;">
+                  <span style="font-size: 18px;">250000</span><br>
+                  <span style="font-size: 15px;">New Business</span><br>
+                  <span style="font-size: 20px;">4</span>
+                </p>
+              </div>
+
+            </div>
+            <div fxFlex="20%">
+              <div class="advpiediv1" style="border-left: solid 5px #DB4C3F; background: #dba19d; margin-top: 0px;">
+                <p style="padding: 5px;">
+                  <span style="font-size: 18px;">250000</span><br>
+                  <span style="font-size: 15px;">Proposal</span><br>
+                  <span style="font-size: 20px;">4</span>
+                </p>
+              </div>
+            </div>
+            <div fxFlex="20%">
+              <div class="advpiediv1" style="border-left: solid 5px #18A55D; background: #a4f2ca; margin-top: 0px;">
+                <p style="padding: 5px;">
+                  <span style="font-size: 18px;">250000</span><br>
+                  <span style="font-size: 15px;">Policy</span><br>
+                  <span style="font-size: 20px;">4</span>
+                </p>
+              </div>
+            </div>
+            <div fxFlex="20%">
+              <div class="advpiediv1" style="border-left: solid 5px #F19B2C; background: #f7d2a5; margin-top: 0px;">
+                <p style="padding: 5px;">
+                  <span style="font-size: 18px;">250000</span><br>
+                  <span style="font-size: 15px;">Misc. INV</span><br>
+                  <span style="font-size: 20px;">4</span>
+                </p>
+              </div>
+            </div>
+            <div fxFlex="20%">
+              <div class="advpiediv1" style="border-left: solid 5px #7561F4; background: #cac3f4; margin-top: 0px;">
+                <p style="padding: 5px;">
+                  <span style="font-size: 18px;">250000</span><br>
+                  <span style="font-size: 15px;">Misc. GL</span><br>
+                  <span style="font-size: 20px;">4</span>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+            <div fxFlex="100%">
+              <p>
+                <span style="font-size: 20px;">Total</span> <br>
+                <span style="font-size: 35px; font-weight: bold;">Rs. 150000000.00</span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center" style="margin-top: 10px;">
+
+        <div fxFlex="100%" style="min-height:50px;" (click)="getDate()">
+          <div>
+            <mat-form-field style="padding-right: 10px;">
+              <mat-select placeholder="Type" value="d" [formControl]="type" >
+                <mat-option value="y">
+                  Year
+                </mat-option>
+                <mat-option value="m">
+                  Month
+                </mat-option>
+                <mat-option value="d">
+                  Day
+                </mat-option>
+
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field style="padding-right: 10px;">
+              <input matInput [matDatepicker]="dp3" placeholder="From" [formControl]="fromdate1" >
+              <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
+              <mat-datepicker #dp3 startView="multi-year"(yearSelected)="chosenYearHandler($event, dp3, 1)"
+              (monthSelected)="chosenMonthHandler($event, dp3)"></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput [matDatepicker]="dp4" placeholder="To" [formControl]="todate1" >
+              <mat-datepicker-toggle matSuffix [for]="dp4"></mat-datepicker-toggle>
+              <mat-datepicker #dp4 startView="multi-year"(yearSelected)="chosenYearHandler($event, dp4, 2)"
+              (monthSelected)="chosenMonthHandler($event, dp4)"></mat-datepicker>
+            </mat-form-field>
+          </div>
+
+
+
+        </div>
+
+      </div>
+
+      <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+        <div fxFlex="100%" style="height: 400px;">
+          <ngx-charts-bar-vertical-2d  [scheme]="colorScheme" [results]="gridChartValues" [gradient]="gradient"
+            [xAxis]="true" [yAxis]="true" [legend]="true" [showXAxisLabel]="true"
+            [showYAxisLabel]="true" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" (select)="onSelect($event)">
+          </ngx-charts-bar-vertical-2d>
+        </div>
+
+      </div>
+
+    </mat-card>
+  </div>
+</div>
