@@ -45,6 +45,10 @@ const routes: Routes = [
       {
         path: 'receiptcancelation',
         loadChildren : "app/view/components/receipt-cancelation/receipt-cancelation.module#ReceiptCancelationModule"
+      },
+      {
+        path: 'receiptreprint',
+        loadChildren : "app/view/components/receipt-re-print/receipt-re-print.module#ReceiptRePrintModule"
       }
     ]
   }

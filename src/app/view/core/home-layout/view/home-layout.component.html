@@ -17,6 +17,7 @@
             <button  mat-menu-item routerLink="miscellaneousreceipt">MISCELLANEOUS RECEIPT INV</button>
             <button  mat-menu-item routerLink="miscellaneousreceiptgl">MISCELLANEOUS RECEIPT GL</button>
             <button *ngIf = "menuList.includes('RECEIPT_CANCELATION')" mat-menu-item routerLink="receiptcancelation">RECEIPT CANCELATION</button>
+            <button *ngIf = "menuList.includes('RECEIPT_RE_PRINT')" mat-menu-item routerLink="receiptreprint">RECEIPT RE PRINT</button>
 
         </mat-menu>
 

@@ -1,0 +1,45 @@
+<div class="container" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+  <div fxFlex="100%">
+    <mat-card class="main-card" style="height: auto;">
+
+      <mat-card-header>
+        <mat-card-title>
+          <h3>Receipt Re-Print</h3>
+        </mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content>
+        <form [formGroup]="receiptRePrintForm">
+
+            <mat-form-field>
+                <mat-select placeholder="Doc Code" aria-label="Doc Code" formControlName="doccode">
+                    <mat-option value="CS">
+                        CASH
+                    </mat-option>
+                    <mat-option value="CQ">
+                        CHEQUE
+                    </mat-option>
+                    <mat-option value="CR">
+                        CREDIT CARD
+                    </mat-option>
+                    <mat-option value="DD">
+                        DIRECT DEPOSIT
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="DocCode.hasError('required')">
+                    Doc Code is
+                    <strong>REQUIRED</strong>
+                </mat-error>
+            </mat-form-field> <br>
+
+            <mat-form-field>
+                <input matInput type="number" placeholder="Receipt No. *" aria-label="Receipt No." formControlName="receiptNo" />
+            </mat-form-field><br>
+
+            <button mat-raised-button color="primary" (click)="rePrint()">PRINT</button>
+
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
