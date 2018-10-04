@@ -5,6 +5,7 @@ import { ReceiptRePrintComponent } from './view/receipt-re-print.component';
 import { MatComponentsModule } from '../../../mat-components.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReceiptRePrintService } from '../../../service/receipt-re-print/receipt-re-print.service';
 
 @NgModule({
   imports: [
@@ -16,6 +17,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule,
   ],
   declarations: [ReceiptRePrintComponent],
-  providers : []
+  providers : [ReceiptRePrintService]
 })
 export class ReceiptRePrintModule { }

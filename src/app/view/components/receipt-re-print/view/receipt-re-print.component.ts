@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { ReceiptRePrintService } from '../../../../service/receipt-re-print/receipt-re-print.service';
 
 @Component({
   selector: 'app-receipt-re-print',
@@ -21,14 +22,16 @@ export class ReceiptRePrintComponent implements OnInit {
     return this.receiptRePrintForm.get("receiptNo");
   }
 
-  constructor() { }
+  constructor(private receiptRePrintService:ReceiptRePrintService) { }
 
   ngOnInit() {
   }
 
   rePrint(){
     if(this.receiptRePrintForm.valid){
-      alert("ok");
+      this.receiptRePrintService.receiptRePrint(this.DocCode.value,this.ReceiptNo.value).subscribe(response => {
+        console.log(response.json());
+      });
     }
   }
 

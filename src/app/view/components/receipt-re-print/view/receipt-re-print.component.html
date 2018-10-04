@@ -13,17 +13,20 @@
 
             <mat-form-field>
                 <mat-select placeholder="Doc Code" aria-label="Doc Code" formControlName="doccode">
-                    <mat-option value="CS">
-                        CASH
+                    <mat-option value="RCNB">
+                        RCNB
                     </mat-option>
-                    <mat-option value="CQ">
-                        CHEQUE
+                    <mat-option value="RCPL">
+                        RCPL
                     </mat-option>
-                    <mat-option value="CR">
-                        CREDIT CARD
+                    <mat-option value="RCPP">
+                        RCPP
                     </mat-option>
-                    <mat-option value="DD">
-                        DIRECT DEPOSIT
+                    <mat-option value="OISS">
+                        OISS
+                    </mat-option>
+                    <mat-option value="GLRC">
+                        GLRC
                     </mat-option>
                 </mat-select>
                 <mat-error *ngIf="DocCode.hasError('required')">
