@@ -6,7 +6,7 @@ import { HomeComponent } from './view/home.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-
+import { DashboardService } from '../../../service/dashboard-service/dashboard.service';
 
 @NgModule({
   imports: [
@@ -16,8 +16,9 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     HomeRouterModule,
     FlexLayoutModule,
     FormsModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule
   ],
-  declarations: [HomeComponent]
+  declarations: [HomeComponent],
+  providers : [DashboardService]
 })
 export class HomeModule { }

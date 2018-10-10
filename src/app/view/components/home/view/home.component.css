@@ -1,0 +1,49 @@
+.spacer {
+    flex: 1 1 auto;
+}
+
+.padding-right-10{
+    padding-right: 10px;
+}
+
+.new-Business-div {
+    border-left: solid 5px #1FC1ED; 
+    background: #b3edfc; 
+    margin-top: 0px;
+}
+
+.proposal-div{
+    border-left: solid 5px #DB4C3F; 
+    background: #dba19d; 
+    margin-top: 0px;
+}
+
+
+.policy-div{
+    border-left: solid 5px #18A55D; 
+    background: #a4f2ca;
+    margin-top: 0px;
+}
+
+.inv-div{
+    border-left: solid 5px #F19B2C;
+    background: #f7d2a5;
+    margin-top: 0px;
+}
+
+.gl-div{
+    border-left: solid 5px #7561F4; 
+    background: #cac3f4; 
+    margin-top: 0px;
+}
+
+.flex-box{
+    width: 100%; height: 100%; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+}
+
+.icon_dash{
+    width: 90%; height: 90%;
+}

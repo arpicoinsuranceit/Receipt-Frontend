@@ -1,3 +1,5 @@
+import { DashboardpopupComponent } from './view/core/dashboardpopup/dashboardpopup.component';
+
 import { CommonService } from './service/common-service/common.service';
 import { AuthGuard } from './service/auth-service/auth.guard';
 import { AuthService } from './service/auth-service/auth.service';
@@ -6,7 +8,6 @@ import { MatComponentsModule } from './mat-components.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 import { AppComponent } from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { FormControl } from '@angular/forms';
@@ -18,7 +19,7 @@ import { AlertComponent } from './view/core/alert/alert.component';
 
 @NgModule({
   declarations: [
-    AppComponent, LoginComponent, AlertComponent
+    AppComponent, LoginComponent, AlertComponent, DashboardpopupComponent
   ],
   imports: [
     BrowserModule,
@@ -32,6 +33,6 @@ import { AlertComponent } from './view/core/alert/alert.component';
   ],
   providers: [AuthService, AuthGuard, CommonService],
   bootstrap: [AppComponent],
-  entryComponents: [AlertComponent]
+  entryComponents: [AlertComponent, DashboardpopupComponent]
 })
 export class AppModule { }
