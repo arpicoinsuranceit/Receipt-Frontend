@@ -1,4 +1,8 @@
-<div [ngClass]="{'disabled': loading_saving == true}" class="container" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
+<div *ngIf="loading4" style="margin-bottom: 10px; margin-top: 10px;" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
+  fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+<div [ngClass]="{'disabled': loading4 == true}" class="container" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
   fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
 
   <div fxFlex="100%">
@@ -11,9 +15,13 @@
       </mat-card-header>
 
       <mat-card-content>
+        <div *ngIf="loading3" style="margin-bottom: 10px;" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
+          fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+          <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        </div>
         <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" style="border-bottom: solid 4px #3F51B5; margin-bottom: 10px;"
           fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="left">
-          <div>
+          <div [ngClass]="{'disabled': loading3 == true}">
             <mat-form-field class="padding-right-10">
               <input matInput [matDatepicker]="dp11" placeholder="From" [formControl]="fromdate2">
               <mat-datepicker-toggle matSuffix [for]="dp11"></mat-datepicker-toggle>
@@ -27,9 +35,10 @@
             <button mat-raised-button color="primary" (click)="getCashFlowDetails()">Search</button>
           </div>
         </div>
+
         <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
           <div fxFlex="25%">
-            <div class="new-Business-div">
+            <div class="new-Business-div" (click)="getCashFlowGrid('CS')">
               <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%"
                 fxLayoutAlign="center">
                 <div fxFlex="60%">
@@ -52,7 +61,7 @@
             </div>
           </div>
           <div fxFlex="25%">
-            <div class="proposal-div">
+            <div class="proposal-div" (click)="getCashFlowGrid('CR')">
               <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%"
                 fxLayoutAlign="center">
                 <div fxFlex="60%">
@@ -75,7 +84,7 @@
             </div>
           </div>
           <div fxFlex="25%">
-            <div class="policy-div">
+            <div class="policy-div" (click)="getCashFlowGrid('CQ')">
               <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%"
                 fxLayoutAlign="center">
                 <div fxFlex="60%">
@@ -98,7 +107,7 @@
             </div>
           </div>
           <div fxFlex="25%">
-            <div class="inv-div">
+            <div class="inv-div" (click)="getCashFlowGrid('DD')">
               <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%"
                 fxLayoutAlign="center">
                 <div fxFlex="60%">
@@ -131,11 +140,14 @@
         </mat-card-title>
       </mat-card-header>
       <mat-card-content>
-
+        <div *ngIf="loading1" style="margin-bottom: 10px;" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
+          fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+          <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        </div>
         <div fxLayout="row" style="border-bottom: solid 4px #3F51B5; " fxLayout.sm="column" fxLayout.xs="column"
           fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
           <div fxFlex="100%" style="min-height: 70px; ">
-            <div>
+            <div [ngClass]="{'disabled': loading1 == true}">
               <mat-form-field class="padding-right-10">
                 <input matInput [matDatepicker]="dp" placeholder="From" [formControl]="fromdate">
                 <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
@@ -225,11 +237,15 @@
         </mat-card-title>
       </mat-card-header>
       <mat-card-content>
+        <div *ngIf="loading2" style="margin-bottom: 10px;" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
+          fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+          <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        </div>
         <div style="border-bottom: solid 4px #3F51B5; " fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
           fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
 
           <div fxFlex="100%" style="min-height:50px;">
-            <div>
+            <div [ngClass]="{'disabled': loading2 == true}">
               <mat-form-field style="padding-right: 10px;">
                 <mat-select placeholder="Type" value="d" [formControl]="type">
                   <mat-option value="y">

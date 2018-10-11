@@ -128,12 +128,16 @@ export class QuotationReceiptComponent implements OnInit {
   convertAmountToWord() {
     this.commonService.convertNumberToWord(this.Amount.value).subscribe(response => {
       this.AmountInWord.setValue(response.text());
+    }, error => {
+
     });
   }
 
   getBanks() {
     this.loading_form = true;
+    document.onkeydown = function (e) { return false; }
     this.commonService.getBank().subscribe(response => {
+      document.onkeydown = function (e) { return true; }
       this.loading_form = false;
       console.log(response.json());
 
@@ -153,6 +157,7 @@ export class QuotationReceiptComponent implements OnInit {
         );
     }, error => {
       this.loading_form = false;
+      document.onkeydown = function (e) { return true; }
       this.alert("Oopz...", "Error occour at Loading Bank", "error");
     });
   }
@@ -163,7 +168,9 @@ export class QuotationReceiptComponent implements OnInit {
       event.key != "Tab" && event.key != "Enter" && event.key != "Backspace") {
       this.agentList = new Array();
       this.loading_form = true;
+      document.onkeydown = function (e) { return false; }
       this.commonService.getAgent(this.PickAgentCode.value).subscribe(response => {
+        document.onkeydown = function (e) { return true; }
         this.loading_form = false;
         console.log(response.json());
         for (let i in response.json()) {
@@ -187,6 +194,7 @@ export class QuotationReceiptComponent implements OnInit {
           );
       }, error => {
         this.loading_form = false;
+        document.onkeydown = function (e) { return true; }
         this.alert("Oopz...", "Error occour at Loading Agents", "error");
       });
     }
@@ -199,7 +207,10 @@ export class QuotationReceiptComponent implements OnInit {
       event.key != "Tab" && event.key != "Enter" && event.key != "Backspace") {
       this.quotationList = new Array();
       this.loading_form = true;
+      document.onkeydown = function (e) { return false; }
       this.quotationReceiptService.loadQuotation(this.QuoNo.value).subscribe(response => {
+        document.onkeydown = function (e) { return true; }
+
         this.loading_form = false;
         console.log(response.json());
         for (let i in response.json()) {
@@ -220,6 +231,7 @@ export class QuotationReceiptComponent implements OnInit {
           );
       }, error => {
         this.loading_form = false;
+        document.onkeydown = function (e) { return true; }
         this.alert("Oopz...", "Error occour at Loading Quotations", "error");
       });
 

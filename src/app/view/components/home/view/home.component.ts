@@ -35,6 +35,11 @@ export const FOMAT_1 = {
 })
 export class HomeComponent implements OnInit {
 
+  loading1 = false;
+  loading2 = false;
+  loading3 = false;
+  loading4 = false;
+
   pieChartView: any[] = [200, 200];
 
   pieChartGrid: any[] = new Array();
@@ -92,9 +97,14 @@ export class HomeComponent implements OnInit {
     let from = this.fromdate2.value;
     let to = this.todate2.value;
 
+    
+    this.loading3 = true;
+    document.onkeydown = function (e) { return false; }
     this.dashboardService.getCashFlowDetails(from, to).subscribe(response => {
+      document.onkeydown = function (e) { return true; }
       console.log(response.json());
 
+      this.loading3 = false;
       response.json().forEach(element => {
         switch (element.name) {
           case "CS":
@@ -123,6 +133,55 @@ export class HomeComponent implements OnInit {
 
 
 
+    }, error => {
+      this.loading3 = false;
+    });
+  }
+
+  getCashFlowGrid(type : string){
+    let from = this.fromdate2.value;
+    let to = this.todate2.value;
+
+    this.loading4 = true;
+    this.dashboardService.getCashFlowGrid(from, to, type).subscribe(response => {
+      this.loading4 = false;
+      let title: string = "";
+
+      switch (type) {
+        case "CS":
+          title = "Cash Receipts"
+          break;
+        case "CR":
+          title = "Credit Card Receipts"
+          break;
+        case "CQ":
+          title = "Cheque Receipts"
+          break;
+        case "DD":
+          title = "Direct Deposit Receipts"
+          break;
+        default:
+          break;
+      }
+
+      let data: any[] = new Array();
+
+      response.json().forEach(element => {
+        let row = {
+          doccod: element.doccod,
+          docnum: element.docNo,
+          credat: element.creadt,
+          remark: element.remark,
+          amount: element.amount
+        };
+        data.push(row);
+      });
+
+      console.log(data);
+
+      this.dashboard(title, data);
+    }, error => {
+      this.loading4 = false;
     });
   }
 
@@ -192,8 +251,10 @@ export class HomeComponent implements OnInit {
     let from = this.fromdate.value;
     let to = this.todate.value;
 
-    this.dashboardService.dashboardDiv1(from, to).subscribe(response => {
+    this.loading1 = true;
 
+    this.dashboardService.dashboardDiv1(from, to).subscribe(response => {
+      this.loading1 = false;
       console.log(response.json());
 
       this.pieChartGrid = new Array();
@@ -236,6 +297,8 @@ export class HomeComponent implements OnInit {
 
       });
 
+    }, error => {
+      this.loading1 = false;
     });
   }
 
@@ -290,11 +353,18 @@ export class HomeComponent implements OnInit {
       }
     }
 
+    this.loading2 = true;
+
     this.dashboardService.dashboardDiv2(from, to, type).subscribe(response => {
+
+      this.loading2 = false;
+
       this.gridChartValues = new Array();
       response.json().forEach(element => {
         this.gridChartValues.push(element);
       });
+    }, error => {
+      this.loading2 = false;
     });
 
 
@@ -307,8 +377,9 @@ export class HomeComponent implements OnInit {
     let from = this.fromdate.value;
     let to = this.todate.value;
 
+    this.loading4 = true;
     this.dashboardService.getDetails(type, from, to).subscribe(response => {
-
+      this.loading4 = false;
       console.log(response.json());
 
       let title: string = "";
@@ -349,6 +420,8 @@ export class HomeComponent implements OnInit {
       console.log(data);
 
       this.dashboard(title, data);
+    }, error => {
+      this.loading4 = false;
     });
   }
 

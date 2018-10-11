@@ -90,7 +90,7 @@ export class PolicyReceiptComponent implements OnInit {
   }
 
 
-  constructor(private commonService: CommonService, private policyReceiptService: PolicyReceiptService, public dialog: MatDialog, private blobService : BlobService) { }
+  constructor(private commonService: CommonService, private policyReceiptService: PolicyReceiptService, public dialog: MatDialog, private blobService: BlobService) { }
 
   ngOnInit() {
     this.getBanks();
@@ -106,12 +106,16 @@ export class PolicyReceiptComponent implements OnInit {
   convertAmountToWord() {
     this.commonService.convertNumberToWord(this.Amount.value).subscribe(response => {
       this.AmountInWord.setValue(response.text());
+    }, error =>{
+
     });
   }
 
   getBanks() {
     this.loading_form = true;
+    document.onkeydown = function (e) { return false; }
     this.commonService.getBank().subscribe(response => {
+      document.onkeydown = function (e) { return true; }
       this.loading_form = false;
       console.log(response.json());
 
@@ -131,6 +135,7 @@ export class PolicyReceiptComponent implements OnInit {
         );
     }, error => {
       this.alert("Oopz...", "Error occour at Bank Loading", "error");
+      document.onkeydown = function (e) { return true; }
       this.loading_form = false;
     });
   }
@@ -184,8 +189,10 @@ export class PolicyReceiptComponent implements OnInit {
       if (this.PropNo.value.length == 3) {
         this.policyList = new Array();
         this.loading_form = true;
+        document.onkeydown = function (e) { return false; }
         this.policyReceiptService.loadPolicies(this.PropNo.value).subscribe(response => {
           this.loading_form = false;
+          document.onkeydown = function (e) { return true; }
           console.log(response.json());
           for (let i in response.json()) {
             let propTemp = response.json()[i];
@@ -205,6 +212,7 @@ export class PolicyReceiptComponent implements OnInit {
             );
         }, errpr => {
           this.alert("Oopz...", "Error occour at Load Policies", "error");
+          document.onkeydown = function (e) { return true; }
           this.loading_form = false;
         });
       }

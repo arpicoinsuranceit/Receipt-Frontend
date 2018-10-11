@@ -10,6 +10,11 @@ export class DashboardService {
 
   constructor(private http: Http) { }
 
+  getCashFlowGrid(from: any, to: any, type: any) {
+    let user = sessionStorage.getItem('token');
+    return this.http.get("http://localhost:8088/getCashFlowDetailGrid/" + type + "/" + to + "/" + from + "/" + user);
+  }
+
   getCashFlowDetails(from: any, to: any) {
     let user = sessionStorage.getItem('token');
     return this.http.get("http://localhost:8088/getCashFlowDetails/" + to + "/" + from + "/" + user);

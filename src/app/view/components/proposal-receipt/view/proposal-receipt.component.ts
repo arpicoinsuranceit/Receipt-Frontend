@@ -111,12 +111,16 @@ export class ProposalReceiptComponent implements OnInit {
   convertAmountToWord() {
     this.commonService.convertNumberToWord(this.Amount.value).subscribe(response => {
       this.AmountInWord.setValue(response.text());
+    }, error => {
+
     });
   }
 
   getBanks() {
     this.loading_form = true;
+    document.onkeydown = function (e) { return false; }
     this.commonService.getBank().subscribe(response => {
+      document.onkeydown = function (e) { return true; }
       this.loading_form = false;
       console.log(response.json());
 
@@ -136,6 +140,7 @@ export class ProposalReceiptComponent implements OnInit {
         );
     }, error => {
       this.alert("Oopz...", "Error occour at Bank Loading", "error");
+      document.onkeydown = function (e) { return true; }
       this.loading_form = false;
     });
   }
@@ -157,7 +162,9 @@ export class ProposalReceiptComponent implements OnInit {
       if (this.PropNo.value.length == 3) {
         this.proposalList = new Array();
         this.loading_form = true;
+        document.onkeydown = function (e) { return false; }
         this.proposalReceiptService.loadProposal(this.PropNo.value).subscribe(response => {
+          document.onkeydown = function (e) { return true; }
           this.loading_form = false;
           console.log(response.json());
           for (let i in response.json()) {
@@ -178,6 +185,7 @@ export class ProposalReceiptComponent implements OnInit {
             );
         }, error => {
           this.alert("Oopz...", "Error at load Proposals", "error");
+          document.onkeydown = function (e) { return true; }
           this.loading_form = false;
         });
 
