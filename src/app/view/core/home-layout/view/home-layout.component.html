@@ -18,14 +18,10 @@
             <button  mat-menu-item routerLink="miscellaneousreceiptgl">MISCELLANEOUS RECEIPT GL</button>
             <button *ngIf = "menuList.includes('RECEIPT_CANCELATION')" mat-menu-item routerLink="receiptcancelation">RECEIPT CANCELATION</button>
             <button *ngIf = "menuList.includes('RECEIPT_RE_PRINT')" mat-menu-item routerLink="receiptreprint">RECEIPT RE PRINT</button>
-
+           
         </mat-menu>
 
-        <button *ngIf = "menuList.includes('UNDERWRITE')" mat-button [matMenuTriggerFor]="underwrite" style="width: 210px; margin: 10px; text-align: left;">UNDERWRITE</button>
-
-        <mat-menu #underwrite="matMenu" yPosition="below" xPosition="before" >
-            <button *ngIf = "menuList.includes('UNDERWRITE_L1')" mat-menu-item routerLink="underwrite">UNDERWRITE</button>
-        </mat-menu>
+        <button *ngIf = "menuList.includes('UNDERWRITE')" mat-button routerLink="underwrite" style="width: 210px; margin: 10px; text-align: left;">UNDERWRITE</button>
 
         <button mat-button [matMenuTriggerFor]="inquiry" style="width: 210px; margin: 10px; text-align: left;">INQUIRY</button>
 
@@ -33,6 +29,8 @@
             <button *ngIf = "menuList.includes('RECEIPT_INQUIRY')" mat-menu-item routerLink="receiptinquiry">RECEIPT INQUIRY</button>
             <button *ngIf = "menuList.includes('RECEIPT_INQUIRY')" mat-menu-item (click)="loadProposalInquiry();">PROPOSAL INQUIRY</button>
         </mat-menu>
+
+        <button *ngIf = "menuList.includes('COURIER')" mat-button routerLink="courierdocument" style="width: 210px; margin: 10px; text-align: left;">COURIER DOCUMENT</button>
 
     </mat-drawer>
 

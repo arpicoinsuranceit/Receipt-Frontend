@@ -1,0 +1,167 @@
+<div [hidden]="!loading_saving" class="loader">
+    <h5>Saving...</h5>
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+
+<div [ngClass]="{'disabled': loading_saving == true}" class="container" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
+    fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+    <div fxFlex="30%">
+        <mat-card class="main-card" style="height: 580px;">
+
+            <mat-card-header>
+                <mat-card-title>
+                    <h3>Courier Document</h3>
+                </mat-card-title>
+            </mat-card-header>
+
+            <mat-card-content>
+                <div [hidden]="!loading_form" class="loader">
+                    <h5>Loading...</h5>
+                    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                </div>
+                <div [ngClass]="{'disabled': loading_form == true}">
+                    <form [formGroup]="courierForm">
+                        <!-- <mat-form-field class="full-width">
+                            <input matInput placeholder="Courier No" aria-label="Courier No"
+                                formControlName="couNo">
+
+                            <mat-error *ngIf="CouNo.hasError('required')">
+                                Courier No is
+                                <strong>REQUIRED</strong>
+                            </mat-error>
+                        </mat-form-field> -->
+
+                        <mat-form-field class="full-width">
+                            <mat-select placeholder="Department" (selectionChange)="loadSubDepartment()" aria-label="Department" formControlName="department">
+
+                                <mat-option *ngFor="let dep of departmentArray" [value]="dep.departmentId">
+                                    <span> {{ dep.departmentName }} </span>
+                                </mat-option>
+
+                            </mat-select>
+
+                            <mat-error *ngIf="Department.hasError('required')">
+                                Department is
+                                <strong>REQUIRED</strong>
+                            </mat-error>
+
+                        </mat-form-field>
+
+                        <mat-form-field class="full-width">
+                            <mat-select placeholder="Sub Department" aria-label="Sub Department" formControlName="subDepartment" (selectionChange)="loadDocuments()" >
+                                <mat-option *ngFor="let subdep of subDepartmentArray" [value]="subdep.subDepartmentId">
+                                    <span> {{ subdep.subDepartmentName }} </span>
+                                </mat-option>
+                            </mat-select>
+
+                            <mat-error *ngIf="SubDepartment.hasError('required')">
+                                Sub Department is
+                                <strong>REQUIRED</strong>
+                            </mat-error>
+
+                        </mat-form-field>
+
+                        <mat-form-field class="full-width">
+                            <mat-select placeholder="Document Type" aria-label="Document Type" formControlName="document">
+                                <mat-option *ngFor="let doc of documentTypeArray" [value]="doc.docTypeId">
+                                    <span> {{ doc.docName }} </span>
+                                </mat-option>
+                            </mat-select>
+
+                            <mat-error *ngIf="Document.hasError('required')">
+                                Document Type is
+                                <strong>REQUIRED</strong>
+                            </mat-error>
+
+                        </mat-form-field>
+
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="Ref No" aria-label="Ref No"
+                                formControlName="refNo">
+
+                            <mat-error *ngIf="RefNo.hasError('required')">
+                                Reference No is
+                                <strong>REQUIRED</strong>
+                            </mat-error>
+                        </mat-form-field>
+                        <br>
+
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="Underwriter Email" aria-label="Underwriter Email"
+                                formControlName="email">
+
+                            <mat-error *ngIf="Email.hasError('required')">
+                                Underwriter Email is
+                                <strong>REQUIRED</strong>
+                            </mat-error>
+                        </mat-form-field>
+
+                        
+
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="Remark" aria-label="Remark" formControlName="remark">
+
+                            <mat-error *ngIf="Remark.hasError('required')">
+                                Remark is
+                                <strong>REQUIRED</strong>
+                            </mat-error>
+
+                        </mat-form-field>
+
+                    </form>
+                </div>
+            </mat-card-content>
+
+            <mat-card-actions style="border-top: solid #C4C4C4 1px; display: flex; 
+          justify-content: space-between;">
+                <button mat-raised-button color="warn" (click)="newCourierOrder()">CLEAR</button>
+                <button mat-raised-button color="primary" (click)="saveCourierOrder()">SAVE</button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+    <div fxFlex="70%">
+        
+        <mat-card class="main-card" style="height: 580px;">
+            <div [hidden]="!loading_table" class="loader">
+                <h5>Loading...</h5>
+                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+            </div>
+
+            <mat-card-header>
+                <mat-card-title>
+                    <h3>Pending Couriers</h3>
+                </mat-card-title>
+            </mat-card-header>
+
+            <div [ngClass]="{'disabled2': loading_table == true}">
+                <!-- <mat-form-field style="width: 100%;">
+                    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
+                </mat-form-field> -->
+                <mat-table [dataSource]="datasourceCourier">
+                    <ng-container matColumnDef="referenceNumber" >
+                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 40%;"> Courier Number </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="flex: 0 0 40%;"> {{element.ReferenceNumber}} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="polNo">
+                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;"> Create Date </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="flex: 0 0 20%;"> {{element.PolNo}} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="prpNo">
+                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;"> Create By </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="flex: 0 0 20%;"> {{element.PrpNo}} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="agentCode">
+                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;"> </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="flex: 0 0 20%;"> <button mat-raised-button color="primary" (click)="saveCourierOrder()">VIEW</button> </mat-cell>
+                    </ng-container>
+                    
+
+                    <mat-header-row *matHeaderRowDef="displayedColumnsCourier"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumnsCourier;"></mat-row>
+                </mat-table>
+            </div>
+        </mat-card>
+
+    </div>
+
+</div>
