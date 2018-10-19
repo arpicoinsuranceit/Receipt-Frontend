@@ -1,9 +1,10 @@
+import { CourierModel } from './../../../../model/couriermodel';
+import { CourierpopupComponent } from './../../../core/courierpopup/courierpopup.component';
 import { DocumentType } from './../../../../model/subdepartmentdocument';
 import { Department } from './../../../../model/department';
-import { CourierDetails } from './../../../../model/courierdetails';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { MatTableDataSource } from '@angular/material';
+import { MatTableDataSource, MatDialogConfig, MatDialog } from '@angular/material';
 import { CourierDocumentService } from '../../../../service/courier-document/courier-document.service';
 import { SubDepartment } from '../../../../model/subdepartment';
 @Component({
@@ -18,14 +19,16 @@ export class CourierDocumentComponent implements OnInit {
   loading_details = false;
   loading_saving = false;
 
-  courierArray: CourierDetails[] = new Array();
+  courierArray: CourierModel[] = new Array();
   departmentArray: Department[] = new Array();
   subDepartmentArray: SubDepartment[] = new Array();
   documentTypeArray: DocumentType[] = new Array();
+  branchArray: Department[] = new Array();
 
   courierForm=new FormGroup({
     //couNo:new FormControl('',Validators.required),
     refNo:new FormControl('',Validators.required),
+    branch:new FormControl('',Validators.required),
     email:new FormControl('',Validators.required),
     department:new FormControl('',Validators.required),
     subDepartment:new FormControl('',Validators.required),
@@ -65,16 +68,52 @@ export class CourierDocumentComponent implements OnInit {
     return this.courierForm.get("remark");
   }
 
-  displayedColumnsCourier: string[] = ['referenceNumber', 'polNo', 'prpNo' , 'agentCode'];
+  displayedColumnsCourier: string[] = ['token', 'createDate', 'createBy' , 'modifyBy'];
 
-  datasourceCourier = new MatTableDataSource<CourierDetails>(this.courierArray);
+  datasourceCourier = new MatTableDataSource<CourierModel>(this.courierArray);
 
-  constructor(private courierDocumentService:CourierDocumentService) {
-    this.loadCourierDetails();
+  constructor(private courierDocumentService:CourierDocumentService, public dialog: MatDialog) {
+    this.loadBranches();
+    this.loadCouriers();
     this.loadDepartment();
   }
 
   ngOnInit() {
+  }
+
+  loadBranches(){
+    this.courierDocumentService.getBranches(sessionStorage.getItem("token")).subscribe(response => {
+      //console.log(response.json());
+      this.branchArray=response.json();
+    });
+  }
+
+  loadCouriers(){
+    this.courierDocumentService.getCouriers(sessionStorage.getItem("token")).subscribe(response => {
+      this.loading_table=false;
+      console.log(response.json());
+      this.courierArray=new Array();
+
+      response.json().forEach(i => {
+        let courier:CourierModel=new CourierModel();
+
+        courier.BranchCode=i.branchCode;
+        courier.CourierId=i.courierId;
+        courier.CourierStatus=i.courierStatus;
+        courier.CreateBy=i.createBy;
+        courier.CreateDate=i.createDate;
+        courier.ModifyBy=i.modifyBy;
+        courier.ModifyDate=i.modifyDate;
+        courier.Remark=i.remark;
+        courier.Token=i.token;
+
+        this.courierArray.push(courier);
+
+       });
+
+      this.datasourceCourier.data = this.courierArray;
+      
+    });
   }
 
   loadDepartment(){
@@ -134,52 +173,12 @@ export class CourierDocumentComponent implements OnInit {
     });
   }
 
-  loadCourierDetails(){
-    this.courierDocumentService.viewCourierOrder(sessionStorage.getItem("token")).subscribe(response=>{
-      this.loading_table=false;
-      console.log(response.json());
-      this.courierArray=new Array();
-
-      response.json().forEach(i => {
-        let courier:CourierDetails=new CourierDetails();
-
-        courier.AgentCode=i.agentCode;
-        courier.Branch=i.branch;
-        courier.Department=i.department;
-        courier.DocType=i.docType;
-        courier.PolNo=i.polNo;
-        courier.PrpNo=i.prpNo;
-        courier.ReferenceNumber=i.referenceNumber;
-        courier.Remarks=i.remarks;
-        courier.Status=i.status;
-        courier.UnderwriterEmail=i.underwriterEmail;
-        courier.User=i.user;
-
-        this.courierArray.push(courier);
-
-      });
-
-      this.datasourceCourier.data = this.courierArray;
-
-    });
-  }
-
   saveCourierOrder(){
-    let courierOrder:CourierDetails=new CourierDetails();
     if(this.courierForm.valid){
       alert("ok");
-      //courierOrder.PolNo=this.PolNo.value;
-      //courierOrder.PrpNo=this.PrpNo.value;
-      //courierOrder.AgentCode=this.AgentCode.value;
-      courierOrder.Branch=this.Branch.value;
-      courierOrder.UnderwriterEmail=this.Email.value;
-      courierOrder.Department=this.Department.value;
-      courierOrder.DocType=this.Document.value;
-      courierOrder.Remarks=this.Remark.value;
 
-      console.log(courierOrder);
-
-      this.courierDocumentService.saveCourierOrder(courierOrder).subscribe(response=>{
+      this.courierDocumentService.saveCourierOrder(this.Department.value,this.SubDepartment.value,
+        this.Document.value,this.Email.value,this.RefNo.value,this.Remark.value,sessionStorage.getItem("token"),this.Branch.value).subscribe(response=>{
         console.log(response);
       });
 
@@ -189,13 +188,23 @@ export class CourierDocumentComponent implements OnInit {
 
   }
 
-  newCourierOrder(){
-    alert("New Courier");
-  }
-
-
   applyFilter(filterValue: string) {
     this.datasourceCourier.filter = filterValue.trim().toLowerCase();
+  }
+
+  courierpopup(title: string, data: any) {
+    console.log(data);
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      title: title,
+      data: data
+    };
+
+    const dialogRef = this.dialog.open(CourierpopupComponent, dialogConfig);
+
   }
 
 }

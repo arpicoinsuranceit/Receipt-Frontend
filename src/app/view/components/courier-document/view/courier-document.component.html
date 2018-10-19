@@ -76,6 +76,20 @@
                         </mat-form-field>
 
                         <mat-form-field class="full-width">
+                            <mat-select placeholder="Branch" aria-label="Branch" formControlName="branch">
+                                <mat-option *ngFor="let branch of branchArray" [value]="branch">
+                                    <span> {{ branch }} </span>
+                                </mat-option>
+                            </mat-select>
+
+                            <mat-error *ngIf="Branch.hasError('required')">
+                                Branch is
+                                <strong>REQUIRED</strong>
+                            </mat-error>
+
+                        </mat-form-field>
+
+                        <mat-form-field class="full-width">
                             <input matInput placeholder="Ref No" aria-label="Ref No"
                                 formControlName="refNo">
 
@@ -138,21 +152,21 @@
                     <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
                 </mat-form-field> -->
                 <mat-table [dataSource]="datasourceCourier">
-                    <ng-container matColumnDef="referenceNumber" >
+                    <ng-container matColumnDef="token" >
                         <mat-header-cell *matHeaderCellDef style="flex: 0 0 40%;"> Courier Number </mat-header-cell>
-                        <mat-cell *matCellDef="let element" style="flex: 0 0 40%;"> {{element.ReferenceNumber}} </mat-cell>
+                        <mat-cell *matCellDef="let element" style="flex: 0 0 40%;"> {{element.Token}} </mat-cell>
                     </ng-container>
-                    <ng-container matColumnDef="polNo">
+                    <ng-container matColumnDef="createDate">
                         <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;"> Create Date </mat-header-cell>
-                        <mat-cell *matCellDef="let element" style="flex: 0 0 20%;"> {{element.PolNo}} </mat-cell>
+                        <mat-cell *matCellDef="let element" style="flex: 0 0 20%;"> {{element.CreateDate}} </mat-cell>
                     </ng-container>
-                    <ng-container matColumnDef="prpNo">
+                    <ng-container matColumnDef="createBy">
                         <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;"> Create By </mat-header-cell>
-                        <mat-cell *matCellDef="let element" style="flex: 0 0 20%;"> {{element.PrpNo}} </mat-cell>
+                        <mat-cell *matCellDef="let element" style="flex: 0 0 20%;"> {{element.CreateBy}} </mat-cell>
                     </ng-container>
-                    <ng-container matColumnDef="agentCode">
+                    <ng-container matColumnDef="modifyBy">
                         <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;"> </mat-header-cell>
-                        <mat-cell *matCellDef="let element" style="flex: 0 0 20%;"> <button mat-raised-button color="primary" (click)="saveCourierOrder()">VIEW</button> </mat-cell>
+                        <mat-cell *matCellDef="let element" style="flex: 0 0 20%;"> <button mat-raised-button color="primary" (click)="courierpopup('Courier Details',element.token)">VIEW</button> </mat-cell>
                     </ng-container>
                     
 

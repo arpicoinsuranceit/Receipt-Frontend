@@ -1,3 +1,4 @@
+import { CourierpopupComponent } from './view/core/courierpopup/courierpopup.component';
 import { CommonService } from './service/common-service/common.service';
 import { AuthGuard } from './service/auth-service/auth.guard';
 import { AuthService } from './service/auth-service/auth.service';
@@ -18,7 +19,7 @@ import { AlertComponent } from './view/core/alert/alert.component';
 
 @NgModule({
   declarations: [
-    AppComponent, LoginComponent, AlertComponent
+    AppComponent, LoginComponent, AlertComponent ,CourierpopupComponent
   ],
   imports: [
     BrowserModule,
@@ -32,6 +33,6 @@ import { AlertComponent } from './view/core/alert/alert.component';
   ],
   providers: [AuthService, AuthGuard, CommonService],
   bootstrap: [AppComponent],
-  entryComponents: [AlertComponent]
+  entryComponents: [AlertComponent,CourierpopupComponent]
 })
 export class AppModule { }
