@@ -15,6 +15,10 @@ export class CourierDocumentService {
     return this.http.get("http://localhost:8088/courier/branch/"+token);
   }
 
+  getRefTypes(){
+    return this.http.get("http://localhost:8088/courier/reftype");
+  }
+
   getDepartments(){
     return this.http.get("http://localhost:8088/courier/department");
   }
@@ -31,26 +35,38 @@ export class CourierDocumentService {
     return this.http.get("http://localhost:8088/courier/branchcourier/"+token);
   }
 
-  saveCourierOrder(depId,subDepId,docId,email,refNo,remark,usertoken,branch){
+  getOtherCouriers(token:string){
+    return this.http.get("http://localhost:8088/courier/branchothercourier/"+token);
+  }
+
+  saveCourierOrder(depId,subDepId,docId,refType,refNo,remark,usertoken,branch){
     let param:URLSearchParams=new URLSearchParams();
     param.append("depId",depId);
     param.append("subDepId",subDepId);
     param.append("docId",docId);
-    param.append("email",email);
+    param.append("refType",refType);
     param.append("refNo",refNo);
     param.append("remark",remark);
     param.append("token",usertoken);
     param.append("branch",branch);
 
-    console.log(depId + "/" + subDepId + "/" + docId + "/" + email + "/" + refNo + "/" + remark);
+    console.log(depId + "/" + subDepId + "/" + docId + "/" + refType + "/" + refNo + "/" + remark);
 
     return this.http.post("http://localhost:8088/courier/save",param);
   }
 
+  loadCourierDetails(couId:number){
+    return this.http.get("http://localhost:8088/courier/courierdetails/"+couId);
+  }
 
+  changeCourierStatus(couId:number,status:string){
+    return this.http.get("http://localhost:8088/courier/changestatus/"+couId+"/"+status);
+  }
 
   viewCourierOrder(token:string){
     return this.http.get("http://localhost:8088/courier_details/view/"+token);
   }
+
+  
   
 }

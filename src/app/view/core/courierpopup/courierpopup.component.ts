@@ -8,16 +8,14 @@ import { Component, OnInit, Inject } from '@angular/core';
 })
 export class CourierpopupComponent implements OnInit {
 
-  displayedColumns = ['doccod', 'docnum', 'credat', 'remark', 'amount'];
-  rowData: any [] = new Array();
+  displayedColumns = ['referenceNo' ,'documentType','createDate','subDepDocCouToken', 'remark'];
+  displayedColumns2 = ['referenceNo' ,'documentType','createDate','subDepDocCouToken', 'remark' , 'status' , 'rcvdBy' , 'rcvdDate'];
   title = "";
+  popupData=" ";
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
-    this.rowData = new Array();
-    // data.data.forEach(element => {
-    //   this.rowData.push(element);
-    // });
-
+    console.log(data);
+    this.popupData=data.data;
     this.title = data.title;
   }
 
