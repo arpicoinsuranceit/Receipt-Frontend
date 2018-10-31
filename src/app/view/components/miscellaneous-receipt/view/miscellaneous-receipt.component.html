@@ -145,7 +145,7 @@
         <div [ngClass]="{'disabled2': loading_form2 == true}">
           <form class="proposal-receipt-form" [formGroup]="expenceForm">
             <mat-form-field class="full-width">
-              <mat-select placeholder="Expense Code" (change)="fillExpence()" formControlName="expenceId">
+              <mat-select placeholder="Expense Code" (blur)="fillExpence()" formControlName="expenceId">
                 <mat-option *ngFor="let expence of expences" [value]="expence.expenseId">
                   <span> {{ expence.ExpenseId }} </span> |
                   <small> {{ expence.Description }} </small>
@@ -194,8 +194,8 @@
               <mat-cell *matCellDef="let element" style="text-align: right"> {{element.Qty}} </mat-cell>
             </ng-container>
             <ng-container matColumnDef="amount">
-              <mat-header-cell *matHeaderCellDef style="text-align: right"> Amount </mat-header-cell>
-              <mat-cell *matCellDef="let element" style="text-align: right"> {{element.Amount}} </mat-cell>
+              <mat-header-cell *matHeaderCellDef style="display: flex; justify-content: flex-end;"> Amount </mat-header-cell>
+              <mat-cell *matCellDef="let element" style="display: flex; justify-content: flex-end;"> {{element.Amount | number: '.2'}} </mat-cell>
             </ng-container>
 
             <mat-header-row *matHeaderRowDef="expColumns"></mat-header-row>
@@ -231,8 +231,8 @@
             <mat-cell *matCellDef="let element" style="text-align: right"> {{element.AgentCode}} </mat-cell>
           </ng-container>
           <ng-container matColumnDef="amount">
-            <mat-header-cell *matHeaderCellDef style="text-align: right"> Amount </mat-header-cell>
-            <mat-cell *matCellDef="let element" style="text-align: right"> {{element.Amount}} </mat-cell>
+            <mat-header-cell *matHeaderCellDef style="display: flex; justify-content: flex-end;"> Amount </mat-header-cell>
+            <mat-cell *matCellDef="let element" style="display: flex; justify-content: flex-end;"> {{element.Amount | number: '.2'}} </mat-cell>
           </ng-container>
 
 

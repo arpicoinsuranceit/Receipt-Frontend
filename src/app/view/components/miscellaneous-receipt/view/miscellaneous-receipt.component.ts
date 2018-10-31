@@ -116,7 +116,7 @@ export class MiscellaneousReceiptComponent implements OnInit {
     return this.expenceForm.get("expenceQty");
   }
 
-  constructor(private commonService: CommonService, private miscellaneousReceiptInvService: MiscellaneousReceiptInvService, public dialog: MatDialog, private blobService : BlobService) { }
+  constructor(private commonService: CommonService, private miscellaneousReceiptInvService: MiscellaneousReceiptInvService, public dialog: MatDialog, private blobService: BlobService) { }
 
   ngOnInit() {
     this.getBranches();
@@ -291,8 +291,13 @@ export class MiscellaneousReceiptComponent implements OnInit {
 
   fillExpence() {
 
+    console.log("called");
     this.expences.forEach(e => {
       if (e.ExpenseId == this.ExpenceId.value) {
+
+        console.log(e);
+
+
         //this.ExpenceRemark.setValue(e.Remark);
         this.ExpenceAmount.setValue(e.Amount);
       }
@@ -303,7 +308,7 @@ export class MiscellaneousReceiptComponent implements OnInit {
 
   addToCart() {
 
-    if (this.ExpenceQty.value != null && this.ExpenceQty.value != "" && parseInt(this.ExpenceQty.value) > 0) {
+    if (this.ExpenceQty.value != null && this.ExpenceQty.value != "" /*&& parseInt(this.ExpenceQty.value) > 0*/) {
 
       let amount: number = 0.0
 
@@ -323,12 +328,19 @@ export class MiscellaneousReceiptComponent implements OnInit {
 
       this.expencesCart = new Array();
 
+
+      let isClean : boolean = false;
+
       expenceCartTemp.forEach(e => {
         if (e.ExpenseId == expence.ExpenseId) {
 
-          e.Qty = e.Qty + expence.Qty;
-          e.Amount = e.Amount + expence.Amount;
-          e.Remark = expence.Remark;
+          if ((e.Qty + expence.Qty) > 0) {
+            e.Qty = e.Qty + expence.Qty;
+            e.Amount = e.Amount + expence.Amount;
+            e.Remark = expence.Remark;
+          } else {
+            isClean = true;
+          }
 
           this.expencesCart.push(e);
 
@@ -349,6 +361,11 @@ export class MiscellaneousReceiptComponent implements OnInit {
       this.convertAmountToWord();
 
       this.clearExpene();
+
+      if(isClean){
+        this.ExpenceQty.setErrors({ 'valied': true });
+      }
+
     } else {
       this.ExpenceQty.setErrors({ 'valied': true });
     }
@@ -408,6 +425,18 @@ export class MiscellaneousReceiptComponent implements OnInit {
     miscellaneosReceipt.AmtInWord = this.AmountInWord.value;
     miscellaneosReceipt.Expencess = this.expencesCart;
 
+    console.log(miscellaneosReceipt.Branch);
+
+    if (miscellaneosReceipt.Branch == null || miscellaneosReceipt.Branch == "" ||
+      miscellaneosReceipt.Bank == null || miscellaneosReceipt.Bank == "" ||
+      miscellaneosReceipt.Agent == null || miscellaneosReceipt.Agent == "" ||
+      miscellaneosReceipt.Remark == null || miscellaneosReceipt.Remark == "" ||
+      miscellaneosReceipt.Paymode == null || miscellaneosReceipt.Paymode == "" ||
+      miscellaneosReceipt.Amount == null || miscellaneosReceipt.Amount <= 0) {
+      this.alert("Error", "Fill all Details", "error");
+      return;
+    }
+
     console.log(miscellaneosReceipt);
 
     this.loading_saving = true;
@@ -438,19 +467,47 @@ export class MiscellaneousReceiptComponent implements OnInit {
 
   clear() {
     this.BranchCode.setValue("");
+    this.BranchCode.reset();
+
     this.BankCode.setValue("");
+    this.BankCode.reset();
+
     this.Remark.setValue("");
+    this.Remark.reset();
+
     this.PayMode.setValue("");
+    this.PayMode.reset();
+
     this.Amount.setValue("");
+    this.Amount.reset();
+
     this.AmountInWord.setValue("");
+    this.AmountInWord.reset();
+
     this.AgentCode.setValue("");
+    this.AgentCode.reset();
+
     this.Chequedate.setValue("");
+    this.Chequedate.reset();
+
     this.Chequebank.setValue("");
+    this.Chequebank.reset();
+
     this.Chequeno.setValue("");
+    this.Chequeno.reset();
+
     this.ExpenceId.setValue("");
+    this.ExpenceId.reset();
+
     this.ExpenceRemark.setValue("");
+    this.ExpenceRemark.reset();
+
     this.ExpenceAmount.setValue("");
+    this.ExpenceAmount.reset();
+
     this.ExpenceQty.setValue("");
+    this.ExpenceQty.reset();
+
     this.expencesCart = new Array();
   }
 

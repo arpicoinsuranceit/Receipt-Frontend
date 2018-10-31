@@ -365,17 +365,41 @@ export class MiscellaneousReceiptGlrcComponent implements OnInit {
 
   clear() {
     this.BranchCode.setValue("");
+    this.BranchCode.reset();
+
     this.BankCode.setValue("");
+    this.BankCode.reset();
+
     this.Remark.setValue("");
+    this.Remark.reset();
+
     this.PayMode.setValue("");
+    this.PayMode.reset();
+    
     this.Amount.setValue("");
+    this.Amount.reset();
+
     this.AmountInWord.setValue("");
+    this.AmountInWord.reset();
+    
     this.Chequedate.setValue("");
+    this.Chequedate.reset();
+
     this.Chequebank.setValue("");
+    this.Chequebank.reset();
+
     this.Chequeno.setValue("");
+    this.Chequeno.reset();
+
     this.AccountId.setValue("");
+    this.AccountId.reset();
+
     this.AccRemark.setValue("");
+    this.AccRemark.reset();
+
     this.AccAmount.setValue("");
+    this.AccAmount.reset();
+
     this.accountCart = new Array();
   }
 

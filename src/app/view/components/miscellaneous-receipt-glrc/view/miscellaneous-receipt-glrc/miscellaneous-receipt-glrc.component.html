@@ -176,8 +176,8 @@
               <mat-cell *matCellDef="let element"> {{element.Remark}} </mat-cell>
             </ng-container>
             <ng-container matColumnDef="amount">
-              <mat-header-cell *matHeaderCellDef style="text-align: right"> Amount </mat-header-cell>
-              <mat-cell *matCellDef="let element" style="text-align: right"> {{element.Amount}} </mat-cell>
+              <mat-header-cell *matHeaderCellDef style="display: flex; justify-content: flex-end;"> Amount </mat-header-cell>
+              <mat-cell *matCellDef="let element" style="display: flex; justify-content: flex-end;"> {{element.Amount | number: '.2'}} </mat-cell>
             </ng-container>
 
             <mat-header-row *matHeaderRowDef="accColumns"></mat-header-row>
@@ -213,8 +213,8 @@
             <mat-cell *matCellDef="let element" style="text-align: right"> {{element.AgentCode}} </mat-cell>
           </ng-container>
           <ng-container matColumnDef="amount">
-            <mat-header-cell *matHeaderCellDef style="text-align: right"> Amount </mat-header-cell>
-            <mat-cell *matCellDef="let element" style="text-align: right"> {{element.Amount}} </mat-cell>
+            <mat-header-cell *matHeaderCellDef style="display: flex; justify-content: flex-end;"> Amount </mat-header-cell>
+            <mat-cell *matCellDef="let element" style="display: flex; justify-content: flex-end;"> {{element.Amount | number: '.2'}} </mat-cell>
           </ng-container>
 
 

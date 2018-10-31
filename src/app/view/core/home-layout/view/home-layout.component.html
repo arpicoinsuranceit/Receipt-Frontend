@@ -13,11 +13,11 @@
             <button *ngIf = "menuList.includes('RECEIPT_POLICY')" mat-menu-item routerLink="policyreceipt">POLICY RECEIPT</button>
             <button *ngIf = "menuList.includes('RECEIPT_PROPOSAL')" mat-menu-item routerLink="proposalreceipt">PROPOSAL RECEIPT</button>
             <button *ngIf = "menuList.includes('RECEIPT_QUOTATION')" mat-menu-item routerLink="quoreceipt">QUOTATION RECEIPT</button>
-            <hr>
+            <hr *ngIf = "menuList.includes('RECEIPT_MISCLLANEOUS') || menuList.includes('RECEIPT_MISCLLANEOUS_GL')">
             <!-- <button *ngIf = "menuList.includes('RECEIPT_MISCLLANEOUS')" mat-menu-item routerLink="miscellaneousreceipt">MISCELLANEOUS RECEIPT</button> -->
-            <button  mat-menu-item routerLink="miscellaneousreceipt">MISCELLANEOUS RECEIPT INV</button>
-            <button  mat-menu-item routerLink="miscellaneousreceiptgl">MISCELLANEOUS RECEIPT GL</button>
-            <hr>
+            <button *ngIf = "menuList.includes('RECEIPT_MISCELLANEANEOUS ')" mat-menu-item routerLink="miscellaneousreceipt">MISCELLANEOUS RECEIPT INV</button>
+            <button *ngIf = "menuList.includes('RECEIPT_MISCELLANEANEOUS_GL ')" mat-menu-item routerLink="miscellaneousreceiptgl">MISCELLANEOUS RECEIPT GL</button>
+            <hr  *ngIf = "menuList.includes('RECEIPT_CANCELATION') || menuList.includes('RECEIPT_RE_PRINT')">
             <button *ngIf = "menuList.includes('RECEIPT_CANCELATION')" mat-menu-item routerLink="receiptcancelation">RECEIPT CANCELATION</button>
             <button *ngIf = "menuList.includes('RECEIPT_RE_PRINT')" mat-menu-item routerLink="receiptreprint">RECEIPT RE PRINT</button>
 
@@ -29,11 +29,11 @@
             <button *ngIf = "menuList.includes('UNDERWRITE_L1')" mat-menu-item routerLink="underwrite">UNDERWRITE</button>
         </mat-menu>
 
-        <button mat-button [matMenuTriggerFor]="inquiry" style="width: 210px; margin: 10px; text-align: left;">INQUIRY</button>
+        <button *ngIf = "menuList.includes('INQUIRY')" mat-button [matMenuTriggerFor]="inquiry" style="width: 210px; margin: 10px; text-align: left;">INQUIRY</button>
 
         <mat-menu #inquiry="matMenu" yPosition="below" xPosition="before" >
             <button *ngIf = "menuList.includes('RECEIPT_INQUIRY')" mat-menu-item routerLink="receiptinquiry">RECEIPT INQUIRY</button>
-            <button *ngIf = "menuList.includes('RECEIPT_INQUIRY')" mat-menu-item (click)="loadProposalInquiry();">PROPOSAL INQUIRY</button>
+            <button *ngIf = "menuList.includes('PROPOSAL_INQUIRY')" mat-menu-item (click)="loadProposalInquiry();">PROPOSAL INQUIRY</button>
         </mat-menu>
 
     </mat-drawer>

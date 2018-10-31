@@ -1,3 +1,4 @@
+import { BlobService } from './../../../service/blob-service/blob.service';
 import { ReceiptRePrintRouterModule } from './receipt-re-print-router.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -17,6 +18,6 @@ import { ReceiptRePrintService } from '../../../service/receipt-re-print/receipt
     ReactiveFormsModule,
   ],
   declarations: [ReceiptRePrintComponent],
-  providers : [ReceiptRePrintService]
+  providers : [ReceiptRePrintService, BlobService]
 })
 export class ReceiptRePrintModule { }

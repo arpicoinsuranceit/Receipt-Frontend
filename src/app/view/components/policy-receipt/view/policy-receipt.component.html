@@ -247,16 +247,16 @@
                         <mat-cell *matCellDef="let element"> {{element.Credat}} </mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="pprnum">
-                        <mat-header-cell *matHeaderCellDef style="text-align: right"> Proposal No </mat-header-cell>
-                        <mat-cell *matCellDef="let element" style="text-align: right"> {{element.Pprnum}} </mat-cell>
+                        <mat-header-cell *matHeaderCellDef style="display: flex; justify-content: flex-end;"> Proposal No </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="display: flex; justify-content: flex-end;"> {{element.Pprnum}} </mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="polnum">
-                        <mat-header-cell *matHeaderCellDef style="text-align: right"> Policy No </mat-header-cell>
-                        <mat-cell *matCellDef="let element" style="text-align: right"> {{element.Polnum}} </mat-cell>
+                        <mat-header-cell *matHeaderCellDef style="display: flex; justify-content: flex-end;"> Policy No </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="display: flex; justify-content: flex-end;"> {{element.Polnum}} </mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="topprm">
-                        <mat-header-cell *matHeaderCellDef style="text-align: right; padding-left: 10px;"> Amount </mat-header-cell>
-                        <mat-cell *matCellDef="let element" style="text-align: right; padding-left: 10px;"> {{element.Topprm | number: '.2'}} </mat-cell>
+                        <mat-header-cell *matHeaderCellDef style="display: flex; justify-content: flex-end;"> Amount </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="display: flex; justify-content: flex-end;"> {{element.Topprm | number: '.2'}} </mat-cell>
                     </ng-container>
 
 

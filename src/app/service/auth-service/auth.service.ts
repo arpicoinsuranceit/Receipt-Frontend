@@ -30,7 +30,7 @@ export class AuthService {
     urlSearchParams.append('password', password);
     urlSearchParams.append('subSbu', "1");
 
-    return this.http.post("http://10.10.10.120:8084/UserManagement/login/", urlSearchParams)
+    return this.http.post("http://localhost:8086/User/login/", urlSearchParams)
 
     //return this.loginResponse;
   }
@@ -42,7 +42,7 @@ export class AuthService {
     urlSearchParams.append('password', password);
     urlSearchParams.append('newPassword', newPassword);
     urlSearchParams.append('confirmNewPassword', confirmNewPassword);
-    return this.http.post("http://10.10.10.120:8084/UserManagement/changePassword/", urlSearchParams);
+    return this.http.post("http://localhost:8086/User/changePassword/", urlSearchParams);
   }
 
   logout() {
