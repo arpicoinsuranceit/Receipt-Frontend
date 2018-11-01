@@ -67,7 +67,7 @@
                         </mat-form-field>
 
                         <mat-form-field class="full-width">
-                            <mat-select placeholder="Document Type" aria-label="Document Type" formControlName="document">
+                            <mat-select placeholder="Document Type" aria-label="Document Type" formControlName="document" (selectionChange)="loadSubDocuments()">
                                 <mat-option *ngFor="let doc of documentTypeArray" [value]="doc.docTypeId">
                                     <span> {{ doc.docName }} </span>
                                 </mat-option>
@@ -77,6 +77,15 @@
                                 Document Type is
                                 <strong>REQUIRED</strong>
                             </mat-error>
+
+                        </mat-form-field>
+
+                        <mat-form-field class="full-width" *ngIf="hasSubDoc">
+                            <mat-select placeholder="Sub Document Type" aria-label="Sub Document Type" formControlName="subdocument">
+                                <mat-option *ngFor="let subdoc of subDocumentTypeArray" [value]="subdoc.docTypeId">
+                                    <span> {{ subdoc.docName }} </span>
+                                </mat-option>
+                            </mat-select>
 
                         </mat-form-field>
 

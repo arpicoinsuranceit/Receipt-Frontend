@@ -507,7 +507,7 @@ export class BranchUnderwriteComponent implements OnInit {
           this.branchUWInsureForm.get("occupation").setValue(occup.OccupationName);
           this.branchUWInsureForm.get("smoker").setValue(response.json()._mainlife._mSmoking);
           this.branchUWInsureForm.get("title").setValue(response.json()._mainlife._mTitle);
-          this.branchUWInsureForm.get("preferredLanguage").setValue("Sinhala");
+          this.branchUWInsureForm.get("preferredLanguage").setValue("S");
 
           if (response.json()._mainlife._mNic != "" && response.json()._mainlife._mNic != null) {
             //this.branchUWInsureForm.get("nicInsured").disable();
@@ -1164,6 +1164,7 @@ export class BranchUnderwriteComponent implements OnInit {
         }
 
       }, async error => {
+        console.log("error");
         this.loading8 = false;
         this.alert("Oopz...", "Error occour", "error");
       });

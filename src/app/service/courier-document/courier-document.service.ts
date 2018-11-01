@@ -31,6 +31,10 @@ export class CourierDocumentService {
     return this.http.get("http://localhost:8088/courier/subdepartmentdocument/"+subDepId);
   }
 
+  getChildDocuments(parent:number){
+    return this.http.get("http://localhost:8088/courier/childdocument/"+parent);
+  }
+
   getCouriers(token:string){
     return this.http.get("http://localhost:8088/courier/branchcourier/"+token);
   }

@@ -26,6 +26,7 @@ export class CourierDocumentComponent implements OnInit {
   departmentArray: Department[] = new Array();
   subDepartmentArray: SubDepartment[] = new Array();
   documentTypeArray: DocumentType[] = new Array();
+  subDocumentTypeArray: DocumentType[] = new Array();
   branchArray: string[] = new Array();
   refTypeArray: string[] = new Array();
 
@@ -38,8 +39,11 @@ export class CourierDocumentComponent implements OnInit {
     department:new FormControl('',Validators.required),
     subDepartment:new FormControl('',Validators.required),
     document:new FormControl('',Validators.required),
+    subdocument:new FormControl(''),
     remark:new FormControl('',Validators.required)
   });
+
+  hasSubDoc=false;
 
   get RefNo(){
     return this.courierForm.get("refNo");
@@ -63,6 +67,10 @@ export class CourierDocumentComponent implements OnInit {
 
   get Document(){
     return this.courierForm.get("document");
+  }
+
+  get SubDocument(){
+    return this.courierForm.get("subdocument");
   }
 
   get Remark(){
@@ -244,6 +252,35 @@ export class CourierDocumentComponent implements OnInit {
     });
   }
 
+  loadSubDocuments(){
+    this.loading_form=true;
+    this.courierDocumentService.getChildDocuments(this.Document.value).subscribe(response => {
+      this.subDocumentTypeArray=new Array();
+
+      response.json().forEach(dt => {
+        let document:DocumentType=new DocumentType();
+
+        document.DocTypeId=dt.docTypeId;
+        document.DocName=dt.docName;
+
+        this.subDocumentTypeArray.push(document);
+
+      });
+
+      if(this.subDocumentTypeArray.length > 0){
+        this.hasSubDoc=true;
+      }else{
+        this.hasSubDoc=false;
+      }
+
+      this.loading_form=false;
+
+    },error=>{
+      this.alert("Oopz...", "Error occour at Loading Sub Documents", "error");
+      this.loading_form=false;
+    });
+  }
+
   loadCourierDetails(couId:number){
     this.courierDocumentService.loadCourierDetails(couId).subscribe(response => {
       this.popupData=response.json();
@@ -252,15 +289,29 @@ export class CourierDocumentComponent implements OnInit {
 
   saveCourierOrder(){
     if(this.courierForm.valid){
-      this.loading_saving=true;
 
+      let docId:number=0;
+
+      if(this.hasSubDoc){
+        docId=this.SubDocument.value;
+        if(docId == 0){
+          this.alert("Oopz...", "Please Select Sub Document", "error");
+          return;
+        }
+      }else{
+        docId=this.Document.value;
+      }
+
+      this.loading_saving=true;
+      
       this.courierDocumentService.saveCourierOrder(this.Department.value,this.SubDepartment.value,
-        this.Document.value,this.RefType.value,this.RefNo.value,this.Remark.value,sessionStorage.getItem("token")
+        docId,this.RefType.value,this.RefNo.value,this.Remark.value,sessionStorage.getItem("token")
         ,this.Branch.value).subscribe(response=>{
 
         this.loading_saving=false;
         if(response.json() == "200"){
           this.alert("Success", "Successfully Added Courier", "success");
+          this.hasSubDoc=false;
           this.courierForm.reset();
           this.loadCouriers();
         }else{
@@ -270,7 +321,7 @@ export class CourierDocumentComponent implements OnInit {
       });
 
     }else{
-      this.alert("Oopz...", "Error occour at Saving", "error");
+      this.alert("Oopz...", "Please Fill All Details Correctly", "error");
       this.loading_saving=false;
     }
 
@@ -304,12 +355,13 @@ export class CourierDocumentComponent implements OnInit {
 
   sendCourier(data: any){
 
-    alert(data.courierId);
+    //alert(data.courierId);
 
     this.courierDocumentService.changeCourierStatus(data.courierId,'SEND').subscribe(response => {
       if(response.json() == "200"){
         this.alert("Success", "Successfully Send Courier", "success");
         this.loadCouriers();
+        this.loadOtherCouriers();
       }else{
         this.alert("Oopz...", "Error occour at Sending Courier", "error");
       }
