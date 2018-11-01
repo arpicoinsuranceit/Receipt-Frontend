@@ -1,0 +1,243 @@
+<div [hidden]="!loading_saving" class="loader">
+    <h5>Saving...</h5>
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+
+<div [hidden]="!loading_popup" class="loader">
+    <h5>Loading...</h5>
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+
+<div [ngClass]="{'disabled': loading_saving == true || loading_popup == true}" class="container" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
+    fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+    <div fxFlex="30%">
+        <mat-card class="main-card" style="height: 580px;">
+
+            <mat-card-header>
+                <mat-card-title>
+                    <h3>Courier Document</h3>
+                </mat-card-title>
+            </mat-card-header>
+
+            <mat-card-content>
+                <div [hidden]="!loading_form" class="loader">
+                    <h5>Loading...</h5>
+                    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                </div>
+                <div [ngClass]="{'disabled': loading_form == true}">
+                    <form [formGroup]="courierForm">
+                        <!-- <mat-form-field class="full-width">
+                            <input matInput placeholder="Courier No" aria-label="Courier No"
+                                formControlName="couNo">
+
+                            <mat-error *ngIf="CouNo.hasError('required')">
+                                Courier No is
+                                <strong>REQUIRED</strong>
+                            </mat-error>
+                        </mat-form-field> -->
+
+                        <mat-form-field class="full-width">
+                            <mat-select placeholder="Department" (selectionChange)="loadSubDepartment()" aria-label="Department" formControlName="department">
+
+                                <mat-option *ngFor="let dep of departmentArray" [value]="dep.departmentId">
+                                    <span> {{ dep.departmentName }} </span>
+                                </mat-option>
+
+                            </mat-select>
+
+                            <mat-error *ngIf="Department.hasError('required')">
+                                Department is
+                                <strong>REQUIRED</strong>
+                            </mat-error>
+
+                        </mat-form-field>
+
+                        <mat-form-field class="full-width">
+                            <mat-select placeholder="Sub Department" aria-label="Sub Department" formControlName="subDepartment" (selectionChange)="loadDocuments()" >
+                                <mat-option *ngFor="let subdep of subDepartmentArray" [value]="subdep.subDepartmentId">
+                                    <span> {{ subdep.subDepartmentName }} </span>
+                                </mat-option>
+                            </mat-select>
+
+                            <mat-error *ngIf="SubDepartment.hasError('required')">
+                                Sub Department is
+                                <strong>REQUIRED</strong>
+                            </mat-error>
+
+                        </mat-form-field>
+
+                        <mat-form-field class="full-width">
+                            <mat-select placeholder="Document Type" aria-label="Document Type" formControlName="document" (selectionChange)="loadSubDocuments()">
+                                <mat-option *ngFor="let doc of documentTypeArray" [value]="doc.docTypeId">
+                                    <span> {{ doc.docName }} </span>
+                                </mat-option>
+                            </mat-select>
+
+                            <mat-error *ngIf="Document.hasError('required')">
+                                Document Type is
+                                <strong>REQUIRED</strong>
+                            </mat-error>
+
+                        </mat-form-field>
+
+                        <mat-form-field class="full-width" *ngIf="hasSubDoc">
+                            <mat-select placeholder="Sub Document Type" aria-label="Sub Document Type" formControlName="subdocument">
+                                <mat-option *ngFor="let subdoc of subDocumentTypeArray" [value]="subdoc.docTypeId">
+                                    <span> {{ subdoc.docName }} </span>
+                                </mat-option>
+                            </mat-select>
+
+                        </mat-form-field>
+
+                        <mat-form-field class="full-width">
+                            <mat-select placeholder="Branch" aria-label="Branch" formControlName="branch">
+                                <mat-option *ngFor="let branch of branchArray" [value]="branch">
+                                    <span> {{ branch }} </span>
+                                </mat-option>
+                            </mat-select>
+
+                            <mat-error *ngIf="Branch.hasError('required')">
+                                Branch is
+                                <strong>REQUIRED</strong>
+                            </mat-error>
+
+                        </mat-form-field>
+
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="Ref No" aria-label="Ref No"
+                                formControlName="refNo">
+
+                            <mat-error *ngIf="RefNo.hasError('required')">
+                                Reference No is
+                                <strong>REQUIRED</strong>
+                            </mat-error>
+                        </mat-form-field>
+                        <br>
+
+                        <mat-form-field class="full-width">
+                            <mat-select placeholder="Ref Type" aria-label="Ref Type" formControlName="refType">
+                                <mat-option *ngFor="let ref of refTypeArray" [value]="ref">
+                                    <span> {{ ref }} </span>
+                                </mat-option>
+                            </mat-select>
+
+                            <mat-error *ngIf="RefType.hasError('required')">
+                                Reference Type is
+                                <strong>REQUIRED</strong>
+                            </mat-error>
+                        </mat-form-field>
+
+                        
+
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="Remark" aria-label="Remark" formControlName="remark">
+
+                            <mat-error *ngIf="Remark.hasError('required')">
+                                Remark is
+                                <strong>REQUIRED</strong>
+                            </mat-error>
+
+                        </mat-form-field>
+
+                    </form>
+                </div>
+            </mat-card-content>
+
+            <mat-card-actions style="border-top: solid #C4C4C4 1px; display: flex; 
+          justify-content: space-between;">
+                <button mat-raised-button color="warn" (click)="newCourierOrder()">CLEAR</button>
+                <button mat-raised-button color="primary" (click)="saveCourierOrder()">SAVE</button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+    <div fxFlex="70%">
+        
+        <mat-card class="main-card" style="height: 200px;">
+            <div [hidden]="!loading_table" class="loader">
+                <h5>Loading...</h5>
+                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+            </div>
+
+            <mat-card-header>
+                <mat-card-title>
+                    <h3>Pending Couriers</h3>
+                </mat-card-title>
+            </mat-card-header>
+
+            <div [ngClass]="{'disabled2': loading_table == true}">
+                <mat-table [dataSource]="datasourceCourier">
+                    <ng-container matColumnDef="token" >
+                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 40%;"> Courier Number </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="flex: 0 0 40%;"> {{element.Token}} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="createDate">
+                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> Create Date </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.CreateDate | date: 'dd/MM/yyyy'}} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="status">
+                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> Status </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.CourierStatus}} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="modifyBy">
+                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> <button mat-raised-button color="primary" (click)="courierpopup('Courier Details',element)">VIEW</button> </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="modifyDate">
+                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> <button mat-raised-button color="warn" (click)="sendCourier(element)">SEND</button> </mat-cell>
+                    </ng-container>
+                    
+
+                    <mat-header-row *matHeaderRowDef="displayedColumnsCourier"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumnsCourier;"></mat-row>
+                </mat-table>
+            </div>
+        </mat-card>
+
+        <mat-card class="main-card" style="height: 320px;">
+            <div [hidden]="!loading_table" class="loader">
+                <h5>Loading...</h5>
+                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+            </div>
+
+            <mat-card-header>
+                <mat-card-title>
+                    <h3>Other Couriers</h3>
+                </mat-card-title>
+            </mat-card-header>
+
+            <div [ngClass]="{'disabled2': loading_table == true}">
+                <mat-table [dataSource]="datasourceOtherCourier">
+                    <ng-container matColumnDef="token" >
+                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 40%;"> Courier Number </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="flex: 0 0 40%;"> {{element.Token}} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="createDate">
+                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> Create Date </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.CreateDate | date: 'dd/MM/yyyy'}} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="status">
+                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> Status </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.CourierStatus}} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="modifyBy">
+                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> <button mat-raised-button color="primary" (click)="courierpopup('Courier Details',element)">VIEW</button> </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="modifyDate">
+                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> </mat-cell>
+                    </ng-container>
+                    
+
+                    <mat-header-row *matHeaderRowDef="displayedColumnsCourier"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumnsCourier;"></mat-row>
+                </mat-table>
+            </div>
+        </mat-card>
+
+    </div>
+
+</div>

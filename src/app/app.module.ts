@@ -1,5 +1,5 @@
 import { DashboardpopupComponent } from './view/core/dashboardpopup/dashboardpopup.component';
-
+import { CourierpopupComponent } from './view/core/courierpopup/courierpopup.component';
 import { CommonService } from './service/common-service/common.service';
 import { AuthGuard } from './service/auth-service/auth.guard';
 import { AuthService } from './service/auth-service/auth.service';
@@ -19,7 +19,11 @@ import { AlertComponent } from './view/core/alert/alert.component';
 
 @NgModule({
   declarations: [
+<<<<<<< HEAD
     AppComponent, LoginComponent, AlertComponent, DashboardpopupComponent
+=======
+    AppComponent, LoginComponent, AlertComponent ,CourierpopupComponent
+>>>>>>> origin/feature-courier-module
   ],
   imports: [
     BrowserModule,
@@ -33,6 +37,10 @@ import { AlertComponent } from './view/core/alert/alert.component';
   ],
   providers: [AuthService, AuthGuard, CommonService],
   bootstrap: [AppComponent],
+<<<<<<< HEAD
   entryComponents: [AlertComponent, DashboardpopupComponent]
+=======
+  entryComponents: [AlertComponent,CourierpopupComponent]
+>>>>>>> origin/feature-courier-module
 })
 export class AppModule { }

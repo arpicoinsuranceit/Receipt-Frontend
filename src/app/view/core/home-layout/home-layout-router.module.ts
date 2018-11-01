@@ -49,6 +49,10 @@ const routes: Routes = [
       {
         path: 'receiptreprint',
         loadChildren : "app/view/components/receipt-re-print/receipt-re-print.module#ReceiptRePrintModule"
+      },
+      {
+        path: 'courierdocument',
+        loadChildren : "app/view/components/courier-document/courier-document.module#CourierDocumentModule"
       }
     ]
   }
