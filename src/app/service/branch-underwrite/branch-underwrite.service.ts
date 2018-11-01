@@ -13,55 +13,55 @@ export class BranchUnderwriteService {
   loadProposalToUnderwrite(token : string,pageIndex:number,pageSize:number): any {
     console.log("-------------------");
     console.log(token);
-    return this.http.get("http://localhost:8088/loadProposalToUnderwrite/"+token+"/"+pageIndex+"/"+pageSize);
+    return this.http.get("http://localhost:8086/loadProposalToUnderwrite/"+token+"/"+pageIndex+"/"+pageSize);
   }
 
   loadProposalDetails(pprNo : string,seqNo : string): any {
     console.log("-------------------");
     console.log(pprNo + "'" + seqNo);
-    return this.http.get("http://localhost:8088/loadProposalDetails/"+pprNo+"/"+seqNo);
+    return this.http.get("http://localhost:8086/loadProposalDetails/"+pprNo+"/"+seqNo);
   }
 
   loadQuotationDetails(seqNo : number,qId : number): any {
     console.log("-------------------");
     console.log(seqNo + "'" + qId);
-    return this.http.get("http://localhost:8088/getQuotationDetails/"+seqNo+"/"+qId);
+    return this.http.get("http://localhost:8086/getQuotationDetails/"+seqNo+"/"+qId);
   }
 
   loadQuotationIdFormSeqNo(seqNo : number,qId : number): any {
     console.log("-------------------");
     console.log(seqNo + "'" + qId);
-    return this.http.get("http://localhost:8088/getQuotationDetailFromSeqNo/"+seqNo+"/"+qId);
+    return this.http.get("http://localhost:8086/getQuotationDetailFromSeqNo/"+seqNo+"/"+qId);
   }
 
   loadNominee(seqNo : number,qId : number): any {
     console.log("-------------------");
     console.log(seqNo);
-    return this.http.get("http://localhost:8088/getNominee/"+seqNo+"/"+qId);
+    return this.http.get("http://localhost:8086/getNominee/"+seqNo+"/"+qId);
   }
 
   loadShedule(seqNo : number,qId : number): any {
     console.log("-------------------");
     console.log(seqNo );
-    return this.http.get("http://localhost:8088/getShedule/"+seqNo+"/"+qId);
+    return this.http.get("http://localhost:8086/getShedule/"+seqNo+"/"+qId);
   }
 
   loadPensionShedule(seqNo : number,qId : number): any {
     console.log("-------------------");
     console.log(seqNo );
-    return this.http.get("http://localhost:8088/getPensionShedule/"+seqNo+"/"+qId);
+    return this.http.get("http://localhost:8086/getPensionShedule/"+seqNo+"/"+qId);
   }
 
   loadSurrenderVals(seqNo : number,qId : number): any {
     console.log("-------------------");
     console.log(seqNo );
-    return this.http.get("http://localhost:8088/getSurrenderVals/"+seqNo+"/"+qId);
+    return this.http.get("http://localhost:8086/getSurrenderVals/"+seqNo+"/"+qId);
   }
 
   saveUnderwrite(saveUnderwriteModel : SaveUnderwriteModel){
     console.log(saveUnderwriteModel);
 
-    return this.http.post("http://localhost:8088/saveUnderwrite/",saveUnderwriteModel);
+    return this.http.post("http://localhost:8086/saveUnderwrite/",saveUnderwriteModel);
   }
 
   checkNicValidation(nic,gender,age,qid,sequenceNo){
@@ -102,7 +102,7 @@ export class BranchUnderwriteService {
     }
 
     if (nic.length == 12 || nic.length == 9) {
-      return this.http.get("http://localhost:8088/checkNicValidation/"+nic+"/"+gender+"/"+age+"/"+qid+"/"+sequenceNo);
+      return this.http.get("http://localhost:8086/checkNicValidation/"+nic+"/"+gender+"/"+age+"/"+qid+"/"+sequenceNo);
     }
 
   }

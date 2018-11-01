@@ -10,7 +10,7 @@ export class ReceiptRePrintService {
 
   receiptRePrint(docCode:string,receiptNo:number){
     let token = sessionStorage.getItem("token");
-    return this.http.get("http://localhost:8088/receiptRePrint/"+docCode+"/"+receiptNo+"/"+token);
+    return this.http.get("http://localhost:8086/receiptRePrint/"+docCode+"/"+receiptNo+"/"+token);
   }
 
 }

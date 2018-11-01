@@ -11,6 +11,6 @@ export class MiscellaneousReceiptGlService {
 
   saveReceipt(receipt: MiscellaneousReceiptModel) {
     let token = sessionStorage.getItem("token");
-    return this.http.post("http://localhost:8088/misglreceiptsave/" + token, receipt);
+    return this.http.post("http://localhost:8086/misglreceiptsave/" + token, receipt);
   }
 }

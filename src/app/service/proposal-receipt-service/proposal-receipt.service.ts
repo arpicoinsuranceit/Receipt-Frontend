@@ -9,7 +9,7 @@ export class ProposalReceiptService {
   constructor(private http: Http) { }
 
   loadProposal(id){
-    return this.http.get("http://localhost:8088/getProposal/" + id);
+    return this.http.get("http://localhost:8086/getProposal/" + id);
   }
 
   getPropDetails(propId, seqNo) {
@@ -19,11 +19,11 @@ export class ProposalReceiptService {
 
     console.log("called");
 
-    return this.http.post("http://localhost:8088/getproposaldetail/", urlParams);
+    return this.http.post("http://localhost:8086/getproposaldetail/", urlParams);
   }
 
   savePropReceipt(saveReceiptModel : SaveReceiptModel){
-    return this.http.post("http://localhost:8088/savereceiptProp/",saveReceiptModel);
+    return this.http.post("http://localhost:8086/savereceiptProp/",saveReceiptModel);
   }
 
 }
