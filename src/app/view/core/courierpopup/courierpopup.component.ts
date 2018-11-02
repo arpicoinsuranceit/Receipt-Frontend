@@ -11,7 +11,7 @@ export class CourierpopupComponent implements OnInit {
   displayedColumns = ['referenceNo' ,'documentType','createDate','subDepDocCouToken', 'remark'];
   displayedColumns2 = ['referenceNo' ,'documentType','createDate','subDepDocCouToken', 'remark' , 'status' , 'rcvdBy' , 'rcvdDate'];
   title = "";
-  popupData=" ";
+  popupData=null;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
     console.log(data);
