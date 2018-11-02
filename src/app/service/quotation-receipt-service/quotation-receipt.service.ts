@@ -24,7 +24,7 @@ export class QuotationReceiptService {
   }
 
   saveQupReceipt(data: SaveReceiptModel): any {
-    return this.http.post("http://localhost:8086/savereceiptquo/", data);
+    return this.http.post("http://10.10.10.120:8084/Receipt/savereceiptquo/", data);
   }
 
  

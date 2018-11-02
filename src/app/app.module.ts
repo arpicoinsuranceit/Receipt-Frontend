@@ -19,11 +19,7 @@ import { AlertComponent } from './view/core/alert/alert.component';
 
 @NgModule({
   declarations: [
-<<<<<<< HEAD
-    AppComponent, LoginComponent, AlertComponent, DashboardpopupComponent
-=======
-    AppComponent, LoginComponent, AlertComponent ,CourierpopupComponent
->>>>>>> origin/feature-courier-module
+    AppComponent, LoginComponent, AlertComponent ,CourierpopupComponent,DashboardpopupComponent
   ],
   imports: [
     BrowserModule,
@@ -37,10 +33,6 @@ import { AlertComponent } from './view/core/alert/alert.component';
   ],
   providers: [AuthService, AuthGuard, CommonService],
   bootstrap: [AppComponent],
-<<<<<<< HEAD
-  entryComponents: [AlertComponent, DashboardpopupComponent]
-=======
-  entryComponents: [AlertComponent,CourierpopupComponent]
->>>>>>> origin/feature-courier-module
+  entryComponents: [AlertComponent,CourierpopupComponent, DashboardpopupComponent]
 })
 export class AppModule { }
