@@ -12,7 +12,7 @@ export class CommonService {
   }
 
   convertNumberToWord(number) {
-    return this.http.get("http://10.10.10.120:8084/Receipt/convertNumberToWord/" + number);
+    return this.http.get("http://localhost:8088/convertNumberToWord/" + number);
   }
 
   getBank() {
@@ -20,7 +20,7 @@ export class CommonService {
     let urlParams = new URLSearchParams();
     urlParams.append('token', token);
     console.log(token);
-    return this.http.post("http://10.10.10.120:8084/Receipt/getbank/", urlParams);
+    return this.http.post("http://localhost:8088/getbank/", urlParams);
   }
 
   getExpenes() {
@@ -28,7 +28,7 @@ export class CommonService {
     let urlParams = new URLSearchParams();
     urlParams.append('token', token);
     console.log(token);
-    return this.http.post("http://10.10.10.120:8084/Receipt/getexpences/", urlParams);
+    return this.http.post("http://localhost:8088/getexpences/", urlParams);
   }
 
   getAccGL(){
@@ -36,7 +36,7 @@ export class CommonService {
     let urlParams = new URLSearchParams();
     urlParams.append('token', token);
     console.log(token);
-    return this.http.post("http://10.10.10.120:8084/Receipt/getAccounts/", urlParams);
+    return this.http.post("http://localhost:8088/getAccounts/", urlParams);
   }
 
   getBranches() {
@@ -44,7 +44,7 @@ export class CommonService {
     let urlParams = new URLSearchParams();
     urlParams.append('token', token);
     console.log(token);
-    return this.http.post("http://10.10.10.120:8084/Receipt/getbranches/", urlParams);
+    return this.http.post("http://localhost:8088/getbranches/", urlParams);
   }
 
   getOccupations() {
@@ -57,28 +57,28 @@ export class CommonService {
     let urlParams = new URLSearchParams();
     urlParams.append('token', token);
     urlParams.append('agentCode', agentCode);
-    return this.http.post("http://10.10.10.120:8084/Receipt/getAgents/", urlParams);
+    return this.http.post("http://localhost:8088/getAgents/", urlParams);
   }
 
   getLastReceipts() {
     let token: string = sessionStorage.getItem("token");
     let urlParams = new URLSearchParams();
     urlParams.append('token', token);
-    return this.http.post("http://10.10.10.120:8084/Receipt/getLastReceipts/", urlParams);
+    return this.http.post("http://localhost:8088/getLastReceipts/", urlParams);
   }
 
   getLastReceiptsMiscell(){
     let token: string = sessionStorage.getItem("token");
     let urlParams = new URLSearchParams();
     urlParams.append('token', token);
-    return this.http.post("http://10.10.10.120:8084/Receipt/emsdocmlast/", urlParams);
+    return this.http.post("http://localhost:8088/emsdocmlast/", urlParams);
   }
 
   getLastReceiptsMiscellGL(){
     let token: string = sessionStorage.getItem("token");
     let urlParams = new URLSearchParams();
     urlParams.append('token', token);
-    return this.http.post("http://10.10.10.120:8084/Receipt/recmlast/", urlParams);
+    return this.http.post("http://localhost:8088/recmlast/", urlParams);
   }
 
   loadAgeAndDOBFromNic(nic: string) {
