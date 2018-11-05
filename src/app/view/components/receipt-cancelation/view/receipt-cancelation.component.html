@@ -2,7 +2,7 @@
   <h5>Saving...</h5>
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </div>
-<div class="container" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+<div [ngClass]="{'disabled': loading_saving == true}" class="container" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
   <div fxFlex="30%">
     <mat-card class="main-card" style="height: 500px;">
 
