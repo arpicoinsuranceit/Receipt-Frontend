@@ -10,6 +10,6 @@ export class MiscellaneousReceiptInvService {
 
     saveReceipt(receipt : MiscellaneousReceiptModel){
         let token = sessionStorage.getItem("token");
-        return this.http.post("http://localhost:8088/misinvreceiptsave/" + token, receipt);
+        return this.http.post("http://10.10.10.120:8084/Receipt/misinvreceiptsave/" + token, receipt);
     }
 }

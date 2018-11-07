@@ -74,11 +74,13 @@ export class LoginComponent implements OnInit {
         this.loginResponse.UserName = response.json().userName;
 
         if (this.loginResponse.IsLogin) {
-          if (this.loginResponse.IsExpired == false) {
+          if (this.loginResponse.IsExpired == false && this.loginResponse.IsLock == false) {
             sessionStorage.setItem("token", this.loginResponse.JwtToken);
             sessionStorage.setItem("userName", this.loginResponse.UserName);
             sessionStorage.setItem("menus", JSON.stringify(this.loginResponse.MenuDtos));
             this.router.navigate(['/home/home']);
+          } else{
+            
           }
         }
       } catch (error) {

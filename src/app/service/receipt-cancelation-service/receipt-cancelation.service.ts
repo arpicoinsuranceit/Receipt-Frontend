@@ -7,7 +7,7 @@ export class ReceiptCancelationService {
   constructor(private http:Http) { }
 
   loadReceiptNo(token:string,receiptNo:string){
-    return this.http.get("http://localhost:8088/getReceipts/"+token+"/"+receiptNo);
+    return this.http.get("http://10.10.10.120:8084/Receipt/getReceipts/"+token+"/"+receiptNo);
   }
 
   saveRequest(token:string,receiptNo:string,reason:string){
@@ -17,15 +17,15 @@ export class ReceiptCancelationService {
     urlParams.append('reason', reason);
     urlParams.append('token', token);
 
-    return this.http.get("http://localhost:8088/saveRequest/"+token+"/"+receiptNo+"/"+reason);
+    return this.http.get("http://10.10.10.120:8084/Receipt/saveRequest/"+token+"/"+receiptNo+"/"+reason);
   }
 
   loadPendingRequest(token:string){
-    return this.http.get("http://localhost:8088/getPendingRequest/"+token);
+    return this.http.get("http://10.10.10.120:8084/Receipt/getPendingRequest/"+token);
   }
 
   loadCanceledRequest(token:string){
-    return this.http.get("http://localhost:8088/getCanceledRequest/"+token);
+    return this.http.get("http://10.10.10.120:8084/Receipt/getCanceledRequest/"+token);
   }
 
 }

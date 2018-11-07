@@ -12,7 +12,7 @@ export class CommonService {
   }
 
   convertNumberToWord(number) {
-    return this.http.get("http://localhost:8088/convertNumberToWord/" + number);
+    return this.http.get("http://10.10.10.120:8084/Receipt/convertNumberToWord/" + number);
   }
 
   getBank() {
@@ -20,7 +20,7 @@ export class CommonService {
     let urlParams = new URLSearchParams();
     urlParams.append('token', token);
     console.log(token);
-    return this.http.post("http://localhost:8088/getbank/", urlParams);
+    return this.http.post("http://10.10.10.120:8084/Receipt/getbank/", urlParams);
   }
 
   getExpenes() {
@@ -28,7 +28,7 @@ export class CommonService {
     let urlParams = new URLSearchParams();
     urlParams.append('token', token);
     console.log(token);
-    return this.http.post("http://localhost:8088/getexpences/", urlParams);
+    return this.http.post("http://10.10.10.120:8084/Receipt/getexpences/", urlParams);
   }
 
   getAccGL(){
@@ -36,7 +36,7 @@ export class CommonService {
     let urlParams = new URLSearchParams();
     urlParams.append('token', token);
     console.log(token);
-    return this.http.post("http://localhost:8088/getAccounts/", urlParams);
+    return this.http.post("http://10.10.10.120:8084/Receipt/getAccounts/", urlParams);
   }
 
   getBranches() {
@@ -44,11 +44,11 @@ export class CommonService {
     let urlParams = new URLSearchParams();
     urlParams.append('token', token);
     console.log(token);
-    return this.http.post("http://localhost:8088/getbranches/", urlParams);
+    return this.http.post("http://10.10.10.120:8084/Receipt/getbranches/", urlParams);
   }
 
   getOccupations() {
-    return this.http.get('http://localhost:8084/occupation');
+    return this.http.get('http://10.10.10.120:8084/Quotation/occupation');
   }
   
 
@@ -57,28 +57,28 @@ export class CommonService {
     let urlParams = new URLSearchParams();
     urlParams.append('token', token);
     urlParams.append('agentCode', agentCode);
-    return this.http.post("http://localhost:8088/getAgents/", urlParams);
+    return this.http.post("http://10.10.10.120:8084/Receipt/getAgents/", urlParams);
   }
 
   getLastReceipts() {
     let token: string = sessionStorage.getItem("token");
     let urlParams = new URLSearchParams();
     urlParams.append('token', token);
-    return this.http.post("http://localhost:8088/getLastReceipts/", urlParams);
+    return this.http.post("http://10.10.10.120:8084/Receipt/getLastReceipts/", urlParams);
   }
 
   getLastReceiptsMiscell(){
     let token: string = sessionStorage.getItem("token");
     let urlParams = new URLSearchParams();
     urlParams.append('token', token);
-    return this.http.post("http://localhost:8088/emsdocmlast/", urlParams);
+    return this.http.post("http://10.10.10.120:8084/Receipt/emsdocmlast/", urlParams);
   }
 
   getLastReceiptsMiscellGL(){
     let token: string = sessionStorage.getItem("token");
     let urlParams = new URLSearchParams();
     urlParams.append('token', token);
-    return this.http.post("http://localhost:8088/recmlast/", urlParams);
+    return this.http.post("http://10.10.10.120:8084/Receipt/recmlast/", urlParams);
   }
 
   loadAgeAndDOBFromNic(nic: string) {
@@ -114,7 +114,7 @@ export class CommonService {
     }
 
     if (nic.length == 12 || nic.length == 9) {
-      return this.http.post('http://localhost:8084/ageCalculate', nic);
+      return this.http.post('http://10.10.10.120:8084/Quotation/ageCalculate', nic);
     }
 
   }
