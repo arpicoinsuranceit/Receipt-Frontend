@@ -25,7 +25,9 @@ export class ReceiptCancelationComponent implements OnInit {
   loading_saving = false;
   loading_table2 = true;
 
-  displayedColumnsRequest: string[] = ['receiptNo', 'docCode', 'amount' , 'status', 'requestDate'];
+  displayedColumnsRequest: string[] = ['docCode', 'receiptNo',  'amount' , 'status', 'reason' ,'requestDate'];
+
+  displayedColumnsCanceledRequest: string[] = ['docCode', 'receiptNo',  'amount' , 'status' , 'gmRemark' ,'requestDate' ,'approvedDate'];
 
   datasourcePendingRequest= new MatTableDataSource<CanceledReceiptDto>(this.pendingRequestArray);
 
@@ -99,6 +101,9 @@ export class ReceiptCancelationComponent implements OnInit {
         request.RequestDate=i.requestDate;
         request.SbuCode=i.sbuCode;
         request.Status=i.status;
+        request.ApprovedBy=i.approvedBy;
+        request.ApprovedDate=i.approvedDate;
+        request.GmRemark=i.gmRemark;
 
         this.pendingRequestArray.push(request);
 
@@ -136,6 +141,9 @@ export class ReceiptCancelationComponent implements OnInit {
         request.RequestDate=i.requestDate;
         request.SbuCode=i.sbuCode;
         request.Status=i.status;
+        request.ApprovedBy=i.approvedBy;
+        request.ApprovedDate=i.approvedDate;
+        request.GmRemark=i.gmRemark;
 
         this.canceledRequestArray.push(request);
 

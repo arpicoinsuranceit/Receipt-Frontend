@@ -1,7 +1,7 @@
 export class CanceledReceiptDto{
     constructor(private sbuCode?:string,private locCode?:string,private receiptNo?:string,private polNum?:string
         ,private pprNum?:string,private reason?:string,private status?:string,private requestBy?:string,private requestDate?:string
-        ,private amount?:number,private docCode?:string){}
+        ,private amount?:number,private docCode?:string,private approvedBy?:string,private approvedDate?:string,private gmRemark?:string){}
 
     get SbuCode(){
         return this.sbuCode;
@@ -89,6 +89,30 @@ export class CanceledReceiptDto{
 
     set DocCode(docCode:string){
         this.docCode=docCode;
+    }
+
+    get ApprovedBy(){
+        return this.approvedBy;
+    }
+
+    set ApprovedBy(approvedBy:string){
+        this.approvedBy=approvedBy;
+    }
+
+    get GmRemark(){
+        return this.gmRemark;
+    }
+
+    set GmRemark(gmRemark:string){
+        this.gmRemark=gmRemark;
+    }
+
+    get ApprovedDate(){
+        return this.approvedDate;
+    }
+
+    set ApprovedDate(approvedDate:string){
+        this.approvedDate=approvedDate;
     }
     
 }
