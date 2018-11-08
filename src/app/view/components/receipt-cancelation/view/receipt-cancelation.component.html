@@ -19,6 +19,29 @@
           </div>
           <div [ngClass]="{'disabled': loading_form == true}">
             <form [formGroup]="receiptCancelationForm">
+                <mat-form-field>
+                    <mat-select placeholder="Doc Code" aria-label="Doc Code" formControlName="doccode">
+                        <mat-option value="RCNB">
+                            RCNB
+                        </mat-option>
+                        <mat-option value="RCPL">
+                            RCPL
+                        </mat-option>
+                        <mat-option value="RCPP">
+                            RCPP
+                        </mat-option>
+                        <mat-option value="OIIS">
+                            OIIS
+                        </mat-option>
+                        <mat-option value="GLRC">
+                            GLRC
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="DocCode.hasError('required')">
+                        Doc Code is
+                        <strong>REQUIRED</strong>
+                    </mat-error>
+                </mat-form-field> 
                 <mat-form-field  style="width: 100%;">
                     <input matInput placeholder="Receipt No. *" aria-label="Receipt No." [matAutocomplete]="receiptNumbers" formControlName="receiptNo"
                         (keyup)="LoadReceipts($event)">

@@ -36,12 +36,17 @@ export class ReceiptCancelationComponent implements OnInit {
   
 
   receiptCancelationForm=new FormGroup({
+    doccode:new FormControl('',Validators.required),
     receiptNo:new FormControl('',Validators.required),
     reason:new FormControl('',Validators.required)
   });
 
   get ReceiptNo() {
     return this.receiptCancelationForm.get("receiptNo");
+  }
+
+  get DocCode() {
+    return this.receiptCancelationForm.get("doccode");
   }
   
   constructor(private receiptCancelationService: ReceiptCancelationService, public dialog: MatDialog) {
@@ -163,22 +168,20 @@ export class ReceiptCancelationComponent implements OnInit {
   saveRequest(){
     if(this.receiptCancelationForm.valid){
       this.loading_saving=true;
-      this.receiptCancelationService.saveRequest(sessionStorage.getItem("token"),this.ReceiptNo.value,this.receiptCancelationForm.get("reason").value).subscribe(response => {
-        console.log(response.text());
+      this.receiptCancelationService.saveRequest(sessionStorage.getItem("token"),this.ReceiptNo.value,this.receiptCancelationForm.get("reason").value,this.DocCode.value).subscribe(response => {
         this.loading_saving=false;
-        if(response.text() == "Success"){
+
+        let resp = response.json();
+
+        if(resp.code == "200"){
           this.alert("Success", "Successfully Send Request", "success");
-          this.receiptCancelationForm.get("receiptNo").setValue('');
-          this.receiptCancelationForm.get("reason").setValue('');
+          this.receiptCancelationForm.reset();
           this.getPendingRequest();
           this.getCanceledRequest();
         }else{
-          this.alert("Oopz...", "Error occour at Saving", "error");
+          this.alert("Oopz...", resp.message , "error");
         }
-        
-      },error => {
-        this.loading_saving=false;
-        this.alert("Oopz...", "Error occour at Saving", "error");
+
       });
     }else{
       this.alert("Oopz...", "Please Fill All Details Correctly", "error");
