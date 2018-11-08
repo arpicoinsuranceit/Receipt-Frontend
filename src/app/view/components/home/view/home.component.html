@@ -61,30 +61,7 @@
             </div>
           </div>
           <div fxFlex="25%">
-            <div class="proposal-div" (click)="getCashFlowGrid('CR')">
-              <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%"
-                fxLayoutAlign="center">
-                <div fxFlex="60%">
-                  <div>
-                    <p style="padding: 5px;">
-                      <span style="font-size: 18px;">{{dashboardCashFlow.CrAmount | number: '.2'}}</span><br>
-                      <span style="font-size: 15px;">Credit Card</span><br>
-                      <span style="font-size: 20px;">{{dashboardCashFlow.CrCount}}</span>
-                    </p>
-                  </div>
-                </div>
-                <div fxFlex="40%">
-                  <div class="flex-box">
-                    <div>
-                      <i class="fas fa-credit-card fa-4x icon_dash" style="color: #DB4C3F"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div fxFlex="25%">
-            <div class="policy-div" (click)="getCashFlowGrid('CQ')">
+            <div class="proposal-div" (click)="getCashFlowGrid('CQ')">
               <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%"
                 fxLayoutAlign="center">
                 <div fxFlex="60%">
@@ -99,15 +76,16 @@
                 <div fxFlex="40%">
                   <div class="flex-box">
                     <div>
-                      <i class="fas fa-money-check fa-4x icon_dash" style="color: #18A55D"></i>
+                      <i class="fas fa-money-check fa-4x icon_dash" style="color: #DB4C3F"></i>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+
           <div fxFlex="25%">
-            <div class="inv-div" (click)="getCashFlowGrid('DD')">
+            <div class="policy-div" (click)="getCashFlowGrid('DD')">
               <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%"
                 fxLayoutAlign="center">
                 <div fxFlex="60%">
@@ -122,15 +100,125 @@
                 <div fxFlex="40%">
                   <div class="flex-box">
                     <div>
-                      <i class="fas fa-hand-holding-usd fa-4x icon_dash" style="color: #F19B2C"></i>
+                      <i class="fas fa-hand-holding-usd fa-4x icon_dash" style="color: #18A55D"></i>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+
+          <div fxFlex="25%">
+            <div class="inv-div" (click)="getCashFlowGrid('CR')">
+              <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%"
+                fxLayoutAlign="center">
+                <div fxFlex="60%">
+                  <div>
+                    <p style="padding: 5px;">
+                      <span style="font-size: 18px;">{{dashboardCashFlow.CrAmount | number: '.2'}}</span><br>
+                      <span style="font-size: 15px;">Credit Card</span><br>
+                      <span style="font-size: 20px;">{{dashboardCashFlow.CrCount}}</span>
+                    </p>
+                  </div>
+                </div>
+                <div fxFlex="40%">
+                  <div class="flex-box">
+                    <div>
+                      <i class="fas fa-credit-card fa-4x icon_dash" style="color: #F19B2C"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          
         </div>
       </mat-card-content>
+
+      <mat-divider></mat-divider>
+
+      <mat-card-header style="margin-bottom: 10px;">
+        <mat-card-title>
+          <h3>Cash Flow Details</h3>
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+
+        <div *ngIf="loading5" style="margin-bottom: 10px;" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
+          fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+          <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        </div>
+
+        <div style="border-bottom: solid 4px #3F51B5; " fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
+          fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+
+          <div fxFlex="100%" style="min-height:50px;">
+            <div [ngClass]="{'disabled': loading5 == true}">
+              <mat-form-field style="padding-right: 10px;">
+                <mat-select placeholder="Type" value="d" [formControl]="typeCashFlow">
+                  <mat-option value="y">
+                    Year
+                  </mat-option>
+                  <mat-option value="m">
+                    Month
+                  </mat-option>
+                  <mat-option value="d">
+                    Day
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field style="padding-right: 10px;">
+                <input matInput [matDatepicker]="dp5" placeholder="From" [formControl]="fromdate3">
+                <mat-datepicker-toggle matSuffix [for]="dp5"></mat-datepicker-toggle>
+                <mat-datepicker #dp5 startView="multi-year" (yearSelected)="chosenYearHandler($event, dp5, 1, 2)"
+                  (monthSelected)="chosenMonthHandler($event, dp5, 1, 2)"></mat-datepicker>
+              </mat-form-field>
+              <mat-form-field style="padding-right: 10px;">
+                <input matInput [matDatepicker]="dp6" placeholder="To" [formControl]="todate3">
+                <mat-datepicker-toggle matSuffix [for]="dp6"></mat-datepicker-toggle>
+                <mat-datepicker #dp6 startView="multi-year" (yearSelected)="chosenYearHandler($event, dp6, 2, 2)"
+                  (monthSelected)="chosenMonthHandler($event, dp6, 2, 2)"></mat-datepicker>
+              </mat-form-field>
+              <button mat-raised-button color="primary" (click)="getCashFlowChart()">Search</button>
+              <span class="spacer"></span>
+              <mat-form-field style="float: right;">
+                <mat-select placeholder="Chart" value="d" [formControl]="chartTypeCashFlow">
+                  <mat-option value="g">
+                    Grid
+                  </mat-option>
+                  <mat-option value="l">
+                    Line
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="ChartTypeCashFlow.value == 'g'"  style="margin-top: 10px;" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
+          fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+          <div fxFlex="100%" style="height: 400px;">
+              <ngx-charts-bar-vertical-stacked [scheme]="colorScheme" [results]="cashFlow" [gradient]="gradient"
+              [xAxis]="true" [yAxis]="true" [legend]="true" [showXAxisLabel]="true" [showYAxisLabel]="true"
+              [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" (select)="onSelect($event)">
+            </ngx-charts-bar-vertical-stacked>
+          </div>
+        </div>
+        <div *ngIf="ChartTypeCashFlow.value == 'l'"  style="margin-top: 10px;" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
+          fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+          <div fxFlex="100%" style="height: 400px;">
+            <div fxFlex="100%" style="height: 400px;">
+              <ngx-charts-line-chart [scheme]="colorScheme" [results]="cashFlow" [gradient]="gradient" [xAxis]="true"
+                [yAxis]="true" [legend]="true" [showXAxisLabel]="true" [showYAxisLabel]="true" [xAxisLabel]="xAxisLabel2"
+                [yAxisLabel]="yAxisLabel" [autoScale]="true" (select)="onSelect($event)">
+              </ngx-charts-line-chart>
+            </div>
+          </div>
+        </div>
+
+      </mat-card-content>
+
 
       <mat-divider></mat-divider>
 
@@ -262,14 +350,14 @@
               <mat-form-field style="padding-right: 10px;">
                 <input matInput [matDatepicker]="dp3" placeholder="From" [formControl]="fromdate1">
                 <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
-                <mat-datepicker #dp3 startView="multi-year" (yearSelected)="chosenYearHandler($event, dp3, 1)"
-                  (monthSelected)="chosenMonthHandler($event, dp3, 1)"></mat-datepicker>
+                <mat-datepicker #dp3 startView="multi-year" (yearSelected)="chosenYearHandler($event, dp3, 1, 1)"
+                  (monthSelected)="chosenMonthHandler($event, dp3, 1, 1)"></mat-datepicker>
               </mat-form-field>
               <mat-form-field style="padding-right: 10px;">
                 <input matInput [matDatepicker]="dp4" placeholder="To" [formControl]="todate1">
                 <mat-datepicker-toggle matSuffix [for]="dp4"></mat-datepicker-toggle>
-                <mat-datepicker #dp4 startView="multi-year" (yearSelected)="chosenYearHandler($event, dp4, 2)"
-                  (monthSelected)="chosenMonthHandler($event, dp4, 2)"></mat-datepicker>
+                <mat-datepicker #dp4 startView="multi-year" (yearSelected)="chosenYearHandler($event, dp4, 2, 1)"
+                  (monthSelected)="chosenMonthHandler($event, dp4, 2, 1)"></mat-datepicker>
               </mat-form-field>
               <button mat-raised-button color="primary" (click)="getDetailsDiv2()">Search</button>
               <span class="spacer"></span>

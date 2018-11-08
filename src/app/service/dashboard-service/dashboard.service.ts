@@ -3,42 +3,49 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class DashboardService {
 
 
-  constructor(private http: Http) { }
+    constructor(private http: Http) { }
 
-  getCashFlowGrid(from: any, to: any, type: any) {
-    let user = sessionStorage.getItem('token');
-    return this.http.get("http://10.10.10.120:8084/Receipt/getCashFlowDetailGrid/" + type + "/" + to + "/" + from + "/" + user);
-  }
+    getCashFlowGrid(from: any, to: any, type: any) {
+        let user = sessionStorage.getItem('token');
+        return this.http.get("http://10.10.10.120:8084/Receipt/getCashFlowDetailGrid/" + type + "/" + to + "/" + from + "/" + user);
+    }
 
-  getCashFlowDetails(from: any, to: any) {
-    let user = sessionStorage.getItem('token');
-    return this.http.get("http://10.10.10.120:8084/Receipt/getCashFlowDetails/" + to + "/" + from + "/" + user);
-  }
+    getCashFlowDetails(from: any, to: any) {
+        let user = sessionStorage.getItem('token');
+        return this.http.get("http://10.10.10.120:8084/Receipt/getCashFlowDetails/" + to + "/" + from + "/" + user);
+    }
 
-  getDetails(type: string, from: any, to: any) {
+    getDetails(type: string, from: any, to: any) {
 
-    console.log("called");
+        console.log("called");
 
-    let user = sessionStorage.getItem('token');
-    return this.http.get("http://10.10.10.120:8084/Receipt/dashboarddetails/" + type + "/" + to + "/" + from + "/" + user);
-  }
+        let user = sessionStorage.getItem('token');
+        return this.http.get("http://10.10.10.120:8084/Receipt/dashboarddetails/" + type + "/" + to + "/" + from + "/" + user);
+    }
 
-  dashboardDiv1(from: string, to: string) {
+    dashboardDiv1(from: string, to: string) {
 
-    let user = sessionStorage.getItem('token');
+        let user = sessionStorage.getItem('token');
 
-    return this.http.get("http://10.10.10.120:8084/Receipt/dashboarddiv1/" + to + "/" + from + "/" + user);
-  }
+        return this.http.get("http://10.10.10.120:8084/Receipt/dashboarddiv1/" + to + "/" + from + "/" + user);
+    }
 
-  dashboardDiv2(from: string, to: string, type: string) {
+    dashboardDiv2(from: string, to: string, type: string) {
 
-    let user = sessionStorage.getItem('token');
+        let user = sessionStorage.getItem('token');
 
-    return this.http.get("http://10.10.10.120:8084/Receipt/dashboarddiv2/" + to + "/" + from + "/" + user + "/" + type);
-  }
+        return this.http.get("http://10.10.10.120:8084/Receipt/dashboarddiv2/" + to + "/" + from + "/" + user + "/" + type);
+    }
+
+    dateVsPayMode(from: string, to: string, type: string) {
+
+        let user = sessionStorage.getItem('token');
+
+        return this.http.get("http://localhost:8089/datevspaymode/" + to + "/" + from + "/" + user + "/" + type);
+    }
 }

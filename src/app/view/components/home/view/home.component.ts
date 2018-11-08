@@ -35,10 +35,14 @@ export const FOMAT_1 = {
 })
 export class HomeComponent implements OnInit {
 
+  cashFlow = [];
+
+
   loading1 = false;
   loading2 = false;
   loading3 = false;
   loading4 = false;
+  loading5 = false;
 
   pieChartView: any[] = [200, 200];
 
@@ -69,6 +73,11 @@ export class HomeComponent implements OnInit {
   todate2 = new FormControl(new Date());
   type = new FormControl("m");
   chartType = new FormControl("g");
+  fromdate3 = new FormControl(new Date());
+  todate3 = new FormControl(new Date());
+
+  typeCashFlow = new FormControl("m");
+  chartTypeCashFlow = new FormControl("g");
 
   get Type() {
     return this.type;
@@ -77,13 +86,21 @@ export class HomeComponent implements OnInit {
     return this.chartType;
   }
 
+  get TypeCashFlow() {
+    return this.typeCashFlow;
+  }
+
+  get ChartTypeCashFlow() {
+    return this.chartTypeCashFlow;
+  }
+
   constructor(private dashboardService: DashboardService, public dialog: MatDialog) {
     this.setDate();
 
     this.getDetailsDiv1();
     this.getDetailsDiv2();
     this.getCashFlowDetails();
-
+    this.getCashFlowChart();
   }
 
   ngOnInit() {
@@ -203,18 +220,37 @@ export class HomeComponent implements OnInit {
 
 
     this.fromdate1.setValue(toDate);
+    this.fromdate3.setValue(toDate);
   }
 
-  chosenYearHandler(normalizedYear: _moment.Moment, datepicker: MatDatepicker<_moment.Moment>, val: number) {
-    if (this.Type.value == "y") {
+  chosenYearHandler(normalizedYear: _moment.Moment, datepicker: MatDatepicker<_moment.Moment>, val: number, form : number) {
+    
+    let type : string = "";
+
+    if(form == 1){
+      type = this.Type.value;
+    }else if (form == 2){
+      type = this.TypeCashFlow.value;
+    }
+    
+    if (type == "y") {
       switch (val) {
         case 1:
           let toDate: _moment.Moment = _moment(normalizedYear.year() + "-01-01");
-          this.fromdate1.setValue(toDate);
+          if(form == 1){
+            this.fromdate1.setValue(toDate);
+          }else if (form == 2){
+            this.fromdate3.setValue(toDate);
+          }
+          
           break;
         case 2:
           let date: _moment.Moment = _moment(normalizedYear.year() + "-12-31");
-          this.todate1.setValue(date);
+          if(form == 1){
+            this.todate1.setValue(date);
+          }else if (form == 2){
+            this.todate3.setValue(date);
+          }
           break;
 
         default:
@@ -224,25 +260,45 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  chosenMonthHandler(normlizedMonth: _moment.Moment, datepicker: MatDatepicker<_moment.Moment>, val: number) {
+  chosenMonthHandler(normlizedMonth: _moment.Moment, datepicker: MatDatepicker<_moment.Moment>, val: number, form : number) {
+    
+    let type : string = "";
+
+    if(form == 1){
+      type = this.Type.value;
+    }else if (form == 2){
+      type = this.TypeCashFlow.value;
+    }
+    
+    
     switch (val) {
       case 1:
         let toMonth: number = normlizedMonth.month() + 1;
         let toDate: _moment.Moment = _moment(normlizedMonth.year() + "-" + toMonth + "-01");
-        this.fromdate1.setValue(toDate);
+        if(form == 1){
+          this.fromdate1.setValue(toDate);
+        }else if (form == 2){
+          this.fromdate3.setValue(toDate);
+        }
+        
         break;
       case 2:
         let fromMonth: number = normlizedMonth.month() + 1;
         let lastDate = normlizedMonth.daysInMonth();
         let fromDate: _moment.Moment = _moment(normlizedMonth.year() + "-" + fromMonth + "-" + lastDate);
-        this.todate1.setValue(fromDate);
+        if(form == 1){
+          this.todate1.setValue(fromDate);
+        } else if (form == 2){
+          this.todate3.setValue(fromDate);
+        }
+        
         break;
       default:
         break;
     }
 
 
-    if (this.Type.value == "m") {
+    if (type == "m") {
       datepicker.close();
     }
   }
@@ -300,6 +356,94 @@ export class HomeComponent implements OnInit {
     }, error => {
       this.loading1 = false;
     });
+  }
+
+  getCashFlowChart(){
+
+    let from = this.fromdate3.value;
+    let to = this.todate3.value;
+    let type = this.typeCashFlow.value;
+
+    let fromDate: Date = new Date(from);
+    let toDate: Date = new Date(to);
+
+    if (type == "m") {
+      let difference: number = toDate.getMonth() - fromDate.getMonth() + (12 * (toDate.getFullYear() - fromDate.getFullYear()));
+
+      if (difference > 11) {
+        alert("Maximum Month Difference must be 12");
+        return;
+      }
+      if (difference < 0) {
+        alert("Error .");
+        return;
+      }
+
+    }
+
+    if (type == "y") {
+      let difference: number = toDate.getFullYear() - fromDate.getFullYear();
+
+      if (difference > 11) {
+        alert("Maximum Year Difference must be 12");
+        return;
+      }
+
+      if (difference < 0) {
+        alert("Error");
+        return;
+      }
+    }
+
+    if (type == "d") {
+      const _MS_PER_DAY = 1000 * 60 * 60 * 24;
+      const utc1 = Date.UTC(fromDate.getFullYear(), fromDate.getMonth(), fromDate.getDate());
+      const utc2 = Date.UTC(toDate.getFullYear(), toDate.getMonth(), toDate.getDate());
+      let difference: number = Math.floor((utc2 - utc1) / _MS_PER_DAY);
+      if (difference > 30) {
+        alert("Maximum Date Difference must be 14");
+        return;
+      }
+      if (difference < 0) {
+        alert("Error");
+        return;
+      }
+    }
+
+    this.loading5 = true;
+    this.dashboardService.dateVsPayMode(from, to, type).subscribe(response => {
+      this.loading5 = false
+      var data : string = "[";
+
+      response.json().forEach(element => {
+        data += "{";
+        data += "\"name\" : \"" + element.name +"\",";
+        data += "\"series\" : [";
+
+        for (let i in element.series){
+          data += "{"
+          data += "\"name\" : \"" + element.series[i].name +"\",";
+          data += "\"value\" : " + element.series[i].value;
+          data += "},"
+        }
+
+        data = data.substr(0, data.length - 1);
+        data += "]";
+        data += "},";
+        
+        console.log(element);
+      });
+      data = data.substr(0, data.length - 1);
+      data += "]";
+
+      console.log(data);
+
+      this.cashFlow = JSON.parse(data);
+
+      console.log(this.gridChartValues);
+
+    });
+
   }
 
   getDetailsDiv2() {
@@ -363,13 +507,12 @@ export class HomeComponent implements OnInit {
       response.json().forEach(element => {
         this.gridChartValues.push(element);
       });
+
+      console.log(this.gridChartValues);
     }, error => {
       this.loading2 = false;
     });
-
-
-
-    console.log(this.gridChartValues);
+  
   }
 
   getDetails(type: string) {
