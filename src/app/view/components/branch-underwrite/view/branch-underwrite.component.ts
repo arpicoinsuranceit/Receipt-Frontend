@@ -475,7 +475,7 @@ export class BranchUnderwriteComponent implements OnInit {
     }
 
     encodeURIComponent(JSON.stringify(data));
-    window.open("http://10.10.10.120:8084/Insurance?data=" + encodeURIComponent(JSON.stringify(data)), "_blank");
+    window.open("http://localhost:4200?data=" + encodeURIComponent(JSON.stringify(data)), "_blank");
   }
 
   loadQuotationDetails() {
@@ -743,7 +743,7 @@ export class BranchUnderwriteComponent implements OnInit {
     this._mainlife._MDob = this.branchUWInsureForm.get("dateOfBirth").value;
     this._mainlife._MEmail = this.branchUWInsureForm.get("email").value;
     this._mainlife._MGender = this.branchUWInsureForm.get("gender").value;
-    this._mainlife._MMobile = this.branchUWInsureForm.get("mobileInsured").value;
+    this._mainlife._MMobile = "0"+this.branchUWInsureForm.get("mobileInsured").value;
     this._mainlife._MName = this.branchUWInsureForm.get("fullNameInsured").value;
     this._mainlife._MNic = this.branchUWInsureForm.get("nicInsured").value;
     this._mainlife._MOccupation = occup.OccupationCode;
@@ -1163,10 +1163,10 @@ export class BranchUnderwriteComponent implements OnInit {
           this.alert("Oopz...", "Error occour", "error");
         }
 
-      }, async error => {
+      }, error => {
         console.log("error");
         this.loading8 = false;
-        this.alert("Oopz...", "Error occour", "error");
+        this.alert("Oopz...", error , "error");
       });
 
     } else {
@@ -1224,6 +1224,7 @@ export class BranchUnderwriteComponent implements OnInit {
     this.childrenArray = new Array();
     this.sheduleArray = new Array();
     this.isLinear = true;
+    this.spouseActive = false;
   }
 
   alert(title: string, message: string, type: string) {
