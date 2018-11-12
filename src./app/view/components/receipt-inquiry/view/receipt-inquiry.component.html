@@ -1,0 +1,329 @@
+<div class="container" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+    <div fxFlex="100%">
+      <mat-card class="main-card" style="height: auto;">
+  
+        <mat-card-header>
+          <mat-card-title>
+            <h3>RECEIPT INQUIRY</h3>
+          </mat-card-title>
+        </mat-card-header>
+  
+        <mat-card-content>
+          <mat-horizontal-stepper [linear]="true" #stepper>
+            <mat-step [stepControl]="firstFormGroup">
+                <form [formGroup]="firstFormGroup">
+                    <mat-card>
+                      <mat-card-content  style="max-height: 400px;overflow-x: auto;">
+                        <ng-template matStepLabel>RECEIPT DETAILS</ng-template>
+
+                        <div fxFlex="100%" style="margin-bottom: 10px;max-height: 400px;overflow-x: auto;"  >
+                           
+                        <div [hidden]="!loadingRcptDet" class="loader">
+                          <h5>Loading...</h5>
+                          <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                        </div>
+
+                          <div class="mat-elevation-z8" [ngClass]="{'disabled': loadingRcptDet == true}">
+                                <mat-form-field>
+                                  <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search From Any Field">
+                                </mat-form-field>           
+                                <mat-table [dataSource]="datasourceReceiptDetails">
+                              
+                                  <ng-container matColumnDef="canDate">
+                                    <mat-header-cell *matHeaderCellDef> Can. Date</mat-header-cell>
+                                    <mat-cell *matCellDef="let element"> {{element.canDate}} </mat-cell>
+                                  </ng-container>
+                              
+                                  <ng-container matColumnDef="doccod">
+                                    <mat-header-cell *matHeaderCellDef> Doc Code </mat-header-cell>
+                                    <mat-cell *matCellDef="let element"> {{element.doccod}} </mat-cell>
+                                  </ng-container>
+                              
+                                  <ng-container matColumnDef="docnum">
+                                    <mat-header-cell *matHeaderCellDef> Doc No </mat-header-cell>
+                                    <mat-cell *matCellDef="let element"> {{element.docnum}} </mat-cell>
+                                  </ng-container>
+                              
+                                  <ng-container matColumnDef="credat">
+                                    <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
+                                    <mat-cell *matCellDef="let element"> {{element.credat}} </mat-cell>
+                                  </ng-container>
+
+                                  <ng-container matColumnDef="topprm">
+                                    <mat-header-cell *matHeaderCellDef> Amount </mat-header-cell>
+                                    <mat-cell *matCellDef="let element"> {{element.topprm}} </mat-cell>
+                                  </ng-container>
+                              
+                                  <ng-container matColumnDef="paymod">
+                                    <mat-header-cell *matHeaderCellDef> Pay Mode </mat-header-cell>
+                                    <mat-cell *matCellDef="let element"> {{element.paymod}} </mat-cell>
+                                  </ng-container>
+                              
+                                  <ng-container matColumnDef="chqNo">
+                                    <mat-header-cell *matHeaderCellDef> Chq. No </mat-header-cell>
+                                    <mat-cell *matCellDef="let element"> {{element.chqNo}} </mat-cell>
+                                  </ng-container>
+                              
+                                  <ng-container matColumnDef="chqrel">
+                                    <mat-header-cell *matHeaderCellDef> Realized </mat-header-cell>
+                                    <mat-cell *matCellDef="let element"> {{element.chqrel}} </mat-cell>
+                                  </ng-container>
+
+                                  <ng-container matColumnDef="pprnum">
+                                    <mat-header-cell *matHeaderCellDef> Proposal No </mat-header-cell>
+                                    <mat-cell *matCellDef="let element"> {{element.pprnum}} </mat-cell>
+                                  </ng-container>
+                              
+                                  <ng-container matColumnDef="polnum">
+                                    <mat-header-cell *matHeaderCellDef> Policy No </mat-header-cell>
+                                    <mat-cell *matCellDef="let element"> {{element.polnum}} </mat-cell>
+                                  </ng-container>
+                              
+                                  <ng-container matColumnDef="name">
+                                    <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                                    <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+                                  </ng-container>
+                              
+                                  <ng-container matColumnDef="user">
+                                    <mat-header-cell *matHeaderCellDef> User </mat-header-cell>
+                                    <mat-cell *matCellDef="let element"> {{element.user}} </mat-cell>
+                                  </ng-container>
+                              
+                                  <mat-header-row *matHeaderRowDef="displayedColumnsReceiptDetails"></mat-header-row>
+                                  <mat-row *matRowDef="let row; columns: displayedColumnsReceiptDetails;" (dblclick)="loadData(row)"></mat-row>
+                                </mat-table>
+                              
+                              </div>
+                        </div>
+                      </mat-card-content>
+                      <mat-card-actions style="border-top: solid #C4C4C4 1px; display: flex; 
+                                                justify-content: space-between;">
+                        <mat-paginator [pageSizeOptions]="[5, 10, 25 , 50, 100]" (page)="loadNextData();" showFirstLastButtons></mat-paginator>
+
+                        <button mat-raised-button matStepperNext matTooltip="Go to Bank Details " color="primary" style="float: right;margin-top: 10px;">Next</button>
+                      </mat-card-actions>
+                    </mat-card>
+                </form>
+            </mat-step>
+
+            <mat-step [stepControl]="secondFormGroup">
+                <form [formGroup]="secondFormGroup">
+                    <mat-card>
+                      <mat-card-content  style="max-height: 400px;overflow-x: auto;">
+                        <ng-template matStepLabel>BANK DETAILS</ng-template>
+                        <div [hidden]="!loadingBankDet" class="loader">
+                          <h5>Loading...</h5>
+                          <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                        </div>
+
+                        <div fxFlex="100%" style="margin-bottom: 10px;max-height: 400px;overflow-x: auto;" [ngClass]="{'disabled': loadingBankDet == true}">
+                          <div class="mat-elevation-z8">
+                            <table>
+                              <tr style="height: 20px;">
+                                <th style="width: 20%;text-align: left;">Instrument Type</th>
+                                <td style="width: 20%;">: {{bankDetails.InsType}}</td>
+
+                                <td style="width: 20%;"></td>
+
+                                <th style="width: 20%;text-align: left;">Collection Bank</th>
+                                <td style="width: 20%;">: {{bankDetails.ColBank}}</td>
+                              </tr>
+
+                              <tr style="height: 20px;">
+                                <th style="width: 20%;text-align: left;">Instrument No</th>
+                                <td style="width: 20%;">: {{bankDetails.InsNo}}</td>
+
+                                <td style="width: 20%;"></td>
+
+                                <th style="width: 20%;text-align: left;">Branch Code</th>
+                                <td style="width: 20%;">: {{bankDetails.BranchCode}}</td>
+                              </tr>
+
+                              <tr style="height: 20px;">
+                                <th style="width: 20%;text-align: left;">Instrument Date</th>
+                                <td style="width: 20%;">: {{bankDetails.InsDate}}</td>
+
+                                <td style="width: 20%;"></td>
+
+                                <th style="width: 20%;text-align: left;">Amount</th>
+                                <td style="width: 20%;">: {{bankDetails.Amount}}</td>
+                              </tr>
+
+                              <tr style="height: 20px;">
+                                <th style="width: 20%;text-align: left;">Status</th>
+                                <td >: {{bankDetails.Status}}</td>
+                              </tr>
+                              <tr style="height: 20px;">
+                                <th style="width: 20%;text-align: left;">Remarks</th>
+                                <td >: {{bankDetails.Remarks}}</td>
+                              </tr>
+                            </table>
+                          </div>
+                        </div>
+                      </mat-card-content>
+                      <mat-card-actions style="border-top: solid #C4C4C4 1px; display: flex; 
+                                                justify-content: space-between;">
+                        <button mat-raised-button matStepperPrevious matTooltip="Go to Receipt Details  " color="warn" style="margin-top: 10px;">Back</button>
+
+                        <button mat-raised-button matStepperNext matTooltip="Go to Policy Details " color="primary" style="float: right;margin-top: 10px;">Next</button>
+                      </mat-card-actions>
+                    </mat-card>
+                </form>
+            </mat-step>
+
+            <mat-step [stepControl]="thirdFormGroup">
+                <form [formGroup]="secondFormGroup">
+                    <mat-card>
+                      <mat-card-content  style="max-height: 400px;overflow-x: auto;">
+                        <ng-template matStepLabel>POLICY DETAILS</ng-template>
+                        <div [hidden]="!loadingPolDet" class="loader">
+                          <h5>Loading...</h5>
+                          <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                        </div>
+                        <div fxFlex="100%" style="margin-bottom: 10px;max-height: 400px;overflow-x: auto;" [ngClass]="{'disabled': loadingPolDet == true}">
+                            <div class="mat-elevation-z8">
+                                <mat-table [dataSource]="policyDetailsArray">
+                              
+                                  <ng-container matColumnDef="polnum">
+                                    <mat-header-cell *matHeaderCellDef> Policy No. </mat-header-cell>
+                                    <mat-cell *matCellDef="let element"> {{element.polnum}} </mat-cell>
+                                  </ng-container>
+                              
+                                  <ng-container matColumnDef="pprnum">
+                                    <mat-header-cell *matHeaderCellDef> Proposal No. </mat-header-cell>
+                                    <mat-cell *matCellDef="let element"> {{element.pprnum}} </mat-cell>
+                                  </ng-container>
+                              
+                                  <ng-container matColumnDef="polType">
+                                    <mat-header-cell *matHeaderCellDef> Policy Type </mat-header-cell>
+                                    <mat-cell *matCellDef="let element"> {{element.polType}} </mat-cell>
+                                  </ng-container>
+                              
+                                  <ng-container matColumnDef="status">
+                                    <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+                                    <mat-cell *matCellDef="let element"> {{element.status}} </mat-cell>
+                                  </ng-container>
+
+                                  <ng-container matColumnDef="comDate">
+                                    <mat-header-cell *matHeaderCellDef> Com.Date </mat-header-cell>
+                                    <mat-cell *matCellDef="let element"> {{element.comDate}} </mat-cell>
+                                  </ng-container>
+                              
+                                  <ng-container matColumnDef="insMonth">
+                                    <mat-header-cell *matHeaderCellDef> Ins.Month </mat-header-cell>
+                                    <mat-cell *matCellDef="let element"> {{element.insMonth}} </mat-cell>
+                                  </ng-container>
+                              
+                                  <ng-container matColumnDef="date">
+                                    <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
+                                    <mat-cell *matCellDef="let element"> {{element.date}} </mat-cell>
+                                  </ng-container>
+                              
+                                  <ng-container matColumnDef="amount">
+                                    <mat-header-cell *matHeaderCellDef> Amount </mat-header-cell>
+                                    <mat-cell *matCellDef="let element"> {{element.amount}} </mat-cell>
+                                  </ng-container>
+                              
+                                  <mat-header-row *matHeaderRowDef="displayedColumnsPolicyDetails"></mat-header-row>
+                                  <mat-row *matRowDef="let row; columns: displayedColumnsPolicyDetails;"></mat-row>
+                                </mat-table>
+                              
+                              </div>
+                        </div>
+                      </mat-card-content>
+                      <mat-card-actions style="border-top: solid #C4C4C4 1px; display: flex; 
+                                                justify-content: space-between;">
+                        <button mat-raised-button matStepperPrevious matTooltip="Go to Bank Details  " color="warn" style="margin-top: 10px;">Back</button>
+
+                        <button mat-raised-button matStepperNext matTooltip="Go to Payment Details " color="primary" style="float: right;margin-top: 10px;">Next</button>
+                      </mat-card-actions>
+                    </mat-card>
+                </form>
+                
+            </mat-step>
+
+            <mat-step [stepControl]="thirdFormGroup">
+                <form [formGroup]="secondFormGroup">
+                    <mat-card>
+                      <mat-card-content  style="max-height: 380px;overflow-x: auto;">
+                        <ng-template matStepLabel>PAYMENT DETAILS</ng-template>
+                        <div fxFlex="100%" style="margin-bottom: 10px;max-height: 430px;overflow-x: auto;">
+                            <div class="mat-elevation-z8">
+                              
+                            </div>
+                        </div>
+                      </mat-card-content>
+                      <mat-card-actions style="border-top: solid #C4C4C4 1px; display: flex; 
+                                                justify-content: space-between;">
+                        <button mat-raised-button matStepperPrevious matTooltip="Go to Policy Details  " color="warn" style="margin-top: 10px;">Back</button>
+
+                        <button mat-raised-button matStepperNext matTooltip="Go to Account Details " color="primary" style="float: right;margin-top: 10px;">Next</button>
+                      </mat-card-actions>
+                    </mat-card>
+                </form>
+                
+            </mat-step>
+
+            <mat-step [stepControl]="thirdFormGroup">
+                <form [formGroup]="secondFormGroup">
+                    <mat-card>
+                      <mat-card-content  style="max-height: 400px;overflow-x: auto;">
+                        <ng-template matStepLabel>ACCOUNT DETAILS</ng-template>
+                        <div [hidden]="!loadingAccDet" class="loader">
+                          <h5>Loading...</h5>
+                          <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                        </div>
+                        <div fxFlex="100%" style="margin-bottom: 10px;max-height: 400px;overflow-x: auto;" [ngClass]="{'disabled': loadingAccDet == true}">
+                            <div class="mat-elevation-z8">
+                                
+                                <mat-table [dataSource]="accountDetailsArray">
+
+                                  <ng-container matColumnDef="branch">
+                                    <mat-header-cell *matHeaderCellDef> Branch </mat-header-cell>
+                                    <mat-cell *matCellDef="let element"> {{element.branch}} </mat-cell>
+                                  </ng-container>
+                              
+                                  <ng-container matColumnDef="accNO">
+                                    <mat-header-cell *matHeaderCellDef> Account No </mat-header-cell>
+                                    <mat-cell *matCellDef="let element"> {{element.accNO}} </mat-cell>
+                                  </ng-container>
+                              
+                                  <ng-container matColumnDef="description">
+                                    <mat-header-cell *matHeaderCellDef> Description </mat-header-cell>
+                                    <mat-cell *matCellDef="let element"> {{element.description}} </mat-cell>
+                                  </ng-container>
+                              
+                                  <ng-container matColumnDef="dr">
+                                    <mat-header-cell *matHeaderCellDef> Dr </mat-header-cell>
+                                    <mat-cell *matCellDef="let element"> {{element.dr}} </mat-cell>
+                                  </ng-container>
+
+                                  <ng-container matColumnDef="cr">
+                                    <mat-header-cell *matHeaderCellDef> Cr </mat-header-cell>
+                                    <mat-cell *matCellDef="let element"> {{element.cr}} </mat-cell>
+                                  </ng-container>
+                              
+                                  <mat-header-row *matHeaderRowDef="displayedColumnsAccountDetails"></mat-header-row>
+                                  <mat-row *matRowDef="let row; columns: displayedColumnsAccountDetails;"></mat-row>
+                                </mat-table>
+                              
+                              </div>
+                        </div>
+                      </mat-card-content>
+                      <mat-card-actions style="border-top: solid #C4C4C4 1px; display: flex; 
+                                                justify-content: space-between;">
+                        <button mat-raised-button matStepperPrevious matTooltip="Go to Payment Details  " color="warn" style="margin-top: 10px;">Back</button>
+                      </mat-card-actions>
+                    </mat-card>
+                </form>
+                
+            </mat-step>
+
+          </mat-horizontal-stepper>
+        </mat-card-content>
+  
+      </mat-card>
+  
+    </div>
+  
+  </div>

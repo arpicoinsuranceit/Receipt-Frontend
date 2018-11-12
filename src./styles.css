@@ -1,0 +1,72 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import '~material-design-icons/iconfont/material-icons.css';
+@import '@fortawesome/fontawesome-free/css/all.min.css';
+
+body {
+    background: #F5F5F5;
+    margin: 0px;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.voffset-5{
+    margin-top: 5px;
+}
+.voffset-10{
+    margin-top: 10px;
+}
+
+.container {
+    min-height: 100%;
+    width: 100%;
+}
+
+.main-card{
+    margin: 10px;
+}
+
+.small-card{
+    margin: 10px ;
+}
+
+
+mat-card-header{
+    border-bottom: solid 1px #F5F5F5
+
+}
+.error-div{
+    display: flex;  
+    height: 20px;         
+    flex-direction: column;  
+    justify-content: center; 
+    align-items: center; 
+    background: #ffd3d3;
+    width: 100%;
+}
+
+
+
+
+  /* width */
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}

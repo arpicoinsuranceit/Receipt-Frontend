@@ -1,0 +1,35 @@
+<h2 mat-dialog-title style="text-align: center;border-bottom:solid #C4C4C4 1px">{{title}}</h2>
+<mat-dialog-content align="center" style="min-width: 500px; max-height: 400px; overflow: auto;">
+
+  <mat-table #table [dataSource]="rowData" style="height: 258px;">
+    <ng-container matColumnDef="doccod">
+      <mat-header-cell *matHeaderCellDef> Doc Code </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.doccod}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="docnum">
+      <mat-header-cell *matHeaderCellDef> Doc No </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.docnum}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="credat">
+      <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.credat}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="remark">
+      <mat-header-cell *matHeaderCellDef> Remark</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.remark}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="amount">
+      <mat-header-cell *matHeaderCellDef style="display: flex;
+      justify-content: flex-end"> Amount </mat-header-cell>
+      <mat-cell *matCellDef="let element" style="display: flex;
+      justify-content: flex-end"> {{element.amount | number: '.2'}} </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+
+
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+  <button mat-button mat-dialog-close style="background: #77B43F; color: white">Ok</button>
+</mat-dialog-actions>

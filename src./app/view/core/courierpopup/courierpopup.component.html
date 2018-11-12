@@ -1,0 +1,124 @@
+<h2 mat-dialog-title style="text-align: center;border-bottom:solid #C4C4C4 1px;background-color: #37479F;">{{title}}</h2>
+<mat-dialog-content align="center" style="min-width: 600px; max-height: 400px; overflow: auto;">
+  <div *ngIf="popupData.courierStatus == 'BRANCH' ">
+    <div style="text-align: left;">
+      <label>COURIER TOKEN : </label>
+      <label>{{popupData.courierRef}}</label>
+    </div>
+    <div *ngFor="let dep of popupData.departmentHelperDtos">
+      <h3 style="text-align: left;">{{dep.depName | uppercase}}</h3>
+      <div *ngFor="let subdep of dep.subDepartmentHelperDtos" style="margin-left: 20px;">
+        <h5 style="text-align: left;"> * {{subdep.sudDepName | uppercase}}</h5>
+  
+        <mat-table #table [dataSource]="subdep.subDepartmentDocumentCourierDtos" >
+          <ng-container matColumnDef="referenceNo">
+            <mat-header-cell *matHeaderCellDef > Reference No</mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.referenceNo}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="documentType">
+            <mat-header-cell *matHeaderCellDef> Document Type</mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.documentType}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="createDate">
+            <mat-header-cell *matHeaderCellDef> Create Date </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.createDate | date: 'dd/MM/yyyy'}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="subDepDocCouToken">
+            <mat-header-cell *matHeaderCellDef> Token </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.subDepDocCouToken}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="remark">
+            <mat-header-cell *matHeaderCellDef> Remark </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.remark}} </mat-cell>
+          </ng-container>
+          
+          
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+      </div>
+    </div>
+  </div>
+  
+  <div *ngIf="popupData.courierStatus != 'BRANCH' ">
+    <div style="text-align: left;">
+      <label>COURIER TOKEN : </label>
+      <label>{{popupData.courierRef}}</label>
+
+      <label>COURIER STATUS : </label>
+      <label>{{popupData.courierStatus}}</label>
+
+    </div>
+    <div *ngFor="let dep of popupData.departmentHelperDtos">
+      <h3 style="text-align: left;">{{dep.depName | uppercase}}</h3>
+
+      <table>
+        <tr>
+          <th style="text-align: left;">Department Courier Status</th>
+          <td>:</td>
+          <td>{{dep.depCouStatus}}</td>
+        </tr>
+        <tr>
+          <th style="text-align: left;">Department Courier Rcvd Date</th>
+          <td>:</td>
+          <td>{{dep.rcvdBy}}</td>
+        </tr>
+        <tr>
+          <th style="text-align: left;">Department Courier Rcvd By</th>
+          <td>:</td>
+          <td>{{dep.rcvdDate}}</td>
+        </tr>
+      </table>
+
+      <div *ngFor="let subdep of dep.subDepartmentHelperDtos" style="margin-left: 20px;">
+        <h5 style="text-align: left;"> * {{subdep.sudDepName | uppercase}}</h5>
+  
+        <mat-table #table [dataSource]="subdep.subDepartmentDocumentCourierDtos" >
+          <ng-container matColumnDef="referenceNo">
+            <mat-header-cell *matHeaderCellDef > Reference No</mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.referenceNo}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="documentType">
+            <mat-header-cell *matHeaderCellDef> Document Type</mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.documentType}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="createDate">
+            <mat-header-cell *matHeaderCellDef> Create Date </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.createDate | date: 'dd/MM/yyyy'}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="subDepDocCouToken">
+            <mat-header-cell *matHeaderCellDef> Token </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.subDepDocCouToken}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="remark">
+            <mat-header-cell *matHeaderCellDef> Remark </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.remark}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="status">
+            <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.status}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="rcvdBy">
+            <mat-header-cell *matHeaderCellDef> Rcvd By </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.rcvdBy}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="rcvdDate">
+            <mat-header-cell *matHeaderCellDef> Rcvd Date </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.rcvdDate}} </mat-cell>
+          </ng-container>
+          
+          
+          <mat-header-row *matHeaderRowDef="displayedColumns2"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns2;"></mat-row>
+        </mat-table>
+      </div>
+    </div>
+  </div>
+
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+  <button mat-button mat-dialog-close style="background: #37479F; color: white">Ok</button>
+</mat-dialog-actions>

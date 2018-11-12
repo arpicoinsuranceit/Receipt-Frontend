@@ -1,0 +1,61 @@
+<div [hidden]="!loading" class="loader">
+  <h5>Sign In....</h5>
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+<div class="container">
+
+  <mat-card class="login-card">
+    <mat-card-header>
+      <mat-card-title>
+        <img mat-carad-image src="assets/images/logo.png" alt="ARPICO INSURANCE">
+        <h2>Sign in </h2>
+      </mat-card-title>
+      <mat-card-subtitle class="login-card-sub">with your Arpico Insurance Account</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content class="voffset-5">
+      <form class="login-form" [formGroup]="loginForm">
+        <mat-form-field class="full-width" *ngIf="loginResponse.IsExpired == false">
+          <input matInput formControlName="userName" placeholder="User Name">
+          <mat-error *ngIf="userName.touched && userName.invalid && userName.errors.required">
+            Username is
+            <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+          <input matInput formControlName="password" type="password" placeholder="Password">
+          <mat-error *ngIf="password.touched && password.invalid && password.errors.required">
+            Password is
+            <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="full-width" *ngIf="loginResponse.IsExpired == true">
+          <input matInput formControlName="newPassword" type="password" placeholder="New Password">
+        </mat-form-field>
+
+        <mat-form-field class="full-width" *ngIf="loginResponse.IsExpired == true">
+          <input matInput formControlName="newPasswordConfirm" type="password" placeholder="Confirm Password">
+          <mat-error *ngIf="newPasswordConfirm.touched && newPassword != newPasswordConfirm">
+            Password not Matched
+          </mat-error>
+        </mat-form-field>
+      </form>
+
+      <div class="error-div" *ngIf="loginResponse.IsLogin == false">
+        <p>Invalied User</p>
+      </div>
+      <div class="error-div" *ngIf="loginResponse.IsLock == true">
+        <p>Your Account has been Locked</p>
+      </div>
+
+
+    </mat-card-content>
+    <mat-card-footer>
+      <button *ngIf="loginResponse.IsExpired == false" mat-raised-button color="primary" (click)="singin()">Sign in</button>
+      <button *ngIf="loginResponse.IsExpired == true" mat-raised-button color="primary" (click)="changePassword()">Change
+        Password</button>
+    </mat-card-footer>
+  </mat-card>
+</div>

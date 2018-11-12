@@ -1,0 +1,272 @@
+<div [hidden]="!loading_saving" class="loader">
+    <h5>Saving...</h5>
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+
+<div [ngClass]="{'disabled': loading_saving == true}" class="container" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
+    fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+
+    <div fxFlex="50%">
+        <mat-card class="main-card" style="height: 741px;">
+
+            <mat-card-header>
+                <mat-card-title>
+                    <h3>Policy Receipt</h3>
+                </mat-card-title>
+            </mat-card-header>
+
+            <mat-card-content>
+
+                <div [hidden]="!loading_form" class="loader">
+                    <h5>Loading...</h5>
+                    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                </div>
+                <div [ngClass]="{'disabled': loading_form == true}">
+                    <form class="quotation-receipt-form" [formGroup]="receiptForm">
+                        <mat-form-field>
+                            <input matInput placeholder="Policy No. *" aria-label="Policy No." [matAutocomplete]="propNumbers" formControlName="propNo"
+                                (keyup)="LoadPolicies($event)" (blur)="getPolicyDetails(propNumbers)">
+                            <mat-autocomplete #propNumbers="matAutocomplete">
+
+                                <mat-option *ngFor="let policy of filteredPolicies | async" [value]="policy.PolicyCombine">
+                                    <span> {{ policy.PolicyId }} </span> |
+                                    <small> {{ policy.PolicyDetailId }} </small>
+                                </mat-option>
+
+                            </mat-autocomplete>
+                            <mat-error *ngIf="PropNo.hasError('incorrect')">
+                                Policy Number is
+                                <strong>INCORRECT</strong>
+                            </mat-error>
+                        </mat-form-field>
+                        <br>
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="Bank Code *" aria-label="Bank Code" [matAutocomplete]="bank" formControlName="bankCode">
+                            <mat-autocomplete #bank="matAutocomplete">
+                                <mat-option *ngFor="let bank of filteredBanks | async" [value]="bank.BankCode">
+                                    <span> {{ bank.BankName }} </span> |
+                                    <small> {{ bank.BankCode }} </small>
+                                </mat-option>
+
+                            </mat-autocomplete>
+                            <mat-error *ngIf="BankCode.hasError('required')">
+                                Bank is
+                                <strong>REQUIRED</strong>
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="Remark" aria-label="Remark" formControlName="remark">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-select placeholder="Payment Mode" aria-label="Payment Mode" formControlName="paymode">
+                                <mat-option value="CS">
+                                    CASH
+                                </mat-option>
+                                <mat-option value="CQ">
+                                    CHEQUE
+                                </mat-option>
+                                <mat-option value="CR">
+                                    CREDIT CARD
+                                </mat-option>
+                                <mat-option value="DD">
+                                    DIRECT DEPOSIT
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="PayMode.hasError('required')">
+                                Pay Mode is
+                                <strong>REQUIRED</strong>
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-card *ngIf="PayMode.value == 'CQ'" style="margin-bottom: 10px;">
+                            <mat-form-field class="half-width">
+                                <input type="number" matInput placeholder="Cheque No" aria-label="Cheque No" formControlName="chequeno">
+                            </mat-form-field>
+                            <mat-form-field>
+                                <input matInput [matDatepicker]="picker" placeholder="Cheque Date" formControlName="chequedate">
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                            </mat-form-field>
+                            <mat-form-field class="full-width">
+                                <input matInput type="number" placeholder="Bank" aria-label="Bank" formControlName="chequebank">
+                            </mat-form-field>
+                        </mat-card>
+                        <mat-card *ngIf="PayMode.value == 'CR'" style="margin-bottom: 10px;">
+                            <mat-form-field class="half-width">
+                                <input matInput placeholder="Credit Transfer No" aria-label="Credit Transfer No" formControlName="credittransferno">
+                            </mat-form-field>
+                        </mat-card>
+
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="Amount" type="number" aria-label="Amount" class="right-align" formControlName="amount" (blur)="convertAmountToWord()">
+                            <span matPrefix>Rs.</span>
+                            <span matSuffix>.00</span>
+                            <mat-error *ngIf="Amount.hasError('required')">
+                                Amount is
+                                <strong>REQUIRED</strong>
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="Amount in Word" disabled aria-label="Amount in Word" formControlName="amountInWord">
+                        </mat-form-field>
+
+
+
+                    </form>
+                </div>
+            </mat-card-content>
+
+            <mat-card-actions style="border-top: solid #C4C4C4 1px; display: flex; 
+          justify-content: space-between;">
+                <button mat-raised-button color="warn" (click)="newReceipt()">CLEAR</button>
+                <button mat-raised-button color="primary" (click)="saveReceipt()">SAVE</button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+    <div fxFlex="50%">
+        <mat-card class="main-card" style="height: 425px;">
+            <mat-card-header>
+                <mat-card-title>
+                    <h3>Basic Policy Details</h3>
+                </mat-card-title>
+            </mat-card-header>
+
+            <mat-card-content class="flex_box voffset-10">
+                <div [hidden]="!loading_details" class="loader">
+                    <h5>Loading...</h5>
+                    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                </div>
+                <div [ngClass]="{'disabled2': loading_details == true}">
+                    <table style="width: 100%; ">
+                        <tr>
+                            <td style="width: 30%;">Policy ID</td>
+                            <td style="width: 5%;"> :</td>
+                            <td style="width: 65%;">{{basicDetail.Id}}</td>
+                        </tr>
+                        <tr>
+                            <td>Sequence No</td>
+                            <td> :</td>
+                            <td>{{basicDetail.SeqNo}}</td>
+                        </tr>
+                        <tr>
+                            <td>Customer Name</td>
+                            <td> :</td>
+                            <td>{{basicDetail.CustTitle}} {{basicDetail.CustomerName}}</td>
+                        </tr>
+                        <tr>
+                            <td>Agent Code</td>
+                            <td> :</td>
+                            <td>{{basicDetail.AgentCode}}</td>
+                        </tr>
+                        <tr>
+                            <td>Product</td>
+                            <td> :</td>
+                            <td>{{basicDetail.ProductCode}} {{basicDetail.ProductName}}</td>
+                        </tr>
+                        <tr>
+                            <td>Premium</td>
+                            <td> :</td>
+                            <td>Rs. {{basicDetail.Premium | number: '.2'}}</td>
+                        </tr>
+                        <tr>
+                            <td>Payble Amount</td>
+                            <td> :</td>
+                            <td>Rs. {{basicDetail.PayAmount | number: '.2'}}</td>
+                        </tr>
+
+                    </table>
+
+                    <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+                        <div fxFlex="50%">
+                            <mat-card class="small-card" style="background: #d6fcec">
+                                <mat-card-header style="border-color: palegreen">
+                                    <mat-card-title>Receipt No : {{lastReceipt[0].Docnum}}</mat-card-title>
+                                    <mat-card-subtitle>{{lastReceipt[0].Credat}}</mat-card-subtitle>
+                                </mat-card-header>
+                                <mat-card-content>
+                                    <h3 style="width: 100%; text-align: right">Rs. {{lastReceipt[0].Topprm | number: '.2'}}</h3>
+                                    <div style="display: flex;  justify-content: space-between;">
+                                        <p style="text-align: Left">
+                                            <span>{{lastReceipt[0].Doccod}}</span>
+                                        </p>
+                                        <p style="text-align: right">Mode :
+                                            <span>{{lastReceipt[0].Paymod}}</span>
+                                        </p>
+                                    </div>
+
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+                        <div fxFlex="50%">
+                            <mat-card class="small-card" style="background: #d6fcec">
+                                <mat-card-header style="border-color: palegreen">
+                                    <mat-card-title>Receipt No : {{lastReceipt[1].Docnum}}</mat-card-title>
+                                    <mat-card-subtitle>{{lastReceipt[1].Credat}}</mat-card-subtitle>
+                                </mat-card-header>
+                                <mat-card-content>
+                                    <h3 style="width: 100%; text-align: right">Rs. {{lastReceipt[1].Topprm | number: '.2'}}</h3>
+                                    <div style="display: flex;  justify-content: space-between;">
+                                        <p style="text-align: Left">
+                                            <span>{{lastReceipt[1].Doccod}}</span>
+                                        </p>
+                                        <p style="text-align: right">Mode :
+                                            <span>{{lastReceipt[1].Paymod}}</span>
+                                        </p>
+                                    </div>
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card class="main-card" style="height: 258px;">
+
+            <div [hidden]="!loading_table" class="loader">
+                <h5>Loading...</h5>
+                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+            </div>
+            <div [ngClass]="{'disabled2': loading_table == true}">
+
+                <mat-table #table [dataSource]="data" style="height: 258px;">
+                    <ng-container matColumnDef="doccod">
+                        <mat-header-cell *matHeaderCellDef> Type </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.Doccod}} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="docnum">
+                        <mat-header-cell *matHeaderCellDef> Receipt No </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.Docnum}} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="credat">
+                        <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.Credat}} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="pprnum">
+                        <mat-header-cell *matHeaderCellDef style="display: flex; justify-content: flex-end;"> Proposal No </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="display: flex; justify-content: flex-end;"> {{element.Pprnum}} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="polnum">
+                        <mat-header-cell *matHeaderCellDef style="display: flex; justify-content: flex-end;"> Policy No </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="display: flex; justify-content: flex-end;"> {{element.Polnum}} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="topprm">
+                        <mat-header-cell *matHeaderCellDef style="display: flex; justify-content: flex-end;"> Amount </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="display: flex; justify-content: flex-end;"> {{element.Topprm | number: '.2'}} </mat-cell>
+                    </ng-container>
+
+
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                </mat-table>
+
+            </div>
+        </mat-card>
+
+    </div>
+</div>

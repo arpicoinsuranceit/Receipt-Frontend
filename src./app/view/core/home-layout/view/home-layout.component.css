@@ -1,0 +1,33 @@
+.container {
+    height: 100vh;
+    width: 100%;
+  }
+  
+  .sidenav-content {
+    height: 100%;
+  }
+  
+  .sidenav {
+    width: 230px;
+    border-right: solid 2px #3F51B5;
+  }
+
+  .nav-header-title-image, .nav-header{
+    width: 180px;
+  }
+
+  .nav-header{
+    height: 120px;
+  }
+
+  .nav-header-title-image{
+    padding: 0;
+  }
+
+  .button {
+    padding: 0 14px;
+  }
+  
+  .spacer {
+    flex: 1 1 auto;
+  }

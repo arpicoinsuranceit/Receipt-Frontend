@@ -1,0 +1,144 @@
+<div [hidden]="!loading_saving" class="loader">
+  <h5>Saving...</h5>
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+<div [ngClass]="{'disabled': loading_saving == true}" class="container" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+  <div fxFlex="30%">
+    <mat-card class="main-card" style="height: 500px;">
+
+      <mat-card-header>
+        <mat-card-title>
+          <h3>Receipt Cancelation</h3>
+        </mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content>
+          <div [hidden]="!loading_form" class="loader">
+              <h5>Loading...</h5>
+              <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+          </div>
+          <div [ngClass]="{'disabled': loading_form == true}">
+            <form [formGroup]="receiptCancelationForm">
+                <mat-form-field>
+                    <input matInput placeholder="Receipt No. *" aria-label="Receipt No." [matAutocomplete]="receiptNumbers" formControlName="receiptNo"
+                        (keyup)="LoadReceipts($event)">
+                    <mat-autocomplete #receiptNumbers="matAutocomplete">
+
+                        <mat-option *ngFor="let receipts of filteredReceipts | async" [value]="receipts">
+                            <span> {{ receipts }} </span>
+                        </mat-option>
+
+                    </mat-autocomplete>
+                </mat-form-field> <br>
+
+                <mat-form-field>
+                  <textarea matInput placeholder="Reason" formControlName="reason"></textarea>
+                </mat-form-field> <br>
+
+            </form>
+          </div>
+      </mat-card-content>
+
+      <mat-card-actions style="border-top: solid #C4C4C4 1px; display: flex; 
+        justify-content: space-between;">
+          <button mat-raised-button color="warn" (click)="clearForm()" >CLEAR</button>
+          <button mat-raised-button color="primary" (click)="saveRequest()">SEND</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <div fxFlex="70%">
+        
+    <mat-card class="main-card" style="height: 220px;">
+        <div [hidden]="!loading_table" class="loader">
+            <h5>Loading...</h5>
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        </div>
+
+        <mat-card-header>
+            <mat-card-title>
+                <h3>Pending Request</h3>
+            </mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content style="max-height: 190px;overflow-x: auto;">
+          <div [ngClass]="{'disabled2': loading_table == true}">
+              <mat-table [dataSource]="datasourcePendingRequest">
+                  <ng-container matColumnDef="receiptNo" >
+                      <mat-header-cell *matHeaderCellDef style="flex: 0 0 30%;"> Receipt Number </mat-header-cell>
+                      <mat-cell *matCellDef="let element" style="flex: 0 0 30%;"> {{element.ReceiptNo}} </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="docCode">
+                      <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Doc Code </mat-header-cell>
+                      <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.DocCode}} </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="amount">
+                      <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;"> Amount </mat-header-cell>
+                      <mat-cell *matCellDef="let element" style="flex: 0 0 20%;"> {{element.Amount | number: '.2'}} </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="status">
+                      <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> Status </mat-header-cell>
+                      <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.Status}} </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="requestDate">
+                      <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> Request Date </mat-header-cell>
+                      <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.RequestDate | date: 'dd/MM/yyyy'}} </mat-cell>
+                  </ng-container>
+                  
+
+                  <mat-header-row *matHeaderRowDef="displayedColumnsRequest"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: displayedColumnsRequest;"></mat-row>
+              </mat-table>
+          </div>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card class="main-card" style="height: 220px;">
+        <div [hidden]="!loading_table2" class="loader">
+            <h5>Loading...</h5>
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        </div>
+
+        <mat-card-header>
+            <mat-card-title>
+                <h3>Canceled Request</h3>
+            </mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content style="max-height: 190px;overflow-x: auto;">
+          <div [ngClass]="{'disabled2': loading_table2 == true}">
+              <mat-table [dataSource]="datasourceCanceledRequest">
+                <ng-container matColumnDef="receiptNo" >
+                  <mat-header-cell *matHeaderCellDef style="flex: 0 0 30%;"> Receipt Number </mat-header-cell>
+                  <mat-cell *matCellDef="let element" style="flex: 0 0 30%;"> {{element.ReceiptNo}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="docCode">
+                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Doc Code </mat-header-cell>
+                    <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.DocCode}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="amount">
+                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;"> Amount </mat-header-cell>
+                    <mat-cell *matCellDef="let element" style="flex: 0 0 20%;"> {{element.Amount | number: '.2'}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="status">
+                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> Status </mat-header-cell>
+                    <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.Status}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="requestDate">
+                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> Request Date </mat-header-cell>
+                    <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.RequestDate | date: 'dd/MM/yyyy'}} </mat-cell>
+                </ng-container>
+                  
+
+                  <mat-header-row *matHeaderRowDef="displayedColumnsRequest"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: displayedColumnsRequest;"></mat-row>
+              </mat-table>
+          </div>
+        </mat-card-content>
+    </mat-card>
+
+</div>
+
+</div>
