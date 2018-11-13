@@ -94,7 +94,7 @@ export class ProposalReceiptComponent implements OnInit {
   get Credittransferno() {
     return this.quoReceiptForm.get("credittransferno");
   }
-  constructor(private commonService: CommonService, private proposalReceiptService: ProposalReceiptService, public dialog: MatDialog, private blobService : BlobService) {
+  constructor(private commonService: CommonService, private proposalReceiptService: ProposalReceiptService, public dialog: MatDialog, private blobService: BlobService) {
 
     for (var i = 0; i < 2; i++) {
       this.lastReceipt.push(new LastReceipt("...", "...", "...", "...", "...", 0.00, "...", "..."));
@@ -138,6 +138,7 @@ export class ProposalReceiptComponent implements OnInit {
           startWith(''),
           map(bank => this.filterBanks(bank))
         );
+      this.BankCode.setValue(response.json()[0].bankCode);
     }, error => {
       this.alert("Oopz...", "Error occour at Bank Loading", "error");
       document.onkeydown = function (e) { return true; }
@@ -156,40 +157,37 @@ export class ProposalReceiptComponent implements OnInit {
   }
 
   LoadProposals(event) {
-    if (this.PropNo.value.length == 3 && event.key != "Enter" && event.key != "ArrowUp"
-      && event.key != "ArrowDown" && event.key != "ArrowLeft" && event.key != "ArrowRight" &&
-      event.key != "Tab" && event.key != "Enter" && event.key != "Backspace") {
-      if (this.PropNo.value.length == 3) {
-        this.proposalList = new Array();
-        this.loading_form = true;
-        document.onkeydown = function (e) { return false; }
-        this.proposalReceiptService.loadProposal(this.PropNo.value).subscribe(response => {
-          document.onkeydown = function (e) { return true; }
-          this.loading_form = false;
-          console.log(response.json());
-          for (let i in response.json()) {
-            let propTemp = response.json()[i];
-            let proposalModel: ProposalModel = new ProposalModel();
-            proposalModel.ProposalDetailId = propTemp.seqNo;
-            proposalModel.ProposalId = propTemp.proposalNo;
-            proposalModel.ProposalCombine = propTemp.proposalNo + " | " + propTemp.seqNo;
+    if (this.PropNo.value.length >= 3 && event.key == "Enter") {
+      this.proposalList = new Array();
+      this.loading_form = true;
+      document.onkeydown = function (e) { return false; }
+      this.proposalReceiptService.loadProposal(this.PropNo.value).subscribe(response => {
+        document.onkeydown = function (e) { return true; }
+        this.loading_form = false;
+        console.log(response.json());
+        for (let i in response.json()) {
+          let propTemp = response.json()[i];
+          let proposalModel: ProposalModel = new ProposalModel();
+          proposalModel.ProposalDetailId = propTemp.seqNo;
+          proposalModel.ProposalId = propTemp.proposalNo;
+          proposalModel.ProposalCombine = propTemp.proposalNo + " | " + propTemp.seqNo;
 
-            this.proposalList.push(proposalModel);
-          }
+          this.proposalList.push(proposalModel);
+        }
 
-          console.log(this.proposalList);
-          this.filteredProposals = this.PropNo.valueChanges
-            .pipe(
-              startWith(''),
-              map(proposal => this.filterProposal(proposal))
-            );
-        }, error => {
-          this.alert("Oopz...", "Error at load Proposals", "error");
-          document.onkeydown = function (e) { return true; }
-          this.loading_form = false;
-        });
+        console.log(this.proposalList);
+        this.filteredProposals = this.PropNo.valueChanges
+          .pipe(
+            startWith(''),
+            map(proposal => this.filterProposal(proposal))
+          );
+      }, error => {
+        this.alert("Oopz...", "Error at load Proposals", "error");
+        document.onkeydown = function (e) { return true; }
+        this.loading_form = false;
+      });
 
-      }
+
     }
   }
 
@@ -356,6 +354,10 @@ export class ProposalReceiptComponent implements OnInit {
     this.Chequeno.reset();
     this.Credittransferno.reset();
     this.Remark.reset();
+    this.lastReceipt = new Array();
+    let d : LastReceipt = new LastReceipt("...", "...", "...", "...", "...", 0.00, "...", "...");
+    this.lastReceipt.push(d);
+    this.lastReceipt.push(d);
   }
 
   alert(title: string, message: string, type: string) {

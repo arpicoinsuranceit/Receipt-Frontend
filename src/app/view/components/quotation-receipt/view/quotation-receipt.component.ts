@@ -112,7 +112,7 @@ export class QuotationReceiptComponent implements OnInit {
     return this.quoReceiptForm.get("credittransferno");
   }
 
-  constructor(private commonService: CommonService, private quotationReceiptService: QuotationReceiptService, public dialog: MatDialog, private blobService : BlobService) {
+  constructor(private commonService: CommonService, private quotationReceiptService: QuotationReceiptService, public dialog: MatDialog, private blobService: BlobService) {
 
   }
 
@@ -155,6 +155,7 @@ export class QuotationReceiptComponent implements OnInit {
           startWith(''),
           map(bank => this.filterBanks(bank))
         );
+      this.BankCode.setValue(response.json()[0].bankCode);
     }, error => {
       this.loading_form = false;
       document.onkeydown = function (e) { return true; }
@@ -202,9 +203,7 @@ export class QuotationReceiptComponent implements OnInit {
 
   LoadQuotations(event) {
     console.log(event.key);
-    if (this.QuoNo.value.length == 3 && event.key != "Enter" && event.key != "ArrowUp"
-      && event.key != "ArrowDown" && event.key != "ArrowLeft" && event.key != "ArrowRight" &&
-      event.key != "Tab" && event.key != "Enter" && event.key != "Backspace") {
+    if (this.QuoNo.value.length >= 3 && event.key == "Enter") {
       this.quotationList = new Array();
       this.loading_form = true;
       document.onkeydown = function (e) { return false; }
@@ -263,7 +262,7 @@ export class QuotationReceiptComponent implements OnInit {
   getQuoDetails(e: any) {
     let quoNoTemp: string = this.QuoNo.value;
     if (!e.isOpen) {
-      
+
       let quoNo = quoNoTemp.split("|")[0];
       let seqNo = quoNoTemp.split("|")[1];
 
@@ -271,11 +270,11 @@ export class QuotationReceiptComponent implements OnInit {
       console.log(seqNo);
 
       if (quoNo != null && quoNo != undefined && quoNo.length != 0 &&
-        seqNo != null && seqNo != undefined && seqNo.length != 0 ) {
-          this.loading_details = true;
+        seqNo != null && seqNo != undefined && seqNo.length != 0) {
+        this.loading_details = true;
         this.quotationReceiptService.getQuoDetails(quoNo.trim(), seqNo.trim()).subscribe(response => {
           this.loading_details = false;
-          try{
+          try {
             this.basicDetail.AgentCode = response.json().agentCode;
             this.basicDetail.CustomerName = response.json().customerName;
             this.basicDetail.CustTitle = response.json().custTitle;
@@ -286,19 +285,19 @@ export class QuotationReceiptComponent implements OnInit {
             this.basicDetail.BranchCode = response.json().branchCode;
             this.basicDetail.Polfee = response.json().polfeePremium;
             this.basicDetail.Premium = response.json().premium;
-  
+
             this.Amount.setValue(this.basicDetail.Polfee);
             this.convertAmountToWord();
-  
+
             this.AgentCode.setValue(this.basicDetail.AgentCode);
-  
+
             let isAgentCode: number = parseInt(this.basicDetail.AgentCode);
-  
+
             this.pickAgent = isNaN(isAgentCode) ? true : false;
           } catch {
             this.alert("Oopz...", "Error occour, Check Quotation Number and Sequence Number", "error");
           }
-         
+
 
         }, error => {
           this.alert("Oopz...", "Error occour, Check Quotation Number and Sequence Number", "error");
@@ -404,7 +403,7 @@ export class QuotationReceiptComponent implements OnInit {
       } else {
         this.alert("Oopz...", "Error occour at saving receipt", "error");
       }
-    },  error => {
+    }, error => {
       this.alert("Oopz...", "Error occour at saving receipt", "error");
     });
   }

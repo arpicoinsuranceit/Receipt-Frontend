@@ -106,7 +106,7 @@ export class PolicyReceiptComponent implements OnInit {
   convertAmountToWord() {
     this.commonService.convertNumberToWord(this.Amount.value).subscribe(response => {
       this.AmountInWord.setValue(response.text());
-    }, error =>{
+    }, error => {
 
     });
   }
@@ -133,6 +133,8 @@ export class PolicyReceiptComponent implements OnInit {
           startWith(''),
           map(bank => this.filterBanks(bank))
         );
+
+      this.BankCode.setValue(response.json()[0].bankCode);
     }, error => {
       this.alert("Oopz...", "Error occour at Bank Loading", "error");
       document.onkeydown = function (e) { return true; }
@@ -183,41 +185,36 @@ export class PolicyReceiptComponent implements OnInit {
 
 
   LoadPolicies(event) {
-    if (this.PropNo.value.length == 3 && event.key != "Enter" && event.key != "ArrowUp"
-      && event.key != "ArrowDown" && event.key != "ArrowLeft" && event.key != "ArrowRight" &&
-      event.key != "Tab" && event.key != "Enter" && event.key != "Backspace") {
-      if (this.PropNo.value.length == 3) {
-        this.policyList = new Array();
-        this.loading_form = true;
-        document.onkeydown = function (e) { return false; }
-        this.policyReceiptService.loadPolicies(this.PropNo.value).subscribe(response => {
-          this.loading_form = false;
-          document.onkeydown = function (e) { return true; }
-          console.log(response.json());
-          for (let i in response.json()) {
-            let propTemp = response.json()[i];
-            let policyModel: PolicyModel = new PolicyModel();
-            policyModel.PolicyId = propTemp.proposalNo;
-            policyModel.PolicyDetailId = propTemp.seqNo;
-            policyModel.PolicyCombine = propTemp.proposalNo + " | " + propTemp.seqNo;
+    console.log(this.PropNo.value.length >= 3 && event.key == "Enter");
+    if (this.PropNo.value.length >= 3 && event.key == "Enter") {
+      this.policyList = new Array();
+      this.loading_form = true;
+      document.onkeydown = function (e) { return false; }
+      this.policyReceiptService.loadPolicies(this.PropNo.value).subscribe(response => {
+        this.loading_form = false;
+        document.onkeydown = function (e) { return true; }
+        console.log(response.json());
+        for (let i in response.json()) {
+          let propTemp = response.json()[i];
+          let policyModel: PolicyModel = new PolicyModel();
+          policyModel.PolicyId = propTemp.proposalNo;
+          policyModel.PolicyDetailId = propTemp.seqNo;
+          policyModel.PolicyCombine = propTemp.proposalNo + " | " + propTemp.seqNo;
 
-            this.policyList.push(policyModel);
-          }
+          this.policyList.push(policyModel);
+        }
 
-          console.log(this.policyList);
-          this.filteredPolicies = this.PropNo.valueChanges
-            .pipe(
-              startWith(''),
-              map(policy => this.filterPolicy(policy))
-            );
-        }, errpr => {
-          this.alert("Oopz...", "Error occour at Load Policies", "error");
-          document.onkeydown = function (e) { return true; }
-          this.loading_form = false;
-        });
-      }
-
-
+        console.log(this.policyList);
+        this.filteredPolicies = this.PropNo.valueChanges
+          .pipe(
+            startWith(''),
+            map(policy => this.filterPolicy(policy))
+          );
+      }, errpr => {
+        this.alert("Oopz...", "Error occour at Load Policies", "error");
+        document.onkeydown = function (e) { return true; }
+        this.loading_form = false;
+      });
     }
   }
 
@@ -348,7 +345,7 @@ export class PolicyReceiptComponent implements OnInit {
         startWith(''),
         map(bank => this.filterBanks(bank))
       );
-    this.BankCode.reset();
+   // this.BankCode.reset();
     this.Amount.reset();
     this.AmountInWord.reset();
     this.Chequebank.reset();
@@ -356,6 +353,12 @@ export class PolicyReceiptComponent implements OnInit {
     this.Chequeno.reset();
     this.Credittransferno.reset();
     this.Remark.reset();
+    this.lastReceipt = new Array();
+
+    let d : LastReceipt = new LastReceipt("...", "...", "...", "...", "...", 0.00, "...", "...");
+    this.lastReceipt.push(d);
+    this.lastReceipt.push(d);
+    
   }
 
   alert(title: string, message: string, type: string) {
