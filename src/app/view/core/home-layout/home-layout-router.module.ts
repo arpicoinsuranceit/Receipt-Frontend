@@ -53,6 +53,10 @@ const routes: Routes = [
       {
         path: 'courierdocument',
         loadChildren : "app/view/components/courier-document/courier-document.module#CourierDocumentModule"
+      },
+      {
+        path: 'codetransfer',
+        loadChildren : "app/view/components/code-transfer/code-transfer.module#CodeTransferModule"
       }
     ]
   }

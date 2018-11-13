@@ -1,0 +1,230 @@
+<div [hidden]="!loading_saving" class="loader">
+  <h5>Saving...</h5>
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+
+<div [ngClass]="{'disabled': loading_saving == true}" class="container" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
+    fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+
+  <div fxFlex="50%">
+      <mat-card class="main-card" style="height: 600px;">
+
+          <mat-card-header>
+              <mat-card-title>
+                  <h3>Code Transfer</h3>
+              </mat-card-title>
+          </mat-card-header>
+
+          <mat-card-content>
+              <div [hidden]="!loading_form" class="loader">
+                <h5>Loading...</h5>
+                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+              </div>
+              <div [ngClass]="{'disabled': loading_form == true}">
+                <mat-tab-group>
+
+                  <mat-tab label="NEW">
+                    <form [formGroup]="propCodeTranForm" style="margin-top: 20px;">
+                      <mat-form-field class="half-width">
+                        <input matInput placeholder="Proposal No" aria-label="Proposal No"
+                            formControlName="pprNo">
+    
+                        <mat-error *ngIf="PPrNo.hasError('required')">
+                            Proposal No is
+                            <strong>REQUIRED</strong>
+                        </mat-error>
+                      </mat-form-field>
+
+                      <button mat-raised-button color="primary" (click)="addToPprTable()" style="margin-left: 10px;">ADD</button>
+
+                      <mat-card class="main-card" style="max-height: 150px;overflow-x: auto;">
+
+                        <mat-table [dataSource]="datasourceprpCodeTran">
+                            <ng-container matColumnDef="pprNum" >
+                                <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;"> Proposal No </mat-header-cell>
+                                <mat-cell *matCellDef="let element" style="flex: 0 0 20%;"> {{element.pprNum}} </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="branch">
+                                <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> Branch </mat-header-cell>
+                                <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.branch}} </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="agentCode">
+                                <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;"> Agent Code </mat-header-cell>
+                                <mat-cell *matCellDef="let element" style="flex: 0 0 20%;"> {{element.agentCode}} </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="agentName">
+                                <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;"> Agent Name </mat-header-cell>
+                                <mat-cell *matCellDef="let element" style="flex: 0 0 20%;">{{element.agentName}}</mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="designation">
+                                <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;"> Designation </mat-header-cell>
+                                <mat-cell *matCellDef="let element" style="flex: 0 0 20%;"> {{element.designation}} </mat-cell>
+                            </ng-container>
+
+                            <mat-header-row *matHeaderRowDef="displayedColumnsCodeTran; sticky: true"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: displayedColumnsCodeTran;"></mat-row>
+                        </mat-table>
+                      </mat-card>
+
+                      <mat-form-field  class="full-width">
+                        <textarea  matInput placeholder="Reason" formControlName="reason"></textarea>
+
+                        <mat-error *ngIf="Reason.hasError('required')">
+                            Reason is
+                            <strong>REQUIRED</strong>
+                        </mat-error>
+                      </mat-form-field> <br>
+
+                      <mat-form-field class="full-width">
+                          <mat-select placeholder="Agent Code" aria-label="Agent Code" formControlName="agentCode">
+                              <mat-option *ngFor="let agent of agentCodeArray" [value]="agent.agentCode">
+                                  <span> {{ agent.agentCode }} </span>
+                              </mat-option>
+                          </mat-select>
+
+                          <mat-error *ngIf="AgentCode.hasError('required')">
+                              Agent Code is
+                              <strong>REQUIRED</strong>
+                          </mat-error>
+                      </mat-form-field>
+    
+                    </form>
+
+                    <div style="border-top: solid #C4C4C4 1px; display: flex; justify-content: space-between;">
+                        <button mat-raised-button color="warn" style="margin-top: 20px;" (click)="clearProp()">CLEAR</button>
+                        <button mat-raised-button color="primary" style="margin-top: 20px;" (click)="savePropCodeTransfer()">SAVE</button>       
+                    </div>
+
+                  </mat-tab>
+
+                  <mat-tab label="OLD"> 
+                      <form [formGroup]="polCodeTranForm" style="margin-top: 20px;">
+                          <mat-form-field class="half-width">
+                            <input matInput placeholder="Policy No" aria-label="Policy No"
+                                formControlName="polNo">
+        
+                            <mat-error *ngIf="PolNo.hasError('required')">
+                                Policy No is
+                                <strong>REQUIRED</strong>
+                            </mat-error>
+                          </mat-form-field>
+    
+                          <button mat-raised-button color="primary" (click)="addToPolTable()" style="margin-left: 10px;">ADD</button>
+    
+                          <mat-card class="main-card" style="max-height: 150px;overflow-x: auto;">
+    
+                            <mat-table [dataSource]="datasourcepolCodeTran">
+                                <ng-container matColumnDef="pprNum" >
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;"> Proposal No </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 20%;"> {{element.pprNum}} </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="branch">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> Branch </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.branch}} </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="agentCode">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;"> Agent Code </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 20%;"> {{element.agentCode}} </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="agentName">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;"> Agent Name </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 20%;">{{element.agentName}}</mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="designation">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;"> Designation </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 20%;"> {{element.designation}} </mat-cell>
+                                </ng-container>
+    
+                                <mat-header-row *matHeaderRowDef="displayedColumnsCodeTran; sticky: true"></mat-header-row>
+                                <mat-row *matRowDef="let row; columns: displayedColumnsCodeTran;"></mat-row>
+                            </mat-table>
+                          </mat-card>
+    
+                          <mat-form-field  class="full-width">
+                            <textarea  matInput placeholder="Reason" formControlName="reasonPol"></textarea>
+
+                            <mat-error *ngIf="ReasonPol.hasError('required')">
+                                Reason is
+                                <strong>REQUIRED</strong>
+                            </mat-error>
+                          </mat-form-field> <br>
+
+                          <mat-form-field class="full-width">
+                              <mat-select placeholder="Agent Code" aria-label="Agent Code" formControlName="agentCodePol">
+                                  <mat-option *ngFor="let agent of agentCodeArray" [value]="agent.agentCode">
+                                      <span> {{ agent.agentCode }} </span>
+                                  </mat-option>
+                              </mat-select>
+    
+                              <mat-error *ngIf="AgentCodePol.hasError('required')">
+                                  Agent Code is
+                                  <strong>REQUIRED</strong>
+                              </mat-error>
+                          </mat-form-field>
+        
+                        </form>
+                        
+                        <div style="border-top: solid #C4C4C4 1px; display: flex; justify-content: space-between;">
+                            <button mat-raised-button color="warn" style="margin-top: 20px;" (click)="clearPol()">CLEAR</button>
+                            <button mat-raised-button color="primary" style="margin-top: 20px;" (click)="savePolCodeTransfer()">SAVE</button>       
+                        </div>
+                  </mat-tab>
+
+                </mat-tab-group>
+                
+              </div>
+          </mat-card-content>
+
+          <!-- <mat-card-actions style="border-top: solid #C4C4C4 1px; display: flex; justify-content: space-between;">
+            <button mat-raised-button color="warn" >CLEAR</button>
+            <button mat-raised-button color="primary" (click)="saveCourierOrder()">SAVE</button>
+          </mat-card-actions> -->
+      </mat-card>
+  </div>
+
+  <div fxFlex="50%">
+      <mat-card class="main-card" style="height: 580px;">
+          <div [hidden]="!loading_table" class="loader">
+              <h5>Loading...</h5>
+              <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+          </div>
+
+          <mat-card-header>
+              <mat-card-title>
+                  <h3>Pending Code Transfer </h3>
+              </mat-card-title>
+          </mat-card-header>
+
+          <div [ngClass]="{'disabled2': loading_table == true}">
+              <mat-table [dataSource]="datasourceCourier">
+                  <ng-container matColumnDef="token" >
+                      <mat-header-cell *matHeaderCellDef style="flex: 0 0 40%;"> Courier Number </mat-header-cell>
+                      <mat-cell *matCellDef="let element" style="flex: 0 0 40%;"> {{element.Token}} </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="createDate">
+                      <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> Create Date </mat-header-cell>
+                      <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.CreateDate | date: 'dd/MM/yyyy'}} </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="status">
+                      <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> Status </mat-header-cell>
+                      <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.CourierStatus}} </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="modifyBy">
+                      <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> </mat-header-cell>
+                      <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> <button mat-raised-button color="primary" (click)="courierpopup('Courier Details',element)">VIEW</button> </mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="modifyDate">
+                      <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> </mat-header-cell>
+                      <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> <button mat-raised-button color="warn" (click)="sendCourier(element)">SEND</button> </mat-cell>
+                  </ng-container>
+                  
+
+                  <mat-header-row *matHeaderRowDef="displayedColumnsCourier; sticky: true"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: displayedColumnsCourier;"></mat-row>
+              </mat-table>
+          </div>
+      </mat-card>
+  </div>
+
+</div>
