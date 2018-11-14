@@ -30,11 +30,7 @@ export class AuthService {
     urlSearchParams.append('password', password);
     urlSearchParams.append('subSbu', "1");
 
-<<<<<<< HEAD
-    return this.http.post("http://10.10.10.120:8084/UserManagement/login/", urlSearchParams)
-=======
     return this.http.post("http://localhost:8086/UserManagement/login/", urlSearchParams)
->>>>>>> origin/feature-code-transfer
 
     //return this.loginResponse;
   }
@@ -46,11 +42,7 @@ export class AuthService {
     urlSearchParams.append('password', password);
     urlSearchParams.append('newPassword', newPassword);
     urlSearchParams.append('confirmNewPassword', confirmNewPassword);
-<<<<<<< HEAD
     return this.http.post("http://10.10.10.120:8084/UserManagement/changePassword/", urlSearchParams);
-=======
-    return this.http.post("http://localhost:8086/UserManagement/changePassword/", urlSearchParams);
->>>>>>> origin/feature-code-transfer
   }
 
   logout() {
