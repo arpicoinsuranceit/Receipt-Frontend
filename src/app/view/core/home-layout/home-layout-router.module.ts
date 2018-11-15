@@ -53,6 +53,10 @@ const routes: Routes = [
       {
         path: 'courierdocument',
         loadChildren : "app/view/components/courier-document/courier-document.module#CourierDocumentModule"
+      },
+      {
+        path: 'workflow',
+        loadChildren : "app/view/components/workflow/workflow.module#WorkflowModule"
       }
     ]
   }

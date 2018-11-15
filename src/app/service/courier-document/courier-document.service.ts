@@ -12,35 +12,35 @@ export class CourierDocumentService {
   constructor(private http:Http) { }
 
   getBranches(token:string){
-    return this.http.get("http://10.10.10.120:8084/Receipt/courier/branch/"+token);
+    return this.http.get("http://localhost:8088/courier/branch/"+token);
   }
 
   getRefTypes(){
-    return this.http.get("http://10.10.10.120:8084/Receipt/courier/reftype");
+    return this.http.get("http://localhost:8088/courier/reftype");
   }
 
   getDepartments(){
-    return this.http.get("http://10.10.10.120:8084/Receipt/courier/department");
+    return this.http.get("http://localhost:8088/courier/department");
   }
 
   getSubDepartments(depId:number){
-    return this.http.get("http://10.10.10.120:8084/Receipt/courier/subdepartment/"+depId);
+    return this.http.get("http://localhost:8088/courier/subdepartment/"+depId);
   }
 
   getSubDepartmentsDocuments(subDepId:number){
-    return this.http.get("http://10.10.10.120:8084/Receipt/courier/subdepartmentdocument/"+subDepId);
+    return this.http.get("http://localhost:8088/courier/subdepartmentdocument/"+subDepId);
   }
 
   getChildDocuments(parent:number){
-    return this.http.get("http://10.10.10.120:8084/Receipt/courier/childdocument/"+parent);
+    return this.http.get("http://localhost:8088/courier/childdocument/"+parent);
   }
 
   getCouriers(token:string){
-    return this.http.get("http://10.10.10.120:8084/Receipt/courier/branchcourier/"+token);
+    return this.http.get("http://localhost:8088/courier/branchcourier/"+token);
   }
 
   getOtherCouriers(token:string){
-    return this.http.get("http://10.10.10.120:8084/Receipt/courier/branchothercourier/"+token);
+    return this.http.get("http://localhost:8088/courier/branchothercourier/"+token);
   }
 
   saveCourierOrder(depId,subDepId,docId,refType,refNo,remark,usertoken,branch){
@@ -56,19 +56,19 @@ export class CourierDocumentService {
 
     console.log(depId + "/" + subDepId + "/" + docId + "/" + refType + "/" + refNo + "/" + remark);
 
-    return this.http.post("http://10.10.10.120:8084/Receipt/courier/save",param);
+    return this.http.post("http://localhost:8088/courier/save",param);
   }
 
   loadCourierDetails(couId:number){
-    return this.http.get("http://10.10.10.120:8084/Receipt/courier/courierdetails/"+couId);
+    return this.http.get("http://localhost:8088/courier/courierdetails/"+couId);
   }
 
   changeCourierStatus(couId:number,status:string){
-    return this.http.get("http://10.10.10.120:8084/Receipt/courier/changestatus/"+couId+"/"+status);
+    return this.http.get("http://localhost:8088/courier/changestatus/"+couId+"/"+status);
   }
 
   viewCourierOrder(token:string){
-    return this.http.get("http://10.10.10.120:8084/Receipt/courier_details/view/"+token);
+    return this.http.get("http://localhost:8088/courier_details/view/"+token);
   }
 
   
