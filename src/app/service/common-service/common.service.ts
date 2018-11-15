@@ -48,7 +48,7 @@ export class CommonService {
   }
 
   getOccupations() {
-    return this.http.get('http://10.10.10.120:8084/Quotation/occupation');
+    return this.http.get('http://localhost:8084/occupation');
   }
 
 
@@ -114,7 +114,7 @@ export class CommonService {
     }
 
     if (nic.length == 12 || nic.length == 9) {
-      return this.http.post('http://10.10.10.120:8084/Quotation/ageCalculate', nic);
+      return this.http.post('http://localhost:8084/ageCalculate', nic);
     }
 
   }

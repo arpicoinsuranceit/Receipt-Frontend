@@ -145,20 +145,26 @@
                         <td>Quotation Sequence No</td>
                         <td> :</td>
                         <td>
-                          <mat-select placeholder="Quotation Sequence" aria-label="Quotation Sequence" formControlName="quotationDetailId"
-                            [(ngModel)]="sequenceNo" (selectionChange)="loadQuotationDetails()">
+                           <mat-select placeholder="Quotation Sequence" aria-label="Quotation Sequence" formControlName="quotationDetailId"
+                            [(ngModel)]="sequenceNo" (selectionChange)="loadQuotationDetailsAfterEditQuotation()">
                             <mat-option *ngFor="let quotation of quotationSeqIdList" [value]="quotation">
                               {{ quotation }}
                             </mat-option>
                             <!-- <mat-option value="1">MR</mat-option> -->
-                          </mat-select>
+                          </mat-select> 
                         </td>
                       </tr>
                       <tr>
                         <td></td>
                         <td></td>
-                        <td><button mat-raised-button matTooltip="Load All Sequence " color="primary" style="margin-top: 10px;"
-                            (click)="loadSequnceId();">Refresh Sequence</button></td>
+                        <td>
+                          <button mat-raised-button matTooltip="Edit Quotation Sequence " color="primary" style="margin-top: 10px;"
+                          (click)="editQuotation();">Edit Quotation</button>
+                        </td>
+                        <td>
+                          <button mat-raised-button matTooltip="Latest Sequence " color="primary" style="margin-top: 10px;"
+                          (click)="loadSequnceId();">Refresh Sequence</button>
+                        </td>
                       </tr>
                     </table>
                   </div>
@@ -207,7 +213,7 @@
                             <td style="padding-right: 20px;">
                               <mat-form-field class="full-width">
                                 <input matInput placeholder="Full Name" aria-label="Full Name" formControlName="fullNameInsured"
-                                  [(uppercase)]='_Name' [(ngModel)]="_Name">
+                                  [(uppercase)]='_Name' [(ngModel)]="_Name" (blur)="setInsureInitialName()">
                               </mat-form-field>
                             </td>
                             <td>
@@ -415,8 +421,8 @@
                             </td>
                             <td>
                               <mat-radio-group class="full-width" formControlName="smoker">
-                                <mat-radio-button value="Yes" color="primary">Yes</mat-radio-button>
-                                <mat-radio-button value="No" color="primary">No</mat-radio-button>
+                                <mat-radio-button value="Y" color="primary">Yes</mat-radio-button>
+                                <mat-radio-button value="N" color="primary">No</mat-radio-button>
                               </mat-radio-group>
                             </td>
 
@@ -485,7 +491,7 @@
                             <td style="padding-right: 20px;">
                               <mat-form-field class="full-width">
                                 <input matInput placeholder="Full Name" aria-label="Full Name" formControlName="fullNameSpouse"
-                                  [(uppercase)]='_sName' [(ngModel)]="_sName">
+                                  [(uppercase)]='_sName' [(ngModel)]="_sName" (blur)="setSpouseInitialName()">
                               </mat-form-field>
                             </td>
                             <td>
@@ -629,7 +635,7 @@
 
 
                             <ng-container matColumnDef="relationship">
-                              <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Relationship </mat-header-cell>
+                              <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Relation - <br>ship </mat-header-cell>
                               <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.relationship}}
                               </mat-cell>
                             </ng-container>
@@ -658,7 +664,7 @@
                             </ng-container>
 
                             <ng-container matColumnDef="isGetHcbiOrHcbf">
-                              <mat-header-cell *matHeaderCellDef style="flex: 0 0 7%;"> HCBI/HCBF </mat-header-cell>
+                              <mat-header-cell *matHeaderCellDef style="flex: 0 0 7%;"> HCBI / <br> HCBF </mat-header-cell>
                               <mat-cell *matCellDef="let element" style="flex: 0 0 7%;"> {{element.isGetHcbiOrHcbf}}
                               </mat-cell>
                             </ng-container>
@@ -758,7 +764,7 @@
                             <td>
                               <mat-form-field class="half-width" style="width: 80%;">
                                 <input matInput placeholder="N.I.C. No" aria-label="N.I.C. No" formControlName="nicChild"
-                                  [readonly]="true" [(uppercase)]='_cNic' [(ngModel)]="_cNic">
+                                  [(uppercase)]='_cNic' [(ngModel)]="_cNic" (blur)="checkChildNic()" (keyup.enter)="checkChildNic()">
                               </mat-form-field>
                             </td>
                           </tr>
@@ -1079,10 +1085,44 @@
 
                         </mat-step>
 
+                        <mat-step [stepControl]="firstFormGroup">
+                          <ng-template matStepLabel>REQUIREMENT</ng-template>
+
+                          <mat-table [dataSource]="medicalReqArray" class="mat-elevation-z8">
+
+                            <ng-container matColumnDef="mediCode">
+                              <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> mediCode </mat-header-cell>
+                              <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.mediCode}} </mat-cell>
+                            </ng-container>
+
+
+                            <ng-container matColumnDef="mediName">
+                              <mat-header-cell *matHeaderCellDef style="flex: 0 0 40%;"> mediName </mat-header-cell>
+                              <mat-cell *matCellDef="let element" style="flex: 0 0 40%;"> {{element.mediName}} </mat-cell>
+                            </ng-container>
+
+
+                            <ng-container matColumnDef="insType">
+                              <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;"> insType </mat-header-cell>
+                              <mat-cell *matCellDef="let element" style="flex: 0 0 20%;"> {{element.insType}}
+                              </mat-cell>
+                            </ng-container>
+
+
+                            <ng-container matColumnDef="addNote">
+                              <mat-header-cell *matHeaderCellDef style="flex: 0 0 25%;"> addNote </mat-header-cell>
+                              <mat-cell *matCellDef="let element" style="flex: 0 0 25%;"> {{element.addNote}} </mat-cell>
+                            </ng-container>
+
+                            <mat-header-row *matHeaderRowDef="displayedColumnsMedicals"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: displayedColumnsMedicals;" ></mat-row>
+                          </mat-table>
+                        </mat-step>
+
                       </mat-horizontal-stepper>
 
-                      <button mat-raised-button matTooltip="Edit Quotation Sequence " color="primary" style="margin-top: 10px;"
-                        (click)="editQuotation();">Edit Quotation</button>
+                      <!-- <button mat-raised-button matTooltip="Edit Quotation Sequence " color="primary" style="margin-top: 10px;"
+                        (click)="editQuotation();">Edit Quotation</button> -->
                     </mat-card>
                   </div>
 
@@ -1132,7 +1172,7 @@
 
 
                             <ng-container matColumnDef="relationship">
-                              <mat-header-cell *matHeaderCellDef style="flex: 0 0 5%;"> RelationShip </mat-header-cell>
+                              <mat-header-cell *matHeaderCellDef style="flex: 0 0 5%;"> Relat<br>ion<br>Ship </mat-header-cell>
                               <mat-cell *matCellDef="let element" style="flex: 0 0 5%;"> {{element.relationship}}
                               </mat-cell>
                             </ng-container>
@@ -1144,7 +1184,7 @@
                             </ng-container>
 
                             <ng-container matColumnDef="dob">
-                              <mat-header-cell *matHeaderCellDef style="flex: 0 0 7%;"> Date Of Birth </mat-header-cell>
+                              <mat-header-cell *matHeaderCellDef style="flex: 0 0 7%;"> Date Of<br> Birth </mat-header-cell>
                               <mat-cell *matCellDef="let element" style="flex: 0 0 7%;"> {{element.NomineeDateofBirth}}
                               </mat-cell>
                             </ng-container>
@@ -1155,26 +1195,26 @@
                             </ng-container>
 
                             <ng-container matColumnDef="guardianName">
-                              <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;"> Guard Name
+                              <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;"> Guard<br> Name
                               </mat-header-cell>
                               <mat-cell *matCellDef="let element" style="flex: 0 0 20%;"> {{element.guardianName}}
                               </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="guardianNic">
-                              <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Guard Nic </mat-header-cell>
+                              <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Guard<br> Nic </mat-header-cell>
                               <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.guardianNic}}
                               </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="guardianDOB">
-                              <mat-header-cell *matHeaderCellDef style="flex: 0 0 7%;"> Guard DOB </mat-header-cell>
+                              <mat-header-cell *matHeaderCellDef style="flex: 0 0 7%;"> Guard <br> DOB </mat-header-cell>
                               <mat-cell *matCellDef="let element" style="flex: 0 0 7%;"> {{element.guardianDOB}}
                               </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="guardianRelation">
-                              <mat-header-cell *matHeaderCellDef style="flex: 0 0 9%;"> Guard Relation
+                              <mat-header-cell *matHeaderCellDef style="flex: 0 0 9%;"> Guard<br> Rel - <br>ation
                               </mat-header-cell>
                               <mat-cell *matCellDef="let element" style="flex: 0 0 9%;"> {{element.guardianRelation}}
                               </mat-cell>
