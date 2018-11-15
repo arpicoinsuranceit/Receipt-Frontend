@@ -27,8 +27,9 @@
                             <mat-autocomplete #propNumbers="matAutocomplete">
 
                                 <mat-option *ngFor="let proposal of filteredProposals | async" [value]="proposal.ProposalCombine">
-                                    <span> {{ proposal.ProposalId }} </span> |
-                                    <small> {{ proposal.ProposalDetailId }} </small>
+                                    <span> {{ proposal.ProposalId }} </span>
+                                     <!-- |
+                                    <small> {{ proposal.ProposalDetailId }} </small> -->
                                 </mat-option>
 
                             </mat-autocomplete>

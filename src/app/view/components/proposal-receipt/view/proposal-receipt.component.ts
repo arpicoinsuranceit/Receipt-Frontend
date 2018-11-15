@@ -170,7 +170,7 @@ export class ProposalReceiptComponent implements OnInit {
           let proposalModel: ProposalModel = new ProposalModel();
           proposalModel.ProposalDetailId = propTemp.seqNo;
           proposalModel.ProposalId = propTemp.proposalNo;
-          proposalModel.ProposalCombine = propTemp.proposalNo + " | " + propTemp.seqNo;
+          proposalModel.ProposalCombine = propTemp.proposalNo;
 
           this.proposalList.push(proposalModel);
         }
@@ -228,8 +228,14 @@ export class ProposalReceiptComponent implements OnInit {
   getProposalDetails(e: any) {
     let propNoTemp: string = this.PropNo.value;
     if (!e.isOpen) {
-      let propNo = propNoTemp.split("|")[0];
-      let seqNo = propNoTemp.split("|")[1];
+      let propNo = propNoTemp;
+      let seqNo = null;
+
+      this.proposalList.forEach(proposal => {
+        if(proposal.ProposalId == propNo){
+          seqNo = proposal.ProposalDetailId;
+        }
+      })
 
       if (propNo != null && propNo != undefined && propNo.length != 0 &&
         seqNo != null && seqNo != undefined && seqNo.length != 0) {

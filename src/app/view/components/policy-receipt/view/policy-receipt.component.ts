@@ -199,7 +199,7 @@ export class PolicyReceiptComponent implements OnInit {
           let policyModel: PolicyModel = new PolicyModel();
           policyModel.PolicyId = propTemp.proposalNo;
           policyModel.PolicyDetailId = propTemp.seqNo;
-          policyModel.PolicyCombine = propTemp.proposalNo + " | " + propTemp.seqNo;
+          policyModel.PolicyCombine = propTemp.proposalNo;
 
           this.policyList.push(policyModel);
         }
@@ -226,8 +226,14 @@ export class PolicyReceiptComponent implements OnInit {
   getPolicyDetails(e: any) {
     let polNoTemp: string = this.PropNo.value;
     if (!e.isOpen) {
-      let polNo = polNoTemp.split("|")[0];
-      let seqNo = polNoTemp.split("|")[1];
+      let polNo = polNoTemp;
+      let seqNo = null;
+
+      this.policyList.forEach(policy => {
+        if(policy.PolicyId == polNo){
+          seqNo = policy.PolicyDetailId;
+        }
+      })
 
       if (polNo != null && polNo != undefined && polNo.length != 0 &&
         seqNo != null && seqNo != undefined && seqNo.length != 0) {
