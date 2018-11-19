@@ -20,6 +20,9 @@ export class ReceiptInquiryComponent implements OnInit {
   loadingBankDet=false;
   loadingPolDet=false;
   loadingAccDet=false;
+  loading_data=false;
+
+  isLinear=true;
 
   firstFormGroup = new FormGroup({
   });
@@ -79,8 +82,8 @@ export class ReceiptInquiryComponent implements OnInit {
   }
   
   loadData(data){
-
-    this.stepper.selectedIndex = 0;
+    this.loading_data=true;
+    this.stepper.selectedIndex = 1;
     this.bankDetails=new BankDetails();
     this.policyDetailsArray=new Array();
     this.accountDetailsArray=new Array();
@@ -88,9 +91,12 @@ export class ReceiptInquiryComponent implements OnInit {
     this.loadBankDetails(data.doccod,parseInt(data.docnum));
     this.loadPolicyDetails(data.doccod,parseInt(data.docnum));
     this.loadAccountDetails(data.doccod,parseInt(data.docnum));
+
+    
   }
 
   loadPolicyDetails(docCode:string,docNum:number){
+    this.loading_data=true;
     this.loadingPolDet=true;
     this.inquiryService.loadAllPolicyDetails(docCode,docNum).subscribe(response => {
       console.log(response.json());
@@ -100,10 +106,12 @@ export class ReceiptInquiryComponent implements OnInit {
       }
       this.loadingPolDet=false;
     });
+    //this.loading_data=false;
 
   }
 
   loadAccountDetails(docCode:string,docNum:number){
+    this.loading_data=true;
     this.loadingAccDet=true;
     this.inquiryService.loadAllAccountDetails(docCode,docNum).subscribe(response => {
       console.log(response.json());
@@ -115,10 +123,11 @@ export class ReceiptInquiryComponent implements OnInit {
       this.loadingAccDet=false;
       console.log(this.accountDetailsArray);
     });
-
+    this.loading_data=false;
   }
 
   loadBankDetails(docCode:string,docNum:number){
+    this.loading_data=true;
     this.loadingBankDet=true;
     this.inquiryService.loadAllBankDetails(docCode,docNum).subscribe(response => {
       console.log(response.json());
@@ -137,6 +146,8 @@ export class ReceiptInquiryComponent implements OnInit {
       this.loadingBankDet=false;
 
     });
+
+    //this.loading_data=false;
 
   }
 
