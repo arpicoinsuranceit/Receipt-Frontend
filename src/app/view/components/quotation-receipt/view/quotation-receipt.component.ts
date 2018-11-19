@@ -404,6 +404,7 @@ export class QuotationReceiptComponent implements OnInit {
         this.alert("Oopz...", "Error occour at saving receipt", "error");
       }
     }, error => {
+      this.loading_saving = false;
       this.alert("Oopz...", "Error occour at saving receipt", "error");
     });
   }
