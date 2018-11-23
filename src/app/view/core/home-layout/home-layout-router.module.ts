@@ -53,6 +53,10 @@ const routes: Routes = [
       {
         path: 'courierdocument',
         loadChildren : "app/view/components/courier-document/courier-document.module#CourierDocumentModule"
+      },
+      {
+        path: 'loanreceipt',
+        loadChildren : "app/view/components/loan-receipt/loan-receipt.module#LoanReceiptModule"
       }
     ]
   }

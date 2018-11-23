@@ -1,0 +1,129 @@
+<div [hidden]="!loading_saving" class="loader">
+  <h5>Saving...</h5>
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+
+<div [ngClass]="{'disabled': loading_saving == true}" class="container" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
+  fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+
+  <div fxFlex="50%">
+    <mat-card class="main-card" style="height: 800px;">
+      <mat-card-header>
+        <mat-card-title>
+          <h3>Loan Receipt</h3>
+        </mat-card-title>
+      </mat-card-header>
+
+
+      <mat-card-content>
+
+        <div [hidden]="!loading_form" class="loader">
+          <h5>Loading...</h5>
+          <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        </div>
+
+        <div [ngClass]="{'disabled': loading_form == true}">
+          <form class="proposal-receipt-form" [formGroup]="receiptForm">
+            <mat-form-field>
+              <mat-select formControlName="branchCode" placeholder="Branch">
+                <mat-option *ngFor="let branch of branches" [value]="branch.Id">
+                  <span> {{ branch.Id }} </span> |
+                  <small> {{ branch.Description }} </small>
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <br>
+
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Bank Code *" aria-label="Bank Code" [matAutocomplete]="bank" formControlName="bankCode">
+              <mat-autocomplete #bank="matAutocomplete">
+                <mat-option *ngFor="let bank of filteredBanks | async" [value]="bank.BankCode">
+                  <span> {{ bank.BankName }} </span> |
+                  <small> {{ bank.BankCode }} </small>
+                </mat-option>
+              </mat-autocomplete>
+              <mat-error *ngIf="BankCode.hasError('required')">
+                Bank is
+                <strong>REQUIRED</strong>
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Agent Code *" aria-label="Agent Code" (keyup)="getAgents($event)"
+                [matAutocomplete]="agentNumbers" formControlName="agentCode">
+              <mat-autocomplete #agentNumbers="matAutocomplete">
+
+                <mat-option *ngFor="let agent of filteredAgents | async" [value]="agent.AgentCode ">
+                  <span> {{ agent.AgentCode }} </span> |
+                  <small> {{ agent.AgentName }} </small> |
+                  <small> {{ agent.Location }} </small>
+                </mat-option>
+
+              </mat-autocomplete>
+            </mat-form-field>
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Remark" aria-label="Remark" formControlName="remark">
+            </mat-form-field>
+            <mat-form-field>
+              <mat-select placeholder="Payment Mode" aria-label="Payment Mode" formControlName="paymode">
+                <mat-option value="02.CASH">
+                  CASH
+                </mat-option>
+                <mat-option value="01.CHEQUE">
+                  CHEQUE
+                </mat-option>
+                <!-- <mat-option value="CR">
+                      CREDIT CARD
+                    </mat-option>
+                    <mat-option value="DD">
+                      DIRECT DEPOSIT
+                    </mat-option> -->
+              </mat-select>
+              <mat-error *ngIf="PayMode.hasError('required')">
+                Pay Mode is
+                <strong>REQUIRED</strong>
+              </mat-error>
+            </mat-form-field>
+            <mat-card *ngIf="PayMode.value == '01.CHEQUE'" style="margin-bottom: 10px;">
+              <mat-form-field class="half-width">
+                <input matInput type="number" placeholder="Cheque No" aria-label="Cheque No" formControlName="chequeno">
+              </mat-form-field>
+              <mat-form-field>
+                <input matInput [matDatepicker]="picker" placeholder="Cheque Date" formControlName="chequedate">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+              <mat-form-field class="full-width">
+                <input matInput type="number" placeholder="Bank" aria-label="Bank" formControlName="chequebank">
+              </mat-form-field>
+            </mat-card>
+            <!-- <mat-card *ngIf="PayMode.value == 'CR'" style="margin-bottom: 10px;">
+                  <mat-form-field class="half-width">
+                    <input matInput placeholder="Credit Transfer No" aria-label="Credit Transfer No" formControlName="credittransferno">
+                  </mat-form-field>
+                </mat-card> -->
+
+            <mat-form-field class="full-width">
+              <input matInput disabled readonly placeholder="Amount" type="number" aria-label="Amount" class="right-align"
+                formControlName="amount">
+              <span matPrefix>Rs.</span>
+              <span matSuffix>.00</span>
+              <mat-error *ngIf="Amount.hasError('required')">
+                Amount is
+                <strong>REQUIRED</strong>
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Amount in Word" readonly disabled aria-label="Amount in Word"
+                formControlName="amountInWord">
+            </mat-form-field>
+
+          </form>
+        </div>
+
+
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+</div>
