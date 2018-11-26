@@ -22,6 +22,18 @@ export class BranchUnderwriteService {
     return this.http.get("http://localhost:8088/loadProposalDetails/"+pprNo+"/"+seqNo);
   }
 
+  loadProposalFamDetails(pprNo : string,seqNo : string): any {
+    console.log("-------------------");
+    console.log(pprNo + "'" + seqNo);
+    return this.http.get("http://localhost:8088/loadProposalFamDetails/"+pprNo+"/"+seqNo);
+  }
+
+  loadProposalNomDetails(pprNo : string,seqNo : string): any {
+    console.log("-------------------");
+    console.log(pprNo + "'" + seqNo);
+    return this.http.get("http://localhost:8088/loadProposalNomDetails/"+pprNo+"/"+seqNo);
+  }
+
   loadQuotationDetails(seqNo : number,qId : number): any {
     console.log("-------------------");
     console.log(seqNo + "'" + qId);
@@ -44,6 +56,12 @@ export class BranchUnderwriteService {
     console.log("-------------------");
     console.log(seqNo );
     return this.http.get("http://localhost:8088/getShedule/"+seqNo+"/"+qId);
+  }
+
+  loadMedicals(seqNo : number,qId : number): any {
+    console.log("-------------------");
+    console.log(seqNo );
+    return this.http.get("http://localhost:8088/getMedicals/"+seqNo+"/"+qId);
   }
 
   loadPensionShedule(seqNo : number,qId : number): any {

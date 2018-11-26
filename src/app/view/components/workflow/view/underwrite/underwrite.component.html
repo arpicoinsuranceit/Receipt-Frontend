@@ -57,6 +57,7 @@
       <ng-container matColumnDef="nic">
         <mat-header-cell *matHeaderCellDef> Nic </mat-header-cell>
         <mat-cell *matCellDef="let element"> {{element.nic}} </mat-cell>
+        <!-- <mat-cell *matCellDef="let element"> <button mat-raised-button color="warn" >CLEAR</button></mat-cell> -->
       </ng-container>
 
       <mat-header-row *matHeaderRowDef="displayedColumnsProposal"></mat-header-row>

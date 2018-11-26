@@ -7,7 +7,7 @@ import { MatDialogConfig, MatDialog } from '@angular/material';
 @Injectable()
 export class CommonService {
 
-  constructor(private http: Http,public dialog: MatDialog) {
+  constructor(private http: Http, public dialog: MatDialog) {
 
   }
 
@@ -31,7 +31,7 @@ export class CommonService {
     return this.http.post("http://localhost:8088/getexpences/", urlParams);
   }
 
-  getAccGL(){
+  getAccGL() {
     let token: string = sessionStorage.getItem("token");
     let urlParams = new URLSearchParams();
     urlParams.append('token', token);
@@ -50,7 +50,7 @@ export class CommonService {
   getOccupations() {
     return this.http.get('http://localhost:8084/occupation');
   }
-  
+
 
   getAgent(agentCode: any) {
     let token: string = sessionStorage.getItem("token");
@@ -67,14 +67,14 @@ export class CommonService {
     return this.http.post("http://localhost:8088/getLastReceipts/", urlParams);
   }
 
-  getLastReceiptsMiscell(){
+  getLastReceiptsMiscell() {
     let token: string = sessionStorage.getItem("token");
     let urlParams = new URLSearchParams();
     urlParams.append('token', token);
     return this.http.post("http://localhost:8088/emsdocmlast/", urlParams);
   }
 
-  getLastReceiptsMiscellGL(){
+  getLastReceiptsMiscellGL() {
     let token: string = sessionStorage.getItem("token");
     let urlParams = new URLSearchParams();
     urlParams.append('token', token);
@@ -138,5 +138,5 @@ export class CommonService {
     // });
 
   }
-  
+
 }

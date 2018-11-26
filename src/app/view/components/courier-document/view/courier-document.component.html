@@ -160,7 +160,7 @@
 
             <mat-card-header>
                 <mat-card-title>
-                    <h3>Pending Couriers</h3>
+                    <h3>Courier Bag - </h3>
                 </mat-card-title>
             </mat-card-header>
 
@@ -189,7 +189,7 @@
                     </ng-container>
                     
 
-                    <mat-header-row *matHeaderRowDef="displayedColumnsCourier"></mat-header-row>
+                    <mat-header-row *matHeaderRowDef="displayedColumnsCourier; sticky: true"></mat-header-row>
                     <mat-row *matRowDef="let row; columns: displayedColumnsCourier;"></mat-row>
                 </mat-table>
             </div>
@@ -207,35 +207,37 @@
                 </mat-card-title>
             </mat-card-header>
 
-            <div [ngClass]="{'disabled2': loading_table == true}">
-                <mat-table [dataSource]="datasourceOtherCourier">
-                    <ng-container matColumnDef="token" >
-                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 40%;"> Courier Number </mat-header-cell>
-                        <mat-cell *matCellDef="let element" style="flex: 0 0 40%;"> {{element.Token}} </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="createDate">
-                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> Create Date </mat-header-cell>
-                        <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.CreateDate | date: 'dd/MM/yyyy'}} </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="status">
-                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> Status </mat-header-cell>
-                        <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.CourierStatus}} </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="modifyBy">
-                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> </mat-header-cell>
-                        <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> <button mat-raised-button color="primary" (click)="courierpopup('Courier Details',element)">VIEW</button> </mat-cell>
-                    </ng-container>
+            <mat-card-content style="max-height: 290px;overflow-x: auto;">
+                <div [ngClass]="{'disabled2': loading_table == true}">
+                    <mat-table [dataSource]="datasourceOtherCourier">
+                        <ng-container matColumnDef="token" >
+                            <mat-header-cell *matHeaderCellDef style="flex: 0 0 40%;"> Courier Number </mat-header-cell>
+                            <mat-cell *matCellDef="let element" style="flex: 0 0 40%;"> {{element.Token}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="createDate">
+                            <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> Create Date </mat-header-cell>
+                            <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.CreateDate | date: 'dd/MM/yyyy'}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="status">
+                            <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> Status </mat-header-cell>
+                            <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.CourierStatus}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="modifyBy">
+                            <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> </mat-header-cell>
+                            <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> <button mat-raised-button color="primary" (click)="courierpopup('Courier Details',element)">VIEW</button> </mat-cell>
+                        </ng-container>
 
-                    <ng-container matColumnDef="modifyDate">
-                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> </mat-header-cell>
-                        <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> </mat-cell>
-                    </ng-container>
-                    
+                        <ng-container matColumnDef="modifyDate">
+                            <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> </mat-header-cell>
+                            <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> </mat-cell>
+                        </ng-container>
+                        
 
-                    <mat-header-row *matHeaderRowDef="displayedColumnsCourier"></mat-header-row>
-                    <mat-row *matRowDef="let row; columns: displayedColumnsCourier;"></mat-row>
-                </mat-table>
-            </div>
+                        <mat-header-row *matHeaderRowDef="displayedColumnsCourier; sticky: true"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumnsCourier;"></mat-row>
+                    </mat-table>
+                </div>
+            </mat-card-content>
         </mat-card>
 
     </div>

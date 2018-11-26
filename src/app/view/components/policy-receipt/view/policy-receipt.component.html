@@ -29,8 +29,8 @@
                             <mat-autocomplete #propNumbers="matAutocomplete">
 
                                 <mat-option *ngFor="let policy of filteredPolicies | async" [value]="policy.PolicyCombine">
-                                    <span> {{ policy.PolicyId }} </span> |
-                                    <small> {{ policy.PolicyDetailId }} </small>
+                                    <span> {{ policy.PolicyId }} </span> <!-- |
+                                    <small> {{ policy.PolicyDetailId }} </small> -->
                                 </mat-option>
 
                             </mat-autocomplete>
@@ -140,7 +140,7 @@
                 <div [ngClass]="{'disabled2': loading_details == true}">
                     <table style="width: 100%; ">
                         <tr>
-                            <td style="width: 30%;">Policy ID</td>
+                            <td style="width: 30%;">Policy No</td>
                             <td style="width: 5%;"> :</td>
                             <td style="width: 65%;">{{basicDetail.Id}}</td>
                         </tr>

@@ -1,3 +1,4 @@
+import { BranchUnderwriteService } from './../../../service/branch-underwrite/branch-underwrite.service';
 import { ShortPremiumComponent } from './view/short-premium/short-premium.component';
 import { ReceiptCancelationComponent } from './view/receipt-cancelation/receipt-cancelation.component';
 import { PermanantLapsComponent } from './view/permanant-laps/permanant-laps.component';
@@ -40,6 +41,6 @@ import { TempLapsComponent } from './view/temp-laps/temp-laps.component';
     TempLapsComponent,
     UnderwriteComponent
   ],
-  providers: []
+  providers: [BranchUnderwriteService]
 })
 export class WorkflowModule { }

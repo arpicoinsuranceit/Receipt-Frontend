@@ -10,14 +10,15 @@ export class ReceiptCancelationService {
     return this.http.get("http://localhost:8088/getReceipts/"+token+"/"+receiptNo);
   }
 
-  saveRequest(token:string,receiptNo:string,reason:string){
+  saveRequest(token:string,receiptNo:string,reason:string,doccod:string){
     console.log(receiptNo);
     let urlParams = new URLSearchParams();
     urlParams.append('receiptNo', receiptNo);
     urlParams.append('reason', reason);
     urlParams.append('token', token);
+    urlParams.append('doccod', doccod);
 
-    return this.http.get("http://localhost:8088/saveRequest/"+token+"/"+receiptNo+"/"+reason);
+    return this.http.get("http://localhost:8088/saveRequest/"+token+"/"+receiptNo+"/"+reason+"/"+doccod);
   }
 
   loadPendingRequest(token:string){

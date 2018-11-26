@@ -27,6 +27,10 @@ const routes: Routes = [
         loadChildren : "app/view/components/branch-underwrite/branch-underwrite.module#BranchUnderwriteModule"
       },
       {
+        path: 'underwrite/:propNo/:seqNo/:brnCode/:agentCode',
+        loadChildren : "app/view/components/branch-underwrite/branch-underwrite.module#BranchUnderwriteModule"
+      },
+      {
         path: 'policyreceipt',
         loadChildren : "app/view/components/policy-receipt/policy-receipt.module#PolicyReceiptModule"
       },
@@ -57,6 +61,10 @@ const routes: Routes = [
       {
         path: 'workflow',
         loadChildren : "app/view/components/workflow/workflow.module#WorkflowModule"
+      },
+      {
+        path: 'codetransfer',
+        loadChildren : "app/view/components/code-transfer/code-transfer.module#CodeTransferModule"
       }
     ]
   }
