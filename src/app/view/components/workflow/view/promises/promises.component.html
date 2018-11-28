@@ -1,71 +1,58 @@
 <mat-card class="main-card">
   <mat-card-header>
-      <mat-card-title>
-        <h3>PROMISES</h3>
-      </mat-card-title>
-    </mat-card-header>
-<mat-card-content style="max-height: 380px;overflow-x: auto;">
-  <div [hidden]="!loading1" class="loader">
-    <h5>Loading...</h5>
-    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-  </div>
+    <mat-card-title>
+      <h3>PROMISES</h3>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content style="max-height: 380px;overflow-x: auto;">
+    <div [hidden]="!loading1" class="loader">
+      <h5>Loading...</h5>
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </div>
 
-  <!-- <mat-table [dataSource]="datasourceProposal" class="mat-elevation-z8" style="padding: 20px;">
-    <ng-container matColumnDef="proposalNo">
-      <mat-header-cell *matHeaderCellDef > Proposal No </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.proposalNo}} </mat-cell>
-    </ng-container>
+    <mat-table [dataSource]="datasourcePromises" class="mat-elevation-z8" style="padding: 20px;">
+      <ng-container matColumnDef="Customer_Name">
+        <mat-header-cell *matHeaderCellDef> Customer Name </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.custName}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="Policy_No">
+        <mat-header-cell *matHeaderCellDef> Policy No </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.polNum}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="Agent_Code">
+        <mat-header-cell *matHeaderCellDef> Agent Code </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.Amount}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="Amount">
+        <mat-header-cell *matHeaderCellDef> Amount </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.Amount}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="Proposal_No">
+        <mat-header-cell *matHeaderCellDef> Proposal No </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.pprNum}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="Settle_Date">
+        <mat-header-cell *matHeaderCellDef> Settle Date </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.promiseDate}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="Settle_Button">
+        <mat-header-cell *matHeaderCellDef> </mat-header-cell>
+        <mat-cell *matCellDef="let element"> <button mat-raised-button color="primary" (click)="settlement(element)">Settled</button>
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="Add_New_Button">
+        <mat-header-cell *matHeaderCellDef> </mat-header-cell>
+        <mat-cell *matCellDef="let element"> <button mat-raised-button color="warn" (click)="addpromise(element)">Process</button>
+        </mat-cell>
+      </ng-container>
 
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;" (dblclick)="loadData(row.proposalNo,row.sequenceNo,row.policyBranch,row.agent)"></mat-row>
+    </mat-table>
 
-    <ng-container matColumnDef="sequenceNo">
-      <mat-header-cell *matHeaderCellDef> Sequence No </mat-header-cell>
-      <mat-cell *matCellDef="let element" > {{element.sequenceNo}} </mat-cell>
-    </ng-container>
-
-
-    <ng-container matColumnDef="policyNo">
-      <mat-header-cell *matHeaderCellDef> Policy No </mat-header-cell>
-      <mat-cell *matCellDef="let element" > {{element.policyNo}} </mat-cell>
-    </ng-container>
-
-
-    <ng-container matColumnDef="customer">
-      <mat-header-cell *matHeaderCellDef > Customer </mat-header-cell>
-      <mat-cell *matCellDef="let element" > {{element.customer}} </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="proposedName">
-      <mat-header-cell *matHeaderCellDef> Proposed Name </mat-header-cell>
-      <mat-cell *matCellDef="let element" > {{element.proposedName}} </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="agent">
-      <mat-header-cell *matHeaderCellDef > Agent </mat-header-cell>
-      <mat-cell *matCellDef="let element" > {{element.agent}} </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="policyBranch">
-      <mat-header-cell *matHeaderCellDef > Policy Branch </mat-header-cell>
-      <mat-cell *matCellDef="let element" > {{element.policyBranch}} </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="agentBranch">
-      <mat-header-cell *matHeaderCellDef > Agent Branch </mat-header-cell>
-      <mat-cell *matCellDef="let element" > {{element.agentBranch}} </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="nic">
-      <mat-header-cell *matHeaderCellDef> Nic </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.nic}} </mat-cell>
-    </ng-container>
-
-    <mat-header-row *matHeaderRowDef="displayedColumnsProposal"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumnsProposal;" (dblclick)="loadData(row.proposalNo,row.sequenceNo,row.policyBranch,row.agent)"></mat-row>
-  </mat-table> -->
-
-</mat-card-content>
-<mat-card-actions style="border-top: solid #C4C4C4 1px; display: flex; 
+  </mat-card-content>
+  <mat-card-actions style="border-top: solid #C4C4C4 1px; display: flex; 
                   justify-content: space-between;">
-  <mat-paginator [pageSizeOptions]="[5, 10, 25, 50, 100]" (page)="loadNextData();" showFirstLastButtons></mat-paginator>
-</mat-card-actions>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 50, 100]" (page)="loadData();" showFirstLastButtons></mat-paginator>
+  </mat-card-actions>
 </mat-card>

@@ -1,3 +1,4 @@
+import { WorkFlowService } from './../../../service/work-flow-service/work-flow.service';
 import { BranchUnderwriteService } from './../../../service/branch-underwrite/branch-underwrite.service';
 import { ShortPremiumComponent } from './view/short-premium/short-premium.component';
 import { ReceiptCancelationComponent } from './view/receipt-cancelation/receipt-cancelation.component';
@@ -17,6 +18,7 @@ import { CourierPendingComponent } from './view/courier-pending/courier-pending.
 import { PendingReqComponent } from './view/pending-req/pending-req.component';
 import { PromisesComponent } from './view/promises/promises.component';
 import { TempLapsComponent } from './view/temp-laps/temp-laps.component';
+import { SettlementPopupComponent } from './view/settlement-popup/settlement-popup.component';
 
 @NgModule({
   imports: [
@@ -25,10 +27,11 @@ import { TempLapsComponent } from './view/temp-laps/temp-laps.component';
     MatComponentsModule,
     FlexLayoutModule,
     FormsModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule
   ],
   declarations: [
     WorkflowComponent,
+    SettlementPopupComponent,
     ActiveComponent,
     CodeTransferComponent,
     CourierPendingComponent,
@@ -41,6 +44,7 @@ import { TempLapsComponent } from './view/temp-laps/temp-laps.component';
     TempLapsComponent,
     UnderwriteComponent
   ],
-  providers: [BranchUnderwriteService]
+  providers: [BranchUnderwriteService, WorkFlowService],
+  entryComponents:[SettlementPopupComponent]
 })
 export class WorkflowModule { }

@@ -2,7 +2,7 @@ export class PromisesGrid {
 
     constructor(private id?: Number, private polNum?: string, private pprNum?: string,
         private dueDate?: string, private promiseDate?: string, private phoneNum?: string, private custName?: string,
-        private custNic?: string) { }
+        private custNic?: string, private amount? : number) { }
 
     get Id() {
         return this.id;
@@ -67,6 +67,14 @@ export class PromisesGrid {
 
     set CustNic(custNic: string) {
         this.custNic = custNic;
+    }
+
+    get Amount() {
+        return this.amount;
+    }
+
+    set Amount(amount: number) {
+        this.amount = amount;
     }
 
 }
