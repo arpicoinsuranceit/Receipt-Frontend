@@ -15,11 +15,12 @@ import { HttpModule } from '@angular/http';
 import { LoginComponent } from './view/core/login/login.component';
 import { RouterModule, Routes } from '@angular/router';
 import { AlertComponent } from './view/core/alert/alert.component';
+import { ConfirmationAlertComponent } from './view/core/confirmation-alert/confirmation-alert.component';
 
 
 @NgModule({
   declarations: [
-    AppComponent, LoginComponent, AlertComponent ,CourierpopupComponent,DashboardpopupComponent
+    AppComponent, LoginComponent, AlertComponent ,CourierpopupComponent,DashboardpopupComponent,ConfirmationAlertComponent
   ],
   imports: [
     BrowserModule,
@@ -33,6 +34,6 @@ import { AlertComponent } from './view/core/alert/alert.component';
   ],
   providers: [AuthService, AuthGuard, CommonService],
   bootstrap: [AppComponent],
-  entryComponents: [AlertComponent,CourierpopupComponent, DashboardpopupComponent]
+  entryComponents: [AlertComponent,CourierpopupComponent, DashboardpopupComponent,ConfirmationAlertComponent]
 })
 export class AppModule { }
