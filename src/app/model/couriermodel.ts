@@ -1,6 +1,6 @@
 export class CourierModel{   
     constructor(private courierId?: number,private token?: string,private branchCode?: string,private courierStatus?: string,private remark?: string,private createDate?: string
-        ,private createBy?: string,private modifyDate?: string,private modifyBy?: string){}
+        ,private createBy?: string,private modifyDate?: string,private modifyBy?: string,private toBranch?:string,private receivedBy?:string,private receivedDate?:string){}
 
 
     get CourierId(){
@@ -73,6 +73,30 @@ export class CourierModel{
 
     set ModifyBy(modifyBy:string){
         this.modifyBy=modifyBy;
+    }
+
+    get ToBranch(){
+        return this.toBranch;
+    }
+
+    set ToBranch(toBranch:string){
+        this.toBranch=toBranch;
+    }
+
+    get ReceivedBy(){
+        return this.receivedBy;
+    }
+
+    set ReceivedBy(receivedBy:string){
+        this.receivedBy=receivedBy;
+    }
+
+    get ReceivedDate(){
+        return this.receivedDate;
+    }
+
+    set ReceivedDate(receivedDate:string){
+        this.receivedDate=receivedDate;
     }
 
 }

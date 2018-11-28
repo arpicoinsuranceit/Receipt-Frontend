@@ -504,7 +504,13 @@ export class BranchUnderwriteComponent implements OnInit {
   }
 
   loadQuotationDetails() {
-    
+    if(this.sequenceNo > 1000){
+      this.branchUnderwriteService.loadQuotationDetailsSeqNo(this.sequenceNo).subscribe(response => {
+        //alert(response.text());
+        this.sequenceNo=response.text();
+      });
+    }
+
     this.branchUnderwriteService.loadQuotationIdFormSeqNo(this.sequenceNo, this.quotationNo).subscribe(response => {
       //alert(response.text());
       if (response.text() != null) {

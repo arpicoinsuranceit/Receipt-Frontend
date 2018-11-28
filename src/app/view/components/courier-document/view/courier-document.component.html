@@ -7,239 +7,746 @@
     <h5>Loading...</h5>
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </div>
+<mat-tab-group>
+    <mat-tab label="SEND COURIER">
+        <div [ngClass]="{'disabled': loading_saving == true || loading_popup == true}" class="container" fxLayout="row"
+            fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+            <div fxFlex="30%">
+                <mat-card class="main-card" style="height: 580px;">
 
-<div [ngClass]="{'disabled': loading_saving == true || loading_popup == true}" class="container" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
-    fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
-    <div fxFlex="30%">
-        <mat-card class="main-card" style="height: 580px;">
+                    <mat-card-header>
+                        <mat-card-title>
+                            <h3>Courier Document</h3>
+                        </mat-card-title>
+                    </mat-card-header>
 
-            <mat-card-header>
-                <mat-card-title>
-                    <h3>Courier Document</h3>
-                </mat-card-title>
-            </mat-card-header>
+                    <mat-card-content>
+                        <div [hidden]="!loading_form" class="loader">
+                            <h5>Loading...</h5>
+                            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                        </div>
+                        <div [ngClass]="{'disabled': loading_form == true}">
+                            <form [formGroup]="courierForm">
+                                <!-- <mat-form-field class="full-width">
+                                    <input matInput placeholder="Courier No" aria-label="Courier No"
+                                        formControlName="couNo">
 
-            <mat-card-content>
-                <div [hidden]="!loading_form" class="loader">
-                    <h5>Loading...</h5>
-                    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-                </div>
-                <div [ngClass]="{'disabled': loading_form == true}">
-                    <form [formGroup]="courierForm">
-                        <!-- <mat-form-field class="full-width">
-                            <input matInput placeholder="Courier No" aria-label="Courier No"
-                                formControlName="couNo">
+                                    <mat-error *ngIf="CouNo.hasError('required')">
+                                        Courier No is
+                                        <strong>REQUIRED</strong>
+                                    </mat-error>
+                                </mat-form-field> -->
 
-                            <mat-error *ngIf="CouNo.hasError('required')">
-                                Courier No is
-                                <strong>REQUIRED</strong>
-                            </mat-error>
-                        </mat-form-field> -->
+                                <mat-form-field class="full-width">
+                                    <mat-select placeholder="Department" (selectionChange)="loadSubDepartment()"
+                                        aria-label="Department" formControlName="department">
 
-                        <mat-form-field class="full-width">
-                            <mat-select placeholder="Department" (selectionChange)="loadSubDepartment()" aria-label="Department" formControlName="department">
+                                        <mat-option *ngFor="let dep of departmentArray" [value]="dep.departmentId">
+                                            <span> {{ dep.departmentName }} </span>
+                                        </mat-option>
 
-                                <mat-option *ngFor="let dep of departmentArray" [value]="dep.departmentId">
-                                    <span> {{ dep.departmentName }} </span>
-                                </mat-option>
+                                    </mat-select>
 
-                            </mat-select>
+                                    <mat-error *ngIf="Department.hasError('required')">
+                                        Department is
+                                        <strong>REQUIRED</strong>
+                                    </mat-error>
 
-                            <mat-error *ngIf="Department.hasError('required')">
-                                Department is
-                                <strong>REQUIRED</strong>
-                            </mat-error>
+                                </mat-form-field>
 
-                        </mat-form-field>
+                                <mat-form-field class="full-width">
+                                    <mat-select placeholder="Sub Department" aria-label="Sub Department"
+                                        formControlName="subDepartment" (selectionChange)="loadDocuments()">
+                                        <mat-option *ngFor="let subdep of subDepartmentArray" [value]="subdep.subDepartmentId">
+                                            <span> {{ subdep.subDepartmentName }} </span>
+                                        </mat-option>
+                                    </mat-select>
 
-                        <mat-form-field class="full-width">
-                            <mat-select placeholder="Sub Department" aria-label="Sub Department" formControlName="subDepartment" (selectionChange)="loadDocuments()" >
-                                <mat-option *ngFor="let subdep of subDepartmentArray" [value]="subdep.subDepartmentId">
-                                    <span> {{ subdep.subDepartmentName }} </span>
-                                </mat-option>
-                            </mat-select>
+                                    <mat-error *ngIf="SubDepartment.hasError('required')">
+                                        Sub Department is
+                                        <strong>REQUIRED</strong>
+                                    </mat-error>
 
-                            <mat-error *ngIf="SubDepartment.hasError('required')">
-                                Sub Department is
-                                <strong>REQUIRED</strong>
-                            </mat-error>
+                                </mat-form-field>
 
-                        </mat-form-field>
+                                <mat-form-field class="full-width">
+                                    <mat-select placeholder="Document Type" aria-label="Document Type" formControlName="document"
+                                        (selectionChange)="loadSubDocuments()">
+                                        <mat-option *ngFor="let doc of documentTypeArray" [value]="doc.docTypeId">
+                                            <span> {{ doc.docName }} </span>
+                                        </mat-option>
+                                    </mat-select>
 
-                        <mat-form-field class="full-width">
-                            <mat-select placeholder="Document Type" aria-label="Document Type" formControlName="document" (selectionChange)="loadSubDocuments()">
-                                <mat-option *ngFor="let doc of documentTypeArray" [value]="doc.docTypeId">
-                                    <span> {{ doc.docName }} </span>
-                                </mat-option>
-                            </mat-select>
+                                    <mat-error *ngIf="Document.hasError('required')">
+                                        Document Type is
+                                        <strong>REQUIRED</strong>
+                                    </mat-error>
 
-                            <mat-error *ngIf="Document.hasError('required')">
-                                Document Type is
-                                <strong>REQUIRED</strong>
-                            </mat-error>
+                                </mat-form-field>
 
-                        </mat-form-field>
+                                <mat-form-field class="full-width" *ngIf="hasSubDoc">
+                                    <mat-select placeholder="Sub Document Type" aria-label="Sub Document Type"
+                                        formControlName="subdocument">
+                                        <mat-option *ngFor="let subdoc of subDocumentTypeArray" [value]="subdoc.docTypeId">
+                                            <span> {{ subdoc.docName }} </span>
+                                        </mat-option>
+                                    </mat-select>
 
-                        <mat-form-field class="full-width" *ngIf="hasSubDoc">
-                            <mat-select placeholder="Sub Document Type" aria-label="Sub Document Type" formControlName="subdocument">
-                                <mat-option *ngFor="let subdoc of subDocumentTypeArray" [value]="subdoc.docTypeId">
-                                    <span> {{ subdoc.docName }} </span>
-                                </mat-option>
-                            </mat-select>
+                                </mat-form-field>
 
-                        </mat-form-field>
+                                <mat-form-field class="full-width">
+                                    <mat-select placeholder="Branch" aria-label="Branch" formControlName="branch">
+                                        <mat-option *ngFor="let branch of branchArray" [value]="branch">
+                                            <span> {{ branch }} </span>
+                                        </mat-option>
+                                    </mat-select>
 
-                        <mat-form-field class="full-width">
-                            <mat-select placeholder="Branch" aria-label="Branch" formControlName="branch">
-                                <mat-option *ngFor="let branch of branchArray" [value]="branch">
-                                    <span> {{ branch }} </span>
-                                </mat-option>
-                            </mat-select>
+                                    <mat-error *ngIf="Branch.hasError('required')">
+                                        Branch is
+                                        <strong>REQUIRED</strong>
+                                    </mat-error>
 
-                            <mat-error *ngIf="Branch.hasError('required')">
-                                Branch is
-                                <strong>REQUIRED</strong>
-                            </mat-error>
+                                </mat-form-field>
 
-                        </mat-form-field>
+                                <mat-form-field class="full-width" *ngIf="!isHoUser">
+                                    <input matInput placeholder="Ref No" aria-label="Ref No" formControlName="refNo">
 
-                        <mat-form-field class="full-width">
-                            <input matInput placeholder="Ref No" aria-label="Ref No"
-                                formControlName="refNo">
+                                    <mat-error *ngIf="RefNo.hasError('required')">
+                                        Reference No is
+                                        <strong>REQUIRED</strong>
+                                    </mat-error>
+                                </mat-form-field>
+                                <br>
 
-                            <mat-error *ngIf="RefNo.hasError('required')">
-                                Reference No is
-                                <strong>REQUIRED</strong>
-                            </mat-error>
-                        </mat-form-field>
-                        <br>
+                                <mat-form-field class="full-width" *ngIf="!isHoUser">
+                                    <mat-select placeholder="Ref Type" aria-label="Ref Type" formControlName="refType">
+                                        <mat-option *ngFor="let ref of refTypeArray" [value]="ref">
+                                            <span> {{ ref }} </span>
+                                        </mat-option>
+                                    </mat-select>
 
-                        <mat-form-field class="full-width">
-                            <mat-select placeholder="Ref Type" aria-label="Ref Type" formControlName="refType">
-                                <mat-option *ngFor="let ref of refTypeArray" [value]="ref">
-                                    <span> {{ ref }} </span>
-                                </mat-option>
-                            </mat-select>
+                                    <mat-error *ngIf="RefType.hasError('required')">
+                                        Reference Type is
+                                        <strong>REQUIRED</strong>
+                                    </mat-error>
+                                </mat-form-field>
 
-                            <mat-error *ngIf="RefType.hasError('required')">
-                                Reference Type is
-                                <strong>REQUIRED</strong>
-                            </mat-error>
-                        </mat-form-field>
 
-                        
 
-                        <mat-form-field class="full-width">
-                            <input matInput placeholder="Remark" aria-label="Remark" formControlName="remark">
+                                <mat-form-field class="full-width">
+                                    <input matInput placeholder="Remark" aria-label="Remark" formControlName="remark">
 
-                            <mat-error *ngIf="Remark.hasError('required')">
-                                Remark is
-                                <strong>REQUIRED</strong>
-                            </mat-error>
+                                    <mat-error *ngIf="Remark.hasError('required')">
+                                        Remark is
+                                        <strong>REQUIRED</strong>
+                                    </mat-error>
 
-                        </mat-form-field>
+                                </mat-form-field>
 
-                    </form>
-                </div>
-            </mat-card-content>
+                            </form>
+                        </div>
+                    </mat-card-content>
 
-            <mat-card-actions style="border-top: solid #C4C4C4 1px; display: flex; 
-          justify-content: space-between;">
-                <button mat-raised-button color="warn" >CLEAR</button>
-                <button mat-raised-button color="primary" (click)="saveCourierOrder()">SAVE</button>
-            </mat-card-actions>
-        </mat-card>
-    </div>
-    <div fxFlex="70%">
-        
-        <mat-card class="main-card" style="height: 200px;">
-            <div [hidden]="!loading_table" class="loader">
-                <h5>Loading...</h5>
-                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                    <mat-card-actions style="border-top: solid #C4C4C4 1px; display: flex; 
+                justify-content: space-between;">
+                        <button mat-raised-button color="warn">CLEAR</button>
+                        <button mat-raised-button color="primary" (click)="saveCourierOrder()">SAVE</button>
+                    </mat-card-actions>
+                </mat-card>
+            </div>
+            <div fxFlex="70%">
+
+                <mat-card class="main-card" style="height: 300px;">
+                    <div [hidden]="!loading_table" class="loader">
+                        <h5>Loading...</h5>
+                        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                    </div>
+
+                    <mat-card-header>
+                        <mat-card-title>
+                            <h3>Courier Bags </h3>
+                        </mat-card-title>
+                    </mat-card-header>
+
+                    <mat-card-content style="max-height: 250px;overflow-x: auto;">
+                        <div [ngClass]="{'disabled2': loading_table == true}">
+
+                            <mat-accordion>
+                                <mat-expansion-panel *ngFor="let cou of courierArray">
+                                    <mat-expansion-panel-header>
+                                        <mat-panel-title>
+                                            Courier Token <br>
+                                            {{cou.token}}
+                                        </mat-panel-title>
+                                        <mat-panel-description>
+                                            Create Date <br>
+                                            {{cou.createDate | date: 'dd/MM/yyyy'}}
+                                        </mat-panel-description>
+                                        <mat-panel-description *ngIf="!isHoUser">
+                                            To Branch <br>
+                                            {{cou.branchCode}}
+                                        </mat-panel-description>
+                                        <mat-panel-description *ngIf="isHoUser">
+                                            To Branch <br>
+                                            {{cou.toBranch}}
+                                        </mat-panel-description>
+                                        <mat-panel-description>
+                                            <button mat-raised-button color="warn" (click)="sendCourier(cou)">SEND</button>
+                                        </mat-panel-description>
+
+                                    </mat-expansion-panel-header>
+
+                                    <!-- {{couBagDetails[cou]}} -->
+
+                                    <div *ngFor="let bag of couBagDetails">
+                                        <div style="text-align: left;" *ngIf="bag.courierId == cou.courierId">
+
+                                            <div *ngFor="let dep of bag.departmentHelperDtos">
+                                                <h3 style="text-align: left;">{{dep.depName | uppercase}}</h3>
+                                                <div *ngFor="let subdep of dep.subDepartmentHelperDtos" style="margin-left: 20px;">
+                                                    <h5 style="text-align: left;"> * {{subdep.sudDepName | uppercase}}</h5>
+
+                                                    <mat-table #table [dataSource]="subdep.subDepartmentDocumentCourierDtos">
+                                                        <ng-container matColumnDef="select">
+                                                            <mat-header-cell *matHeaderCellDef> </mat-header-cell>
+                                                            <mat-cell *matCellDef="let element">
+                                                                <mat-checkbox color="warn" (click)="$event.stopPropagation()"
+                                                                    (change)="addOrRemoveDocument(bag.courierId,element.subDepartmentDocumentCourierId);"
+                                                                    [checked]="true">
+                                                                </mat-checkbox>
+                                                            </mat-cell>
+
+                                                        </ng-container>
+                                                        <ng-container matColumnDef="referenceNo">
+                                                            <mat-header-cell *matHeaderCellDef> Reference No</mat-header-cell>
+                                                            <mat-cell *matCellDef="let element">
+                                                                {{element.referenceNo}} </mat-cell>
+                                                        </ng-container>
+                                                        <ng-container matColumnDef="documentType">
+                                                            <mat-header-cell *matHeaderCellDef> Document Type</mat-header-cell>
+                                                            <mat-cell *matCellDef="let element">
+                                                                {{element.documentType}} </mat-cell>
+                                                        </ng-container>
+                                                        <ng-container matColumnDef="createDate">
+                                                            <mat-header-cell *matHeaderCellDef> Create Date
+                                                            </mat-header-cell>
+                                                            <mat-cell *matCellDef="let element"> {{element.createDate |
+                                                                date: 'dd/MM/yyyy'}} </mat-cell>
+                                                        </ng-container>
+                                                        <ng-container matColumnDef="subDepDocCouToken">
+                                                            <mat-header-cell *matHeaderCellDef> Token </mat-header-cell>
+                                                            <mat-cell *matCellDef="let element">
+                                                                {{element.subDepDocCouToken}} </mat-cell>
+                                                        </ng-container>
+                                                        <ng-container matColumnDef="remark">
+                                                            <mat-header-cell *matHeaderCellDef> Remark
+                                                            </mat-header-cell>
+                                                            <mat-cell *matCellDef="let element"> {{element.remark}}
+                                                            </mat-cell>
+                                                        </ng-container>
+
+
+                                                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                                                        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                                                    </mat-table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </mat-expansion-panel>
+                            </mat-accordion>
+                            <!-- <mat-table [dataSource]="datasourceCourier">
+                                <ng-container matColumnDef="token" >
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 40%;"> Courier Number </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 40%;"> {{element.Token}} </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="createDate">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> Create Date </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.CreateDate | date: 'dd/MM/yyyy'}} </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="status">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> Status </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.CourierStatus}} </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="modifyBy">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> <button mat-raised-button color="primary" (click)="courierpopup('Courier Details',element)">VIEW</button> </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="modifyDate">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> <button mat-raised-button color="warn" (click)="sendCourier(element)">SEND</button> </mat-cell>
+                                </ng-container>
+                                
+
+                                <mat-header-row *matHeaderRowDef="displayedColumnsCourier; sticky: true"></mat-header-row>
+                                <mat-row *matRowDef="let row; columns: displayedColumnsCourier;"></mat-row>
+                            </mat-table> -->
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+
+                <mat-card class="main-card" style="height: 220px;">
+                    <div [hidden]="!loading_table" class="loader">
+                        <h5>Loading...</h5>
+                        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                    </div>
+
+                    <mat-card-header>
+                        <mat-card-title>
+                            <h3>Other Couriers</h3>
+                        </mat-card-title>
+                    </mat-card-header>
+
+                    <mat-card-content style="max-height: 190px;overflow-x: auto;">
+                        <div [ngClass]="{'disabled2': loading_table == true}">
+                            <mat-table [dataSource]="datasourceOtherCourier">
+                                <ng-container matColumnDef="token">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 40%;"> Courier Number
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 40%;"> {{element.Token}}
+                                    </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="createDate">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> Create Date
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.CreateDate |
+                                        date: 'dd/MM/yyyy'}} </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="status">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> Status </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 15%;">
+                                        {{element.CourierStatus}} </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="modifyBy">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> <button
+                                            mat-raised-button color="primary" (click)="courierpopup('Courier Details',element)">VIEW</button>
+                                    </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="modifyDate">
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> </mat-header-cell>
+                                    <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> </mat-cell>
+                                </ng-container>
+
+
+                                <mat-header-row *matHeaderRowDef="displayedColumnsCourier; sticky: true"></mat-header-row>
+                                <mat-row *matRowDef="let row; columns: displayedColumnsCourier;"></mat-row>
+                            </mat-table>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+
             </div>
 
-            <mat-card-header>
-                <mat-card-title>
-                    <h3>Courier Bag - </h3>
-                </mat-card-title>
-            </mat-card-header>
+        </div>
+    </mat-tab>
+    <mat-tab label="RECEIVING COURIERS">
+        <div [ngClass]="{'disabled': loading_saving == true || loading_popup == true}" class="container" fxLayout="row"
+            fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+            <div fxFlex="100%">
+                <mat-tab-group>
+                    <mat-tab label="RECEIVING COURIER BAGS">
+                        <mat-card class="main-card" style="height: 550px;">
+                            <div [hidden]="!loading_table" class="loader">
+                                <h5>Loading...</h5>
+                                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                            </div>
 
-            <div [ngClass]="{'disabled2': loading_table == true}">
-                <mat-table [dataSource]="datasourceCourier">
-                    <ng-container matColumnDef="token" >
-                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 40%;"> Courier Number </mat-header-cell>
-                        <mat-cell *matCellDef="let element" style="flex: 0 0 40%;"> {{element.Token}} </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="createDate">
-                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> Create Date </mat-header-cell>
-                        <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.CreateDate | date: 'dd/MM/yyyy'}} </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="status">
-                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> Status </mat-header-cell>
-                        <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.CourierStatus}} </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="modifyBy">
-                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> </mat-header-cell>
-                        <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> <button mat-raised-button color="primary" (click)="courierpopup('Courier Details',element)">VIEW</button> </mat-cell>
-                    </ng-container>
+                            <mat-card-header>
+                                <mat-card-title>
+                                    <h3>Receiving Courier Bags </h3>
+                                </mat-card-title>
+                            </mat-card-header>
 
-                    <ng-container matColumnDef="modifyDate">
-                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> </mat-header-cell>
-                        <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> <button mat-raised-button color="warn" (click)="sendCourier(element)">SEND</button> </mat-cell>
-                    </ng-container>
-                    
+                            <mat-card-content style="max-height: 500px;overflow-x: auto;">
+                                <div [ngClass]="{'disabled2': loading_table == true}">
 
-                    <mat-header-row *matHeaderRowDef="displayedColumnsCourier; sticky: true"></mat-header-row>
-                    <mat-row *matRowDef="let row; columns: displayedColumnsCourier;"></mat-row>
-                </mat-table>
+                                    <mat-accordion>
+                                        <mat-expansion-panel *ngFor="let cou of receivingCourierArray">
+                                            <mat-expansion-panel-header>
+                                                <mat-panel-title>
+                                                    Courier Token <br>
+                                                    {{cou.token}}
+                                                </mat-panel-title>
+                                                <mat-panel-description>
+                                                    Create Date <br>
+                                                    {{cou.createDate | date: 'dd/MM/yyyy'}}
+                                                </mat-panel-description>
+                                                <mat-panel-description>
+                                                    From Branch <br>
+                                                    {{cou.branchCode}}
+                                                </mat-panel-description>
+                                                <mat-panel-description>
+                                                    <button mat-raised-button color="warn" (click)="receiveCourier(cou)">RECEIVED</button>
+                                                </mat-panel-description>
+
+                                            </mat-expansion-panel-header>
+
+                                            <div *ngFor="let bag of receivingCouBagDetails">
+                                                <div style="text-align: left;" *ngIf="bag.courierId == cou.courierId">
+
+                                                    <div *ngFor="let dep of bag.departmentHelperDtos">
+                                                        <h3 style="text-align: left;">{{dep.depName | uppercase}}</h3>
+                                                        <div *ngFor="let subdep of dep.subDepartmentHelperDtos" style="margin-left: 20px;">
+                                                            <h5 style="text-align: left;"> * {{subdep.sudDepName |
+                                                                uppercase}}</h5>
+
+                                                            <mat-table #table [dataSource]="subdep.subDepartmentDocumentCourierDtos">
+                                                                <ng-container matColumnDef="select">
+                                                                    <mat-header-cell *matHeaderCellDef>
+                                                                    </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element">
+                                                                        <mat-checkbox color="warn" (click)="$event.stopPropagation()"
+                                                                            (change)="addOrRemoveDocumentReceiving(bag.courierId,element.subDepartmentDocumentCourierId);"
+                                                                            [checked]="false">
+                                                                        </mat-checkbox>
+                                                                    </mat-cell>
+
+                                                                </ng-container>
+                                                                <ng-container matColumnDef="referenceNo">
+                                                                    <mat-header-cell *matHeaderCellDef> Reference No</mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element">
+                                                                        {{element.referenceNo}} </mat-cell>
+                                                                </ng-container>
+                                                                <ng-container matColumnDef="documentType">
+                                                                    <mat-header-cell *matHeaderCellDef> Document Type</mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element">
+                                                                        {{element.documentType}} </mat-cell>
+                                                                </ng-container>
+                                                                <ng-container matColumnDef="createDate">
+                                                                    <mat-header-cell *matHeaderCellDef> Create Date
+                                                                    </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element">
+                                                                        {{element.createDate | date: 'dd/MM/yyyy'}}
+                                                                    </mat-cell>
+                                                                </ng-container>
+                                                                <ng-container matColumnDef="subDepDocCouToken">
+                                                                    <mat-header-cell *matHeaderCellDef> Token
+                                                                    </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element">
+                                                                        {{element.subDepDocCouToken}} </mat-cell>
+                                                                </ng-container>
+                                                                <ng-container matColumnDef="remark">
+                                                                    <mat-header-cell *matHeaderCellDef> Remark
+                                                                    </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element">
+                                                                        {{element.remark}} </mat-cell>
+                                                                </ng-container>
+
+
+                                                                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                                                                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                                                            </mat-table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </mat-expansion-panel>
+                                    </mat-accordion>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </mat-tab>
+                    <mat-tab label="RECEIVED COURIER BAGS">
+                        <mat-card class="main-card" style="height: 550px;">
+                            <div [hidden]="!loading_table" class="loader">
+                                <h5>Loading...</h5>
+                                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                            </div>
+
+                            <mat-card-header>
+                                <mat-card-title>
+                                    <h3>Received Courier Bags </h3>
+                                </mat-card-title>
+                            </mat-card-header>
+
+                            <mat-card-content style="max-height: 500px;overflow-x: auto;">
+                                <div [ngClass]="{'disabled2': loading_table == true}">
+
+                                    <mat-accordion>
+                                        <mat-expansion-panel *ngFor="let cou of receivedCourierArray">
+                                            <mat-expansion-panel-header>
+                                                <mat-panel-title>
+                                                    Courier Token <br>
+                                                    {{cou.token}}
+                                                </mat-panel-title>
+                                                <mat-panel-description>
+                                                    Create Date <br>
+                                                    {{cou.createDate | date: 'dd/MM/yyyy'}}
+                                                </mat-panel-description>
+                                                <mat-panel-description>
+                                                    From Branch <br>
+                                                    {{cou.branchCode}}
+                                                </mat-panel-description>
+                                                <mat-panel-description>
+                                                    Received By <br>
+                                                    {{cou.receivedBy}}
+                                                </mat-panel-description>
+                                                <mat-panel-description>
+                                                    Received Date <br>
+                                                    {{cou.receivedDate | date: 'dd/MM/yyyy'}}
+                                                </mat-panel-description>
+
+                                            </mat-expansion-panel-header>
+
+                                            <div *ngFor="let bag of receivedCouBagDetails">
+                                                <div style="text-align: left;" *ngIf="bag.courierId == cou.courierId">
+                                                    <button mat-raised-button color="warn" (click)="receivedCourierDocuments(bag)">RECEIVE
+                                                        DOCUMENTS</button>
+                                                    <div *ngFor="let dep of bag.departmentHelperDtos">
+                                                        <h3 style="text-align: left;">{{dep.depName | uppercase}}</h3>
+
+                                                        <table>
+                                                            <tr>
+                                                                <th style="text-align: left;">Department Courier Status</th>
+                                                                <td>:</td>
+                                                                <td>{{dep.depCouStatus}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th style="text-align: left;">Department Courier Rcvd
+                                                                    Date</th>
+                                                                <td>:</td>
+                                                                <td>{{dep.rcvdBy}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th style="text-align: left;">Department Courier Rcvd
+                                                                    By</th>
+                                                                <td>:</td>
+                                                                <td>{{dep.rcvdDate | date: 'dd/MM/yyyy'}}</td>
+                                                            </tr>
+                                                        </table>
+
+                                                        <div *ngFor="let subdep of dep.subDepartmentHelperDtos" style="margin-left: 20px;">
+                                                            <h5 style="text-align: left;"> * {{subdep.sudDepName |
+                                                                uppercase}}</h5>
+
+                                                            <mat-table #table [dataSource]="subdep.subDepartmentDocumentCourierDtos">
+                                                                <ng-container matColumnDef="select">
+                                                                    <mat-header-cell *matHeaderCellDef>
+                                                                    </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element">
+                                                                        <mat-checkbox color="warn" *ngIf="element.status === 'SEND'"
+                                                                            (click)="$event.stopPropagation()" (change)="addOrRemoveDocumentReceived(bag.courierId,element.subDepartmentDocumentCourierId);"
+                                                                            [checked]="false">
+                                                                        </mat-checkbox>
+                                                                    </mat-cell>
+
+                                                                </ng-container>
+                                                                <ng-container matColumnDef="referenceNo">
+                                                                    <mat-header-cell *matHeaderCellDef> Reference No</mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element">
+                                                                        {{element.referenceNo}} </mat-cell>
+                                                                </ng-container>
+                                                                <ng-container matColumnDef="documentType">
+                                                                    <mat-header-cell *matHeaderCellDef> Document Type</mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element">
+                                                                        {{element.documentType}} </mat-cell>
+                                                                </ng-container>
+                                                                <ng-container matColumnDef="createDate">
+                                                                    <mat-header-cell *matHeaderCellDef> Create Date
+                                                                    </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element">
+                                                                        {{element.createDate | date: 'dd/MM/yyyy'}}
+                                                                    </mat-cell>
+                                                                </ng-container>
+                                                                <ng-container matColumnDef="subDepDocCouToken">
+                                                                    <mat-header-cell *matHeaderCellDef> Token
+                                                                    </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element">
+                                                                        {{element.subDepDocCouToken}} </mat-cell>
+                                                                </ng-container>
+                                                                <ng-container matColumnDef="remark">
+                                                                    <mat-header-cell *matHeaderCellDef> Remark
+                                                                    </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element">
+                                                                        {{element.remark}} </mat-cell>
+                                                                </ng-container>
+
+                                                                <ng-container matColumnDef="status">
+                                                                    <mat-header-cell *matHeaderCellDef> Status
+                                                                    </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element">
+                                                                        {{element.status}} </mat-cell>
+                                                                </ng-container>
+
+                                                                <ng-container matColumnDef="rcvdBy">
+                                                                    <mat-header-cell *matHeaderCellDef> Rcvd By
+                                                                    </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element">
+                                                                        {{element.rcvdBy}} </mat-cell>
+                                                                </ng-container>
+
+                                                                <ng-container matColumnDef="rcvdDate">
+                                                                    <mat-header-cell *matHeaderCellDef> Rcvd Date
+                                                                    </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element">
+                                                                        {{element.rcvdDate | date: 'dd/MM/yyyy'}}
+                                                                    </mat-cell>
+                                                                </ng-container>
+
+
+                                                                <mat-header-row *matHeaderRowDef="displayedColumns2"></mat-header-row>
+                                                                <mat-row *matRowDef="let row; columns: displayedColumns2;"></mat-row>
+                                                            </mat-table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </mat-expansion-panel>
+                                    </mat-accordion>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </mat-tab>
+                    <mat-tab label="COMPLETED COURIERS">
+                        <mat-card class="main-card" style="height: 550px;">
+                            <div [hidden]="!loading_table" class="loader">
+                                <h5>Loading...</h5>
+                                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                            </div>
+
+                            <mat-card-header>
+                                <mat-card-title>
+                                    <h3>Completed Couriers</h3>
+                                </mat-card-title>
+                            </mat-card-header>
+
+                            <mat-card-content style="max-height: 500px;overflow-x: auto;">
+                                <div [ngClass]="{'disabled2': loading_table == true}">
+
+                                    <mat-accordion>
+                                        <mat-expansion-panel *ngFor="let cou of completedCourierArray">
+                                            <mat-expansion-panel-header>
+                                                <mat-panel-title>
+                                                    Courier Token <br>
+                                                    {{cou.token}}
+                                                </mat-panel-title>
+                                                <mat-panel-description>
+                                                    Create Date <br>
+                                                    {{cou.createDate | date: 'dd/MM/yyyy'}}
+                                                </mat-panel-description>
+                                                <mat-panel-description>
+                                                    From Branch <br>
+                                                    {{cou.branchCode}}
+                                                </mat-panel-description>
+                                                <mat-panel-description>
+                                                    Received By <br>
+                                                    {{cou.receivedBy}}
+                                                </mat-panel-description>
+                                                <mat-panel-description>
+                                                    Received Date <br>
+                                                    {{cou.receivedDate | date: 'dd/MM/yyyy'}}
+                                                </mat-panel-description>
+
+                                            </mat-expansion-panel-header>
+
+                                            <div *ngFor="let bag of completedCouBagDetails">
+                                                <div style="text-align: left;" *ngIf="bag.courierId == cou.courierId">
+                                                    <!-- <button mat-raised-button color="warn" (click)="receivedCourierDocuments(bag)" >RECEIVE DOCUMENTS</button> -->
+                                                    <div *ngFor="let dep of bag.departmentHelperDtos">
+                                                        <h3 style="text-align: left;">{{dep.depName | uppercase}}</h3>
+
+                                                        <table>
+                                                            <tr>
+                                                                <th style="text-align: left;">Department Courier Status</th>
+                                                                <td>:</td>
+                                                                <td>{{dep.depCouStatus}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th style="text-align: left;">Department Courier Rcvd
+                                                                    Date</th>
+                                                                <td>:</td>
+                                                                <td>{{dep.rcvdBy}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th style="text-align: left;">Department Courier Rcvd
+                                                                    By</th>
+                                                                <td>:</td>
+                                                                <td>{{dep.rcvdDate | date: 'dd/MM/yyyy'}}</td>
+                                                            </tr>
+                                                        </table>
+
+                                                        <div *ngFor="let subdep of dep.subDepartmentHelperDtos" style="margin-left: 20px;">
+                                                            <h5 style="text-align: left;"> * {{subdep.sudDepName |
+                                                                uppercase}}</h5>
+
+                                                            <mat-table #table [dataSource]="subdep.subDepartmentDocumentCourierDtos">
+
+                                                                <ng-container matColumnDef="referenceNo">
+                                                                    <mat-header-cell *matHeaderCellDef> Reference No</mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element">
+                                                                        {{element.referenceNo}} </mat-cell>
+                                                                </ng-container>
+                                                                <ng-container matColumnDef="documentType">
+                                                                    <mat-header-cell *matHeaderCellDef> Document Type</mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element">
+                                                                        {{element.documentType}} </mat-cell>
+                                                                </ng-container>
+                                                                <ng-container matColumnDef="createDate">
+                                                                    <mat-header-cell *matHeaderCellDef> Create Date
+                                                                    </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element">
+                                                                        {{element.createDate |
+                                                                        date: 'dd/MM/yyyy'}} </mat-cell>
+                                                                </ng-container>
+                                                                <ng-container matColumnDef="subDepDocCouToken">
+                                                                    <mat-header-cell *matHeaderCellDef> Token
+                                                                    </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element">
+                                                                        {{element.subDepDocCouToken}} </mat-cell>
+                                                                </ng-container>
+                                                                <ng-container matColumnDef="remark">
+                                                                    <mat-header-cell *matHeaderCellDef> Remark
+                                                                    </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element">
+                                                                        {{element.remark}}
+                                                                    </mat-cell>
+                                                                </ng-container>
+
+                                                                <ng-container matColumnDef="status">
+                                                                    <mat-header-cell *matHeaderCellDef> Status
+                                                                    </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element">
+                                                                        {{element.status}}
+                                                                    </mat-cell>
+                                                                </ng-container>
+
+                                                                <ng-container matColumnDef="rcvdBy">
+                                                                    <mat-header-cell *matHeaderCellDef> Rcvd By
+                                                                    </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element">
+                                                                        {{element.rcvdBy}}
+                                                                    </mat-cell>
+                                                                </ng-container>
+
+                                                                <ng-container matColumnDef="rcvdDate">
+                                                                    <mat-header-cell *matHeaderCellDef> Rcvd Date
+                                                                    </mat-header-cell>
+                                                                    <mat-cell *matCellDef="let element">
+                                                                        {{element.rcvdDate |
+                                                                        date: 'dd/MM/yyyy'}} </mat-cell>
+                                                                </ng-container>
+
+
+                                                                <mat-header-row *matHeaderRowDef="displayedColumns3"></mat-header-row>
+                                                                <mat-row *matRowDef="let row; columns: displayedColumns3;"></mat-row>
+                                                            </mat-table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </mat-expansion-panel>
+                                    </mat-accordion>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </mat-tab>
+                </mat-tab-group>
+
+
             </div>
-        </mat-card>
-
-        <mat-card class="main-card" style="height: 320px;">
-            <div [hidden]="!loading_table" class="loader">
-                <h5>Loading...</h5>
-                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-            </div>
-
-            <mat-card-header>
-                <mat-card-title>
-                    <h3>Other Couriers</h3>
-                </mat-card-title>
-            </mat-card-header>
-
-            <mat-card-content style="max-height: 290px;overflow-x: auto;">
-                <div [ngClass]="{'disabled2': loading_table == true}">
-                    <mat-table [dataSource]="datasourceOtherCourier">
-                        <ng-container matColumnDef="token" >
-                            <mat-header-cell *matHeaderCellDef style="flex: 0 0 40%;"> Courier Number </mat-header-cell>
-                            <mat-cell *matCellDef="let element" style="flex: 0 0 40%;"> {{element.Token}} </mat-cell>
-                        </ng-container>
-                        <ng-container matColumnDef="createDate">
-                            <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> Create Date </mat-header-cell>
-                            <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.CreateDate | date: 'dd/MM/yyyy'}} </mat-cell>
-                        </ng-container>
-                        <ng-container matColumnDef="status">
-                            <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> Status </mat-header-cell>
-                            <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.CourierStatus}} </mat-cell>
-                        </ng-container>
-                        <ng-container matColumnDef="modifyBy">
-                            <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> </mat-header-cell>
-                            <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> <button mat-raised-button color="primary" (click)="courierpopup('Courier Details',element)">VIEW</button> </mat-cell>
-                        </ng-container>
-
-                        <ng-container matColumnDef="modifyDate">
-                            <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> </mat-header-cell>
-                            <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> </mat-cell>
-                        </ng-container>
-                        
-
-                        <mat-header-row *matHeaderRowDef="displayedColumnsCourier; sticky: true"></mat-header-row>
-                        <mat-row *matRowDef="let row; columns: displayedColumnsCourier;"></mat-row>
-                    </mat-table>
-                </div>
-            </mat-card-content>
-        </mat-card>
-
-    </div>
-
-</div>
+        </div>
+    </mat-tab>
+</mat-tab-group>
