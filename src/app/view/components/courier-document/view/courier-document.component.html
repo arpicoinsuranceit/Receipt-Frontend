@@ -172,6 +172,9 @@
                         <div [ngClass]="{'disabled2': loading_table == true}">
 
                             <mat-accordion>
+                                <!-- <mat-form-field style="width: 100%;">
+                                    <input matInput (keyup)="applyFilter2($event.target.value)" placeholder="Search">
+                                </mat-form-field> -->
                                 <mat-expansion-panel *ngFor="let cou of courierArray">
                                     <mat-expansion-panel-header>
                                         <mat-panel-title>
@@ -300,6 +303,9 @@
 
                     <mat-card-content style="max-height: 190px;overflow-x: auto;">
                         <div [ngClass]="{'disabled2': loading_table == true}">
+                            <mat-form-field style="width: 100%;">
+                                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
+                            </mat-form-field>
                             <mat-table [dataSource]="datasourceOtherCourier">
                                 <ng-container matColumnDef="token">
                                     <mat-header-cell *matHeaderCellDef style="flex: 0 0 40%;"> Courier Number

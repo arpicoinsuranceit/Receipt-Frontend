@@ -1,3 +1,4 @@
+import { JwtHelperService } from '@auth0/angular-jwt';
 import { ConfirmationAlertComponent } from './../../../core/confirmation-alert/confirmation-alert.component';
 import { CourierModel } from './../../../../model/couriermodel';
 import { CourierpopupComponent } from './../../../core/courierpopup/courierpopup.component';
@@ -9,9 +10,6 @@ import { MatTableDataSource, MatDialogConfig, MatDialog } from '@angular/materia
 import { CourierDocumentService } from '../../../../service/courier-document/courier-document.service';
 import { SubDepartment } from '../../../../model/subdepartment';
 import { AlertComponent } from 'app/view/core/alert/alert.component';
-import { JwtHelper } from 'angular2-jwt';
-import { SelectionModel } from '@angular/cdk/collections';
-import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-courier-document',
@@ -118,7 +116,7 @@ export class CourierDocumentComponent implements OnInit {
 
   constructor(private courierDocumentService:CourierDocumentService, public dialog: MatDialog) {
 
-    let token=new JwtHelper().decodeToken(sessionStorage.getItem("token"));
+    let token=new JwtHelperService().decodeToken(sessionStorage.getItem("token"));
 
     this.isHoUser=token.locCode.includes("HO");
     
@@ -525,8 +523,14 @@ export class CourierDocumentComponent implements OnInit {
   }
 
   applyFilter(filterValue: string) {
-    this.datasourceCourier.filter = filterValue.trim().toLowerCase();
+    this.datasourceOtherCourier.filter = filterValue.trim().toLowerCase();
   }
+
+  // applyFilter2(filterValue: string) {
+  //   this.datasourceCourier.filter = filterValue.trim().toLowerCase();
+  //   console.log(this.datasourceCourier.data);
+  //   this.courierArray=this.datasourceCourier.data;
+  // }
 
   courierpopup(title: string, data: any) {
 
