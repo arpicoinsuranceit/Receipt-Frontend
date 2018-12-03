@@ -100,7 +100,7 @@ export class CourierDocumentComponent implements OnInit {
   
   displayedColumnsReceiving = ['referenceNo' ,'documentType','createDate','subDepDocCouToken', 'remark','button'];
 
-  displayedColumnsCourier: string[] = ['token', 'createDate', 'status' , 'modifyBy', 'modifyDate'];
+  displayedColumnsCourier: string[] = ['token', 'createDate', 'status' , 'toBranch','modifyBy', 'modifyDate'];
 
   datasourceCourier = new MatTableDataSource<CourierModel>(this.courierArray);
 
@@ -364,6 +364,7 @@ export class CourierDocumentComponent implements OnInit {
         courier.ModifyDate=i.modifyDate;
         courier.Remark=i.remark;
         courier.Token=i.token;
+        courier.ToBranch=i.toBranch;
 
         this.otherCourierArray.push(courier);
 

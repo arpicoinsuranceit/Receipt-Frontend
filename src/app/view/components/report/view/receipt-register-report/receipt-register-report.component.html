@@ -1,0 +1,28 @@
+<h2 mat-dialog-title style="text-align: center;border-bottom:solid #C4C4C4 1px">Receipt Register</h2>
+<mat-dialog-content align="center" style="min-width: 250px;">
+  <!-- <img src="assets/images/giphy.gif" style="width: 70px; height: 70px;">  <br> -->
+
+  <div style="width: 100%">
+    <form [formGroup]="rcptRegForm">
+      <mat-form-field>
+        <input matInput [matDatepicker]="picker1" placeholder="From Date (YYYY-MM-DD)" name="fromDate"
+          formControlName="fromDate" [readonly]="true">
+        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1 [disabled]="false"></mat-datepicker>
+      </mat-form-field><br>
+
+      <mat-form-field>
+        <input matInput [matDatepicker]="picker2" placeholder="To Date (YYYY-MM-DD)" name="toDate"
+          formControlName="toDate" >
+        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+        <mat-datepicker #picker2 [disabled]="false"></mat-datepicker>
+      </mat-form-field><br>
+    </form>
+  </div>
+  
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+  
+  <button mat-button style="background: rgb(77, 77, 77); color: white" mat-dialog-close (click)="noConfirmation();" >CANCEL</button>
+  <button mat-button mat-dialog-close style="background:#3F51B5; color: white" (click)="yesConfirmation();" >VIEW</button>
+</mat-dialog-actions>
