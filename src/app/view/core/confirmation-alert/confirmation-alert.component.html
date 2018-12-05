@@ -2,6 +2,20 @@
 <mat-dialog-content align="center" style="min-width: 250px;">
   <img src="assets/images/giphy.gif" style="width: 70px; height: 70px;">  <br>
 
+  <mat-form-field *ngIf="method == '1' ">
+    <mat-select placeholder="Select Courier Type" aria-label="Courier Type" [(ngModel)]="couType" [(value)]="selected">
+        <mat-option value="COURIER">
+          By COURIER
+        </mat-option>
+        <mat-option value="HAND">
+          By HAND
+        </mat-option>
+        <mat-option value="OTHER">
+          OTHER
+        </mat-option>
+    </mat-select>
+</mat-form-field> 
+
   <div *ngFor = "let mes of modelMessage" style="width: 100%">
     <label >{{mes}}</label><br>
   </div>

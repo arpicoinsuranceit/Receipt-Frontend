@@ -1,0 +1,109 @@
+<div [hidden]="!loading_report" class="loader">
+  <h5>Loading...</h5>
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+<div [ngClass]="{'disabled': loading_report == true}" class="container" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
+  fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+
+  <div fxFlex="100%">
+    <mat-card class="main-card" style="min-height: 520px;">
+
+      <mat-card-header style="margin-bottom: 10px;">
+        <mat-card-title>
+          <h3>Report</h3>
+        </mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content>
+        <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+          <div fxFlex="25%">
+            <div class="new-Business-div" (click)="receiptRegisterReport()" style="min-height: 110px;">
+              <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%"
+                fxLayoutAlign="center">
+                <div fxFlex="60%">
+                  <div>
+                    <p style="margin: 25px;">
+                      <span style="font-size: 20px;">Receipt Register</span><br>
+                    </p>
+                  </div>
+                </div>
+                <div fxFlex="40%">
+                  <div class="flex-box">
+                    <div style="margin: 25px;">
+                      <i class="fas fa-dollar-sign fa-4x icon_dash" style="color: #1FC1ED"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div fxFlex="25%">
+            <div class="proposal-div" (click)="getCashFlowGrid('CQ')" style="min-height: 110px;">
+              <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%"
+                fxLayoutAlign="center">
+                <div fxFlex="60%">
+                  <div>
+                    <p style="margin: 20px;">
+                      <span style="font-size: 20px;">Lapsed Summery - Branch</span><br>
+                    </p>
+                  </div>
+                </div>
+                <div fxFlex="40%">
+                  <div class="flex-box">
+                    <div style="margin: 20px;">
+                      <i class="fas fa-money-check fa-4x icon_dash" style="color: #DB4C3F"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div fxFlex="25%">
+            <div class="policy-div" (click)="getCashFlowGrid('DD')" style="min-height: 110px;">
+              <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%"
+                fxLayoutAlign="center">
+                <div fxFlex="60%">
+                  <div>
+                    <p style="margin: 20px;">
+                      <span style="font-size: 20px;">Premium Due FYP-RP</span><br>
+                    </p>
+                  </div>
+                </div>
+                <div fxFlex="40%">
+                  <div class="flex-box">
+                    <div style="margin: 20px;">
+                      <i class="fas fa-hand-holding-usd fa-4x icon_dash" style="color: #18A55D"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div fxFlex="25%">
+            <div class="inv-div" (click)="getCashFlowGrid('CR')" style="min-height: 110px;">
+              <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%"
+                fxLayoutAlign="center">
+                <div fxFlex="60%">
+                  <div>
+                    <p style="margin: 20px;">
+                      <span style="font-size: 20px;">Payment History Report</span><br>
+                    </p>
+                  </div>
+                </div>
+                <div fxFlex="40%">
+                  <div class="flex-box">
+                    <div style="margin: 20px;">
+                      <i class="fas fa-credit-card fa-4x icon_dash" style="color: #F19B2C"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

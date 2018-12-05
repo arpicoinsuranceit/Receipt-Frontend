@@ -57,6 +57,10 @@ const routes: Routes = [
       {
         path: 'codetransfer',
         loadChildren : "app/view/components/code-transfer/code-transfer.module#CodeTransferModule"
+      },
+      {
+        path: 'report',
+        loadChildren : "app/view/components/report/report.module#ReportModule"
       }
     ]
   }

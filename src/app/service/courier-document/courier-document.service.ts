@@ -88,13 +88,22 @@ export class CourierDocumentService {
     return this.http.get("http://localhost:8088/courier/courierdetails/"+couId);
   }
 
+  loadCompletedOwnCourier(token){
+    return this.http.get("http://localhost:8088/courier/completedowncourier/"+token);
+  }
+
   changeCourierStatus(couId:number,status:string){
     return this.http.get("http://localhost:8088/courier/changestatus/"+couId+"/"+status);
   }
 
-  sendCourier(sendData){
+  sendCourier(sendData,token,couType){
     console.log(sendData);
-    return this.http.post("http://localhost:8088/courier/sendCourier",sendData);
+    return this.http.post("http://localhost:8088/courier/sendCourier/"+token+"/"+couType,sendData);
+  }
+
+  removeDocument(id){
+    console.log(id);
+    return this.http.get("http://localhost:8088/courier/removedocument/"+id);
   }
 
   receiveCourier (sendData,token){
