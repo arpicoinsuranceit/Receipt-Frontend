@@ -1,4 +1,8 @@
-<div class="container" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
+<div [hidden]="!loading_report" class="loader">
+  <h5>Loading...</h5>
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+<div [ngClass]="{'disabled': loading_report == true}" class="container" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
   fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
 
   <div fxFlex="100%">

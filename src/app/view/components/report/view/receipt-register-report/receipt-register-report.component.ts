@@ -9,11 +9,12 @@ import { Component, OnInit, Inject } from '@angular/core';
   styleUrls: ['./receipt-register-report.component.css']
 })
 export class ReceiptRegisterReportComponent implements OnInit {
-  modalTitle: string;
-  modelMessage : string [];
-  modelType : string;
+  // modalTitle: string;
+  // modelMessage : string [];
+  //modelType : string;
   choise: string = "no";
   method: string;
+  loading_report = false;
 
   rcptRegForm=new FormGroup({
     name : new FormControl(''),
@@ -30,12 +31,12 @@ export class ReceiptRegisterReportComponent implements OnInit {
   }
 
   yesConfirmation(){
-
+    this.loading_report=true;
     this.reportService.receiptRegisterReport(this.rcptRegForm.get("fromDate").value,this.rcptRegForm.get("toDate").value,
     sessionStorage.getItem("token")).subscribe(response =>{
       var fileURL = URL.createObjectURL(response);
       window.open(fileURL); // if you want to open it in new tab
-      this.dialogRef.close({result:this.choise,method: this.method});
+      this.dialogRef.close({result:'success'});
     });
 
     

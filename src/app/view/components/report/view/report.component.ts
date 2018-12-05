@@ -10,6 +10,8 @@ import { ConfirmationAlertComponent } from 'app/view/core/confirmation-alert/con
 })
 export class ReportComponent implements OnInit {
 
+  loading_report=false;
+
   constructor(public dialog: MatDialog) { }
 
   ngOnInit() {
@@ -29,6 +31,13 @@ export class ReportComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
+      if(result.result == "success"){
+        alert("ok");
+        this.loading_report=false;
+      }else{
+        this.loading_report=true;
+      }
+
     });
     
   }

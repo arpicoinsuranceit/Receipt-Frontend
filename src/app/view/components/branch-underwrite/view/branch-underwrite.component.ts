@@ -500,7 +500,7 @@ export class BranchUnderwriteComponent implements OnInit {
     }
 
     encodeURIComponent(JSON.stringify(data));
-    window.open("http://localhost:4200?data=" + encodeURIComponent(JSON.stringify(data)), "_blank");
+    window.open("http://localhost:4201?data=" + encodeURIComponent(JSON.stringify(data)), "_blank");
   }
 
   loadQuotationDetails() {
