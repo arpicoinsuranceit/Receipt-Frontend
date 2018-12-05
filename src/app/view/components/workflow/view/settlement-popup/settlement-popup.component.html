@@ -1,4 +1,4 @@
-<mat-tab-group>
+<mat-tab-group *ngIf="workflowProposal != null">
   <mat-tab label="Policy Details">
     <mat-card class="tab-card">
 
@@ -27,7 +27,7 @@
             <tr>
               <td colspan="2">
                 <div style="margin: 10px; display:  flex; justify-content: center; font-size: 20px;">
-                  ARPICO INVESTMENT PLAN / INVP
+                  {{workflowProposal.Plan}}
                 </div>
               </td>
             </tr>
@@ -38,47 +38,52 @@
                     <tr>
                       <td style="text-align: right;">Proposal Status </td>
                       <td> : </td>
-                      <td> Policy Lapsed Permanent</td>
+                      <td> {{workflowProposal.Plan}}</td>
                     </tr>
                     <tr>
                       <td style="text-align: right;">Branch </td>
                       <td> : </td>
-                      <td> HO</td>
+                      <td> {{workflowProposal.Branch}}</td>
                     </tr>
                     <tr>
                       <td style="text-align: right;">Agent Code </td>
                       <td> : </td>
-                      <td> 1020</td>
+                      <td> {{workflowProposal.Agent}}</td>
                     </tr>
                     <tr>
                       <td style="text-align: right;">Commencement Date </td>
                       <td> : </td>
-                      <td> 2012-01-28</td>
+                      <td> {{workflowProposal.ComDate}}</td>
                     </tr>
                     <tr>
                       <td style="text-align: right;">Expire Date </td>
                       <td> : </td>
-                      <td> 2032-01-28</td>
+                      <td> {{workflowProposal.ExpDate}}</td>
+                    </tr>
+                    <tr>
+                      <td style="text-align: right;">Due Date </td>
+                      <td> : </td>
+                      <td> {{e.DueDate}}</td>
                     </tr>
                     <tr>
                       <td style="text-align: right;">Basic Sum Assured </td>
                       <td> : </td>
-                      <td> 744000.00</td>
+                      <td> {{workflowProposal.Bsa}}</td>
                     </tr>
                     <tr>
                       <td style="text-align: right;">Total Premium </td>
                       <td> : </td>
-                      <td> 9320.00</td>
+                      <td> {{workflowProposal.Totprm}}</td>
                     </tr>
                     <tr>
                       <td style="text-align: right;">Term </td>
                       <td> : </td>
-                      <td> 20</td>
+                      <td> {{workflowProposal.Term}}</td>
                     </tr>
                     <tr>
                       <td style="text-align: right;">Payment Frequancy </td>
                       <td> : </td>
-                      <td> Monthly</td>
+                      <td> {{workflowProposal.Frequancy}}</td>
                     </tr>
                   </table>
                 </div>
@@ -126,67 +131,67 @@
               <tr>
                 <td>Full Name </td>
                 <td> : </td>
-                <td> MALGAHA GAMAGE ANJANA MADUSHAN</td>
+                <td> {{workflowProposalMainLife.FullName}}</td>
               </tr>
               <tr>
                 <td>Name with Initials </td>
                 <td> : </td>
-                <td> M G A MADUSHAN</td>
+                <td> {{workflowProposalMainLife.NameIni}}</td>
               </tr>
               <tr>
                 <td>Address </td>
                 <td> : </td>
-                <td> 4/7/C, KAMATHAWATHTHA RD,AMBALANGODA,POLGASOWITA</td>
+                <td> {{workflowProposalMainLife.Address}}</td>
               </tr>
               <tr>
                 <td>NIC. No </td>
                 <td> : </td>
-                <td> 931123262V</td>
+                <td> {{workflowProposalMainLife.Nic}}</td>
               </tr>
               <tr>
                 <td>Mobile </td>
                 <td> : </td>
-                <td> 726221978</td>
+                <td> {{workflowProposalMainLife.Mobile}}</td>
               </tr>
               <tr>
                 <td>Tele. No </td>
                 <td> : </td>
-                <td> 0111234567</td>
+                <td> {{workflowProposalMainLife.Phone}}</td>
               </tr>
               <tr>
                 <td>Previlage Card No </td>
                 <td> : </td>
-                <td> 1100120236910</td>
+                <td> {{workflowProposalMainLife.PrevilageCard}}</td>
               </tr>
               <tr>
                 <td>Email </td>
                 <td> : </td>
-                <td> </td>
+                <td> {{workflowProposalMainLife.Email}}</td>
               </tr>
               <tr>
                 <td>Date of Birth </td>
                 <td> : </td>
-                <td> 1993-04-21</td>
+                <td> {{workflowProposalMainLife.Dob}}</td>
               </tr>
               <tr>
                 <td>Age next Birthday </td>
                 <td> : </td>
-                <td> 19</td>
+                <td> {{workflowProposalMainLife.Age}}</td>
               </tr>
               <tr>
                 <td>Sex </td>
                 <td> : </td>
-                <td> Male</td>
+                <td> {{workflowProposalMainLife.Sex}}</td>
               </tr>
               <tr>
                 <td>Civil Status </td>
                 <td> : </td>
-                <td> Single</td>
+                <td> {{workflowProposalMainLife.CivilStatus}}</td>
               </tr>
               <tr>
                 <td>Occupation/ Professtion </td>
                 <td> : </td>
-                <td> Air Force</td>
+                <td> {{workflowProposalMainLife.Occupation}}</td>
               </tr>
             </table>
           </div>
@@ -195,26 +200,33 @@
         <div fxFlex="50%" style=" display:  flex; justify-content: center; ">
           <mat-table [dataSource]="benefictListMain" class="mat-elevation-z8" style="width: 100%; box-shadow: none; max-height: 375px; overflow-y: auto;">
             <ng-container matColumnDef="riderCode">
-              <mat-header-cell *matHeaderCellDef> Benefict Code </mat-header-cell>
-              <mat-cell *matCellDef="let element"> {{element.RiderCode}} </mat-cell>
+              <mat-header-cell *matHeaderCellDef> Benefict</mat-header-cell>
+              <mat-cell *matCellDef="let element" matTooltip="{{element.RiderName}} "> {{element.RiderCode}} </mat-cell>
             </ng-container>
             <ng-container matColumnDef="sumAssured">
-              <mat-header-cell *matHeaderCellDef> Sumassured </mat-header-cell>
-              <mat-cell *matCellDef="let element"> {{element.SumAssured}} </mat-cell>
+              <mat-header-cell *matHeaderCellDef style="display: flex; justify-content: flex-end;"> Sumassured
+              </mat-header-cell>
+              <mat-cell *matCellDef="let element" style="display: flex; justify-content: flex-end;">Rs.
+                {{element.SumAssured | number: '.2'}} </mat-cell>
             </ng-container>
             <ng-container matColumnDef="premium">
-              <mat-header-cell *matHeaderCellDef> Premium </mat-header-cell>
-              <mat-cell *matCellDef="let element"> {{element.Premium}} </mat-cell>
+              <mat-header-cell *matHeaderCellDef style="display: flex; justify-content: flex-end;"> Premium
+              </mat-header-cell>
+              <mat-cell *matCellDef="let element" style="display: flex; justify-content: flex-end;">Rs.
+                {{element.Premium | number: '.2'}} </mat-cell>
+              <!-- <mat-cell *matCellDef="let element" [class.highlight] = "element.RiderCode == 'ADB'" style="display: flex; justify-content: flex-end;">Rs.
+                  {{element.Premium | number: '.2'}} </mat-cell> -->
             </ng-container>
             <mat-header-row *matHeaderRowDef="benefictTblDisplayColumns; sticky: true"></mat-header-row>
-            <mat-row *matRowDef="let row; columns: benefictTblDisplayColumns;" (dblclick)="loadData(element)"></mat-row>
+            <mat-row *matRowDef="let row; columns: benefictTblDisplayColumns;" [ngClass]="{'highlight': selectedRowIndex == row.id}"
+              (onload)="highlight(row)"></mat-row>
           </mat-table>
         </div>
       </div>
 
     </mat-card>
   </mat-tab>
-  <mat-tab label="Spouse Details">
+  <mat-tab label="Spouse Details" *ngIf="activeSpouse">
     <mat-card class="tab-card">
 
       <div class="container" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%"
@@ -226,27 +238,27 @@
               <tr>
                 <td>Full Name </td>
                 <td> : </td>
-                <td> MALGAHA GAMAGE ANJANA MADUSHAN</td>
+                <td> {{workflowProposalSpouse.FullName}}</td>
               </tr>
               <tr>
                 <td>Name with Initials </td>
                 <td> : </td>
-                <td> M G A MADUSHAN</td>
+                <td> {{workflowProposalSpouse.NameIni}}</td>
               </tr>
               <tr>
                 <td>NIC. No </td>
                 <td> : </td>
-                <td> 931123262V</td>
+                <td> {{workflowProposalSpouse.Nic}}</td>
               </tr>
               <tr>
                 <td>Date of Birth </td>
                 <td> : </td>
-                <td> 1993-04-21</td>
+                <td> {{workflowProposalSpouse.Dob}}</td>
               </tr>
               <tr>
                 <td>Occupation/ Professtion </td>
                 <td> : </td>
-                <td> Air Force</td>
+                <td> {{workflowProposalSpouse.Occupation}}</td>
               </tr>
             </table>
           </div>
@@ -256,15 +268,19 @@
           <mat-table [dataSource]="benefictListSpouse" class="mat-elevation-z8" style="width: 100%; box-shadow: none; max-height: 375px; overflow-y: auto;">
             <ng-container matColumnDef="riderCode">
               <mat-header-cell *matHeaderCellDef> Benefict Code </mat-header-cell>
-              <mat-cell *matCellDef="let element"> {{element.RiderCode}} </mat-cell>
+              <mat-cell *matCellDef="let element" matTooltip="{{element.RiderName}} "> {{element.RiderCode}} </mat-cell>
             </ng-container>
             <ng-container matColumnDef="sumAssured">
-              <mat-header-cell *matHeaderCellDef> Sumassured </mat-header-cell>
-              <mat-cell *matCellDef="let element"> {{element.SumAssured}} </mat-cell>
+              <mat-header-cell *matHeaderCellDef style="display: flex; justify-content: flex-end;"> Sumassured
+              </mat-header-cell>
+              <mat-cell *matCellDef="let element" style="display: flex; justify-content: flex-end;"> Rs.
+                {{element.SumAssured | number: '.2'}} </mat-cell>
             </ng-container>
             <ng-container matColumnDef="premium">
-              <mat-header-cell *matHeaderCellDef> Premium </mat-header-cell>
-              <mat-cell *matCellDef="let element"> {{element.Premium}} </mat-cell>
+              <mat-header-cell *matHeaderCellDef style="display: flex; justify-content: flex-end;"> Premium
+              </mat-header-cell>
+              <mat-cell *matCellDef="let element" style="display: flex; justify-content: flex-end;"> Rs.
+                {{element.Premium | number: '.2'}} </mat-cell>
             </ng-container>
             <mat-header-row *matHeaderRowDef="benefictTblDisplayColumns; sticky: true"></mat-header-row>
             <mat-row *matRowDef="let row; columns: benefictTblDisplayColumns;" (dblclick)="loadData(element)"></mat-row>
@@ -275,7 +291,7 @@
 
     </mat-card>
   </mat-tab>
-  <mat-tab label="Children Details">
+  <mat-tab label="Children Details" *ngIf="activeChild">
     <mat-card class="tab-card">
 
       <div class="container" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%"
@@ -283,9 +299,9 @@
 
         <div fxFlex="50%" style=" display:  flex; justify-content: center; font-size: 12px;">
           <div style="margin: 10px;  width: 100%; max-height: 375px; overflow-y: auto;">
-              <table style="width: 100% ; margin-bottom: 10px; border-bottom: solid 1px rgb(218, 218, 218);" *ngFor="let element of childrenArray">
+            <table style="width: 100% ; margin-bottom: 10px; border-bottom: solid 1px rgb(218, 218, 218);" *ngFor="let element of childrenArray">
               <tr>
-                <td>Full Name </td>
+                <td style="width: 150px;">Full Name </td>
                 <td> : </td>
                 <td> {{element._CName}}</td>
               </tr>
@@ -299,26 +315,31 @@
                 <td> : </td>
                 <td> {{element._CDob}}</td>
               </tr>
-              <tr>
+              <!-- <tr>
                 <td>Age </td>
                 <td> : </td>
                 <td> {{element._CAge}}</td>
+              </tr> -->
+              <tr>
+                <td>CIBC </td>
+                <td> : </td>
+                <td> {{element._CCibc == true ? "Applied" : "Not Applied"}}</td>
               </tr>
               <tr>
-                  <td>CIBC </td>
-                  <td> : </td>
-                  <td> {{element._CAge}}</td>
-                </tr>
-                <tr>
-                    <td>HCBC </td>
-                    <td> : </td>
-                    <td> {{element._CAge}}</td>
-                  </tr>
-                  <tr>
-                      <td>HBC </td>
-                      <td> : </td>
-                      <td> {{element._CAge}}</td>
-                    </tr>
+                <td>HCBC </td>
+                <td> : </td>
+                <td> {{element.IsGetHcbiOrHcbf == true ? "Applied" : "Not Applied"}}</td>
+              </tr>
+              <tr>
+                <td>SHCBC </td>
+                <td> : </td>
+                <td> {{element._CShcbfc == true ? "Applied" : "Not Applied"}}</td>
+              </tr>
+              <tr>
+                <td>HBC </td>
+                <td> : </td>
+                <td> {{element._CHbc == true ? "Applied" : "Not Applied"}}</td>
+              </tr>
             </table>
           </div>
         </div>
@@ -327,15 +348,19 @@
           <mat-table [dataSource]="benefictListChildren" class="mat-elevation-z8" style="width: 100%; box-shadow: none; max-height: 375px; overflow-y: auto;">
             <ng-container matColumnDef="riderCode">
               <mat-header-cell *matHeaderCellDef> Benefict Code </mat-header-cell>
-              <mat-cell *matCellDef="let element"> {{element.RiderCode}} </mat-cell>
+              <mat-cell *matCellDef="let element" matTooltip="{{element.RiderName}} "> {{element.RiderCode}} </mat-cell>
             </ng-container>
             <ng-container matColumnDef="sumAssured">
-              <mat-header-cell *matHeaderCellDef> Sumassured </mat-header-cell>
-              <mat-cell *matCellDef="let element"> {{element.SumAssured}} </mat-cell>
+              <mat-header-cell *matHeaderCellDef style="display: flex; justify-content: flex-end;"> Sumassured
+              </mat-header-cell>
+              <mat-cell *matCellDef="let element" style="display: flex; justify-content: flex-end;"> Rs.
+                {{element.SumAssured | number: '.2'}} </mat-cell>
             </ng-container>
             <ng-container matColumnDef="premium">
-              <mat-header-cell *matHeaderCellDef> Premium </mat-header-cell>
-              <mat-cell *matCellDef="let element"> {{element.Premium}} </mat-cell>
+              <mat-header-cell *matHeaderCellDef style="display: flex; justify-content: flex-end;"> Premium
+              </mat-header-cell>
+              <mat-cell *matCellDef="let element" style="display: flex; justify-content: flex-end;"> Rs.
+                {{element.Premium | number: '.2'}} </mat-cell>
             </ng-container>
             <mat-header-row *matHeaderRowDef="benefictTblDisplayColumns; sticky: true"></mat-header-row>
             <mat-row *matRowDef="let row; columns: benefictTblDisplayColumns;" (dblclick)="loadData(element)"></mat-row>
@@ -348,6 +373,129 @@
   <mat-tab label="Payment History">
     <mat-card class="tab-card">
 
+      <mat-tab-group>
+        <mat-tab label="Payments">
+          <mat-card>
+            <div fxFlex="100%" style=" display:  flex; justify-content: center; ">
+
+              <mat-table [dataSource]="paymentHistory" class="mat-elevation-z8" style="width: 100%; box-shadow: none; max-height: 223px; overflow-y: auto;">
+                <ng-container matColumnDef="txnyer">
+                  <mat-header-cell *matHeaderCellDef> Year </mat-header-cell>
+                  <mat-cell *matCellDef="let element" matTooltip="{{element.RiderName}} "> {{element.Txnyer}}
+                  </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="txnmth">
+                  <mat-header-cell *matHeaderCellDef> Month </mat-header-cell>
+                  <mat-cell *matCellDef="let element" matTooltip="{{element.RiderName}} "> {{element.Txnmth}}
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="txndat">
+                  <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
+                  <mat-cell *matCellDef="let element" matTooltip="{{element.RiderName}} "> {{element.Txndat}}
+                  </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="setamt">
+                  <mat-header-cell *matHeaderCellDef style="display: flex; justify-content: flex-end;"> Amount Settled
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let element" style="display: flex; justify-content: flex-end;"> Rs.
+                    {{element.Setamt | number: '.2'}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="dueamt">
+                  <mat-header-cell *matHeaderCellDef style="display: flex; justify-content: flex-end; padding-right: 10px;">
+                    Amount Due
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let element" style="display: flex; justify-content: flex-end; padding-right: 10px;">
+                    Rs.
+                    {{element.Dueamt | number: '.2'}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="duedat">
+                  <mat-header-cell *matHeaderCellDef> Due Date </mat-header-cell>
+                  <mat-cell *matCellDef="let element" matTooltip="{{element.RiderName}} "> {{element.Duedat}}
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="outstd">
+                  <mat-header-cell *matHeaderCellDef style="display: flex; justify-content: flex-end; padding-right: 10px;">
+                    Outstanding
+                  </mat-header-cell>
+                  <mat-cell *matCellDef="let element" style="display: flex; justify-content: flex-end; padding-right: 10px;">
+                    Rs.
+                    {{element.Outstd | number: '.2'}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="remark">
+                  <mat-header-cell *matHeaderCellDef> Referance </mat-header-cell>
+                  <mat-cell *matCellDef="let element" matTooltip="{{element.RiderName}} "> {{element.Remark}}
+                  </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="paymentHistoryTblDisplayColumns; sticky: true"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: paymentHistoryTblDisplayColumns;" (dblclick)="loadData(element)"></mat-row>
+
+              </mat-table>
+
+            </div>
+          </mat-card>
+        </mat-tab>
+        <mat-tab label="Receipt History">
+            <mat-card>
+              <div fxFlex="100%" style=" display:  flex; justify-content: center; ">
+  
+                <mat-table [dataSource]="lastReceipt" class="mat-elevation-z8" style="width: 100%; box-shadow: none; max-height: 223px; overflow-y: auto;">
+                  <ng-container matColumnDef="doccod">
+                    <mat-header-cell *matHeaderCellDef> Doc. Code </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.Doccod}}
+                    </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="docnum">
+                    <mat-header-cell *matHeaderCellDef> Doc. Number </mat-header-cell>
+                    <mat-cell *matCellDef="let element"> {{element.Docnum}}
+                    </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="proposalNo">
+                      <mat-header-cell *matHeaderCellDef> Proposal No </mat-header-cell>
+                      <mat-cell *matCellDef="let element" > {{element.Pprnum}}
+                      </mat-cell>
+                    </ng-container>
+                  <ng-container matColumnDef="date">
+                    <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
+                    <mat-cell *matCellDef="let element" matTooltip="{{element.RiderName}} "> {{element.Credat}}
+                    </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="paymode">
+                    <mat-header-cell *matHeaderCellDef> Pay Mode
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element">{{element.Paymod}} </mat-cell>
+                  </ng-container>
+                  <ng-container matColumnDef="amount">
+                    <mat-header-cell *matHeaderCellDef style="display: flex; justify-content: flex-end; padding-right: 10px;">
+                      Amount 
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let element" style="display: flex; justify-content: flex-end; padding-right: 10px;">
+                      Rs.
+                      {{element.Topprm | number: '.2'}} </mat-cell>
+                  </ng-container>
+  
+                  <ng-container matColumnDef="cheque_rel">
+                    <mat-header-cell *matHeaderCellDef> Cheque Rel. </mat-header-cell>
+                    <mat-cell *matCellDef="let element" > {{element.Chqrel}}
+                    </mat-cell>
+                  </ng-container>
+  
+                  
+  
+                  <mat-header-row *matHeaderRowDef="receiptHistoryTblDisplayColumns; sticky: true"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: receiptHistoryTblDisplayColumns;" ></mat-row>
+  
+                </mat-table>
+  
+              </div>
+            </mat-card>
+          </mat-tab>
+
+      </mat-tab-group>
     </mat-card>
   </mat-tab>
 </mat-tab-group>
@@ -356,19 +504,43 @@
 <mat-dialog-content align="center" style="width: 1000px;">
 
   <hr>
-  <form class="proposal-receipt-form">
+  <form class="proposal-receipt-form" [formGroup]="promise_form">
 
-    <mat-form-field style="padding-right: 10px;">
+    <!-- <mat-form-field style="padding-right: 10px;">
       <input matInput [matDatepicker]="dp1" placeholder="Due Date" disabled readonly [formControl]="dueDate">
       <mat-datepicker-toggle matSuffix [for]="dp1" disabled></mat-datepicker-toggle>
       <mat-datepicker disabled="false" #dp1></mat-datepicker>
+    </mat-form-field> -->
+
+    <mat-form-field style="padding-right: 10px;">
+      <mat-select placeholder="Payment Mode" aria-label="Payment Mode" formControlName="paytype">
+        <mat-option value="BRANCH">
+          Branch
+        </mat-option>
+        <mat-option value="Bank">
+          Bank
+        </mat-option>
+        <mat-option value="AGENT">
+          Agent
+        </mat-option>
+        <mat-option value="SUPER_CENTER">
+          Super Center
+        </mat-option>
+
+      </mat-select>
+
     </mat-form-field>
 
-    <mat-form-field>
-      <input matInput [matDatepicker]="dp2" placeholder="Promise Date" [formControl]="settleDate">
+    <mat-form-field style="padding-right: 10px;">
+      <input matInput [matDatepicker]="dp2" placeholder="Promise Date" formControlName="settleDate">
       <mat-datepicker-toggle matSuffix [for]="dp2"></mat-datepicker-toggle>
       <mat-datepicker #dp2></mat-datepicker>
     </mat-form-field>
+
+    <mat-form-field>
+        <input matInput placeholder="Remark" aria-label="Remark" formControlName="remark">
+      </mat-form-field>
+
   </form>
 </mat-dialog-content>
 

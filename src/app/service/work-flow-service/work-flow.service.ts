@@ -6,8 +6,22 @@ import { PromisesGrid } from 'app/model/promisesgrid';
   providedIn: 'root'
 })
 export class WorkFlowService {
+ 
+  
 
   constructor(private http: Http) { }
+
+  getProposalDate(polnum: string, pprnum: string): any {
+    return this.http.get("http://localhost:8088/getPolicyDetails/" + polnum + "/" + pprnum );
+  }
+
+  getPaymentHistory(polnum: string, pprnum: string): any {
+    return this.http.get("http://localhost:8088/getPaymentHistory/" + polnum + "/" + pprnum );
+  }
+
+  getReceiptHistory(polnum: string, pprnum: string): any {
+    return this.http.get("http://localhost:8088/getReceiptHistory/" + polnum + "/" + pprnum );
+  }
 
   loadPromises(page: number, offset: number) {
     let token = sessionStorage.getItem("token");
