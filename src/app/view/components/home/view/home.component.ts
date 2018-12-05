@@ -208,17 +208,22 @@ export class HomeComponent implements OnInit {
 
     let month: number = date.getMonth() - 1;
 
-    let toDate: _moment.Moment = null;
+    let toDate: Date = null;
 
-    let monthString = month < 10 ? "0" + (month + 1) : (month + 1).toString;
+    let monthString = "";
 
-    if (month < 0) {
-      toDate = _moment((date.getFullYear() - 1) + "-12-01");
-    } else {
-      toDate = _moment(date.getFullYear() + "-" + monthString + "-01");
+    if(month < 10){
+      monthString = "0" + (month + 1);
+    }else{
+      monthString = (month + 1).toString();
     }
 
-
+    if (month < 0) {
+      toDate = new Date((date.getFullYear() - 1) + "-12-01");
+    } else {
+      toDate = new Date(date.getFullYear() + "-" + monthString + "-01");
+    }
+    
     this.fromdate1.setValue(toDate);
     this.fromdate3.setValue(toDate);
   }
