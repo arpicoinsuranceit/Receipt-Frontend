@@ -1,3 +1,4 @@
+import { LapsedSummeryReportComponent } from './view/components/report/view/lapsed-summery-report/lapsed-summery-report.component';
 import { DashboardpopupComponent } from './view/core/dashboardpopup/dashboardpopup.component';
 import { CourierpopupComponent } from './view/core/courierpopup/courierpopup.component';
 import { CommonService } from './service/common-service/common.service';
@@ -17,11 +18,14 @@ import { RouterModule, Routes } from '@angular/router';
 import { AlertComponent } from './view/core/alert/alert.component';
 import { ConfirmationAlertComponent } from './view/core/confirmation-alert/confirmation-alert.component';
 import { ReceiptRegisterReportComponent } from './view/components/report/view/receipt-register-report/receipt-register-report.component';
+import { PaymentHistoryReportComponent } from './view/components/report/view/payment-history-report/payment-history-report.component';
+import { PremiumDueReportComponent } from './view/components/report/view/premium-due-report/premium-due-report.component';
 
 
 @NgModule({
   declarations: [
-    AppComponent, LoginComponent, AlertComponent ,CourierpopupComponent,DashboardpopupComponent,ConfirmationAlertComponent,ReceiptRegisterReportComponent
+    AppComponent, LoginComponent, AlertComponent ,CourierpopupComponent,DashboardpopupComponent,ConfirmationAlertComponent,ReceiptRegisterReportComponent,
+    LapsedSummeryReportComponent,PaymentHistoryReportComponent,PremiumDueReportComponent
   ],
   imports: [
     BrowserModule,
@@ -35,6 +39,7 @@ import { ReceiptRegisterReportComponent } from './view/components/report/view/re
   ],
   providers: [AuthService, AuthGuard, CommonService],
   bootstrap: [AppComponent],
-  entryComponents: [AlertComponent,CourierpopupComponent, DashboardpopupComponent,ConfirmationAlertComponent,ReceiptRegisterReportComponent]
+  entryComponents: [AlertComponent,CourierpopupComponent, DashboardpopupComponent,ConfirmationAlertComponent,ReceiptRegisterReportComponent,
+    LapsedSummeryReportComponent,PaymentHistoryReportComponent,PremiumDueReportComponent]
 })
 export class AppModule { }
