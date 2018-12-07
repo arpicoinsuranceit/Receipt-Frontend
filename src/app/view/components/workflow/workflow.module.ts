@@ -1,3 +1,4 @@
+import { ReceiptCancelationService } from './../../../service/receipt-cancelation-service/receipt-cancelation.service';
 import { WorkFlowService } from './../../../service/work-flow-service/work-flow.service';
 import { BranchUnderwriteService } from './../../../service/branch-underwrite/branch-underwrite.service';
 import { ShortPremiumComponent } from './view/short-premium/short-premium.component';
@@ -44,7 +45,7 @@ import { SettlementPopupComponent } from './view/settlement-popup/settlement-pop
     TempLapsComponent,
     UnderwriteComponent
   ],
-  providers: [BranchUnderwriteService, WorkFlowService],
+  providers: [BranchUnderwriteService, WorkFlowService,  ReceiptCancelationService],
   entryComponents:[SettlementPopupComponent]
 })
 export class WorkflowModule { }

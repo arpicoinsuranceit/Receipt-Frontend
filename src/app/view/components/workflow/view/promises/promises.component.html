@@ -24,8 +24,8 @@
         <mat-cell *matCellDef="let element"> {{element.Amount}} </mat-cell>
       </ng-container>
       <ng-container matColumnDef="Amount">
-        <mat-header-cell *matHeaderCellDef> Amount </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.Amount}} </mat-cell>
+        <mat-header-cell *matHeaderCellDef style="display: flex; justify-content: flex-end; padding-right: 10px;"> Amount </mat-header-cell>
+        <mat-cell *matCellDef="let element" style="display: flex; justify-content: flex-end; padding-right: 10px;">Rs. {{element.Amount | number: '.2'}} </mat-cell>
       </ng-container>
       <ng-container matColumnDef="Proposal_No">
         <mat-header-cell *matHeaderCellDef> Proposal No </mat-header-cell>

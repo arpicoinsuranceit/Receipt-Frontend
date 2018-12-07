@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class ReceiptCancelationService {
+  
 
   constructor(private http:Http) { }
 
@@ -25,8 +26,16 @@ export class ReceiptCancelationService {
     return this.http.get("http://localhost:8088/getPendingRequest/"+token);
   }
 
+  loadPendingRequestPage(token:string, page : number, offset : number){
+    return this.http.get("http://localhost:8088/getPendingRequest/"+token+"/"+page+"/"+offset);
+  }
+
   loadCanceledRequest(token:string){
     return this.http.get("http://localhost:8088/getCanceledRequest/"+token);
+  }
+
+  loadPendingRequestLength(token: string): any {
+    return this.http.get("http://localhost:8088/getPendingRequestLength/"+token);
   }
 
 }

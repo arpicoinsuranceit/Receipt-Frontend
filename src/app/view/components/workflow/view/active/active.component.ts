@@ -1,3 +1,4 @@
+import { WorkFlowService } from './../../../../../service/work-flow-service/work-flow.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,9 +8,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ActiveComponent implements OnInit {
 
-  constructor() { }
+  constructor(private workFlowService : WorkFlowService) { }
 
   ngOnInit() {
+    this.loadData()
+  }
+
+  loadData(){
+
+    this.workFlowService.loadPendingActPolicies(sessionStorage.getItem("token"), 0, 10).subscribe(resp => {
+      console.log("loadPendingActPolicies");
+      console.log(resp.json());
+    });
   }
 
 }
