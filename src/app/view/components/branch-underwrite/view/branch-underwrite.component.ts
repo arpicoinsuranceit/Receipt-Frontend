@@ -1351,7 +1351,7 @@ export class BranchUnderwriteComponent implements OnInit {
     if (this.nomineeEditIndex == undefined && this.nomineeEditIndex == null) {
       if (this.branchUWNomineeForm.valid) {
         if (this.generalInfo.ProductCode == "(ASFP)") {
-          if (this.nomineeArray.length < 2) {
+          //if (this.nomineeArray.length < 2) {
             if (this.branchUWNomineeForm.get("dateOfBirthNominee").valid && this.branchUWNomineeForm.get("nicNominee").valid) {
               if (this.branchUWNomineeForm.get("fullNameNominee").value != "" && this.branchUWNomineeForm.get("fullNameNominee").value != undefined) {
                 if (this.branchUWNomineeForm.get("guardianName").value != "" && this.branchUWNomineeForm.get("guardianName").value != undefined) {
@@ -1404,12 +1404,12 @@ export class BranchUnderwriteComponent implements OnInit {
             } else {
               this.alert("Oopz...", "Please Enter DOB and Nic Correctly", "error");
             }
-          } else {
-            this.alert("Oopz...", "Already You Have Add Nominee", "error");
-          }
+          // } else {
+          //   this.alert("Oopz...", "Already You Have Add Nominee", "error");
+          // }
 
         } else {
-          if (this.nomineeArray.length < 1) {
+          //if (this.nomineeArray.length < 1) {
             if (this.branchUWNomineeForm.get("dateOfBirthNominee").valid && this.branchUWNomineeForm.get("nicNominee").valid) {
               if (this.branchUWNomineeForm.get("fullNameNominee").value != "" && this.branchUWNomineeForm.get("fullNameNominee").value != undefined) {
                 if (this.branchUWNomineeForm.get("share").value != "" && this.branchUWNomineeForm.get("share").value != undefined) {
@@ -1472,9 +1472,9 @@ export class BranchUnderwriteComponent implements OnInit {
             } else {
               this.alert("Oopz...", "Please Enter DOB and Nic Correctly", "error");
             }
-          }else{
-            this.alert("Oopz...", "Already You Have Add Nominee", "error");
-          }
+          // }else{
+          //   this.alert("Oopz...", "Already You Have Add Nominee", "error");
+          // }
         }
 
 
