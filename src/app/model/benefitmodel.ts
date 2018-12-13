@@ -1,6 +1,6 @@
 export class BenefitModel {
     constructor(private ridercode? : string, private ridername? : string, private term? : number,
-         private sumassured? : number, private premium? : number){}
+         private sumassured? : string, private premium? : number){}
 
     get RiderCode(){
         return this.ridercode;
@@ -24,7 +24,7 @@ export class BenefitModel {
     get SumAssured(){
         return this.sumassured;
     }
-    set SumAssured(sumassured: number){
+    set SumAssured(sumassured: string){
         this.sumassured = sumassured;
     }
     get Premium(){
