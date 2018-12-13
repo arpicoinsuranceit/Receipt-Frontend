@@ -24,7 +24,7 @@
         <div [ngClass]="{'disabled': loading_form == true}">
           <form class="proposal-receipt-form" [formGroup]="receiptForm">
             <mat-form-field>
-              <mat-select formControlName="branchCode" placeholder="Branch">
+              <mat-select formControlName="branchCode" tabindex="1" placeholder="Branch">
                 <mat-option *ngFor="let branch of branches" [value]="branch.Id">
                   <span> {{ branch.Id }} </span> |
                   <small> {{ branch.Description }} </small>
@@ -34,7 +34,7 @@
             <br>
 
             <mat-form-field class="full-width">
-              <input matInput placeholder="Bank Code *" aria-label="Bank Code" [matAutocomplete]="bank" formControlName="bankCode">
+              <input matInput placeholder="Bank Code *" tabindex="2" aria-label="Bank Code" [matAutocomplete]="bank" formControlName="bankCode">
               <mat-autocomplete #bank="matAutocomplete">
                 <mat-option *ngFor="let bank of filteredBanks | async" [value]="bank.BankCode">
                   <span> {{ bank.BankName }} </span> |
@@ -47,7 +47,7 @@
               </mat-error>
             </mat-form-field>
             <mat-form-field class="full-width">
-              <input matInput placeholder="Agent Code *" aria-label="Agent Code" (keyup)="getAgents($event)"
+              <input matInput placeholder="Agent Code *" tabindex="3" aria-label="Agent Code" (keyup)="getAgents($event)"
                 [matAutocomplete]="agentNumbers" formControlName="agentCode">
               <mat-autocomplete #agentNumbers="matAutocomplete">
 
@@ -60,10 +60,10 @@
               </mat-autocomplete>
             </mat-form-field>
             <mat-form-field class="full-width">
-              <input matInput placeholder="Remark" aria-label="Remark" formControlName="remark">
+              <input matInput placeholder="Remark" tabindex="4" aria-label="Remark" formControlName="remark">
             </mat-form-field>
             <mat-form-field>
-              <mat-select placeholder="Payment Mode" aria-label="Payment Mode" formControlName="paymode">
+              <mat-select placeholder="Payment Mode" tabindex="5" aria-label="Payment Mode" formControlName="paymode">
                 <mat-option value="02.CASH">
                   CASH
                 </mat-option>
@@ -84,15 +84,15 @@
             </mat-form-field>
             <mat-card *ngIf="PayMode.value == '01.CHEQUE'" style="margin-bottom: 10px;">
               <mat-form-field class="half-width">
-                <input matInput type="number" placeholder="Cheque No" aria-label="Cheque No" formControlName="chequeno">
+                <input matInput type="number" tabindex="5" placeholder="Cheque No" aria-label="Cheque No" formControlName="chequeno">
               </mat-form-field>
               <mat-form-field>
-                <input matInput [matDatepicker]="picker" placeholder="Cheque Date" formControlName="chequedate">
+                <input matInput tabindex="6" [matDatepicker]="picker" placeholder="Cheque Date" formControlName="chequedate">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
               </mat-form-field>
               <mat-form-field class="full-width">
-                <input matInput type="number" placeholder="Bank" aria-label="Bank" formControlName="chequebank">
+                <input matInput tabindex="7" type="number" placeholder="Bank" aria-label="Bank" formControlName="chequebank">
               </mat-form-field>
             </mat-card>
             <!-- <mat-card *ngIf="PayMode.value == 'CR'" style="margin-bottom: 10px;">
@@ -145,7 +145,7 @@
         <div [ngClass]="{'disabled2': loading_form2 == true}">
           <form class="proposal-receipt-form" [formGroup]="expenceForm">
             <mat-form-field class="full-width">
-              <mat-select placeholder="Expense Code" (blur)="fillExpence()" formControlName="expenceId">
+              <mat-select tabindex="8" placeholder="Expense Code" (blur)="fillExpence()" formControlName="expenceId">
                 <mat-option *ngFor="let expence of expences" [value]="expence.expenseId">
                   <span> {{ expence.ExpenseId }} </span> |
                   <small> {{ expence.Description }} </small>
@@ -154,7 +154,7 @@
             </mat-form-field>
             <br>
             <mat-form-field class="full-width">
-              <input matInput placeholder="Expence Remark" formControlName="expenseRemark">
+              <input matInput placeholder="Expence Remark" tabindex="9" formControlName="expenseRemark">
             </mat-form-field>
             <mat-form-field class="half-width">
               <input readonly type="number" matInput placeholder="Amount" formControlName="expenceAmount">
@@ -162,7 +162,7 @@
               <span matSuffix>.00</span>
             </mat-form-field>
             <mat-form-field style="padding-left: 40px;" class="half-width">
-              <input type="number" matInput placeholder="Quantity" formControlName="expenceQty">
+              <input type="number" matInput placeholder="Quantity" tabindex="10" formControlName="expenceQty">
               <mat-error *ngIf="ExpenceQty.hasError('valied')">
                 Quantity is
                 <strong>REQUIRED</strong>
@@ -174,8 +174,8 @@
       </mat-card-content>
       <mat-card-actions style="border-top: solid #C4C4C4 1px; display: flex; 
           justify-content: space-between;">
-        <button mat-raised-button color="warn" (click)="deleteInCart()">Delete</button>
-        <button mat-raised-button color="primary" (click)="addToCart()">Add</button>
+        <button mat-raised-button color="warn" tabindex="12" (click)="deleteInCart()">Delete</button>
+        <button mat-raised-button color="primary" tabindex="11" (click)="addToCart()">Add</button>
       </mat-card-actions>
 
       <mat-card-content>

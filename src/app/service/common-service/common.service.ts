@@ -7,6 +7,7 @@ import { MatDialogConfig, MatDialog } from '@angular/material';
 @Injectable()
 export class CommonService {
 
+
   constructor(private http: Http, public dialog: MatDialog) {
 
   }
@@ -141,6 +142,10 @@ export class CommonService {
     //   alert("response: " + result)
     // });
 
+  }
+
+  advanceSearch(adv_type: string, adv_value: string, type : string): any {
+    return this.http.get('http://localhost:8088/searchProposal/' + adv_value + "/" + adv_type + "/" + type);
   }
 
 }
