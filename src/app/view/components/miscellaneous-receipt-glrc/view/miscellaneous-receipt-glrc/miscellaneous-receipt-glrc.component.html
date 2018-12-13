@@ -24,7 +24,7 @@
         <div [ngClass]="{'disabled': loading_form == true}">
           <form class="proposal-receipt-form" [formGroup]="receiptForm">
             <mat-form-field>
-              <mat-select formControlName="branchCode" placeholder="Branch">
+              <mat-select tabindex="1" formControlName="branchCode" placeholder="Branch">
                 <mat-option *ngFor="let branch of branches" [value]="branch.Id">
                   <span> {{ branch.Id }} </span> |
                   <small> {{ branch.Description }} </small>
@@ -34,7 +34,8 @@
             <br>
 
             <mat-form-field class="full-width">
-              <input matInput placeholder="Bank Code *" aria-label="Bank Code" [matAutocomplete]="bank" formControlName="bankCode">
+              <input matInput tabindex="2" placeholder="Bank Code *" aria-label="Bank Code" [matAutocomplete]="bank"
+                formControlName="bankCode">
               <mat-autocomplete #bank="matAutocomplete">
                 <mat-option *ngFor="let bank of filteredBanks | async" [value]="bank.BankCode">
                   <span> {{ bank.BankName }} </span> |
@@ -46,9 +47,9 @@
                 <strong>REQUIRED</strong>
               </mat-error>
             </mat-form-field>
-            
+
             <mat-form-field class="full-width">
-              <input matInput placeholder="Remark" aria-label="Remark" formControlName="remark">
+              <input matInput tabindex="3" placeholder="Remark" aria-label="Remark" formControlName="remark">
             </mat-form-field>
             <mat-form-field>
               <mat-select placeholder="Payment Mode" aria-label="Payment Mode" formControlName="paymode">
@@ -72,15 +73,16 @@
             </mat-form-field>
             <mat-card *ngIf="PayMode.value == 'CQ'" style="margin-bottom: 10px;">
               <mat-form-field class="half-width">
-                <input matInput type="number" placeholder="Cheque No" aria-label="Cheque No" formControlName="chequeno">
+                <input matInput tabindex="4" type="number" placeholder="Cheque No" aria-label="Cheque No"
+                  formControlName="chequeno">
               </mat-form-field>
               <mat-form-field>
-                <input matInput [matDatepicker]="picker" placeholder="Cheque Date" formControlName="chequedate">
+                <input matInput tabindex="5" [matDatepicker]="picker" placeholder="Cheque Date" formControlName="chequedate">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
               </mat-form-field>
               <mat-form-field class="full-width">
-                <input matInput type="number" placeholder="Bank" aria-label="Bank" formControlName="chequebank">
+                <input matInput tabindex="6" type="number" placeholder="Bank" aria-label="Bank" formControlName="chequebank">
               </mat-form-field>
             </mat-card>
             <!-- <mat-card *ngIf="PayMode.value == 'CR'" style="margin-bottom: 10px;">
@@ -133,7 +135,7 @@
         <div [ngClass]="{'disabled2': loading_form2 == true}">
           <form class="proposal-receipt-form" [formGroup]="accountForm">
             <mat-form-field class="full-width">
-              <mat-select placeholder="Account" (change)="fillExpence()" formControlName="accountId">
+              <mat-select tabindex="7" placeholder="Account" (change)="fillExpence()" formControlName="accountId">
                 <mat-option *ngFor="let account of accounts" [value]="account.id">
                   <span> {{ account.id }} </span> |
                   <small> {{ account.description }} </small>
@@ -142,22 +144,22 @@
             </mat-form-field>
             <br>
             <mat-form-field class="full-width">
-              <input matInput placeholder="Remark" formControlName="accRemark">
+              <input matInput tabindex="8" placeholder="Remark" formControlName="accRemark">
             </mat-form-field>
             <mat-form-field class="half-width">
-              <input  type="number" matInput placeholder="Amount" formControlName="accAmount">
+              <input type="number" tabindex="9" matInput placeholder="Amount" formControlName="accAmount">
               <span matPrefix>Rs.</span>
               <span matSuffix>.00</span>
             </mat-form-field>
-            
+
           </form>
         </div>
 
       </mat-card-content>
       <mat-card-actions style="border-top: solid #C4C4C4 1px; display: flex; 
           justify-content: space-between;">
-        <button mat-raised-button color="warn" (click)="deleteInCart()">Delete</button>
-        <button mat-raised-button color="primary" (click)="addToCart()">Add</button>
+        <button mat-raised-button tabindex="11" color="warn" (click)="deleteInCart()">Delete</button>
+        <button mat-raised-button tabindex="10" color="primary" (click)="addToCart()">Add</button>
       </mat-card-actions>
 
       <mat-card-content>
@@ -176,8 +178,10 @@
               <mat-cell *matCellDef="let element"> {{element.Remark}} </mat-cell>
             </ng-container>
             <ng-container matColumnDef="amount">
-              <mat-header-cell *matHeaderCellDef style="display: flex; justify-content: flex-end;"> Amount </mat-header-cell>
-              <mat-cell *matCellDef="let element" style="display: flex; justify-content: flex-end;"> {{element.Amount | number: '.2'}} </mat-cell>
+              <mat-header-cell *matHeaderCellDef style="display: flex; justify-content: flex-end;"> Amount
+              </mat-header-cell>
+              <mat-cell *matCellDef="let element" style="display: flex; justify-content: flex-end;"> {{element.Amount |
+                number: '.2'}} </mat-cell>
             </ng-container>
 
             <mat-header-row *matHeaderRowDef="accColumns"></mat-header-row>
@@ -213,8 +217,10 @@
             <mat-cell *matCellDef="let element" style="text-align: right"> {{element.AgentCode}} </mat-cell>
           </ng-container>
           <ng-container matColumnDef="amount">
-            <mat-header-cell *matHeaderCellDef style="display: flex; justify-content: flex-end;"> Amount </mat-header-cell>
-            <mat-cell *matCellDef="let element" style="display: flex; justify-content: flex-end;"> {{element.Amount | number: '.2'}} </mat-cell>
+            <mat-header-cell *matHeaderCellDef style="display: flex; justify-content: flex-end;"> Amount
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element" style="display: flex; justify-content: flex-end;"> {{element.Amount |
+              number: '.2'}} </mat-cell>
           </ng-container>
 
 

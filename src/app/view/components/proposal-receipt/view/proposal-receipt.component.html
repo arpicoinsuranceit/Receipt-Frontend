@@ -6,7 +6,7 @@
 <div [ngClass]="{'disabled': loading_saving == true}" class="container" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
     fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
     <div fxFlex="50%">
-        <mat-card class="main-card" style="height: 741px;">
+        <mat-card class="main-card" style="min-height: 741px;">
 
             <mat-card-header>
                 <mat-card-title>
@@ -21,26 +21,82 @@
                 </div>
                 <div [ngClass]="{'disabled': loading_form == true}">
                     <form class="proposal-receipt-form" [formGroup]="quoReceiptForm">
-                        <mat-form-field>
-                            <input matInput placeholder="Proposal No. *" aria-label="Proposal No." [matAutocomplete]="propNumbers" formControlName="propNo"
-                                (keyup)="LoadProposals($event)" (blur)="getProposalDetails(propNumbers)">
-                            <mat-autocomplete #propNumbers="matAutocomplete">
+                        <div style="border-top: solid #C4C4C4 1px; display: flex; 
+                            justify-content: space-between;">
+                            <mat-form-field>
+                                <input matInput placeholder="Proposal No. *" tabindex="1" aria-label="Proposal No."
+                                    [matAutocomplete]="propNumbers" formControlName="propNo" (keyup)="LoadProposals($event)"
+                                    (blur)="getProposalDetails(propNumbers)">
+                                <mat-autocomplete #propNumbers="matAutocomplete">
 
-                                <mat-option *ngFor="let proposal of filteredProposals | async" [value]="proposal.ProposalCombine">
-                                    <span> {{ proposal.ProposalId }} </span>
-                                     <!-- |
-                                    <small> {{ proposal.ProposalDetailId }} </small> -->
+                                    <mat-option *ngFor="let proposal of filteredProposals | async" [value]="proposal.ProposalCombine">
+                                        <span> {{ proposal.ProposalId }} </span>
+                                    </mat-option>
+
+                                </mat-autocomplete>
+                                <mat-error *ngIf="PropNo.hasError('incorrect')">
+                                    Propsal Number is
+                                    <strong>INCORRECT</strong>
+                                </mat-error>
+                            </mat-form-field>
+
+                            <button style="margin-top: 12px; margin-bottom: 12px;" mat-raised-button (click)="advanceSearchEnable()">Advance
+                                Search</button>
+                        </div>
+                        <mat-card *ngIf="advance_search" style="margin-bottom: 10px;" [ngClass]="{'disabled': loading_adv_search == true}" >
+                            <div [hidden]="!loading_adv_search" class="loader">
+                                <h5>Loading...</h5>
+                                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                            </div>
+                            <mat-select placeholder="Type" tabindex="2" style="width: 150px; padding-right: 10px;" aria-label="Type"
+                                formControlName="adv_type">
+                                <mat-option value="ppr">
+                                    Proposal No
                                 </mat-option>
+                                <mat-option value="quo">
+                                    Quotation No
+                                </mat-option>
+                                <mat-option value="cnm">
+                                    Customer Name
+                                </mat-option>
+                                <mat-option value="nic">
+                                    Customer NIC
+                                </mat-option>
+                            </mat-select>
+                            <mat-form-field>
+                                <input type="text" tabindex="3" matInput placeholder="Search" aria-label="Search" formControlName="adv_value">
+                            </mat-form-field>
+                            <button color="primary" tabindex="4" mat-mini-fab (click)="advanceSearch()"><i class="fas fa-search"></i></button>
 
-                            </mat-autocomplete>
-                            <mat-error *ngIf="PropNo.hasError('incorrect')">
-                                Propsal Number is
-                                <strong>INCORRECT</strong>
-                            </mat-error>
-                        </mat-form-field>
+                            <mat-table #table [dataSource]="searchList" style="height: 158px; overflow: auto;">
+                                <ng-container matColumnDef="custname" style="padding-right: 10px;">
+                                    <mat-header-cell *matHeaderCellDef> Cust. Name </mat-header-cell>
+                                    <mat-cell *matCellDef="let element"> {{element.CustName}} </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="nic" style="padding-right: 10px;">
+                                    <mat-header-cell *matHeaderCellDef> NIC </mat-header-cell>
+                                    <mat-cell *matCellDef="let element"> {{element.Nic}} </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="propNo" style="padding-right: 10px;">
+                                    <mat-header-cell *matHeaderCellDef> Prop. No </mat-header-cell>
+                                    <mat-cell *matCellDef="let element"> {{element.Pprnum}} </mat-cell>
+                                </ng-container>
+
+                                <ng-container matColumnDef="product">
+                                    <mat-header-cell *matHeaderCellDef> Product </mat-header-cell>
+                                    <mat-cell *matCellDef="let element"> {{element.Product}} </mat-cell>
+                                </ng-container>
+
+                                <mat-header-row *matHeaderRowDef="searchColumns; sticky: true"></mat-header-row>
+                                <mat-row *matRowDef="let row; columns: searchColumns;" (dblclick)="getSearch(row)"></mat-row>
+                            </mat-table>
+                        </mat-card>
+
+
                         <br>
                         <mat-form-field class="full-width">
-                            <input matInput placeholder="Bank Code *" aria-label="Bank Code" [matAutocomplete]="bank" formControlName="bankCode">
+                            <input matInput placeholder="Bank Code *" tabindex="5" aria-label="Bank Code" [matAutocomplete]="bank"
+                                formControlName="bankCode">
                             <mat-autocomplete #bank="matAutocomplete">
                                 <mat-option *ngFor="let bank of filteredBanks | async" [value]="bank.BankCode">
                                     <span> {{ bank.BankName }} </span> |
@@ -53,10 +109,10 @@
                             </mat-error>
                         </mat-form-field>
                         <mat-form-field class="full-width">
-                            <input matInput placeholder="Remark" aria-label="Remark" formControlName="remark">
+                            <input matInput placeholder="Remark" tabindex="6" aria-label="Remark" formControlName="remark">
                         </mat-form-field>
                         <mat-form-field>
-                            <mat-select placeholder="Payment Mode" aria-label="Payment Mode" formControlName="paymode">
+                            <mat-select placeholder="Payment Mode" tabindex="7" aria-label="Payment Mode" formControlName="paymode">
                                 <mat-option value="CS">
                                     CASH
                                 </mat-option>
@@ -78,25 +134,28 @@
 
                         <mat-card *ngIf="PayMode.value == 'CQ'" style="margin-bottom: 10px;">
                             <mat-form-field class="half-width">
-                                <input matInput type="number" placeholder="Cheque No" aria-label="Cheque No" formControlName="chequeno">
+                                <input matInput type="number" tabindex="8" placeholder="Cheque No" aria-label="Cheque No"
+                                    formControlName="chequeno">
                             </mat-form-field>
                             <mat-form-field>
-                                <input matInput [matDatepicker]="picker" placeholder="Cheque Date" formControlName="chequedate">
+                                <input matInput [matDatepicker]="picker" tabindex="9" placeholder="Cheque Date" formControlName="chequedate">
                                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                 <mat-datepicker #picker></mat-datepicker>
                             </mat-form-field>
                             <mat-form-field class="full-width">
-                                <input matInput type="number" placeholder="Bank" aria-label="Bank" formControlName="chequebank">
+                                <input matInput type="number" tabindex="10" placeholder="Bank" aria-label="Bank" formControlName="chequebank">
                             </mat-form-field>
                         </mat-card>
                         <mat-card *ngIf="PayMode.value == 'CR'" style="margin-bottom: 10px;">
                             <mat-form-field class="half-width">
-                                <input matInput placeholder="Credit Transfer No" aria-label="Credit Transfer No" formControlName="credittransferno">
+                                <input matInput placeholder="Credit Transfer No" tabindex="11" aria-label="Credit Transfer No"
+                                    formControlName="credittransferno">
                             </mat-form-field>
                         </mat-card>
 
                         <mat-form-field class="full-width">
-                            <input matInput placeholder="Amount" type="number" aria-label="Amount" class="right-align" formControlName="amount" (blur)="convertAmountToWord()">
+                            <input matInput placeholder="Amount" tabindex="12" type="number" aria-label="Amount" class="right-align"
+                                formControlName="amount" (blur)="convertAmountToWord()">
                             <span matPrefix>Rs.</span>
                             <span matSuffix>.00</span>
                             <mat-error *ngIf="Amount.hasError('required')">
@@ -117,8 +176,8 @@
 
             <mat-card-actions style="border-top: solid #C4C4C4 1px; display: flex; 
             justify-content: space-between;">
-                <button mat-raised-button color="warn" (click)="newReceipt()">CLEAR</button>
-                <button mat-raised-button color="primary" (click)="saveReceipt()">SAVE</button>
+                <button mat-raised-button color="warn" tabindex="14" (click)="newReceipt()">CLEAR</button>
+                <button mat-raised-button color="primary" tabindex="13" (click)="saveReceipt()">SAVE</button>
             </mat-card-actions>
         </mat-card>
     </div>
@@ -171,11 +230,12 @@
                             <td>Payble Amount</td>
                             <td> :</td>
                             <td>Rs. {{basicDetail.PayAmount | number: '.2'}}</td>
-                        </tr> 
+                        </tr>
 
                     </table>
 
-                    <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+                    <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%"
+                        fxLayoutAlign="center">
                         <div fxFlex="50%">
                             <mat-card class="small-card" style="background: #d6fcec">
                                 <mat-card-header style="border-color: palegreen">
@@ -183,8 +243,9 @@
                                     <mat-card-subtitle>{{lastReceipt[0].Credat}}</mat-card-subtitle>
                                 </mat-card-header>
                                 <mat-card-content>
-                                    <h3 style="width: 100%; text-align: right">Rs. {{lastReceipt[0].Topprm | number: '.2'}}</h3>
-                                    <div style="display: flex;  justify-content: space-between;"> 
+                                    <h3 style="width: 100%; text-align: right">Rs. {{lastReceipt[0].Topprm | number:
+                                        '.2'}}</h3>
+                                    <div style="display: flex;  justify-content: space-between;">
                                         <p style="text-align: Left">
                                             <span>{{lastReceipt[0].Doccod}}</span>
                                         </p>
@@ -203,7 +264,8 @@
                                     <mat-card-subtitle>{{lastReceipt[1].Credat}}</mat-card-subtitle>
                                 </mat-card-header>
                                 <mat-card-content>
-                                    <h3 style="width: 100%; text-align: right">Rs. {{lastReceipt[1].Topprm | number: '.2'}}</h3>
+                                    <h3 style="width: 100%; text-align: right">Rs. {{lastReceipt[1].Topprm | number:
+                                        '.2'}}</h3>
                                     <div style="display: flex;  justify-content: space-between;">
                                         <p style="text-align: Left">
                                             <span>{{lastReceipt[1].Doccod}}</span>
@@ -242,16 +304,22 @@
                         <mat-cell *matCellDef="let element"> {{element.Credat}} </mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="pprnum">
-                        <mat-header-cell *matHeaderCellDef style="display: flex; justify-content: flex-end;"> Proposal No </mat-header-cell>
-                        <mat-cell *matCellDef="let element" style="display: flex; justify-content: flex-end;"> {{element.Pprnum}} </mat-cell>
+                        <mat-header-cell *matHeaderCellDef style="display: flex; justify-content: flex-end;"> Proposal
+                            No </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="display: flex; justify-content: flex-end;">
+                            {{element.Pprnum}} </mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="polnum">
-                        <mat-header-cell *matHeaderCellDef style="display: flex; justify-content: flex-end;"> Policy No </mat-header-cell>
-                        <mat-cell *matCellDef="let element" style="display: flex; justify-content: flex-end;"> {{element.Polnum}} </mat-cell>
+                        <mat-header-cell *matHeaderCellDef style="display: flex; justify-content: flex-end;"> Policy No
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="display: flex; justify-content: flex-end;">
+                            {{element.Polnum}} </mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="topprm">
-                        <mat-header-cell *matHeaderCellDef style="display: flex; justify-content: flex-end;"> Amount </mat-header-cell>
-                        <mat-cell *matCellDef="let element" style="display: flex; justify-content: flex-end;"> {{element.Topprm | number: '.2'}} </mat-cell>
+                        <mat-header-cell *matHeaderCellDef style="display: flex; justify-content: flex-end;"> Amount
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="display: flex; justify-content: flex-end;">
+                            {{element.Topprm | number: '.2'}} </mat-cell>
                     </ng-container>
 
 
