@@ -31,6 +31,10 @@ const routes: Routes = [
         loadChildren : "app/view/components/policy-receipt/policy-receipt.module#PolicyReceiptModule"
       },
       {
+        path: 'loanreceipt',
+        loadChildren : "app/view/components/loan-receipt/loan-receipt.module#LoanReceiptModule"
+      },
+      {
         path: 'miscellaneousreceipt',
         loadChildren : "app/view/components/miscellaneous-receipt/miscellaneous-receipt.module#MiscellaneousReceiptModule"
       },

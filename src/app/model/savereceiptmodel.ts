@@ -3,7 +3,7 @@ export class SaveReceiptModel {
         private bankCode?: string, private remark?: string, private payMode?: string, private amount?: number, private payAmountWord?: string,
         private productCode?: string, private branchCode?: string, private agentCode?: string,
         private chequeno?: string, private chequedate?: string, private chequebank?: string, private transferno?: string,
-        private token?: string, private polId?: number, private polSeq?: number) { }
+        private token?: string, private polId?: number, private polSeq?: number, private loanNo?: number) { }
 
     set PolId(polId: number) {
         this.polId = polId;
@@ -163,6 +163,14 @@ export class SaveReceiptModel {
 
     get Token() {
         return this.token;
+    }
+
+    set LoanNo(loanNo: number) {
+        this.loanNo = loanNo;
+    }
+
+    get LoanNo() {
+        return this.loanNo;
     }
 
 }
