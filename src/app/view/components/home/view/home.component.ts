@@ -208,8 +208,7 @@ export class HomeComponent implements OnInit {
 
     let month: number = date.getMonth() - 1;
 
-    let toDate: Date = null;
-
+    let toDate: Date = new Date();
     let monthString = "";
 
     if(month < 10){
@@ -218,7 +217,10 @@ export class HomeComponent implements OnInit {
       monthString = (month + 1).toString();
     }
 
+   // let monthString = month < 10 ? "0" + (month + 1) : (month + 1).toString;
+
     if (month < 0) {
+
       toDate = new Date((date.getFullYear() - 1) + "-12-01");
     } else {
       toDate = new Date(date.getFullYear() + "-" + monthString + "-01");

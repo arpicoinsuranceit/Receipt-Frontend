@@ -571,7 +571,7 @@ export class ProposalReceiptComponent implements OnInit {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.data = {
-      id: 1,
+      id: '',
       title: title,
       message: message,
       type: type

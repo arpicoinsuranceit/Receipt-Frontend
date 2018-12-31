@@ -23,9 +23,9 @@
               <div [ngClass]="{'disabled': loading_form == true}">
                 <mat-tab-group>
 
-                  <mat-tab label="NEW">
+                  <mat-tab label="PROPOSAL NO">
                     <form [formGroup]="propCodeTranForm" style="margin-top: 20px;">
-                      <mat-form-field class="half-width">
+                      <!-- <mat-form-field class="half-width">
                         <input matInput placeholder="Proposal No" aria-label="Proposal No"
                             formControlName="pprNo">
     
@@ -33,12 +33,16 @@
                             Proposal No is
                             <strong>REQUIRED</strong>
                         </mat-error>
-                      </mat-form-field>
+                      </mat-form-field> -->
 
-                      <button mat-raised-button color="primary" (click)="addToPprTable()" style="margin-left: 10px;">ADD</button>
+                      <!-- <button mat-raised-button color="primary" (click)="addToPprTable()" style="margin-left: 10px;">ADD</button> -->
 
                       <mat-card class="main-card" style="max-height: 150px;overflow-x: auto;">
-
+                        <mat-card-header>
+                            <mat-card-title>
+                                <h4>Code Pending Proposals</h4>
+                            </mat-card-title>
+                        </mat-card-header>
                         <mat-table [dataSource]="datasourceprpCodeTran">
                             <ng-container matColumnDef="pprNum" >
                                 <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;"> Proposal No </mat-header-cell>
@@ -62,43 +66,97 @@
                             </ng-container>
 
                             <mat-header-row *matHeaderRowDef="displayedColumnsCodeTran; sticky: true"></mat-header-row>
-                            <mat-row *matRowDef="let row; columns: displayedColumnsCodeTran;"></mat-row>
+                            <mat-row *matRowDef="let row; columns: displayedColumnsCodeTran;" (dblclick)="loadDataToExisting(row.agentCode,row.agentName,row.branch,row.pprNum)"></mat-row>
                         </mat-table>
                       </mat-card>
 
-                      <mat-form-field  class="full-width">
-                        <textarea  matInput placeholder="Reason" formControlName="reason"></textarea>
+                      <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center" *ngIf="isSelectRow">
+                        <div fxFlex="45%">
+                            <mat-card class="small-card" style="background: #d6fcec;height: 160px;">
+                                <mat-card-header style="border-color: palegreen">
+                                    <mat-card-title><h4 style="width: 100%;margin-top: 0;">Existing Agent Details</h4></mat-card-title>
+                                    <mat-card-subtitle></mat-card-subtitle>
+                                </mat-card-header>
+                                <mat-card-content>
+                                    <table style="width:100%;">
+                                        <tr>
+                                            <td>Agent Code</td>
+                                            <td>:</td>
+                                            <td>{{existingAgentCode}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Agent Name</td>
+                                            <td>:</td>
+                                            <td>{{existingAgentName}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Branch</td>
+                                            <td>:</td>
+                                            <td>{{existingBranch}}</td>
+                                        </tr>
+                                    </table>
 
-                        <mat-error *ngIf="Reason.hasError('required')">
-                            Reason is
-                            <strong>REQUIRED</strong>
-                        </mat-error>
-                      </mat-form-field> <br>
-
-                      <mat-form-field class="full-width">
-                        <input matInput placeholder="Agent Code" aria-label="Agent Code" [matAutocomplete]="agentCode"
-                          formControlName="agentCode" (keyup)="getAgents($event)">
-                        <mat-autocomplete #agentCode="matAutocomplete">
-                          <mat-option *ngFor="let agent of filteredAgents | async" [value]="agent.AgentCode">
-                            <span> {{ agent.AgentCode }} </span> |
-                            <small> {{ agent.AgentName }} </small> |
-                            <small> {{ agent.Location }} </small>
-                          </mat-option>
-
-                        </mat-autocomplete>
-
-                      </mat-form-field>
-    
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+                        <div fxFlex="10%">
+                            <div>
+                                <i class="fas fa-arrow-alt-right fa-4x icon_dash" style="color: #8D6E63"></i>
+                            </div>
+                        </div>
+                        <div fxFlex="45%">
+                            <mat-card class="small-card" style="background: #d6fcec;height: 160px;">
+                                <mat-card-header style="border-color: palegreen">
+                                    <mat-card-title><h4 style="width: 100%;margin-top: 0;">Transfer Agent Details</h4></mat-card-title>
+                                    <mat-card-subtitle></mat-card-subtitle>
+                                </mat-card-header>
+                                <mat-card-content>
+                                    <table style="width:100%;">
+                                        <tr>
+                                            <td>Agent Code</td>
+                                            <td>:</td>
+                                            <td>
+                                                <mat-form-field style="width:100px;">
+                                                <input matInput [matAutocomplete]="agentCode"
+                                                  formControlName="agentCode" (keyup)="getAgents($event)" (blur)="loadNewAgentDetails()" (keyup.enter)="loadNewAgentDetails()">
+                                                <mat-autocomplete #agentCode="matAutocomplete" >
+                                                  <mat-option *ngFor="let agent of filteredAgents | async" [value]="agent.AgentCode">
+                                                    <span> {{ agent.AgentCode }} </span> |
+                                                    <small> {{ agent.AgentName }} </small> |
+                                                    <small> {{ agent.Location }} </small>
+                                                  </mat-option>
+                        
+                                                </mat-autocomplete>
+                        
+                                              </mat-form-field>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Agent Name</td>
+                                            <td>:</td>
+                                            <td>{{newAgentName}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Branch</td>
+                                            <td>:</td>
+                                            <td>{{newBranch}}</td>
+                                        </tr>
+                                    </table>
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+                    </div>
+                    
                     </form>
 
                     <div style="border-top: solid #C4C4C4 1px; display: flex; justify-content: space-between;">
-                        <button mat-raised-button color="warn" style="margin-top: 20px;" (click)="clearProp()">CLEAR</button>
-                        <button mat-raised-button color="primary" style="margin-top: 20px;" (click)="savePropCodeTransfer()">SAVE</button>       
+                        <button mat-raised-button color="warn" style="margin-top: 20px;margin-bottom: 20px;" (click)="clearProp()">CLEAR</button>
+                        <button mat-raised-button color="primary" style="margin-top: 20px;margin-bottom: 20px;" (click)="savePropCodeTransfer()">SAVE</button>       
                     </div>
 
                   </mat-tab>
 
-                  <mat-tab label="OLD"> 
+                  <mat-tab label="POLICY NO" disabled> 
                       <form [formGroup]="polCodeTranForm" style="margin-top: 20px;">
                           <mat-form-field class="half-width">
                             <input matInput placeholder="Policy No" aria-label="Policy No"
@@ -193,14 +251,14 @@
 
           <mat-card-header>
               <mat-card-title>
-                  <h3>Pending Code Transfer </h3>
+                  <h3>Pending Approvals </h3>
               </mat-card-title>
           </mat-card-header>
 
           <div [ngClass]="{'disabled2': loading_table == true}">
             <mat-tab-group>
 
-                <mat-tab label="NEW">
+                <mat-tab label="PROPOSAL NO">
                     <div style="overflow-x: auto;max-height: 180px;">
                         <mat-table [dataSource]="datasourcePendingCodeTranPpr">
                             <ng-container matColumnDef="pprNum" >
@@ -216,24 +274,20 @@
                                 <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.LocCode}} </mat-cell>
                             </ng-container>
                             <ng-container matColumnDef="oldAgentCode">
-                                <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> Old Agent<br>Code </mat-header-cell>
-                                <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.OldAgentCode}} </mat-cell>
+                                <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;"> Existing <br>Agent<br>Code </mat-header-cell>
+                                <mat-cell *matCellDef="let element" style="flex: 0 0 20%;"> {{element.OldAgentCode}} </mat-cell>
                             </ng-container>
                             <ng-container matColumnDef="newAgentCode">
-                                <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> New Agent<br>Code </mat-header-cell>
-                                <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.NewAgentCode}} </mat-cell>
-                            </ng-container>
-                            <ng-container matColumnDef="reason">
-                                <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;"> Reason </mat-header-cell>
-                                <mat-cell *matCellDef="let element" style="flex: 0 0 20%;"> {{element.Reason}} </mat-cell>
+                                <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;"> New Agent<br>Code </mat-header-cell>
+                                <mat-cell *matCellDef="let element" style="flex: 0 0 20%;"> {{element.NewAgentCode}} </mat-cell>
                             </ng-container>
                             <ng-container matColumnDef="requestDate">
                                 <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> Request<br>Date </mat-header-cell>
                                 <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.RequestDate | date: 'dd/MM/yyyy'}} </mat-cell>
                             </ng-container>
                             <ng-container matColumnDef="status">
-                                <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Status </mat-header-cell>
-                                <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.Status}} </mat-cell>
+                                <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;"> Status </mat-header-cell>
+                                <mat-cell *matCellDef="let element" style="flex: 0 0 20%;"> {{element.Status}} </mat-cell>
                             </ng-container>
                             
                             <mat-header-row *matHeaderRowDef="displayedColumnsPendingCodeTran; sticky: true"></mat-header-row>
@@ -243,7 +297,7 @@
                     
                 </mat-tab>
 
-                <mat-tab label="OLD">
+                <mat-tab label="POLICY NO" >
                     <div style="overflow-x: auto;max-height: 180px;">
                         <mat-table [dataSource]="datasourcePendingCodeTranPol">
                             
@@ -260,24 +314,20 @@
                             <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.LocCode}} </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="oldAgentCode">
-                            <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> Old Agent<br>Code </mat-header-cell>
-                            <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.OldAgentCode}} </mat-cell>
+                            <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;"> Existing <br>Agent<br>Code </mat-header-cell>
+                            <mat-cell *matCellDef="let element" style="flex: 0 0 20%;"> {{element.OldAgentCode}} </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="newAgentCode">
-                            <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> New Agent<br>Code </mat-header-cell>
-                            <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.NewAgentCode}} </mat-cell>
-                        </ng-container>
-                        <ng-container matColumnDef="reason">
-                            <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;"> Reason </mat-header-cell>
-                            <mat-cell *matCellDef="let element" style="flex: 0 0 20%;"> {{element.Reason}} </mat-cell>
+                            <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;"> New Agent<br>Code </mat-header-cell>
+                            <mat-cell *matCellDef="let element" style="flex: 0 0 20%;"> {{element.NewAgentCode}} </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="requestDate">
                             <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> Request<br>Date </mat-header-cell>
                             <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.RequestDate | date: 'dd/MM/yyyy'}} </mat-cell>
                         </ng-container>
                         <ng-container matColumnDef="status">
-                            <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Status </mat-header-cell>
-                            <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.Status}} </mat-cell>
+                            <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;"> Status </mat-header-cell>
+                            <mat-cell *matCellDef="let element" style="flex: 0 0 20%;"> {{element.Status}} </mat-cell>
                         </ng-container>
                             
                             <mat-header-row *matHeaderRowDef="displayedColumnsPendingCodeTran; sticky: true"></mat-header-row>
@@ -299,14 +349,14 @@
   
             <mat-card-header>
                 <mat-card-title>
-                    <h3>Canceled Code Transfer </h3>
+                    <h3>Rejected Approvals </h3>
                 </mat-card-title>
             </mat-card-header>
   
             <div [ngClass]="{'disabled2': loading_table == true}">
               <mat-tab-group>
   
-                  <mat-tab label="NEW">
+                  <mat-tab label="PROPOSAL NO">
                       <div style="overflow-x: auto;max-height: 180px;">
                           <mat-table [dataSource]="datasourceCanceledCodeTranPpr">
                                 <ng-container matColumnDef="pprNum" >
@@ -318,7 +368,7 @@
                                     <mat-cell *matCellDef="let element" style="flex: 0 0 0%;">  </mat-cell>
                                 </ng-container>
                                 <ng-container matColumnDef="oldAgentCode">
-                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> Old Agent<br>Code </mat-header-cell>
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> Existing <br>Agent<br>Code </mat-header-cell>
                                     <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.OldAgentCode}} </mat-cell>
                                 </ng-container>
                                 <ng-container matColumnDef="newAgentCode">
@@ -349,7 +399,7 @@
                       
                   </mat-tab>
   
-                  <mat-tab label="OLD">
+                  <mat-tab label="POLICY NO">
                       <div style="overflow-x: auto;max-height: 180px;">
                           <mat-table [dataSource]="datasourceCanceledCodeTranPol">
                                 <ng-container matColumnDef="pprNum" >
@@ -361,7 +411,7 @@
                                     <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.PolNum}} </mat-cell>
                                 </ng-container>
                                 <ng-container matColumnDef="oldAgentCode">
-                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> Old Agent<br>Code </mat-header-cell>
+                                    <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> Existing <br>Agent<br>Code </mat-header-cell>
                                     <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.OldAgentCode}} </mat-cell>
                                 </ng-container>
                                 <ng-container matColumnDef="newAgentCode">

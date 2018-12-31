@@ -1,0 +1,24 @@
+<!-- <span *ngIf="loading_report == true" >Loading....</span><br> -->
+<img src="assets/images/report.gif" style="width: 40px; height: 40px;" *ngIf="loading_report == true">
+<div [ngClass]="{'hidedialog': loading_report == true}" >
+<h2 mat-dialog-title style="text-align: center;border-bottom:solid #C4C4C4 1px">Payment History Report</h2>
+<mat-dialog-content align="center" >
+  <!-- <img src="assets/images/giphy.gif" style="width: 70px; height: 70px;">  <br> -->
+
+  <div style="width: 100%">
+    <form [formGroup]="paymentHisForm">
+      <mat-form-field>
+        <input matInput placeholder="Policy No" name="polNum"
+          formControlName="polNum">
+      </mat-form-field>
+    </form>
+  </div>
+  
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+  
+  <button mat-button style="background: rgb(77, 77, 77); color: white" mat-dialog-close (click)="noConfirmation();" >CANCEL</button>
+  <button mat-button style="background:#3F51B5; color: white" (click)="yesConfirmation();" >VIEW</button>
+</mat-dialog-actions>
+
+</div>

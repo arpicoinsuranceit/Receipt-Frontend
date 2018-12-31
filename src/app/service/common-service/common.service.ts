@@ -120,6 +120,10 @@ export class CommonService {
 
   }
 
+  loadAgeNominee(dob){
+    return this.http.post('http://localhost:8084/ageCalNominee', dob);
+  }
+
   alert(title: string, message: string, type: string) {
     const dialogConfig = new MatDialogConfig();
 

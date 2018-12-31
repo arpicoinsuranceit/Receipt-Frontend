@@ -25,6 +25,10 @@ export class CodeTransferService {
     return this.http.get("http://localhost:8088/code_transfer/getPendingCodeTransfersPol/"+token);
   }
 
+  loadCodePendingProposal(token){
+    return this.http.get("http://localhost:8088/code_transfer/getCodePendingProposalDetails/"+token);
+  }
+
   checkProposalNoCanTransfer(pprNum,token){
     return this.http.get("http://localhost:8088/code_transfer/getProposalDetails/"+pprNum+"/"+token);
   }
@@ -35,6 +39,12 @@ export class CodeTransferService {
 
   getAgent(token){
     return this.http.get("http://localhost:8088/code_transfer/getAgentCode/"+token);
+  }
+
+  getAgentDetails(agentCode){
+    console.log(agentCode);
+    
+    return this.http.post("http://localhost:8088/getAgentsDetails/", agentCode);
   }
 
   saveCodeTranPol(saveCodeTransferModel){

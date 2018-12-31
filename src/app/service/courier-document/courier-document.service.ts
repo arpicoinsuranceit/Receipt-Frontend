@@ -68,6 +68,10 @@ export class CourierDocumentService {
       refType="";
     }
 
+    if(remark == null){
+      remark="";
+    }
+
     let param:URLSearchParams=new URLSearchParams();
     param.append("depId",depId);
     param.append("subDepId",subDepId);

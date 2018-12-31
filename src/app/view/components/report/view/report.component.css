@@ -7,53 +7,53 @@
 }
 
 .new-Business-div {
-    border-left: solid 5px #1FC1ED; 
-    background: #b3edfc; 
+    border-left: solid 5px #8D6E63; 
+    background: #D7CCC8; 
     margin-top: 0px;
     cursor: pointer;
 }
 
 .new-Business-div:hover {
-    border-left: solid 5px rgb(0, 177, 226); 
-    background: #8ce1f7; 
+    border-left: solid 5px #A1887F; 
+    background: #BCAAA4; 
 }
 
 
 .proposal-div{
-    border-left: solid 5px #DB4C3F; 
-    background: #dba19d; 
+    border-left: solid 5px #78909C; 
+    background: #CFD8DC; 
     margin-top: 0px;
     cursor: pointer;
 }
 
 .proposal-div:hover{
-    border-left: solid 5px rgb(207, 48, 33); 
-    background: #d1837d; 
+    border-left: solid 5px #90A4AE; 
+    background: #B0BEC5; 
 }
 
 
 .policy-div{
-    border-left: solid 5px #18A55D; 
-    background: #a4f2ca;
+    border-left: solid 5px #4DB6AC; 
+    background: #E0F2F1;
     margin-top: 0px;
     cursor: pointer;
 }
 
 .policy-div:hover{
-    border-left: solid 5px rgb(0, 133, 64); 
-    background: #77ecb0;
+    border-left: solid 5px #80CBC4; 
+    background: #B2DFDB;
 }
 
 .inv-div{
-    border-left: solid 5px #F19B2C;
-    background: #f7d2a5;
+    border-left: solid 5px #FFB74D;
+    background: #FFF3E0;
     margin-top: 0px;
     cursor: pointer;
 }
 
 .inv-div:hover{
-    border-left: solid 5px rgb(235, 133, 0);
-    background: #f0bc7e;
+    border-left: solid 5px #FFCC80;
+    background: #FFE0B2;
 }
 
 .gl-div{

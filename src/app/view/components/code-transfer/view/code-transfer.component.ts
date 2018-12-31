@@ -22,6 +22,7 @@ export class CodeTransferComponent implements OnInit {
   loading_table = true;
   loading_saving = false;
   prpCodeTranArray: CodeTransferHelperModel[]=new Array();
+  selectedPrpCodeTranArray: CodeTransferHelperModel[]=new Array();
   polCodeTranArray: CodeTransferHelperModel[]=new Array();
   agentCodeArray : AgentModel[]=new Array();
   agentCodePolArray : AgentModel[]=new Array();
@@ -32,7 +33,7 @@ export class CodeTransferComponent implements OnInit {
 
   displayedColumnsCodeTran : string[]= ['pprNum','branch','agentCode','agentName','designation'];
 
-  displayedColumnsPendingCodeTran : string[] = ['pprNum','polNum','locCode','oldAgentCode','newAgentCode','reason','requestDate','status'];
+  displayedColumnsPendingCodeTran : string[] = ['pprNum','polNum','locCode','oldAgentCode','newAgentCode','requestDate','status'];
 
   displayedColumnsCanceledCodeTran : string[] = ['pprNum','polNum','oldAgentCode','newAgentCode','approverRemark','approvedBy','approvedDate','requestDate'];
 
@@ -47,6 +48,14 @@ export class CodeTransferComponent implements OnInit {
 
   filteredAgents: Observable<any[]>;
   filteredAgentsPol: Observable<any[]>;
+
+  existingAgentCode;
+  existingAgentName;
+  existingBranch;
+  newAgentCode;
+  newAgentName;
+  newBranch;
+  pprNum;
   
   propCodeTranForm=new FormGroup({
     pprNo:new FormControl(''),
@@ -59,6 +68,7 @@ export class CodeTransferComponent implements OnInit {
     reasonPol:new FormControl('',Validators.required),
     agentCodePol:new FormControl('',Validators.required),
   });
+  isSelectRow: boolean = false;
 
   get PPrNo(){
     return this.propCodeTranForm.get('pprNo');
@@ -85,6 +95,7 @@ export class CodeTransferComponent implements OnInit {
   }
   
   constructor(private codeTransferService:CodeTransferService,private commonService:CommonService, public dialog: MatDialog) { 
+    this.loadCodePendingProposal();
     this.loadPendingCodeTranPrp();
     this.loadPendingCodeTranPol();
     this.loadCanceledCodeTranPrp();
@@ -336,14 +347,13 @@ export class CodeTransferComponent implements OnInit {
   }
 
   savePropCodeTransfer(){
-    if(this.prpCodeTranArray.length > 0 && this.AgentCode.value != null && this.AgentCode.value != "" 
-    && this.Reason.value != null && this.Reason.value != ""){
+    if(this.isSelectRow && this.selectedPrpCodeTranArray.length > 0 && this.AgentCode.value != null && this.AgentCode.value != "" && this.AgentCode.valid && this.newAgentCode != ""){
       this.loading_saving=true;
       let saveCodeTransferModel=new SaveCodeTransfer();
       saveCodeTransferModel.Agent=this.AgentCode.value;
-      saveCodeTransferModel.Reason=this.Reason.value;
+      saveCodeTransferModel.Reason="";
       saveCodeTransferModel.Token=sessionStorage.getItem("token");
-      saveCodeTransferModel.CodeTransferHelpers=this.prpCodeTranArray;
+      saveCodeTransferModel.CodeTransferHelpers=this.selectedPrpCodeTranArray;
 
       this.codeTransferService.saveCodeTranPrp(saveCodeTransferModel).subscribe(response => {
         this.loading_saving=false;
@@ -352,7 +362,11 @@ export class CodeTransferComponent implements OnInit {
           this.alert("Oopz...", response.json().message, "error");
         }else{
           this.alert("Success", "Code Transfer Request Send Successfully", "success");
+          this.isSelectRow=false;
+          this.newAgentCode="";
+          this.selectedPrpCodeTranArray=new Array();
           this.clearProp();
+          this.loadCodePendingProposal();
           this.loadPendingCodeTranPol();
           this.loadPendingCodeTranPrp();
           this.loadCanceledCodeTranPol();
@@ -363,6 +377,8 @@ export class CodeTransferComponent implements OnInit {
         this.alert("Oopz...", "Error occour at Saving Proposal Code Transfers", "error");
         this.loading_saving=false;
       });
+    }else{
+      this.alert("Oopz...", "Please Fill All Details Correctly.", "error");
     }
   }
 
@@ -385,6 +401,71 @@ export class CodeTransferComponent implements OnInit {
         }
         
       },error => {
+        this.loading_form=false;
+      });
+    }
+    
+  }
+
+  loadCodePendingProposal(){
+    this.loading_form=true;
+    this.codeTransferService.loadCodePendingProposal(sessionStorage.getItem("token")).subscribe(response =>{
+      console.log("//////////////////////////////");
+      console.log(response.json());
+      this.loading_form=false;
+      if(response.json().code == "204"){
+        this.alert("Oopz...", response.json().message, "error");
+        
+      }else{
+        let helperDto  : CodeTransferHelperModel[]=response.json();
+
+        this.prpCodeTranArray = helperDto;
+
+        this.datasourceprpCodeTran.data = this.prpCodeTranArray;
+
+      }
+      
+    },error => {
+      this.alert("Oopz...", "Error occour at Loading Code Pending Proposals", "error");
+      this.loading_form=false;
+    });
+    
+  }
+
+  loadDataToExisting(agentCode,agentName,branch,pprNum){
+    this.isSelectRow=true;
+    this.existingAgentCode=agentCode;
+    this.existingAgentName=agentName;
+    this.existingBranch=branch;
+    this.pprNum=pprNum;
+    this.newAgentCode="";
+    this.newAgentName="";
+    this.newBranch="";
+    this.propCodeTranForm.get("agentCode").setValue("");
+
+    let helperModel:CodeTransferHelperModel=new CodeTransferHelperModel();
+    helperModel.AgentCode=agentCode;
+    helperModel.AgentName=agentName;
+    helperModel.Branch=branch;
+    helperModel.PprNo=pprNum;
+
+    this.selectedPrpCodeTranArray=new Array();
+    this.selectedPrpCodeTranArray.push(helperModel);
+  }
+
+  loadNewAgentDetails(){
+    let code:string=this.AgentCode.value.toString();
+
+    if(code.length == 4){
+      this.loading_form=true;
+      this.codeTransferService.getAgentDetails(code).subscribe(response => {
+        console.log(response.json());
+        this.loading_form=false;
+        this.newAgentName=response.json().agentName;
+        this.newBranch=response.json().location;
+        this.newAgentCode=response.json().agentCode;
+      },error =>{
+        this.alert("Oopz...", "Error occour at Loading New Agent Details", "error");
         this.loading_form=false;
       });
     }
@@ -433,7 +514,7 @@ export class CodeTransferComponent implements OnInit {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.data = {
-      id: 1,
+      id: '',
       title: title,
       message: message,
       type: type
