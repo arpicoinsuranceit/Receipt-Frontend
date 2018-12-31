@@ -7,6 +7,7 @@ import { PromisesGrid } from 'app/model/promisesgrid';
 })
 export class WorkFlowService {
   
+
   constructor(private http: Http) { }
 
   getProposalDate(polnum: string, pprnum: string): any {
@@ -50,6 +51,37 @@ export class WorkFlowService {
   }
 
   loadPendingActPolicies(token: string, page: number, offset: number) {
-    return this.http.get("http://localhost:8088/getPendingActPolicies/" + token + "/" + page + "/" + offset);
+    return this.http.get("http://localhost:8088/getPendingActPolicies/" + token);
   }
+
+  loadPendingCouriers(token: string, page: number, offset: number): any {
+    return this.http.get("http://localhost:8088/branchcourier/" + token + "/" + page + "/" + offset);
+  }
+
+  getPaginatorLengthPendingCouriers(token: string): any {
+    return this.http.get("http://localhost:8088/branchcouriercount/" + token);
+  }
+
+  getPaginatorLengthReceivingCouriers(token: string): any {
+    return this.http.get("http://localhost:8088/receivingcouriercount/" + token);
+  }
+  loadReceivingCouriers(token: string, page: number, offset: number): any {
+    return this.http.get("http://localhost:8088/receivingcourier/" + token + "/" + page + "/" + offset);
+  }
+
+  loadShortPremiums(token: string, page: number, offset: number): any {
+    return this.http.get("http://localhost:8088/shortpremium/" + token + "/" + page + "/" + offset);
+  }
+  loadShortPremiumsCount(token: string): any {
+    return this.http.get("http://localhost:8088/shortpremiumcount/" + token);
+
+  }
+
+  loadPendingRequirments(token: string, page: number, offset: number): any {
+    return this.http.get("http://localhost:8088/pendingreq/" + token + "/" + page + "/" + offset);
+  }
+  loadPendingRequirmentsCount(token: string): any {
+    return this.http.get("http://localhost:8088/pendingreqcount/" + token);
+  }
+
 }

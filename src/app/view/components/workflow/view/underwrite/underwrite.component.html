@@ -60,7 +60,7 @@
         <!-- <mat-cell *matCellDef="let element"> <button mat-raised-button color="warn" >CLEAR</button></mat-cell> -->
       </ng-container>
 
-      <mat-header-row *matHeaderRowDef="displayedColumnsProposal"></mat-header-row>
+      <mat-header-row *matHeaderRowDef="displayedColumnsProposal; sticky: true"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumnsProposal;" (dblclick)="loadData(row.proposalNo,row.sequenceNo,row.policyBranch,row.agent)"></mat-row>
     </mat-table>
 

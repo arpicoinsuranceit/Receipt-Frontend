@@ -23,6 +23,10 @@ const routes: Routes = [
         loadChildren : "app/view/components/proposal-receipt/proposal-receipt.module#ProposalReceiptModule"
       },
       {
+        path: 'proposalreceipt/:propNo/:seqNo/:amt',
+        loadChildren : "app/view/components/proposal-receipt/proposal-receipt.module#ProposalReceiptModule"
+      },
+      {
         path: 'underwrite',
         loadChildren : "app/view/components/branch-underwrite/branch-underwrite.module#BranchUnderwriteModule"
       },
@@ -65,6 +69,10 @@ const routes: Routes = [
       {
         path: 'codetransfer',
         loadChildren : "app/view/components/code-transfer/code-transfer.module#CodeTransferModule"
+      },
+      {
+        path: 'report',
+        loadChildren : "app/view/components/report/report.module#ReportModule"
       }
     ]
   }

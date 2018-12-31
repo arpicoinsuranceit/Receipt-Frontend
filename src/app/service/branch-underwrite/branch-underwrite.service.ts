@@ -46,6 +46,12 @@ export class BranchUnderwriteService {
     return this.http.get("http://localhost:8088/getQuotationDetailFromSeqNo/"+seqNo+"/"+qId);
   }
 
+  loadQuotationDetailsSeqNo(qdId : number): any {
+    console.log("-------------------");
+    console.log(qdId);
+    return this.http.get("http://localhost:8088/getQuotationSeqnum/"+qdId);
+  }
+
   loadNominee(seqNo : number,qId : number): any {
     console.log("-------------------");
     console.log(seqNo);

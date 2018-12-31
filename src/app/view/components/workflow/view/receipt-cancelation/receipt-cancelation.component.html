@@ -54,7 +54,7 @@
         <mat-cell *matCellDef="let element"> {{element.RequestDate}} </mat-cell>
       </ng-container>
 
-      <mat-header-row *matHeaderRowDef="displayedColumnReceiptCancelation"></mat-header-row>
+      <mat-header-row *matHeaderRowDef="displayedColumnReceiptCancelation; sticky: true"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumnReceiptCancelation;"></mat-row>
     </mat-table>
 

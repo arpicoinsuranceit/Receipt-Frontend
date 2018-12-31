@@ -1,3 +1,53 @@
-<p>
-  active works!
-</p>
+<mat-card class="main-card">
+  <mat-card-header>
+    <mat-card-title>
+      <h3>ACTIVE POLICIES DUE DATE</h3>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content style="max-height: 380px;overflow-x: auto;">
+    <div [hidden]="!loading1" class="loader">
+      <h5>Loading...</h5>
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </div>
+
+    <mat-table [dataSource]="datasourcePromises" class="mat-elevation-z8" style="padding: 20px;">
+      <ng-container matColumnDef="Customer_Name">
+        <mat-header-cell *matHeaderCellDef> Customer Name </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.custName}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="Policy_No">
+        <mat-header-cell *matHeaderCellDef> Policy Details </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.polNum}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="Agent_Code">
+        <mat-header-cell *matHeaderCellDef> Agent Code </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.Agent}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="Banch_Code">
+        <mat-header-cell *matHeaderCellDef> Branch Code </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.Branch}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="Due_Date">
+        <mat-header-cell *matHeaderCellDef> Due Date </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.DueDate}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="Amount">
+        <mat-header-cell *matHeaderCellDef style="display: flex; justify-content: flex-end; padding-right: 10px;"> Amount </mat-header-cell>
+        <mat-cell *matCellDef="let element" style="display: flex; justify-content: flex-end; padding-right: 10px;">Rs. {{element.Amount | number: '.2'}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="Add_Promise_Button">
+        <mat-header-cell *matHeaderCellDef> </mat-header-cell>
+        <mat-cell *matCellDef="let element"> <button mat-raised-button color="warn" (click)="addpromise(element)">Process</button>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;" (dblclick)="loadData(row.proposalNo,row.sequenceNo,row.policyBranch,row.agent)"></mat-row>
+    </mat-table>
+
+  </mat-card-content>
+  <!-- <mat-card-actions style="border-top: solid #C4C4C4 1px; display: flex; 
+                  justify-content: space-between;">
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 50, 100]" (page)="loadData();" showFirstLastButtons></mat-paginator>
+  </mat-card-actions> -->
+</mat-card>

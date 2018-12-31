@@ -20,6 +20,7 @@ import { PendingReqComponent } from './view/pending-req/pending-req.component';
 import { PromisesComponent } from './view/promises/promises.component';
 import { TempLapsComponent } from './view/temp-laps/temp-laps.component';
 import { SettlementPopupComponent } from './view/settlement-popup/settlement-popup.component';
+import { PendingReqPopupComponent } from './view/pending-req-popup/pending-req-popup.component';
 
 @NgModule({
   imports: [
@@ -33,10 +34,11 @@ import { SettlementPopupComponent } from './view/settlement-popup/settlement-pop
   declarations: [
     WorkflowComponent,
     SettlementPopupComponent,
+    PendingReqPopupComponent,
     ActiveComponent,
     CodeTransferComponent,
     CourierPendingComponent,
-    CourierReceiveableComponent, 
+    CourierReceiveableComponent,
     PendingReqComponent,
     PermanantLapsComponent,
     PromisesComponent,
@@ -45,7 +47,7 @@ import { SettlementPopupComponent } from './view/settlement-popup/settlement-pop
     TempLapsComponent,
     UnderwriteComponent
   ],
-  providers: [BranchUnderwriteService, WorkFlowService,  ReceiptCancelationService],
-  entryComponents:[SettlementPopupComponent]
+  providers: [BranchUnderwriteService, WorkFlowService, ReceiptCancelationService],
+  entryComponents: [SettlementPopupComponent, PendingReqPopupComponent]
 })
 export class WorkflowModule { }
