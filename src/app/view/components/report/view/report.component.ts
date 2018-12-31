@@ -1,10 +1,10 @@
-import { PremiumDueReportComponent } from './premium-due-report/premium-due-report.component';
 import { PaymentHistoryReportComponent } from './payment-history-report/payment-history-report.component';
+import { PremiumDueReportComponent } from './premium-due-report/premium-due-report.component';
+import { LapsedSummeryReportComponent } from './lapsed-summery-report/lapsed-summery-report.component';
 import { ReceiptRegisterReportComponent } from './receipt-register-report/receipt-register-report.component';
+
 import { Component, OnInit } from '@angular/core';
 import { MatDialogConfig, MatDialog } from '@angular/material';
-import { ConfirmationAlertComponent } from 'app/view/core/confirmation-alert/confirmation-alert.component';
-import { LapsedSummeryReportComponent } from './lapsed-summery-report/lapsed-summery-report.component';
 
 @Component({
   selector: 'app-report',

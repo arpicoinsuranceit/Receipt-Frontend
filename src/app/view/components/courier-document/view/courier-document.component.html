@@ -68,7 +68,7 @@
                                                 </mat-form-field>
 
                                                 <mat-form-field class="full-width">
-                                                    <mat-select placeholder="Document Type" aria-label="Document Type"
+                                                    <mat-select placeholder={{documentName}} aria-label="Document Type"
                                                         formControlName="document" (selectionChange)="loadSubDocuments()">
                                                         <mat-option *ngFor="let doc of documentTypeArray" [value]="doc.docTypeId">
                                                             <span> {{ doc.docName }} </span>

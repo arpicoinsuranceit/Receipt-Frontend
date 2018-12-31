@@ -49,6 +49,8 @@ export class CourierDocumentComponent implements OnInit {
   receivedCouBagDetails = new Array();
   completedCouBagDetails = new Array();
 
+  documentName="Document Type";
+
   courierForm=new FormGroup({
     refNo:new FormControl(''),
     branch:new FormControl('',Validators.required),
@@ -491,6 +493,12 @@ export class CourierDocumentComponent implements OnInit {
 
   loadDocuments(){
     this.loading_form=true;
+    if(this.SubDepartment.value == "3"){
+      this.documentName="Claim Type";
+    }else{
+      this.documentName="Document Type";
+    }
+
     this.courierDocumentService.getSubDepartmentsDocuments(this.SubDepartment.value,this.isHoUser).subscribe(response => {
       this.documentTypeArray=new Array();
 
