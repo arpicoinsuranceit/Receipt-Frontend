@@ -21,7 +21,7 @@
                 <div [ngClass]="{'disabled': loading_form == true}">
                     <form class="quotation-receipt-form" [formGroup]="quoReceiptForm">
                         <mat-form-field>
-                            <input matInput placeholder="Quotation No. *" aria-label="Quotation No." [matAutocomplete]="quoNumbers" formControlName="quoNo"
+                            <input matInput placeholder="Quotation No. *" aria-label="Quotation No." tabindex="1"  [matAutocomplete]="quoNumbers" formControlName="quoNo"
                                 (keyup)="LoadQuotations($event)" (blur)="getQuoDetails(quoNumbers)">
                             <mat-autocomplete #quoNumbers="matAutocomplete">
 
@@ -43,7 +43,7 @@
                         </mat-form-field>
 
                         <mat-form-field *ngIf="pickAgent" class="full-width">
-                            <input matInput placeholder="Agent Code *" aria-label="Agent Code" (keyup)="getAgents($event)" [matAutocomplete]="agentNumbers"
+                            <input matInput placeholder="Agent Code *" aria-label="Agent Code" tabindex="2"  (keyup)="getAgents($event)" [matAutocomplete]="agentNumbers"
                                 formControlName="pickAgentCode">
                             <mat-autocomplete #agentNumbers="matAutocomplete">
 
@@ -57,7 +57,7 @@
                         </mat-form-field>
                         <br>
                         <mat-form-field class="full-width">
-                            <input matInput placeholder="Bank Code *" aria-label="Bank Code" [matAutocomplete]="bank" formControlName="bankCode">
+                            <input matInput placeholder="Bank Code *" aria-label="Bank Code" tabindex="3"  [matAutocomplete]="bank" formControlName="bankCode">
                             <mat-autocomplete #bank="matAutocomplete">
                                 <mat-option *ngFor="let bank of filteredBanks | async" [value]="bank.BankCode">
                                     <span> {{ bank.BankName }} </span> |
@@ -71,10 +71,10 @@
                             </mat-error>
                         </mat-form-field>
                         <mat-form-field class="full-width">
-                            <input matInput placeholder="Remark" aria-label="Remark" formControlName="remark">
+                            <input matInput tabindex="1" placeholder="Remark" aria-label="Remark" tabindex="4"  formControlName="remark">
                         </mat-form-field>
                         <mat-form-field>
-                            <mat-select placeholder="Payment Mode" aria-label="Payment Mode" formControlName="paymode">
+                            <mat-select placeholder="Payment Mode" aria-label="Payment Mode" tabindex="5"  formControlName="paymode">
                                 <mat-option value="CS">
                                     CASH
                                 </mat-option>
@@ -95,24 +95,24 @@
                         </mat-form-field>
                         <mat-card *ngIf="PayMode.value == 'CQ'" style="margin-bottom: 10px;">
                             <mat-form-field class="half-width">
-                                <input matInput type="number" placeholder="Cheque No" aria-label="Cheque No" formControlName="chequeno">
+                                <input matInput type="number" tabindex="6"  placeholder="Cheque No" aria-label="Cheque No" formControlName="chequeno">
                             </mat-form-field>
                             <mat-form-field>
-                                <input matInput [matDatepicker]="picker" placeholder="Cheque Date" formControlName="chequedate">
+                                <input matInput [matDatepicker]="picker" tabindex="7"  placeholder="Cheque Date" formControlName="chequedate">
                                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                 <mat-datepicker #picker></mat-datepicker>
                             </mat-form-field>
                             <mat-form-field class="full-width">
-                                <input matInput type="number" placeholder="Bank" aria-label="Bank" formControlName="chequebank">
+                                <input matInput type="number" placeholder="Bank" tabindex="8"  aria-label="Bank" formControlName="chequebank">
                             </mat-form-field>
                         </mat-card>
                         <mat-card *ngIf="PayMode.value == 'CR'" style="margin-bottom: 10px;">
                             <mat-form-field class="half-width">
-                                <input matInput placeholder="Credit Transfer No" aria-label="Credit Transfer No" formControlName="credittransferno">
+                                <input matInput placeholder="Credit Transfer No" tabindex="9" aria-label="Credit Transfer No" formControlName="credittransferno">
                             </mat-form-field>
                         </mat-card>
                         <mat-form-field class="full-width">
-                            <input matInput placeholder="Amount" type="number" aria-label="Amount" class="right-align" formControlName="amount" (blur)="convertAmountToWord()">
+                            <input matInput placeholder="Amount" type="number" tabindex="10" aria-label="Amount" class="right-align" formControlName="amount" (blur)="convertAmountToWord()">
                             <span matPrefix>Rs.</span>
                             <span matSuffix>.00</span>
                             <mat-error *ngIf="Amount.hasError('required')">
@@ -133,8 +133,8 @@
 
             <mat-card-actions style="border-top: solid #C4C4C4 1px; display: flex; 
             justify-content: space-between;">
-                <button mat-raised-button color="warn" (click)="newReceipt()">CLEAR</button>
-                <button mat-raised-button color="primary" (click)="saveReceipt()">SAVE</button>
+                <button mat-raised-button color="warn" tabindex="12" (click)="newReceipt()">CLEAR</button>
+                <button mat-raised-button color="primary" tabindex="11" (click)="saveReceipt()">SAVE</button>
 
             </mat-card-actions>
             <div *ngIf="success == 1" style="background: #458e45; height: 50px;display: flex; justify-content: center;">

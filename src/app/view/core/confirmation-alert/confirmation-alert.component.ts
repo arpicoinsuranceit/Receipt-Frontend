@@ -12,6 +12,7 @@ export class ConfirmationAlertComponent implements OnInit {
   modelType : string;
   choise: string = "no";
   method: string;
+  couType = "COURIER";
 
   constructor(private dialogRef: MatDialogRef<ConfirmationAlertComponent>,@Inject(MAT_DIALOG_DATA) public data: any) {
     this.modalTitle = data.title;
@@ -27,12 +28,12 @@ export class ConfirmationAlertComponent implements OnInit {
 
   yesConfirmation(){
     this.choise="yes";
-    this.dialogRef.close({result:this.choise,method: this.method});
+    this.dialogRef.close({result:this.choise,method: this.method,couType:this.couType});
   }
 
   noConfirmation(){
     this.choise="no";
-    this.dialogRef.close({result:this.choise,method: this.method});
+    this.dialogRef.close({result:this.choise,method: this.method,couType:this.couType});
   }
 
 }

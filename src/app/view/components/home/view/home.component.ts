@@ -67,8 +67,8 @@ export class HomeComponent implements OnInit {
 
   fromdate = new FormControl(new Date());
   todate = new FormControl(new Date());
-  fromdate1 = new FormControl(moment());
-  todate1 = new FormControl(moment());
+  fromdate1 = new FormControl(new Date());
+  todate1 = new FormControl(new Date());
   fromdate2 = new FormControl(new Date());
   todate2 = new FormControl(new Date());
   type = new FormControl("m");

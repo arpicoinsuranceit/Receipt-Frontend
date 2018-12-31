@@ -22,6 +22,7 @@ import { MatStepper } from '@angular/material/stepper';
 import { MatPaginator, MatTableDataSource, MatDialogConfig, MatDialog } from '@angular/material';
 import { AlertComponent } from '../../../core/alert/alert.component';
 import { MedicalRequirementsDto } from 'app/model/medicalRequirement';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-branch-underwrite',
@@ -54,7 +55,7 @@ export class BranchUnderwriteComponent implements OnInit {
   quotationDetailId: number;
   bankList: BankModel[] = new Array();
   occupationsList: Occupation[] = new Array();
-  medicalReqArray: MedicalRequirementsDto[]=new Array();
+  medicalReqArray: MedicalRequirementsDto[] = new Array();
 
   _Name = "";
   _initName = "";
@@ -223,8 +224,7 @@ export class BranchUnderwriteComponent implements OnInit {
   }
 
   constructor(private branchUnderwriteService: BranchUnderwriteService, private quotationReceiptService: QuotationReceiptService,
-    private commonService: CommonService, public dialog: MatDialog) {
-
+    private commonService: CommonService, public dialog: MatDialog, private route: ActivatedRoute) {
   }
 
   ngOnInit() {
@@ -351,6 +351,14 @@ export class BranchUnderwriteComponent implements OnInit {
           startWith(''),
           map(occu => this.filterOccupationSpouse(occu))
         );
+
+      this.route.params.subscribe(params => {
+        if (params.propNo != null && params.propNo != undefined) {
+          this.loadData(params.propNo, params.seqNo, params.brnCode, params.agentCode);
+        }
+      }, error => {
+
+      });
     });
   }
 
@@ -411,7 +419,7 @@ export class BranchUnderwriteComponent implements OnInit {
       this.quotationNo = response.json().quonum;
       this.setMainLifeSpouseDetailsInProposal(response.json());
 
-      
+
       this.quotationReceiptService.loadQuotationProp(this.quotationNo).subscribe(response => {
         console.log(response.json());
         for (let i in response.json()) {
@@ -423,11 +431,11 @@ export class BranchUnderwriteComponent implements OnInit {
         }
       });
 
-      
+
       this.loading2 = false;
     });
 
-    
+
 
   }
 
@@ -443,40 +451,40 @@ export class BranchUnderwriteComponent implements OnInit {
 
   }
 
-  checkInsuredNic(){
-    if(this.branchUWInsureForm.get("nicInsured").value != ""){
-      this.branchUnderwriteService.checkNicValidation(this.branchUWInsureForm.get("nicInsured").value,this.branchUWInsureForm.get("gender").value,this.branchUWInsureForm.get("ageNextBirthday").value,this.sequenceNo,this.quotationNo).subscribe(response => {
-        if(response.json() == "204"){
+  checkInsuredNic() {
+    if (this.branchUWInsureForm.get("nicInsured").value != "") {
+      this.branchUnderwriteService.checkNicValidation(this.branchUWInsureForm.get("nicInsured").value, this.branchUWInsureForm.get("gender").value, this.branchUWInsureForm.get("ageNextBirthday").value, this.sequenceNo, this.quotationNo).subscribe(response => {
+        if (response.json() == "204") {
           this.alert("Oopz...", "Nic not match with age and gender", "error");
           this.branchUWInsureForm.get("nicInsured").setValue("");
         }
       });
     }
-    
+
   }
 
-  checkSpouseNic(){
-    if(this.branchUWSpouseForm.get("nicSpouse").value != ""){
-      this.branchUnderwriteService.checkNicValidation(this.branchUWSpouseForm.get("nicSpouse").value,this.branchUWSpouseForm.get("genderSpouse").value,this.branchUWSpouseForm.get("ageNextBirthdaySpouse").value,this.sequenceNo,this.quotationNo).subscribe(response => {
-        if(response.json() == "204"){
+  checkSpouseNic() {
+    if (this.branchUWSpouseForm.get("nicSpouse").value != "") {
+      this.branchUnderwriteService.checkNicValidation(this.branchUWSpouseForm.get("nicSpouse").value, this.branchUWSpouseForm.get("genderSpouse").value, this.branchUWSpouseForm.get("ageNextBirthdaySpouse").value, this.sequenceNo, this.quotationNo).subscribe(response => {
+        if (response.json() == "204") {
           this.alert("Oopz...", "Nic not match with age and gender", "error");
           this.branchUWSpouseForm.get("nicSpouse").setValue("");
         }
       });
     }
-    
+
   }
 
-  checkChildNic(){
-    if(this.branchUWChildForm.get("nicChild").value != ""){
-      this.branchUnderwriteService.checkNicValidation(this.branchUWChildForm.get("nicChild").value,this.branchUWChildForm.get("titleChild").value == "Son" ? "M":"F",this.branchUWChildForm.get("ageNextBirthdayChild").value,this.sequenceNo,this.quotationNo).subscribe(response => {
-        if(response.json() == "204"){
+  checkChildNic() {
+    if (this.branchUWChildForm.get("nicChild").value != "") {
+      this.branchUnderwriteService.checkNicValidation(this.branchUWChildForm.get("nicChild").value, this.branchUWChildForm.get("titleChild").value == "Son" ? "M" : "F", this.branchUWChildForm.get("ageNextBirthdayChild").value, this.sequenceNo, this.quotationNo).subscribe(response => {
+        if (response.json() == "204") {
           this.alert("Oopz...", "Nic not match with age and gender", "error");
           this.branchUWChildForm.get("nicChild").setValue("");
         }
       });
     }
-    
+
   }
 
   editQuotation() {
@@ -500,7 +508,7 @@ export class BranchUnderwriteComponent implements OnInit {
     }
 
     encodeURIComponent(JSON.stringify(data));
-    window.open("http://localhost:4200?data=" + encodeURIComponent(JSON.stringify(data)), "_blank");
+    window.open("http://localhost:4201?data=" + encodeURIComponent(JSON.stringify(data)), "_blank");
   }
 
   loadQuotationDetails() {
@@ -523,40 +531,40 @@ export class BranchUnderwriteComponent implements OnInit {
           occup = this.occupationsList.find(x => x.OccupationCode == response.json()._mainlife._occuCode);
 
           this._mainlife._MAge = response.json()._mainlife._mAge;
-          if(this.branchUWInsureForm.get("nicInsured").value == null || this.branchUWInsureForm.get("nicInsured").value == "" ||
-            this.branchUWInsureForm.get("nicInsured").value == undefined){
-              this.branchUWInsureForm.get("nicInsured").setValue(response.json()._mainlife._mNic);
-              this.branchUWInsureForm.get("ageNextBirthday").setValue(response.json()._mainlife._mAge);
-          }else{
-            if(this.branchUWInsureForm.get("ageNextBirthday").value != response.json()._mainlife._mAge){
+          if (this.branchUWInsureForm.get("nicInsured").value == null || this.branchUWInsureForm.get("nicInsured").value == "" ||
+            this.branchUWInsureForm.get("nicInsured").value == undefined) {
+            this.branchUWInsureForm.get("nicInsured").setValue(response.json()._mainlife._mNic);
+            this.branchUWInsureForm.get("ageNextBirthday").setValue(response.json()._mainlife._mAge);
+          } else {
+            if (this.branchUWInsureForm.get("ageNextBirthday").value != response.json()._mainlife._mAge) {
               this.branchUWInsureForm.get("nicInsured").setValue("");
               this.branchUWInsureForm.get("ageNextBirthday").setValue(response.json()._mainlife._mAge);
-              
+
             }
           }
-          
+
           this.branchUWInsureForm.get("civilStatus").setValue(response.json()._mainlife._mCivilStatus);
           //this.branchUWInsureForm.get("customerCode").setValue(response.json()._mainlife._mCustCode);
           //this.branchUWInsureForm.get("dateOfBirth").setValue(response.json()._mainlife._mDob);
           //this.branchUWInsureForm.get("email").setValue(response.json()._mainlife._mEmail);
           this.branchUWInsureForm.get("gender").setValue(response.json()._mainlife._mGender);
           //this.branchUWInsureForm.get("mobileInsured").setValue(response.json()._mainlife._mMobile);
-         // this.branchUWInsureForm.get("fullNameInsured").setValue(response.json()._mainlife._mName);
-          
+          // this.branchUWInsureForm.get("fullNameInsured").setValue(response.json()._mainlife._mName);
+
           this.branchUWInsureForm.get("occupation").setValue(occup.OccupationName);
           //this.branchUWInsureForm.get("smoker").setValue(response.json()._mainlife._mSmoking);
           this.branchUWInsureForm.get("title").setValue(response.json()._mainlife._mTitle);
 
-          if(this.branchUWInsureForm.get("preferredLanguage").value == null || this.branchUWInsureForm.get("preferredLanguage").value == undefined){
+          if (this.branchUWInsureForm.get("preferredLanguage").value == null || this.branchUWInsureForm.get("preferredLanguage").value == undefined) {
             this.branchUWInsureForm.get("preferredLanguage").setValue("S");
           }
 
           if (this.branchUWInsureForm.get("customerCode").value != "" && this.branchUWInsureForm.get("customerCode").value != null) {
             this.branchUWInsureForm.get("customerCode").disable();
           }
-         
-          if(this.branchUWInsureForm.get("initialNameInsured").value ==  null || this.branchUWInsureForm.get("initialNameInsured").value == "" || 
-          this.branchUWInsureForm.get("initialNameInsured").value == undefined){
+
+          if (this.branchUWInsureForm.get("initialNameInsured").value == null || this.branchUWInsureForm.get("initialNameInsured").value == "" ||
+            this.branchUWInsureForm.get("initialNameInsured").value == undefined) {
             this.branchUWInsureForm.get("initialNameInsured").setValue(this.setInitialName(this.branchUWInsureForm.get("fullNameInsured").value));
           }
 
@@ -568,16 +576,16 @@ export class BranchUnderwriteComponent implements OnInit {
             this.spouseActive = true;
             occup = this.occupationsList.find(x => x.OccupationCode == response.json()._spouse.occuCode);
 
-            if(this.branchUWSpouseForm.get("nicSpouse").value == null || this.branchUWSpouseForm.get("nicSpouse").value == "" ||
-                this.branchUWSpouseForm.get("nicSpouse").value == undefined){
+            if (this.branchUWSpouseForm.get("nicSpouse").value == null || this.branchUWSpouseForm.get("nicSpouse").value == "" ||
+              this.branchUWSpouseForm.get("nicSpouse").value == undefined) {
 
-                  this.branchUWSpouseForm.get("nicSpouse").setValue(response.json()._spouse._sNic);
-                  this.branchUWSpouseForm.get("ageNextBirthdaySpouse").setValue(response.json()._spouse._sAge);
-            }else{
-              if(this.branchUWSpouseForm.get("ageNextBirthdaySpouse").value != response.json()._spouse._sAge){
+              this.branchUWSpouseForm.get("nicSpouse").setValue(response.json()._spouse._sNic);
+              this.branchUWSpouseForm.get("ageNextBirthdaySpouse").setValue(response.json()._spouse._sAge);
+            } else {
+              if (this.branchUWSpouseForm.get("ageNextBirthdaySpouse").value != response.json()._spouse._sAge) {
                 this.branchUWSpouseForm.get("nicSpouse").setValue("");
                 this.branchUWSpouseForm.get("ageNextBirthdaySpouse").setValue(response.json()._spouse._sAge);
-                
+
               }
             }
 
@@ -603,12 +611,12 @@ export class BranchUnderwriteComponent implements OnInit {
               this.branchUWSpouseForm.get("genderSpouse").setValue(response.json()._spouse._sGender);
             }
 
-            if(this.branchUWSpouseForm.get("initialNameSpouse").value ==  null || this.branchUWSpouseForm.get("initialNameSpouse").value == "" || 
-              this.branchUWSpouseForm.get("initialNameSpouse").value == undefined){
+            if (this.branchUWSpouseForm.get("initialNameSpouse").value == null || this.branchUWSpouseForm.get("initialNameSpouse").value == "" ||
+              this.branchUWSpouseForm.get("initialNameSpouse").value == undefined) {
               this.branchUWSpouseForm.get("initialNameSpouse").setValue(this.setInitialName(this.branchUWSpouseForm.get("fullNameSpouse").value));
             }
 
-          }else{
+          } else {
             this.branchUWSpouseForm.get("nicSpouse").disable();
           }
 
@@ -743,53 +751,53 @@ export class BranchUnderwriteComponent implements OnInit {
           occup = this.occupationsList.find(x => x.OccupationCode == response.json()._mainlife._occuCode);
 
           this._mainlife._MAge = response.json()._mainlife._mAge;
-          if(response.json()._mainlife._mNic != null && response.json()._mainlife._mNic != "" &&
-            response.json()._mainlife._mNic != undefined){
-              this.branchUWInsureForm.get("nicInsured").setValue(response.json()._mainlife._mNic);
-              this.branchUWInsureForm.get("ageNextBirthday").setValue(response.json()._mainlife._mAge);
-          }else{
-            if(this.branchUWInsureForm.get("ageNextBirthday").value != response.json()._mainlife._mAge){
+          if (response.json()._mainlife._mNic != null && response.json()._mainlife._mNic != "" &&
+            response.json()._mainlife._mNic != undefined) {
+            this.branchUWInsureForm.get("nicInsured").setValue(response.json()._mainlife._mNic);
+            this.branchUWInsureForm.get("ageNextBirthday").setValue(response.json()._mainlife._mAge);
+          } else {
+            if (this.branchUWInsureForm.get("ageNextBirthday").value != response.json()._mainlife._mAge) {
               this.branchUWInsureForm.get("nicInsured").setValue("");
               this.branchUWInsureForm.get("ageNextBirthday").setValue(response.json()._mainlife._mAge);
-              
+
             }
           }
-          
+
           this.branchUWInsureForm.get("civilStatus").setValue(response.json()._mainlife._mCivilStatus);
 
           this.branchUWInsureForm.get("gender").setValue(response.json()._mainlife._mGender);
           //this.branchUWInsureForm.get("mobileInsured").setValue(response.json()._mainlife._mMobile);
           this.branchUWInsureForm.get("fullNameInsured").setValue(response.json()._mainlife._mName);
           this.branchUWInsureForm.get("initialNameInsured").setValue(this.setInitialName(this.branchUWInsureForm.get("fullNameInsured").value));
-          
+
           this.branchUWInsureForm.get("occupation").setValue(occup.OccupationName);
           this.branchUWInsureForm.get("title").setValue(response.json()._mainlife._mTitle);
 
-          if(this.branchUWInsureForm.get("preferredLanguage").value == null || this.branchUWInsureForm.get("preferredLanguage").value == undefined){
+          if (this.branchUWInsureForm.get("preferredLanguage").value == null || this.branchUWInsureForm.get("preferredLanguage").value == undefined) {
             this.branchUWInsureForm.get("preferredLanguage").setValue("S");
           }
 
           if (this.branchUWInsureForm.get("customerCode").value != "" && this.branchUWInsureForm.get("customerCode").value != null) {
             this.branchUWInsureForm.get("customerCode").disable();
           }
-         
-          
+
+
           //set spouse details
 
           if (response.json()._spouse._sActive) {
             this.spouseActive = true;
             occup = this.occupationsList.find(x => x.OccupationCode == response.json()._spouse.occuCode);
 
-            if(response.json()._spouse._sNic != null && response.json()._spouse._sNic != "" &&
-            response.json()._spouse._sNic != undefined){
+            if (response.json()._spouse._sNic != null && response.json()._spouse._sNic != "" &&
+              response.json()._spouse._sNic != undefined) {
 
-                  this.branchUWSpouseForm.get("nicSpouse").setValue(response.json()._spouse._sNic);
-                  this.branchUWSpouseForm.get("ageNextBirthdaySpouse").setValue(response.json()._spouse._sAge);
-            }else{
-              if(this.branchUWSpouseForm.get("ageNextBirthdaySpouse").value != response.json()._spouse._sAge){
+              this.branchUWSpouseForm.get("nicSpouse").setValue(response.json()._spouse._sNic);
+              this.branchUWSpouseForm.get("ageNextBirthdaySpouse").setValue(response.json()._spouse._sAge);
+            } else {
+              if (this.branchUWSpouseForm.get("ageNextBirthdaySpouse").value != response.json()._spouse._sAge) {
                 this.branchUWSpouseForm.get("nicSpouse").setValue("");
                 this.branchUWSpouseForm.get("ageNextBirthdaySpouse").setValue(response.json()._spouse._sAge);
-                
+
               }
             }
 
@@ -797,7 +805,7 @@ export class BranchUnderwriteComponent implements OnInit {
             this.branchUWSpouseForm.get("titleSpouse").setValue(response.json()._spouse._sTitle);
             this.branchUWSpouseForm.get("fullNameSpouse").setValue(response.json()._spouse._sName);
             this.branchUWSpouseForm.get("initialNameSpouse").setValue(this.setInitialName(this.branchUWSpouseForm.get("fullNameSpouse").value));
-            
+
             this.branchUWSpouseForm.get("occupationSpouse").setValue(occup.OccupationName);
             this.branchUWSpouseForm.get("nicSpouse").enable();
 
@@ -809,7 +817,7 @@ export class BranchUnderwriteComponent implements OnInit {
               this.branchUWSpouseForm.get("genderSpouse").setValue(response.json()._spouse._sGender);
             }
 
-          }else{
+          } else {
             this.branchUWSpouseForm.get("nicSpouse").disable();
           }
 
@@ -818,11 +826,11 @@ export class BranchUnderwriteComponent implements OnInit {
 
           let oldChildrenArray = this.childrenArray;
           this.childrenArray = new Array();
-          let childrenNames:string[]=new Array();
+          let childrenNames: string[] = new Array();
           response.json()._children.forEach(i => {
             let child: ChildModel = new ChildModel();
 
-            if(!childrenNames.includes(i._cName)){
+            if (!childrenNames.includes(i._cName)) {
               child._CAge = i._cAge;
               child._CDob = i._cDob;
               child.Gender = i._cTitle;
@@ -844,7 +852,7 @@ export class BranchUnderwriteComponent implements OnInit {
               this.childrenArray.push(child);
               childrenNames.push(i._cName);
             }
-            
+
 
           });
 
@@ -942,9 +950,9 @@ export class BranchUnderwriteComponent implements OnInit {
       let nominee: NomineeModel = new NomineeModel();
       //this.nomineeArray = new Array();
       response.json().forEach(i => {
-        for(let j in this.nomineeArray){
-          nominee=this.nomineeArray[j];
-          if(nominee.Type == "MSFB"){
+        for (let j in this.nomineeArray) {
+          nominee = this.nomineeArray[j];
+          if (nominee.Type == "MSFB") {
             nominee.Name = i.nomineeName;
             nominee.NomineeDateofBirth = i.nomineeDateofBirth;
             nominee.DOB = i.nomineeDateofBirth;
@@ -952,18 +960,18 @@ export class BranchUnderwriteComponent implements OnInit {
             nominee.Share = '100';
           }
         }
-        
+
       });
       this.loading7 = false;
     });
 
   }
 
-  loadMedicals(){
-    this.medicalReqArray=new Array();
+  loadMedicals() {
+    this.medicalReqArray = new Array();
     this.branchUnderwriteService.loadMedicals(this.sequenceNo, this.quotationNo).subscribe(response => {
       console.log(response.json());
-      this.medicalReqArray=response.json();
+      this.medicalReqArray = response.json();
     });
   }
 
@@ -1029,8 +1037,8 @@ export class BranchUnderwriteComponent implements OnInit {
     this.branchUWInsureForm.get("email").setValue(proposal.ppdeml);
     this.branchUWInsureForm.get("gender").setValue(proposal.ppdsex);
     this.branchUWInsureForm.get("mobileInsured").setValue(proposal.ppdmob);
-    if(proposal.ppdmob.length < 10){
-      this.branchUWInsureForm.get("mobileInsured").setValue("0"+proposal.ppdmob);
+    if (proposal.ppdmob.length < 10) {
+      this.branchUWInsureForm.get("mobileInsured").setValue("0" + proposal.ppdmob);
     }
     this.branchUWInsureForm.get("fullNameInsured").setValue(proposal.ppdnam);
     this.branchUWInsureForm.get("nicInsured").setValue(proposal.ppdnic);
@@ -1064,24 +1072,24 @@ export class BranchUnderwriteComponent implements OnInit {
       this.branchUWSpouseForm.get("weightSpouse").setValue(proposal.swighk);
     }
 
-    this.loadPropFamDetails(proposal.inProposalsModelPK.pprnum,proposal.inProposalsModelPK.prpseq);
-    this.loadPropNomDetails(proposal.inProposalsModelPK.pprnum,proposal.inProposalsModelPK.prpseq);
+    this.loadPropFamDetails(proposal.inProposalsModelPK.pprnum, proposal.inProposalsModelPK.prpseq);
+    this.loadPropNomDetails(proposal.inProposalsModelPK.pprnum, proposal.inProposalsModelPK.prpseq);
 
     console.log(this._mainlife._MOccupation);
   }
 
-  loadPropFamDetails(pprnum,prpseq): any {
-    this.branchUnderwriteService.loadProposalFamDetails(pprnum,prpseq).subscribe(response => {
+  loadPropFamDetails(pprnum, prpseq): any {
+    this.branchUnderwriteService.loadProposalFamDetails(pprnum, prpseq).subscribe(response => {
       console.log(response.json());
       this.childrenArray = new Array();
-      let childNames:string[]=new Array();
-   
+      let childNames: string[] = new Array();
+
       response.json().forEach(i => {
         let child: ChildModel = new ChildModel();
 
 
-        if(!childNames.includes(i.inPropFamDetailsPK.fmlnam)){
-        
+        if (!childNames.includes(i.inPropFamDetailsPK.fmlnam)) {
+
           child._CAge = i.fmlage;
           child._CDob = i.fmldob;
           child.Gender = i.fmlsex;
@@ -1093,11 +1101,11 @@ export class BranchUnderwriteComponent implements OnInit {
           child.IsGetHbc = (i.hbcapp);
           child.IsGetHcbiOrHcbf = (i.hrbapp);
           child.IsGetShcbi = (i.shrbap);
-          child._CHbc = i.hbcapp == "Y" ? true:false;
-          child._CHrbfc = i.hrbapp == "Y" ? true:false;
-          child._CHrbic = i.hrbapp == "Y" ? true:false;
-          child._CSuhrbc = i.shrbap == "Y" ? true:false;
-          child._CCibc = i.cicapp == "Y" ? true:false;
+          child._CHbc = i.hbcapp == "Y" ? true : false;
+          child._CHrbfc = i.hrbapp == "Y" ? true : false;
+          child._CHrbic = i.hrbapp == "Y" ? true : false;
+          child._CSuhrbc = i.shrbap == "Y" ? true : false;
+          child._CCibc = i.cicapp == "Y" ? true : false;
           child._CActive = true;
 
           this.childrenArray.push(child);
@@ -1108,17 +1116,17 @@ export class BranchUnderwriteComponent implements OnInit {
     });
   }
 
-  loadPropNomDetails(pprnum,prpseq): any {
+  loadPropNomDetails(pprnum, prpseq): any {
     this.branchUWNomineeForm.get("type").setValue("NORMAL");
-    this.branchUnderwriteService.loadProposalNomDetails(pprnum,prpseq).subscribe(response => {
+    this.branchUnderwriteService.loadProposalNomDetails(pprnum, prpseq).subscribe(response => {
       console.log(response.json());
       let nominee: NomineeModel = new NomineeModel();
       this.nomineeArray = new Array();
-      let nomNames:string[]=new Array();
+      let nomNames: string[] = new Array();
 
       response.json().forEach(i => {
 
-        if(!nomNames.includes(i.inPropNomDetailsModelPK.nomnam)){
+        if (!nomNames.includes(i.inPropNomDetailsModelPK.nomnam)) {
 
           nominee.Name = i.inPropNomDetailsModelPK.nomnam;
           nominee.NomineeDateofBirth = i.nomdob;
@@ -1135,7 +1143,7 @@ export class BranchUnderwriteComponent implements OnInit {
           this.nomineeArray.push(nominee);
           nomNames.push(i.inPropNomDetailsModelPK.nomnam);
         }
-        
+
       });
     });
 
@@ -1152,7 +1160,7 @@ export class BranchUnderwriteComponent implements OnInit {
     this._mainlife._MDob = this.branchUWInsureForm.get("dateOfBirth").value;
     this._mainlife._MEmail = this.branchUWInsureForm.get("email").value;
     this._mainlife._MGender = this.branchUWInsureForm.get("gender").value;
-    this._mainlife._MMobile = "0"+this.branchUWInsureForm.get("mobileInsured").value;
+    this._mainlife._MMobile = "0" + this.branchUWInsureForm.get("mobileInsured").value;
     this._mainlife._MName = this.branchUWInsureForm.get("fullNameInsured").value;
     this._mainlife._MNic = this.branchUWInsureForm.get("nicInsured").value;
     this._mainlife._MOccupation = occup.OccupationCode;
@@ -1472,7 +1480,7 @@ export class BranchUnderwriteComponent implements OnInit {
             } else {
               this.alert("Oopz...", "Please Enter DOB and Nic Correctly", "error");
             }
-          }else{
+          } else {
             this.alert("Oopz...", "Already You Have Add Nominee", "error");
           }
         }
@@ -1487,7 +1495,7 @@ export class BranchUnderwriteComponent implements OnInit {
 
 
   saveUnderwrite() {
-    
+
 
     if (this.checkValidityBeforeSave()) {
       let occup = new Occupation();
@@ -1574,7 +1582,7 @@ export class BranchUnderwriteComponent implements OnInit {
       }, error => {
         console.log("error");
         this.loading8 = false;
-        this.alert("Oopz...", error , "error");
+        this.alert("Oopz...", error, "error");
       });
 
     } else {
@@ -1618,28 +1626,28 @@ export class BranchUnderwriteComponent implements OnInit {
     }
   }
 
-  setInsureInitialName(){
+  setInsureInitialName() {
     this.branchUWInsureForm.get("initialNameInsured").setValue(this.setInitialName(this.branchUWInsureForm.get("fullNameInsured").value))
   }
 
-  setSpouseInitialName(){
+  setSpouseInitialName() {
     this.branchUWSpouseForm.get("initialNameSpouse").setValue(this.setInitialName(this.branchUWSpouseForm.get("fullNameSpouse").value))
   }
 
-  setInitialName(name:string){
-    let arr:string[] =name.split(" ");
+  setInitialName(name: string) {
+    let arr: string[] = name.split(" ");
 
-    let lastname = arr[arr.length-1];
+    let lastname = arr[arr.length - 1];
 
-    let initialName:string="";
+    let initialName: string = "";
 
-    for (let i in arr){
-      if(lastname != arr[i]){
-        initialName+=arr[i].charAt(0) + " ";
+    for (let i in arr) {
+      if (lastname != arr[i]) {
+        initialName += arr[i].charAt(0) + " ";
       }
     }
 
-    initialName+=lastname;
+    initialName += lastname;
 
     return initialName;
 
@@ -1658,9 +1666,9 @@ export class BranchUnderwriteComponent implements OnInit {
     this.nomineeArray = new Array();
     this.childrenArray = new Array();
     this.sheduleArray = new Array();
-    this.medicalReqArray=new Array();
+    this.medicalReqArray = new Array();
     this.isLinear = true;
-    this.spouseActive=false;
+    this.spouseActive = false;
   }
 
   alert(title: string, message: string, type: string) {

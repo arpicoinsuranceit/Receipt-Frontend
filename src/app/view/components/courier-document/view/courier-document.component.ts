@@ -61,6 +61,8 @@ export class CourierDocumentComponent implements OnInit {
   });
 
   hasSubDoc=false;
+  completedOwnCourierArray = new Array();
+  
 
   get RefNo(){
     return this.courierForm.get("refNo");
@@ -94,7 +96,9 @@ export class CourierDocumentComponent implements OnInit {
     return this.courierForm.get("remark");
   }
 
-  displayedColumns = ['select','referenceNo' ,'documentType','createDate','subDepDocCouToken', 'remark'];
+  displayedColumns = ['select','referenceNo' ,'documentType','createDate','subDepDocCouToken', 'remark' , 'remove'];
+
+  displayedColumns1 = ['select','referenceNo' ,'documentType','createDate','subDepDocCouToken', 'remark'];
 
   displayedColumns2 = ['select','referenceNo' ,'documentType','createDate','subDepDocCouToken', 'remark' , 'status' , 'rcvdBy' , 'rcvdDate'];
 
@@ -102,7 +106,7 @@ export class CourierDocumentComponent implements OnInit {
   
   displayedColumnsReceiving = ['referenceNo' ,'documentType','createDate','subDepDocCouToken', 'remark','button'];
 
-  displayedColumnsCourier: string[] = ['token', 'createDate', 'status' , 'modifyBy', 'modifyDate'];
+  displayedColumnsCourier: string[] = ['token', 'createDate', 'sendDate', 'status' , 'toBranch','couType','modifyBy'];
 
   datasourceCourier = new MatTableDataSource<CourierModel>(this.courierArray);
 
@@ -113,6 +117,8 @@ export class CourierDocumentComponent implements OnInit {
   datasourceCompletedCourier = new MatTableDataSource<CourierModel>(this.completedCourierArray);
 
   datasourceOtherCourier = new MatTableDataSource<CourierModel>(this.otherCourierArray);
+
+  datasourceCompletedOwnCourier= new MatTableDataSource<CourierModel>(this.completedOwnCourierArray);
 
   // selection = new SelectionModel<PeriodicElement>(true, []);
 
@@ -137,6 +143,7 @@ export class CourierDocumentComponent implements OnInit {
     this.loadReceivedCouriers();
     this.loadCompletedCouriers();
     this.loadOtherCouriers();
+    this.loadCompletedOwnCouriers();
     this.loadDepartment();
     this.loading_form=true;
   }
@@ -203,6 +210,9 @@ export class CourierDocumentComponent implements OnInit {
         courier.ToBranch=i.toBranch;
         courier.ReceivedBy=i.receivedBy;
         courier.ReceivedDate=i.receivedDate;
+        courier.SendDate=i.sendDate;
+        courier.SendBy=i.sendBy;
+        courier.CouType=i.couType;
 
         this.courierArray.push(courier);
 
@@ -245,6 +255,9 @@ export class CourierDocumentComponent implements OnInit {
         courier.ToBranch=i.toBranch;
         courier.ReceivedBy=i.receivedBy;
         courier.ReceivedDate=i.receivedDate;
+        courier.SendDate=i.sendDate;
+        courier.SendBy=i.sendBy;
+        courier.CouType=i.couType;
 
         this.receivingCourierArray.push(courier);
 
@@ -287,6 +300,9 @@ export class CourierDocumentComponent implements OnInit {
         courier.ToBranch=i.toBranch;
         courier.ReceivedBy=i.receivedBy;
         courier.ReceivedDate=i.receivedDate;
+        courier.SendDate=i.sendDate;
+        courier.SendBy=i.sendBy;
+        courier.CouType=i.couType;
 
         this.receivedCourierArray.push(courier);
 
@@ -329,6 +345,9 @@ export class CourierDocumentComponent implements OnInit {
         courier.ToBranch=i.toBranch;
         courier.ReceivedBy=i.receivedBy;
         courier.ReceivedDate=i.receivedDate;
+        courier.SendDate=i.sendDate;
+        courier.SendBy=i.sendBy;
+        courier.CouType=i.couType;
 
         this.completedCourierArray.push(courier);
 
@@ -366,12 +385,56 @@ export class CourierDocumentComponent implements OnInit {
         courier.ModifyDate=i.modifyDate;
         courier.Remark=i.remark;
         courier.Token=i.token;
+        courier.ToBranch=i.toBranch;
+        courier.ReceivedBy=i.receivedBy;
+        courier.ReceivedDate=i.receivedDate;
+        courier.SendDate=i.sendDate;
+        courier.SendBy=i.sendBy;
+        courier.CouType=i.couType;
 
         this.otherCourierArray.push(courier);
 
        });
 
       this.datasourceOtherCourier.data = this.otherCourierArray;
+
+      this.loading_table=false;
+      
+    },error=>{
+      this.alert("Oopz...", "Error occour at Loading Couriers", "error");
+      this.loading_table=false;
+    });
+  }
+
+  loadCompletedOwnCouriers(){
+    this.loading_table=true;
+    this.courierDocumentService.loadCompletedOwnCourier(sessionStorage.getItem("token")).subscribe(response => {
+      this.completedOwnCourierArray=new Array();
+      
+      response.json().forEach(i => {
+        let courier:CourierModel=new CourierModel();
+
+        courier.BranchCode=i.branchCode;
+        courier.CourierId=i.courierId;
+        courier.CourierStatus=i.courierStatus;
+        courier.CreateBy=i.createBy;
+        courier.CreateDate=i.createDate;
+        courier.ModifyBy=i.modifyBy;
+        courier.ModifyDate=i.modifyDate;
+        courier.Remark=i.remark;
+        courier.Token=i.token;
+        courier.ToBranch=i.toBranch;
+        courier.ReceivedBy=i.receivedBy;
+        courier.ReceivedDate=i.receivedDate;
+        courier.SendDate=i.sendDate;
+        courier.SendBy=i.sendBy;
+        courier.CouType=i.couType;
+
+        this.completedOwnCourierArray.push(courier);
+
+       });
+
+      this.datasourceCompletedOwnCourier.data = this.completedOwnCourierArray;
 
       this.loading_table=false;
       
@@ -489,20 +552,25 @@ export class CourierDocumentComponent implements OnInit {
 
       let docId:number=0;
 
+      let docIdArr:number[]=new Array();
+
       if(this.hasSubDoc){
         docId=this.SubDocument.value;
+        docIdArr=this.SubDocument.value;
+        console.log(docId);
         if(docId == 0){
           this.alert("Oopz...", "Please Select Sub Document", "error");
           return;
         }
       }else{
         docId=this.Document.value;
+        docIdArr.push(docId);
       }
-
+      console.log(docId);
       this.loading_saving=true;
       
       this.courierDocumentService.saveCourierOrder(this.Department.value,this.SubDepartment.value,
-        docId,this.RefType.value,this.RefNo.value,this.Remark.value,sessionStorage.getItem("token")
+        docIdArr,this.RefType.value,this.RefNo.value,this.Remark.value,sessionStorage.getItem("token")
         ,this.Branch.value,this.isHoUser).subscribe(response=>{
 
         this.loading_saving=false;
@@ -525,8 +593,18 @@ export class CourierDocumentComponent implements OnInit {
   }
 
   applyFilter(filterValue: string) {
-    this.datasourceCourier.filter = filterValue.trim().toLowerCase();
+    this.datasourceOtherCourier.filter = filterValue.trim().toLowerCase();
   }
+
+  applyFilter1(filterValue: string) {
+    this.datasourceCompletedOwnCourier.filter = filterValue.trim().toLowerCase();
+  }
+
+  // applyFilter2(filterValue: string) {
+  //   this.datasourceCourier.filter = filterValue.trim().toLowerCase();
+  //   console.log(this.datasourceCourier.data);
+  //   this.courierArray=this.datasourceCourier.data;
+  // }
 
   courierpopup(title: string, data: any) {
 
@@ -611,6 +689,32 @@ export class CourierDocumentComponent implements OnInit {
     }
   }
 
+  removeDocumentId;
+
+  removeDocument(id){
+    this.removeDocumentId=id;
+
+    let message : string [] = new Array();
+    message.push("Do you want to REMOVE document from courier ?");
+    message.push("(After removing document you can't rollback it.)");
+
+    this.confirmationalert("Are you sure ?",  message , "success" , "4");
+
+  }
+
+  removeDocumentSave(){
+    this.courierDocumentService.removeDocument(this.removeDocumentId).subscribe(response =>{
+      if(response.json() == "200"){
+        this.alert("Success", "Successfully Remove Courier Document", "success");
+        this.loadCouriers();
+      }else{
+        this.alert("Oopz...", "Error occour at Remove Courier Document", "error");
+      }
+    },error=>{
+      this.alert("Oopz...", "Error occour at Remove Courier Document", "error");
+    });
+  }
+
   sendCourierData ;
 
   sendCourier(data: any){
@@ -624,7 +728,7 @@ export class CourierDocumentComponent implements OnInit {
 
   }
 
-  sendCourierSave(){
+  sendCourierSave(couType:string){
     
     if(this.confirmationResult === "yes"){
       let sendData;
@@ -635,11 +739,12 @@ export class CourierDocumentComponent implements OnInit {
         }
       }
       console.log(sendData);
-      this.courierDocumentService.sendCourier(sendData).subscribe(response => {
+      this.courierDocumentService.sendCourier(sendData,sessionStorage.getItem("token"),couType).subscribe(response => {
         if(response.json() == "200"){
           this.alert("Success", "Successfully Send Courier", "success");
           this.loadCouriers();
           this.loadOtherCouriers();
+          this.loadCompletedOwnCouriers();
           this.loadReceivingCouriers();
           this.loadCompletedCouriers();
         }else{
@@ -680,6 +785,7 @@ export class CourierDocumentComponent implements OnInit {
           this.alert("Success", "Successfully Received Courier", "success");
           this.loadCouriers();
           this.loadOtherCouriers();
+          this.loadCompletedOwnCouriers();
           this.loadReceivingCouriers();
           this.loadReceivedCouriers();
           this.loadCompletedCouriers();
@@ -712,6 +818,7 @@ export class CourierDocumentComponent implements OnInit {
           this.alert("Success", "Successfully Received Courier Document", "success");
           this.loadCouriers();
           this.loadOtherCouriers();
+          this.loadCompletedOwnCouriers();
           this.loadReceivingCouriers();
           this.loadReceivedCouriers();
           this.loadCompletedCouriers();
@@ -762,7 +869,7 @@ export class CourierDocumentComponent implements OnInit {
 
       switch(result.method){
         case "1" : 
-          this.sendCourierSave()
+          this.sendCourierSave(result.couType)
           break;
         case "2" : 
           this.receiveCourierSave()
@@ -770,9 +877,24 @@ export class CourierDocumentComponent implements OnInit {
         case "3" : 
           this.receivedCourierDocumentsSave()
           break;
+        case "4" : 
+          this.removeDocumentSave()
+          break;
       }
 
     });
+  }
+
+  clickSendCourier(){
+    this.loadCouriers();
+    this.loadOtherCouriers();
+    this.loadCompletedOwnCouriers();
+  }
+
+  clickReceivingCourier(){
+    this.loadReceivingCouriers();
+    this.loadReceivedCouriers();
+    this.loadCompletedCouriers();
   }
 
 }

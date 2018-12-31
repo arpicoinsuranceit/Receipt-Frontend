@@ -1,0 +1,39 @@
+<mat-card class="main-card">
+  <mat-card-header>
+    <mat-card-title>
+      <h3>Pending Couriers</h3>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content style="max-height: 380px;overflow-x: auto;">
+    <div [hidden]="!loading1" class="loader">
+      <h5>Loading...</h5>
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </div>
+
+    <mat-table [dataSource]="couriers" class="mat-elevation-z8" style="padding: 20px;">
+      <ng-container matColumnDef="token">
+        <mat-header-cell *matHeaderCellDef> Token </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.Token}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="branch">
+        <mat-header-cell *matHeaderCellDef> Branch Code </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.ToBranch}} </mat-cell>
+      </ng-container>
+
+
+      <ng-container matColumnDef="date">
+        <mat-header-cell *matHeaderCellDef> Create Date </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.CreateDate}} </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumn; sticky: true"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumn;"></mat-row>
+    </mat-table>
+
+  </mat-card-content>
+  <mat-card-actions style="border-top: solid #C4C4C4 1px; display: flex; 
+                  justify-content: space-between;">
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 50, 100]" (page)="loadData();" showFirstLastButtons></mat-paginator>
+  </mat-card-actions>
+</mat-card>

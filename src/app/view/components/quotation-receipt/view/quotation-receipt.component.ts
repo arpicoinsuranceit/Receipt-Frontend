@@ -391,7 +391,7 @@ export class QuotationReceiptComponent implements OnInit {
         this.newReceipt();
         this.loadLastReceipts();
 
-        this.alert("Success", "Successfully Added Receipt", "success");
+        this.alert("Success", resp.status, "success");
 
         console.log(resp.data);
 

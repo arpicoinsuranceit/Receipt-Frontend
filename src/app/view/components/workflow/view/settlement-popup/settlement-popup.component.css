@@ -1,0 +1,9 @@
+.tab-card{
+    height: 320px;
+    width : 952px;
+    overflow: auto;
+}
+
+    .highlight{
+        background: #42A948; /* green */
+      }

@@ -1,0 +1,59 @@
+<mat-card class="main-card">
+  <mat-card-header>
+    <mat-card-title>
+      <h3>Pending Code Transfers</h3>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content style="max-height: 380px;overflow-x: auto;">
+    <div [hidden]="!loading1" class="loader">
+      <h5>Loading...</h5>
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </div>
+
+    <mat-table [dataSource]="codeTransferList" class="mat-elevation-z8" style="padding: 20px;">
+      <ng-container matColumnDef="proposalNo">
+        <mat-header-cell *matHeaderCellDef> Proposal No </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.PprNum}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="policyNo">
+        <mat-header-cell *matHeaderCellDef> Policy No </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.PolNum}} </mat-cell>
+      </ng-container>
+
+
+      <ng-container matColumnDef="oldagen">
+        <mat-header-cell *matHeaderCellDef> Old Agent </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.OldAgentCode}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="newagn">
+        <mat-header-cell *matHeaderCellDef> New Agent </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.NewAgentCode}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="reason">
+        <mat-header-cell *matHeaderCellDef> Reason </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.Reason}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="requestBy">
+        <mat-header-cell *matHeaderCellDef> Requested By </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.RequestBy}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="requestDate">
+        <mat-header-cell *matHeaderCellDef> Request Date </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.RequestDate}} </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumnCodeTransfer; sticky: true"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumnCodeTransfer;"></mat-row>
+    </mat-table>
+
+  </mat-card-content>
+  <mat-card-actions style="border-top: solid #C4C4C4 1px; display: flex; 
+                  justify-content: space-between;">
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 50, 100]" (page)="loadNextData();" showFirstLastButtons></mat-paginator>
+  </mat-card-actions>
+</mat-card>

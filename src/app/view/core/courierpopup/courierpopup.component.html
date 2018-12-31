@@ -42,12 +42,33 @@
   
   <div *ngIf="popupData.courierStatus != 'BRANCH' ">
     <div style="text-align: left;">
-      <label>COURIER TOKEN : </label>
-      <label>{{popupData.courierRef}}</label>
-
-      <label>COURIER STATUS : </label>
-      <label>{{popupData.courierStatus}}</label>
-
+      <table>
+        <tr>
+          <td>COURIER TOKEN</td>
+          <th>:</th>
+          <td>{{popupData.courierRef}}</td>
+        </tr>
+        <tr>
+          <td>COURIER STATUS</td>
+          <th>:</th>
+          <td>{{popupData.courierStatus}}</td>
+        </tr>
+        <tr>
+          <td>SEND DATE </td>
+          <th>:</th>
+          <td>{{popupData.sendDate | date: 'dd/MM/yyyy'}}</td>
+        </tr>
+        <tr>
+          <td>SEND BY</td>
+          <th>:</th>
+          <td>{{popupData.sendBy}}</td>
+        </tr>
+        <tr>
+          <td>COU TYPE</td>
+          <th>:</th>
+          <td>{{popupData.couType}}</td>
+        </tr>
+      </table>
     </div>
     <div *ngFor="let dep of popupData.departmentHelperDtos">
       <h3 style="text-align: left;">{{dep.depName | uppercase}}</h3>

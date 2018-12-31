@@ -16,11 +16,12 @@ import { LoginComponent } from './view/core/login/login.component';
 import { RouterModule, Routes } from '@angular/router';
 import { AlertComponent } from './view/core/alert/alert.component';
 import { ConfirmationAlertComponent } from './view/core/confirmation-alert/confirmation-alert.component';
+import { ReceiptRegisterReportComponent } from './view/components/report/view/receipt-register-report/receipt-register-report.component';
 
 
 @NgModule({
   declarations: [
-    AppComponent, LoginComponent, AlertComponent ,CourierpopupComponent,DashboardpopupComponent,ConfirmationAlertComponent
+    AppComponent, LoginComponent, AlertComponent ,CourierpopupComponent,DashboardpopupComponent,ConfirmationAlertComponent,ReceiptRegisterReportComponent
   ],
   imports: [
     BrowserModule,
@@ -34,6 +35,6 @@ import { ConfirmationAlertComponent } from './view/core/confirmation-alert/confi
   ],
   providers: [AuthService, AuthGuard, CommonService],
   bootstrap: [AppComponent],
-  entryComponents: [AlertComponent,CourierpopupComponent, DashboardpopupComponent,ConfirmationAlertComponent]
+  entryComponents: [AlertComponent,CourierpopupComponent, DashboardpopupComponent,ConfirmationAlertComponent,ReceiptRegisterReportComponent]
 })
 export class AppModule { }
