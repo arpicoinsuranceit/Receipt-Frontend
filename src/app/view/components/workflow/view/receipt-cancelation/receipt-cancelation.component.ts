@@ -11,6 +11,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 })
 export class ReceiptCancelationComponent implements OnInit {
 
+  loading1 = false;
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   displayedColumnReceiptCancelation: string[] = ['proposalNo', 'policyNo', 'receiptNo', 'docCode', 'amount', 'reason', 'requestBy', 'requestDate'];

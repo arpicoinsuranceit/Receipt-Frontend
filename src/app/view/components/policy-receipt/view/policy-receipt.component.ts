@@ -123,8 +123,14 @@ export class PolicyReceiptComponent implements OnInit {
 
   }
 
-  advanceSearchEnable() {
-    this.advance_search = !this.advance_search;
+  advanceSearchEnable(e) {
+
+    console.log(e.key)
+
+    if(e.key != "Enter"){
+      this.advance_search = !this.advance_search;
+    }
+    
 
     console.log(this.advance_search);
   }

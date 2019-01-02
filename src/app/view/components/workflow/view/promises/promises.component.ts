@@ -13,6 +13,8 @@ import { SettlementPopupComponent } from '../settlement-popup/settlement-popup.c
 })
 export class PromisesComponent implements OnInit {
 
+  loading1 = false;
+  
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   displayedColumns: string[] = ['Customer_Name', 'Policy_No', 'Agent_Code', 'Amount', 'Settle_Date', 'Settle_Button', 'Add_New_Button'];

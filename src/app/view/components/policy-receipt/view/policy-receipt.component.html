@@ -9,10 +9,22 @@
     <div fxFlex="50%">
         <mat-card class="main-card" style="min-height: 741px;">
 
-            <mat-card-header>
+            <mat-card-header style="border-top: solid #C4C4C4 1px; display: flex; 
+            justify-content: space-between;">
                 <mat-card-title>
                     <h3>Policy Receipt</h3>
                 </mat-card-title>
+
+                <!-- <button mat-icon-button [matMenuTriggerFor]="receipt"> <mat-icon>more_vert</mat-icon></button> -->
+
+                <!-- <mat-menu #receipt="matMenu" yPosition="below" xPosition="before" > -->
+                <button style="margin-top: 12px; margin-bottom: 12px;" mat-icon-button (click)="advanceSearchEnable($event)">
+                    <mat-icon>more_vert</mat-icon>
+                </button>
+
+                <!-- </mat-menu> -->
+
+
             </mat-card-header>
 
             <mat-card-content>
@@ -27,8 +39,9 @@
                         justify-content: space-between;">
 
                             <mat-form-field>
-                                <input matInput placeholder="Policy No. *" tabindex="1" aria-label="Policy No." [matAutocomplete]="propNumbers"
-                                    formControlName="propNo" (keyup)="LoadPolicies($event)" (blur)="getPolicyDetails(propNumbers)">
+                                <input matInput placeholder="Policy No. *" tabindex="1" aria-label="Policy No."
+                                    [matAutocomplete]="propNumbers" formControlName="propNo" (keyup)="LoadPolicies($event)"
+                                    (blur)="getPolicyDetails(propNumbers)">
                                 <mat-autocomplete #propNumbers="matAutocomplete">
 
                                     <mat-option *ngFor="let policy of filteredPolicies | async" [value]="policy.PolicyCombine">
@@ -42,8 +55,8 @@
                                 </mat-error>
                             </mat-form-field>
 
-                            <button style="margin-top: 12px; margin-bottom: 12px;" mat-raised-button (click)="advanceSearchEnable()">Advance
-                                Search</button>
+
+
                         </div>
 
                         <mat-card *ngIf="advance_search" style="margin-bottom: 10px;" [ngClass]="{'disabled': loading_adv_search == true}">
@@ -51,8 +64,8 @@
                                 <h5>Loading...</h5>
                                 <mat-progress-bar mode="indeterminate"></mat-progress-bar>
                             </div>
-                            <mat-select placeholder="Type" tabindex="2" style="width: 150px; padding-right: 10px;" aria-label="Type"
-                                formControlName="adv_type">
+                            <mat-select placeholder="Type" tabindex="2" style="width: 150px; padding-right: 10px;"
+                                aria-label="Type" formControlName="adv_type">
                                 <mat-option value="ppr">
                                     Proposal No
                                 </mat-option>
@@ -67,7 +80,8 @@
                                 </mat-option>
                             </mat-select>
                             <mat-form-field>
-                                <input type="text" tabindex="3" matInput placeholder="Search" aria-label="Search" formControlName="adv_value">
+                                <input type="text" tabindex="3" matInput placeholder="Search" aria-label="Search"
+                                    formControlName="adv_value">
                             </mat-form-field>
                             <button color="primary" tabindex="4" mat-mini-fab (click)="advanceSearch()"><i class="fas fa-search"></i></button>
 
@@ -98,8 +112,8 @@
 
                         <br>
                         <mat-form-field class="full-width">
-                            <input matInput placeholder="Bank Code *" tabindex="5" aria-label="Bank Code" [matAutocomplete]="bank"
-                                formControlName="bankCode">
+                            <input matInput placeholder="Bank Code *" tabindex="5" aria-label="Bank Code"
+                                [matAutocomplete]="bank" formControlName="bankCode">
                             <mat-autocomplete #bank="matAutocomplete">
                                 <mat-option *ngFor="let bank of filteredBanks | async" [value]="bank.BankCode">
                                     <span> {{ bank.BankName }} </span> |
@@ -116,7 +130,8 @@
                             <input matInput placeholder="Remark" tabindex="6" aria-label="Remark" formControlName="remark">
                         </mat-form-field>
                         <mat-form-field>
-                            <mat-select placeholder="Payment Mode" tabindex="7" aria-label="Payment Mode" formControlName="paymode">
+                            <mat-select placeholder="Payment Mode" tabindex="7" aria-label="Payment Mode"
+                                formControlName="paymode">
                                 <mat-option value="CS">
                                     CASH
                                 </mat-option>
@@ -142,12 +157,14 @@
                                     formControlName="chequeno">
                             </mat-form-field>
                             <mat-form-field>
-                                <input matInput tabindex="9" [matDatepicker]="picker" placeholder="Cheque Date" formControlName="chequedate">
+                                <input matInput tabindex="9" [matDatepicker]="picker" placeholder="Cheque Date"
+                                    formControlName="chequedate">
                                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                 <mat-datepicker #picker></mat-datepicker>
                             </mat-form-field>
                             <mat-form-field class="full-width">
-                                <input matInput tabindex="10" type="number" placeholder="Bank" aria-label="Bank" formControlName="chequebank">
+                                <input matInput tabindex="10" type="number" placeholder="Bank" aria-label="Bank"
+                                    formControlName="chequebank">
                             </mat-form-field>
                         </mat-card>
                         <mat-card *ngIf="PayMode.value == 'CR'" style="margin-bottom: 10px;">

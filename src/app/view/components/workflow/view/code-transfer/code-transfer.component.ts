@@ -12,6 +12,8 @@ export class CodeTransferComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
+  loading1 = false;
+
   displayedColumnCodeTransfer: string[] = ['proposalNo', 'policyNo', 'oldagen', 'newagn', 'reason', 'requestBy', 'requestDate'];
 
   codeTransferList : CodeTransferModel [] = new Array();
