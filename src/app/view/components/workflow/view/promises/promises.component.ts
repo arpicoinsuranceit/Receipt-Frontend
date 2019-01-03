@@ -41,8 +41,9 @@ export class PromisesComponent implements OnInit {
   }
 
   loadData() {
+    this.loading1 = true;
     this.workFlowService.loadPromises(this.paginator.pageIndex, this.paginator.pageSize).subscribe(resp => {
-      console.log(resp.json());
+      this.loading1 = false;
 
       this.datasourcePromises = new Array();
 

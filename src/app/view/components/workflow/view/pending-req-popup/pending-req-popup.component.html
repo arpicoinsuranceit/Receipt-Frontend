@@ -1,9 +1,45 @@
 <h2 mat-dialog-title style="text-align: center;border-bottom:solid #C4C4C4 1px">Pending Requirment</h2>
 <mat-dialog-content style="min-width: 250px;">
 
+  <div [hidden]="!loading1" class="loader">
+    <h5>Loading...</h5>
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  </div>
+
+  <div style="max-height: 300px; overflow: auto;" [ngClass]="{'disabled': loading1 == true}">
+
+    <mat-table [dataSource]="medilist" class="mat-elevation-z8" style="width: 100%; box-shadow: none; max-height: 223px; overflow-y: auto;">
+      <ng-container matColumnDef="medicode">
+        <mat-header-cell *matHeaderCellDef> Medi. Code </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.MediCode}}
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="mediname">
+        <mat-header-cell *matHeaderCellDef> Medi. Name </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.MediName}}
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="instype">
+          <mat-header-cell *matHeaderCellDef> Type </mat-header-cell>
+          <mat-cell *matCellDef="let element" > {{element.InsType}}
+          </mat-cell>
+        </ng-container>
+      <ng-container matColumnDef="addnote">
+        <mat-header-cell *matHeaderCellDef> Additional Notes
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.AddNote}} </mat-cell>
+      </ng-container>
+      
+      <mat-header-row *matHeaderRowDef="benefictTblDisplayColumns; sticky: true"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: benefictTblDisplayColumns;" ></mat-row>
+
+    </mat-table>
+
+  </div>
+
   
   
 </mat-dialog-content>
 <mat-dialog-actions style="border-top: solid #C4C4C4 1px; display: flex; justify-content: center;">
-  <button mat-button mat-dialog-close style="background: #AA0001; color: white">er</button>
+  <button mat-button mat-dialog-close style="background: #AA0001; color: white">Cancle</button>
 </mat-dialog-actions>

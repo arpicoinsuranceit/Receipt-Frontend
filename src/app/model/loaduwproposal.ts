@@ -1,7 +1,7 @@
 export class LoadUWProposals{
     
     constructor (private proposalNo? : number, private sequenceNo? : number, private policyNo? : number,private customer? : string , private proposedName? : string,
-        private agent? : string,private policyBranch? : string,private agentBranch? : string,private nic? : string){
+        private agent? : string,private policyBranch? : string,private agentBranch? : string,private nic? : string, private product? : string){
 
         }
 
@@ -75,5 +75,13 @@ export class LoadUWProposals{
 
     set AgentBranch (agentBranch : string) {
         this.agentBranch = agentBranch;
+    }
+
+    get Product () {
+        return this.product;
+    }
+
+    set Product (product : string) {
+        this.product = product;
     }
 }

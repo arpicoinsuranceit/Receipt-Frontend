@@ -1,7 +1,7 @@
 export class CourierModel{   
     constructor(private courierId?: number,private token?: string,private branchCode?: string,private courierStatus?: string,private remark?: string,private createDate?: string
         ,private createBy?: string,private modifyDate?: string,private modifyBy?: string,private toBranch?:string,private receivedBy?:string,private receivedDate?:string
-        ,private sendBy?:string,private sendDate?:string,private couType?:string){}
+        ,private sendBy?:string,private sendDate?:string,private couType?:string, private status? : string){}
 
 
     get CourierId(){
@@ -122,6 +122,14 @@ export class CourierModel{
 
     set CouType(couType:string){
         this.couType=couType;
+    }
+
+    get Status(){
+        return this.status;
+    }
+
+    set Status(status:string){
+        this.status=status;
     }
 
 }

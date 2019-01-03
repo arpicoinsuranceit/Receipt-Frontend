@@ -2,7 +2,8 @@ export class PromisesGrid {
 
     constructor(private id?: Number, private polNum?: string, private pprNum?: string,
         private dueDate?: string, private promiseDate?: string, private phoneNum?: string, private custName?: string,
-        private custNic?: string, private amount? : number, private remark? : string, private payType? : string, private agent? : string, private branch? : string) { }
+        private custNic?: string, private amount? : number, private remark? : string, private payType? : string, private agent? : string, private branch? : string,
+        private health?: string) { }
 
     get Id() {
         return this.id;
@@ -109,4 +110,11 @@ export class PromisesGrid {
         this.branch = branch;
     }
 
+    get Health() {
+        return this.health;
+    }
+
+    set Health(health: string) {
+        this.health = health;
+    }
 }

@@ -62,7 +62,7 @@ export class HomeComponent implements OnInit {
   yAxisLabel = 'Amount';
 
   colorScheme = {
-    domain: ['#1FC1ED', '#DB4C3F', '#18A55D', '#F19B2C', '#7561F4']
+    domain: ['#18A55D', '#DB4C3F', '#1FC1ED', '#F19B2C', '#7561F4']
   };
 
   fromdate = new FormControl(new Date());

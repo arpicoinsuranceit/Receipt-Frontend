@@ -151,12 +151,15 @@
               <tr>
                 <td>Mobile </td>
                 <td> : </td>
-                <td> {{workflowProposalMainLife.Mobile}}</td>
+                <td *ngIf = "workflowProposalMainLife.Mobile != null"> {{workflowProposalMainLife.Mobile}}</td>
+                <td *ngIf = "workflowProposalMainLife.Mobile == null" style="color: #AA0001"> Please get mobile number</td>
               </tr>
               <tr>
                 <td>Tele. No </td>
                 <td> : </td>
-                <td> {{workflowProposalMainLife.Phone}}</td>
+                <td *ngIf = "workflowProposalMainLife.Phone != null"> {{workflowProposalMainLife.Phone}}</td>
+                <td *ngIf = "workflowProposalMainLife.Phone == null" style="color: #AA0001"> Please get phone number</td>
+                
               </tr>
               <tr>
                 <td>Previlage Card No </td>
