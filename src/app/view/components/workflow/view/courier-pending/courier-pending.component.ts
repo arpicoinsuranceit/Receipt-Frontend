@@ -16,7 +16,7 @@ export class CourierPendingComponent implements OnInit {
 
   couriers: CourierModel[] = new Array();
 
-  displayedColumn: string[] = ['token', 'branch', 'date'];
+  displayedColumn: string[] = ['token', 'branch', 'date', 'status'];
 
   constructor(private workFlowService: WorkFlowService) { }
 
@@ -52,6 +52,7 @@ export class CourierPendingComponent implements OnInit {
         courier.Token = element.token;
         courier.ToBranch = element.toBranch;
         courier.CreateDate = new Date(element.createDate).toLocaleDateString();
+        courier.CourierStatus = element.courierStatus;
 
         this.couriers.push(courier);
 

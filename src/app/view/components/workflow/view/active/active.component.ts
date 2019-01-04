@@ -59,16 +59,20 @@ export class ActiveComponent implements OnInit {
 
   popup(e: PromisesGrid) {
 
-    let data : PromisesGrid = new PromisesGrid();
+    // let data : PromisesGrid = new PromisesGrid();
 
-    data.PprNum = e.PprNum;
-    data.PolNum = e.PolNum.split("/")[1];
+    // data.PprNum = e.PprNum;
+    // data.PolNum = e.PolNum.split("/")[1];
+    // data.Amount = e.Amount;
+    // data.Branch = e.Branch;
+    // data
+    e.PolNum  = e.PolNum.split("/")[1];
 
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.data = data;
+    dialogConfig.data = e;
 
     const dialogRef = this.dialog.open(SettlementPopupComponent, dialogConfig);
 

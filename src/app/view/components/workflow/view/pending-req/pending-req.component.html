@@ -9,39 +9,41 @@
       <h5>Loading...</h5>
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     </div>
-
-    <mat-table [dataSource]="shortPremiums" class="mat-elevation-z8" style="padding: 20px;">
-      <ng-container matColumnDef="quonum">
-        <mat-header-cell *matHeaderCellDef> Quotation No </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.Quonum}} </mat-cell>
-      </ng-container>
-      <ng-container matColumnDef="pprnum">
-        <mat-header-cell *matHeaderCellDef> Proposal No </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.Pprnum}} </mat-cell>
-      </ng-container>
-      <ng-container matColumnDef="agent">
-        <mat-header-cell *matHeaderCellDef> Agent </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.Agent}} </mat-cell>
-      </ng-container>
-      <ng-container matColumnDef="loccod">
-        <mat-header-cell *matHeaderCellDef> Branch </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.Loccod}} </mat-cell>
-      </ng-container>
-      <ng-container matColumnDef="addnot">
-        <mat-header-cell *matHeaderCellDef style="padding-right: 10px;"> Pending Req. Count </mat-header-cell>
-        <mat-cell *matCellDef="let element" style="padding-right: 10px;"> {{element.count}} </mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="process">
-        <mat-header-cell *matHeaderCellDef> Process </mat-header-cell>
-        <mat-cell *matCellDef="let element">
-          <button mat-raised-button color="warn" (click)="process(element)">More</button>
-        </mat-cell>
-      </ng-container>
-
-      <mat-header-row *matHeaderRowDef="displayedColumn; sticky: true"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumn;"></mat-row>
-    </mat-table>
+    <div [ngClass]="{'disabled': loading1 == true}">
+      <mat-table [dataSource]="shortPremiums" class="mat-elevation-z8" style="padding: 20px;">
+        <ng-container matColumnDef="quonum">
+          <mat-header-cell *matHeaderCellDef> Quotation No </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.Quonum}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="pprnum">
+          <mat-header-cell *matHeaderCellDef> Proposal No </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.Pprnum}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="agent">
+          <mat-header-cell *matHeaderCellDef> Agent </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.Agent}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="loccod">
+          <mat-header-cell *matHeaderCellDef> Branch </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.Loccod}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="addnot">
+          <mat-header-cell *matHeaderCellDef style="padding-right: 10px;"> Pending Req. Count </mat-header-cell>
+          <mat-cell *matCellDef="let element" style="padding-right: 10px;"> {{element.count}} </mat-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="process">
+          <mat-header-cell *matHeaderCellDef> Process </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <button mat-raised-button color="warn" (click)="process(element)">More</button>
+          </mat-cell>
+        </ng-container>
+  
+        <mat-header-row *matHeaderRowDef="displayedColumn; sticky: true"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumn;"></mat-row>
+      </mat-table>
+    </div>
+    
 
   </mat-card-content>
   <mat-card-actions style="border-top: solid #C4C4C4 1px; display: flex; 

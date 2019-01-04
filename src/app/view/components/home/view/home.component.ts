@@ -62,7 +62,7 @@ export class HomeComponent implements OnInit {
   yAxisLabel = 'Amount';
 
   colorScheme = {
-    domain: ['#1FC1ED', '#DB4C3F', '#18A55D', '#F19B2C', '#7561F4']
+    domain: ['#18A55D', '#DB4C3F', '#1FC1ED', '#F19B2C', '#7561F4']
   };
 
   fromdate = new FormControl(new Date());
@@ -113,7 +113,6 @@ export class HomeComponent implements OnInit {
   getCashFlowDetails() {
     let from = this.fromdate2.value;
     let to = this.todate2.value;
-
     
     this.loading3 = true;
     document.onkeydown = function (e) { return false; }
@@ -343,11 +342,11 @@ export class HomeComponent implements OnInit {
             this.dashboardPie1.PolVal = element.value;
             this.dashboardPie1.PolCount = element.count;
             break;
-          case "Misc. INV":
+          case "Misc. INV / GL":
             this.dashboardPie1.InvVal = element.value;
             this.dashboardPie1.InvCount = element.count;
             break;
-          case "Misc. GL":
+          case "Loan":
             this.dashboardPie1.GlVal = element.value;
             this.dashboardPie1.GlCount = element.count;
             break;
@@ -544,11 +543,11 @@ export class HomeComponent implements OnInit {
         case "RCPL":
           title = "Policy Receipt "
           break;
-        case "OIIS":
-          title = "Misc. INV Receipt "
+        case "RCLN":
+          title = "Loan Receipt "
           break;
         case "GLRC":
-          title = "Misc. GL Receipt "
+          title = "Misc. INV / GL Receipt "
           break;
         default:
           break;

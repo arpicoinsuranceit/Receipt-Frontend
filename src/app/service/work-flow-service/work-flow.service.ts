@@ -7,7 +7,6 @@ import { PromisesGrid } from 'app/model/promisesgrid';
 })
 export class WorkFlowService {
   
-
   constructor(private http: Http) { }
 
   getProposalDate(polnum: string, pprnum: string): any {
@@ -84,4 +83,11 @@ export class WorkFlowService {
     return this.http.get("http://localhost:8088/pendingreqcount/" + token);
   }
 
+  getPendingReqDetails(token : any, proposalNo: any): any {
+    return this.http.get("http://localhost:8088/getPendingReqDetails/" + token + "/" + proposalNo);
+  }
+
+  laodgetPendingLapsPolicies(type: string, token: string, date1: number, date2: number): any {
+    return this.http.get("http://localhost:8088/getPendingLapsPolicies/" + token + "/" + type+ "/" + date1+ "/" + date2);
+  }
 }

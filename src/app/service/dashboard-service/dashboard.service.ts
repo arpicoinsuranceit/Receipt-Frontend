@@ -28,21 +28,21 @@ export class DashboardService {
         return this.http.get("http://localhost:8088/dashboarddetails/" + type + "/" + to + "/" + from + "/" + user);
     }
 
-    dashboardDiv1(from: string, to: string) {
+    dashboardDiv1(from: any, to: any) {
 
         let user = sessionStorage.getItem('token');
 
         return this.http.get("http://localhost:8088/dashboarddiv1/" + to + "/" + from + "/" + user);
     }
 
-    dashboardDiv2(from: string, to: string, type: string) {
+    dashboardDiv2(from: any, to: any, type: string) {
 
         let user = sessionStorage.getItem('token');
 
         return this.http.get("http://localhost:8088/dashboarddiv2/" + to + "/" + from + "/" + user + "/" + type);
     }
 
-    dateVsPayMode(from: string, to: string, type: string) {
+    dateVsPayMode(from: any, to: any, type: string) {
 
         let user = sessionStorage.getItem('token');
 

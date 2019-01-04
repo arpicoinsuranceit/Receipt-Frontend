@@ -20,8 +20,8 @@ export class UnderwriteComponent implements OnInit {
 
   displayedColumnsShedule: string[];
 
-  displayedColumnsProposal: string[] = ['proposalNo', 'sequenceNo', 'policyNo', 'customer', 'proposedName', 'agent', 'policyBranch', 'agentBranch',
-    'nic'];
+  displayedColumnsProposal: string[] = ['proposalNo', 'sequenceNo', 'proposedName', 'agent', 'agentBranch',
+    'nic', 'product'];
 
   constructor(private branchUnderwriteService: BranchUnderwriteService, private router: Router) { }
 
@@ -53,6 +53,7 @@ export class UnderwriteComponent implements OnInit {
         proposal.ProposalNo = i.proposalNo;
         proposal.ProposedName = i.custName;
         proposal.SequenceNo = i.seqNo;
+        proposal.Product = i.product;
 
         this.proposalArray.push(proposal);
 
@@ -64,11 +65,18 @@ export class UnderwriteComponent implements OnInit {
     });
   }
 
-  loadData(propNo, seqNo, brnCode, agentCode) {
-    
+
+
+  loadData(propNo , seqNo, brnCode : String, agentCode: String) {
+
+    brnCode = brnCode.trim();
+    agentCode = agentCode.split("/")[0].trim();
+
     let url = "underwrite/"+propNo+"/"+seqNo+"/"+brnCode+"/"+agentCode;
 
-    this.router.navigate([url]);
+    console.log(url);
+
+     this.router.navigate([url]);
   }
 
 }

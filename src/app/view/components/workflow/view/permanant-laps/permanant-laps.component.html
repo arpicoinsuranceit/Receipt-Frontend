@@ -1,3 +1,109 @@
-<p>
-  permanant-laps works!
-</p>
+<mat-card class="main-card">
+  <mat-card-header>
+    <mat-card-title>
+      <h3>Permanant Laps Next Five Days</h3>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content style="max-height: 380px;overflow-x: auto;">
+    <div [hidden]="!loading1" class="loader">
+      <h5>Loading...</h5>
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </div>
+
+    <div class="mat-elevation-z8" [ngClass]="{'disabled': loading1 == true}">
+
+      <table  mat-table [dataSource]="datasourcePromises" style="width: 100%;  padding: 20px;">
+
+        <!-- Position Column -->
+        <ng-container  matColumnDef="Customer_Name">
+          <th mat-header-cell *matHeaderCellDef> Customer Name </th>
+          <td mat-cell  *matCellDef="let element"> {{element.custName}} </td>
+        </ng-container>
+    
+       
+        <!-- Name Column -->
+        <ng-container  matColumnDef="Policy_No">
+          <th mat-header-cell *matHeaderCellDef> Policy Details </th>
+          <td mat-cell *matCellDef="let element"> {{element.polNum}} </td>
+        </ng-container>
+    
+        <!-- Weight Column -->
+        <ng-container matColumnDef="Agent_Code">
+          <th mat-header-cell *matHeaderCellDef> Agent Code </th>
+          <td mat-cell *matCellDef="let element"> {{element.Agent}} </td>
+        </ng-container>
+    
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="Banch_Code">
+          <th mat-header-cell *matHeaderCellDef> Banch Code  </th>
+          <td mat-cell *matCellDef="let element"> {{element.Branch}} </td>
+        </ng-container>
+  
+        <ng-container matColumnDef="Due_Date">
+          <th mat-header-cell *matHeaderCellDef> Due Date  </th>
+          <td mat-cell *matCellDef="let element"> {{element.DueDate}} </td>
+        </ng-container>
+  
+        <ng-container matColumnDef="Amount">
+          <th mat-header-cell *matHeaderCellDef>  Amount (Rs.) </th>
+          <td mat-cell *matCellDef="let element">  {{element.Amount | number: '.2'}} </td>
+        </ng-container>
+  
+        <ng-container matColumnDef="Health">
+          <th mat-header-cell *matHeaderCellDef style="display: none;">  </th>
+          <td mat-cell *matCellDef="let element" style="display: none;">  {{element.Health}} </td>
+        </ng-container>
+  
+        <ng-container matColumnDef="Add_Promise_Button">
+          <th mat-header-cell *matHeaderCellDef> </th>
+          <td mat-cell *matCellDef="let element"> <button mat-raised-button color="warn" (click)="addpromise(element)">Process</button> </td>
+        </ng-container>
+    
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr [ngClass]="{'make-gold':  row.Health != null}" mat-row *matRowDef="let row; columns: displayedColumns;" (dblclick)="loadData(row.proposalNo,row.sequenceNo,row.policyBranch,row.agent)"></tr>
+      </table>
+
+    </div>
+
+
+    <!-- <mat-table [dataSource]="datasourcePromises" class="mat-elevation-z8" style="padding: 20px;">
+      <ng-container matColumnDef="Customer_Name">
+        <mat-header-cell *matHeaderCellDef> Customer Name </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.custName}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="Policy_No">
+        <mat-header-cell *matHeaderCellDef> Policy Details </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.polNum}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="Agent_Code">
+        <mat-header-cell *matHeaderCellDef> Agent Code </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.Agent}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="Banch_Code">
+        <mat-header-cell *matHeaderCellDef> Branch Code </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.Branch}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="Due_Date">
+        <mat-header-cell *matHeaderCellDef> Due Date </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.DueDate}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="Amount">
+        <mat-header-cell *matHeaderCellDef style="display: flex; justify-content: flex-end; padding-right: 10px;"> Amount (Rs.) </mat-header-cell>
+        <mat-cell *matCellDef="let element" style="display: flex; justify-content: flex-end; padding-right: 10px;"> {{element.Amount | number: '.2'}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="Add_Promise_Button">
+        <mat-header-cell *matHeaderCellDef> </mat-header-cell>
+        <mat-cell *matCellDef="let element"> <button mat-raised-button color="warn" (click)="addpromise(element)">Process</button>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;" (dblclick)="loadData(row.proposalNo,row.sequenceNo,row.policyBranch,row.agent)"></mat-row>
+    </mat-table> -->
+
+  </mat-card-content>
+  <!-- <mat-card-actions style="border-top: solid #C4C4C4 1px; display: flex; 
+                  justify-content: space-between;">
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 50, 100]" (page)="loadData();" showFirstLastButtons></mat-paginator>
+  </mat-card-actions> -->
+</mat-card>

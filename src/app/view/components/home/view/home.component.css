@@ -6,18 +6,29 @@
     padding-right: 10px;
 }
 
-.new-Business-div {
+.policy-div {
     border-left: solid 5px #1FC1ED; 
     background: #b3edfc; 
     margin-top: 0px;
     cursor: pointer;
 }
 
-.new-Business-div:hover {
+.policy-div:hover {
     border-left: solid 5px rgb(0, 177, 226); 
     background: #8ce1f7; 
 }
 
+.new-Business-div{
+    border-left: solid 5px #18A55D; 
+    background: #a4f2ca;
+    margin-top: 0px;
+    cursor: pointer;
+}
+
+.new-Business-div:hover{
+    border-left: solid 5px rgb(0, 133, 64); 
+    background: #77ecb0;
+}
 
 .proposal-div{
     border-left: solid 5px #DB4C3F; 
@@ -32,17 +43,7 @@
 }
 
 
-.policy-div{
-    border-left: solid 5px #18A55D; 
-    background: #a4f2ca;
-    margin-top: 0px;
-    cursor: pointer;
-}
 
-.policy-div:hover{
-    border-left: solid 5px rgb(0, 133, 64); 
-    background: #77ecb0;
-}
 
 .inv-div{
     border-left: solid 5px #F19B2C;

@@ -59,7 +59,7 @@ export class ShortPemium {
     }
 
     get Count(){
-        return this.prpseq;
+        return this.count;
     }
 
     set Count(count : number){

@@ -290,16 +290,18 @@ export class SettlementPopupComponent implements OnInit {
   addPromise() {
     let promise: PromisesGrid = new PromisesGrid();
 
-    promise.CustName = this.e.CustName;
-    promise.CustNic = this.e.CustNic;
+    promise.Agent = this.workflowProposal.Agent.split("/")[1].trim();
+    promise.Branch = this.workflowProposal.Branch;
+    promise.CustName = this.workflowProposalMainLife.FullName;
+    promise.CustNic = this.workflowProposalMainLife.Nic;
     promise.DueDate = this.e.DueDate;
-    promise.PhoneNum = this.e.PhoneNum;
+    promise.PhoneNum = this.workflowProposalMainLife.Mobile;
     promise.PolNum = this.e.PolNum;
     promise.PprNum = this.e.PprNum;
     promise.PromiseDate = this.SettleDate.value;
     promise.Amount = this.e.Amount;
     promise.Remark = this.Remark.value;
-    promise.PayType = this.Paytype.value;
+    promise.PayType = this.workflowProposal.Frequancy;
 
     console.log(promise);
 
