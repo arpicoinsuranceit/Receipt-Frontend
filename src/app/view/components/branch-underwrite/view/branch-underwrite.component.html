@@ -1465,11 +1465,11 @@
                       </form>
 
                       <mat-card-actions style="border-top: solid #C4C4C4 1px; display: flex; 
-                                                justify-content: space-between;">
+                                                justify-content: center;">
                         <button mat-raised-button matTooltip="Edit" color="warn" style="margin-top: 10px;margin-left: 5px;margin-right: 5px;margin-bottom: 5px;"
-                          (click)="editNomineeRow()">Edit</button>
+                          (click)="editNomineeRow()" *ngIf="nomineeEditIndex != undefined && nomineeEditIndex != null">Save</button>
                         <button mat-raised-button matTooltip="Add" color="primary" style="float: right;margin-top: 10px;margin-right: 5px;margin-bottom: 5px"
-                          (click)="addNewNominee()">Add</button>
+                          (click)="addNewNominee()" *ngIf="nomineeEditIndex == undefined || nomineeEditIndex == null">Save</button>
                       </mat-card-actions>
 
                     </mat-card>

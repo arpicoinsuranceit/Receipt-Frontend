@@ -29,4 +29,8 @@ export class ReceiptCancelationService {
     return this.http.get("http://localhost:8088/getCanceledRequest/"+token);
   }
 
+  loadApprovedRequest(token:string){
+    return this.http.get("http://localhost:8088/getApprovedRequest/"+token);
+  }
+
 }

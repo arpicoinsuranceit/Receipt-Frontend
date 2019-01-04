@@ -1,7 +1,6 @@
 import { SaveReceiptModel } from '../../model/savereceiptmodel';
 import { Injectable } from '@angular/core';
 import { Http, URLSearchParams } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class ProposalReceiptService {

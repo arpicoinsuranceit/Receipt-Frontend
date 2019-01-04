@@ -19,11 +19,13 @@ export class ReceiptCancelationComponent implements OnInit {
   receiptNoList: string[] = new Array();
   pendingRequestArray:CanceledReceiptDto[]=new Array();
   canceledRequestArray:CanceledReceiptDto[]=new Array();
+  approvedRequestArray:CanceledReceiptDto[]=new Array();
 
   loading_form = false;
   loading_table = true;
   loading_saving = false;
   loading_table2 = true;
+  loading_table3 = true;
 
   displayedColumnsRequest: string[] = ['docCode', 'receiptNo',  'amount' , 'status', 'reason' ,'requestDate'];
 
@@ -32,7 +34,8 @@ export class ReceiptCancelationComponent implements OnInit {
   datasourcePendingRequest= new MatTableDataSource<CanceledReceiptDto>(this.pendingRequestArray);
 
   datasourceCanceledRequest= new MatTableDataSource<CanceledReceiptDto>(this.canceledRequestArray);
-
+  
+  datasourceApprovedRequest= new MatTableDataSource<CanceledReceiptDto>(this.approvedRequestArray);
   
 
   receiptCancelationForm=new FormGroup({
@@ -40,6 +43,9 @@ export class ReceiptCancelationComponent implements OnInit {
     receiptNo:new FormControl('',Validators.required),
     reason:new FormControl('',Validators.required)
   });
+  
+  
+  
 
   get ReceiptNo() {
     return this.receiptCancelationForm.get("receiptNo");
@@ -52,6 +58,7 @@ export class ReceiptCancelationComponent implements OnInit {
   constructor(private receiptCancelationService: ReceiptCancelationService, public dialog: MatDialog) {
     this.getPendingRequest();
     this.getCanceledRequest();
+    this.getApprovedRequest();
   }
 
   ngOnInit() {
@@ -60,6 +67,18 @@ export class ReceiptCancelationComponent implements OnInit {
   filterReceipt(id: string) {
     return this.receiptNoList.filter(receiptNo =>
       receiptNo.toLowerCase().indexOf(id.toLowerCase()) === 0);
+  }
+
+  applyFilter(filterValue: string) {
+    this.datasourceApprovedRequest.filter = filterValue.trim().toLowerCase();
+  }
+
+  applyFilter1(filterValue: string) {
+    this.datasourceCanceledRequest.filter = filterValue.trim().toLowerCase();
+  }
+
+  applyFilter2(filterValue: string) {
+    this.datasourcePendingRequest.filter = filterValue.trim().toLowerCase();
   }
 
   LoadReceipts(event) {
@@ -161,6 +180,46 @@ export class ReceiptCancelationComponent implements OnInit {
     },error=>{
       this.alert("Oopz...", "Error occour at Loading Canceled Requests", "error");
       this.loading_table2=false;
+    }); 
+
+  }
+
+  getApprovedRequest(){
+    this.loading_table3=true;
+    this.receiptCancelationService.loadApprovedRequest(sessionStorage.getItem("token")).subscribe(response => {
+      console.log(response.json());
+
+      this.approvedRequestArray=new Array();
+
+      response.json().forEach(i => {
+        let request:CanceledReceiptDto=new CanceledReceiptDto();
+
+        request.Amount=i.amount;
+        request.DocCode=i.docCode;
+        request.LocCode=i.locCode;
+        request.PolNum=i.polNum;
+        request.PprNum=i.pprNum;
+        request.Reason=i.reason;
+        request.ReceiptNo=i.receiptNo;
+        request.RequestBy=i.requestBy;
+        request.RequestDate=i.requestDate;
+        request.SbuCode=i.sbuCode;
+        request.Status=i.status;
+        request.ApprovedBy=i.approvedBy;
+        request.ApprovedDate=i.approvedDate;
+        request.GmRemark=i.gmRemark;
+
+        this.approvedRequestArray.push(request);
+
+       });
+
+      this.datasourceApprovedRequest.data = this.approvedRequestArray;
+
+      this.loading_table3=false;
+      
+    },error=>{
+      this.alert("Oopz...", "Error occour at Loading Approved Requests", "error");
+      this.loading_table3=false;
     }); 
 
   }
