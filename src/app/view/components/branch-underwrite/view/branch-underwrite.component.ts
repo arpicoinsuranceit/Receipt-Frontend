@@ -1207,14 +1207,15 @@ export class BranchUnderwriteComponent implements OnInit {
     this.branchUWNomineeForm.get("type").setValue("NORMAL");
     this.branchUnderwriteService.loadProposalNomDetails(pprnum, prpseq).subscribe(response => {
       console.log(response.json());
-      let nominee: NomineeModel = new NomineeModel();
+      
       this.nomineeArray = new Array();
       let nomNames: string[] = new Array();
 
       response.json().forEach(i => {
 
         if (!nomNames.includes(i.inPropNomDetailsModelPK.nomnam)) {
-
+          let nominee: NomineeModel = new NomineeModel();
+          
           nominee.Name = i.inPropNomDetailsModelPK.nomnam;
           nominee.NomineeDateofBirth = i.nomdob;
           nominee.DOB = i.nomdob;
