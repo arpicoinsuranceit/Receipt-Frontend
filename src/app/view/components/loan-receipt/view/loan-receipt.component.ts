@@ -480,7 +480,7 @@ export class LoanReceiptComponent implements OnInit {
           this.newReceipt();
           this.loadLastReceipts();
 
-          this.alert("Success", resp.status, "success");
+          this.alert("Success", "Successfully Saved. Receipt No : RCLN / "+resp.message, "success");
 
           let blob = this.blobService.base64toBlob(resp.data, "application/pdf");
           var fileURL = URL.createObjectURL(blob);

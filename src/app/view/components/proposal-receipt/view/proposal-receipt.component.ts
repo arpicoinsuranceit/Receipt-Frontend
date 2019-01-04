@@ -525,6 +525,7 @@ export class ProposalReceiptComponent implements OnInit {
 
         window.open(fileURL);
 
+
       } else {
         this.alert("Oopz...", resp.status, "error");
       }

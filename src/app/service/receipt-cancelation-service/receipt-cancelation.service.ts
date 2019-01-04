@@ -37,5 +37,9 @@ export class ReceiptCancelationService {
   loadPendingRequestLength(token: string): any {
     return this.http.get("http://localhost:8088/getPendingRequestLength/"+token);
   }
+  
+  loadApprovedRequest(token:string){
+    return this.http.get("http://localhost:8088/getApprovedRequest/"+token);
+  }
 
 }

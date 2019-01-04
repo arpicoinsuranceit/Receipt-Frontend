@@ -1215,14 +1215,15 @@ export class BranchUnderwriteComponent implements OnInit {
     this.branchUWNomineeForm.get("type").setValue("NORMAL");
     this.branchUnderwriteService.loadProposalNomDetails(pprnum, prpseq).subscribe(response => {
       console.log(response.json());
-      let nominee: NomineeModel = new NomineeModel();
+      
       this.nomineeArray = new Array();
       let nomNames: string[] = new Array();
 
       response.json().forEach(i => {
 
         if (!nomNames.includes(i.inPropNomDetailsModelPK.nomnam)) {
-
+          let nominee: NomineeModel = new NomineeModel();
+          
           nominee.Name = i.inPropNomDetailsModelPK.nomnam;
           nominee.NomineeDateofBirth = i.nomdob;
           nominee.DOB = i.nomdob;
@@ -1640,7 +1641,7 @@ export class BranchUnderwriteComponent implements OnInit {
   // }
 
   addNewNominee() {
-    if (this.nomineeEditIndex == undefined && this.nomineeEditIndex == null) {
+    if (this.nomineeEditIndex == undefined || this.nomineeEditIndex == null) {
       if (this.branchUWNomineeForm.valid) {
         if (this.generalInfo.ProductCode == "(ASFP)") {
           //if (this.nomineeArray.length < 2) {
@@ -1930,31 +1931,52 @@ export class BranchUnderwriteComponent implements OnInit {
       this.saveUnderwriteModel.AgentCode = this.PickAgentCode.value;
       this.saveUnderwriteModel.PropDate = this.branchUWFinalDecisionInfo.get("propDate").value;
 
+      //console.log(this.nomineeArray);
+
+      let saveOk:boolean=true;
+
+      if(this.productCode == "ASFP"){
+        this.nomineeArray.forEach(nom => {
+          if(nom.Type == "MSFB"){
+            if(nom.GuardianName == null || nom.GuardianName == "" || nom.GuardianName == undefined || 
+              nom.GuardianRelation == null || nom.GuardianRelation == "" || nom.GuardianRelation == undefined){
+                this.alert("Oopz...", "Please Enter Nominee Guardian Details", "error","");
+                saveOk=false;
+                return;
+            }
+          }
+        });
+      }
+      
+
       console.log(this.saveUnderwriteModel);
-      this.loading8 = true;
-      this.branchUnderwriteService.saveUnderwrite(this.saveUnderwriteModel).subscribe(response => {
-        console.log(response.json());
-        if (response.json().status == "success") {
-          this.loading8 = false;
-          this.alert("Success", "Successfully Underwrite", "success","Proposal No : "+response.json().code);
-          this.generalInfo = new GeneralInfo();
-          //this.quotationSeqIdList = new Array();
-          this.branchUWGeneralInfo.reset();
-          this.branchUWFinalDecisionInfo.reset();
-          this.resetAllForms();
-          this.stepper.selectedIndex = 0;
-          this.loadProposalData();
+      if(saveOk){
 
-        } else {
-          this.loading8 = false;
-          this.alert("Oopz...", "Error occour", "error","");
-        }
+        this.loading8 = true;
+        this.branchUnderwriteService.saveUnderwrite(this.saveUnderwriteModel).subscribe(response => {
+          console.log(response.json());
+          if (response.json().status == "success") {
+            this.loading8 = false;
+            this.alert("Success", "Successfully Underwrite", "success","Proposal No : "+response.json().code);
+            this.generalInfo = new GeneralInfo();
+            //this.quotationSeqIdList = new Array();
+            this.branchUWGeneralInfo.reset();
+            this.branchUWFinalDecisionInfo.reset();
+            this.resetAllForms();
+            this.stepper.selectedIndex = 0;
+            this.loadProposalData();
 
-      }, error => {
-        console.log("error");
-        this.loading8 = false;
-        this.alert("Oopz...", error, "error","");
-      });
+          } else {
+            this.loading8 = false;
+            this.alert("Oopz...", "Error occour", "error","");
+          }
+
+        }, error => {
+          console.log("error");
+          this.loading8 = false;
+          this.alert("Oopz...", error, "error","");
+        });
+      }
 
     } else {
       this.loading8 = false;
