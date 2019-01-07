@@ -113,10 +113,16 @@ export class HomeComponent implements OnInit {
   getCashFlowDetails() {
     let from = this.fromdate2.value;
     let to = this.todate2.value;
+
+    let fromDate = new Date(from);
+    let toDate = new Date(to);
+
+    console.log(fromDate);
+    console.log(toDate);
     
     this.loading3 = true;
     document.onkeydown = function (e) { return false; }
-    this.dashboardService.getCashFlowDetails(from, to).subscribe(response => {
+    this.dashboardService.getCashFlowDetails(fromDate, toDate).subscribe(response => {
       document.onkeydown = function (e) { return true; }
       console.log(response.json());
 
@@ -158,8 +164,11 @@ export class HomeComponent implements OnInit {
     let from = this.fromdate2.value;
     let to = this.todate2.value;
 
+    let fromDate = new Date(from);
+    let toDate = new Date(to);
+
     this.loading4 = true;
-    this.dashboardService.getCashFlowGrid(from, to, type).subscribe(response => {
+    this.dashboardService.getCashFlowGrid(fromDate, toDate, type).subscribe(response => {
       this.loading4 = false;
       let title: string = "";
 
@@ -313,9 +322,12 @@ export class HomeComponent implements OnInit {
     let from = this.fromdate.value;
     let to = this.todate.value;
 
+    let fromDate = new Date(from);
+    let toDate = new Date(to);
+
     this.loading1 = true;
 
-    this.dashboardService.dashboardDiv1(from, to).subscribe(response => {
+    this.dashboardService.dashboardDiv1(fromDate, toDate).subscribe(response => {
       this.loading1 = false;
       console.log(response.json());
 
@@ -416,8 +428,12 @@ export class HomeComponent implements OnInit {
       }
     }
 
+    console.log(fromDate);
+    console.log(from);
+    console.log(to);
+
     this.loading5 = true;
-    this.dashboardService.dateVsPayMode(from, to, type).subscribe(response => {
+    this.dashboardService.dateVsPayMode(fromDate, to, type).subscribe(response => {
       this.loading5 = false
       var data : string = "[";
 
@@ -505,7 +521,7 @@ export class HomeComponent implements OnInit {
 
     this.loading2 = true;
 
-    this.dashboardService.dashboardDiv2(from, to, type).subscribe(response => {
+    this.dashboardService.dashboardDiv2(fromDate, toDate, type).subscribe(response => {
 
       this.loading2 = false;
 
@@ -526,8 +542,11 @@ export class HomeComponent implements OnInit {
     let from = this.fromdate.value;
     let to = this.todate.value;
 
+    let fromDate: Date = new Date(from);
+    let toDate: Date = new Date(to);
+
     this.loading4 = true;
-    this.dashboardService.getDetails(type, from, to).subscribe(response => {
+    this.dashboardService.getDetails(type, fromDate, toDate).subscribe(response => {
       this.loading4 = false;
       console.log(response.json());
 

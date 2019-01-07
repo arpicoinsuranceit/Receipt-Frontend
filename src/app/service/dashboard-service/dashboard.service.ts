@@ -12,40 +12,40 @@ export class DashboardService {
 
     getCashFlowGrid(from: any, to: any, type: any) {
         let user = sessionStorage.getItem('token');
-        return this.http.get("http://localhost:8088/getCashFlowDetailGrid/" + type + "/" + to + "/" + from + "/" + user);
+        return this.http.get("http://10.10.10.11:8089/getCashFlowDetailGrid/" + type + "/" + to + "/" + from + "/" + user);
     }
 
     getCashFlowDetails(from: any, to: any) {
         let user = sessionStorage.getItem('token');
-        return this.http.get("http://localhost:8088/getCashFlowDetails/" + to + "/" + from + "/" + user);
+        return this.http.get("http://10.10.10.11:8089/getCashFlowDetails/" + to + "/" + from + "/" + user);
     }
 
-    getDetails(type: string, from: any, to: any) {
+    getDetails(type: any, from: any, to: any) {
 
         console.log("called");
 
         let user = sessionStorage.getItem('token');
-        return this.http.get("http://localhost:8088/dashboarddetails/" + type + "/" + to + "/" + from + "/" + user);
+        return this.http.get("http://10.10.10.11:8089/dashboarddetails/" + type + "/" + to + "/" + from + "/" + user);
     }
 
     dashboardDiv1(from: any, to: any) {
 
         let user = sessionStorage.getItem('token');
 
-        return this.http.get("http://localhost:8088/dashboarddiv1/" + to + "/" + from + "/" + user);
+        return this.http.get("http://10.10.10.11:8089/dashboarddiv1/" + to + "/" + from + "/" + user);
     }
 
     dashboardDiv2(from: any, to: any, type: string) {
 
         let user = sessionStorage.getItem('token');
 
-        return this.http.get("http://localhost:8088/dashboarddiv2/" + to + "/" + from + "/" + user + "/" + type);
+        return this.http.get("http://10.10.10.11:8089/dashboarddiv2/" + to + "/" + from + "/" + user + "/" + type);
     }
 
     dateVsPayMode(from: any, to: any, type: string) {
 
         let user = sessionStorage.getItem('token');
 
-        return this.http.get("http://localhost:8088/datevspaymode/" + to + "/" + from + "/" + user + "/" + type);
+        return this.http.get("http://10.10.10.11:8089/datevspaymode/" + to + "/" + from + "/" + user + "/" + type);
     }
 }
