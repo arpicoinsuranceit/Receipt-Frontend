@@ -164,8 +164,11 @@ export class HomeComponent implements OnInit {
     let from = this.fromdate2.value;
     let to = this.todate2.value;
 
+    let fromDate = new Date(from);
+    let toDate = new Date(to);
+
     this.loading4 = true;
-    this.dashboardService.getCashFlowGrid(from, to, type).subscribe(response => {
+    this.dashboardService.getCashFlowGrid(fromDate, toDate, type).subscribe(response => {
       this.loading4 = false;
       let title: string = "";
 
@@ -539,8 +542,11 @@ export class HomeComponent implements OnInit {
     let from = this.fromdate.value;
     let to = this.todate.value;
 
+    let fromDate: Date = new Date(from);
+    let toDate: Date = new Date(to);
+
     this.loading4 = true;
-    this.dashboardService.getDetails(type, from, to).subscribe(response => {
+    this.dashboardService.getDetails(type, fromDate, toDate).subscribe(response => {
       this.loading4 = false;
       console.log(response.json());
 
