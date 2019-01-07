@@ -132,7 +132,7 @@ export class ProposalReceiptComponent implements OnInit {
     });
   }
 
-  loadProposalByWorkflow(propNo,seqNo, amt){
+  loadProposalByWorkflow(propNo, seqNo, amt) {
     this.proposalReceiptService.getPropDetails(propNo, seqNo).subscribe(response => {
       this.loading_details = false;
       console.log(response.json());
@@ -250,7 +250,7 @@ export class ProposalReceiptComponent implements OnInit {
           this.loading_adv_search = false;
           this.alert("Error", "Data not Found", "error");
         }
-        
+
       }, error => {
         this.alert("Error", "Data not Found", "error");
       });
@@ -263,7 +263,7 @@ export class ProposalReceiptComponent implements OnInit {
   getSearch(row: SearchModel) {
     this.loading_details = true;
     this.proposalReceiptService.getPropDetails(row.Pprnum, row.SeqNum).subscribe(response => {
-      
+
       this.loading_details = false;
       console.log(response.json());
       this.PropNo.setValue(response.json().proposalNo);
@@ -380,6 +380,14 @@ export class ProposalReceiptComponent implements OnInit {
             startWith(''),
             map(proposal => this.filterProposal(proposal))
           );
+
+        if (this.proposalList.length == 1) {
+          this.PropNo.setValue(this.proposalList[0].ProposalCombine);
+          this, this.getProposalDetails(null);
+        }
+        if (this.proposalList.length == 0) {
+          this.alert("Oopz...", "Proposal Not Found", "error");
+        }
       }, error => {
         this.alert("Oopz...", "Error at load Proposals", "error");
         document.onkeydown = function (e) { return true; }
@@ -426,63 +434,67 @@ export class ProposalReceiptComponent implements OnInit {
 
   getProposalDetails(e: any) {
     let propNoTemp: string = this.PropNo.value;
-    if (!e.isOpen) {
-      let propNo = propNoTemp;
-      let seqNo = null;
-
-      this.proposalList.forEach(proposal => {
-        if(proposal.ProposalId == propNo){
-          seqNo = proposal.ProposalDetailId;
-        }
-      })
-
-      if (propNo != null && propNo != undefined && propNo.length != 0 &&
-        seqNo != null && seqNo != undefined && seqNo.length != 0) {
-        this.loading_details = true;
-        this.proposalReceiptService.getPropDetails(propNo.trim(), seqNo.trim()).subscribe(response => {
-          this.loading_details = false;
-          console.log(response.json());
-          this.basicDetail.AgentCode = response.json().agentCode;
-          this.basicDetail.CustomerName = response.json().custName;
-          this.basicDetail.CustTitle = response.json().custTitle;
-          this.basicDetail.ProductName = response.json().product;
-          this.basicDetail.Id = response.json().proposalNo;
-          this.basicDetail.SeqNo = response.json().seqNo;
-          this.basicDetail.Premium = response.json().premium;
-          this.basicDetail.PayAmount = response.json().amtPayble;
-          this.lastReceipt = new Array();
-
-          this.Amount.setValue(this.basicDetail.Premium);
-          this.convertAmountToWord();
-
-          response.json().lastReceiptSummeryDtos.forEach(element => {
-            let lastReceipt: LastReceipt = new LastReceipt();
-            lastReceipt.Credat = element.creadt;
-            lastReceipt.Doccod = element.doccod;
-            lastReceipt.Docnum = element.doctyp;
-            lastReceipt.Polnum = element.polnum;
-            lastReceipt.Pprnum = element.pprnum;
-            lastReceipt.Topprm = element.amount;
-            lastReceipt.Chqrel = element.chqrel;
-            lastReceipt.Paymod = element.paymod;
-            this.lastReceipt.push(lastReceipt);
-          });
-
-          let lastReceiptSize: number = this.lastReceipt.length;
-
-          if (lastReceiptSize < 2) {
-            for (let i = lastReceiptSize; i < 2; i++) {
-              this.lastReceipt.push(new LastReceipt("...", "...", "...", "...", "...", 0.00, "...", "..."));
-            }
-          }
-        }, error => {
-          this.alert("Oopz...", "Error at get Proposal Details", "error");
-          this.loading_details = false;
-        });
-      } else {
-        this.PropNo.setErrors({ 'incorrect': true });
+    if (e != null) {
+      if (e.isOpen) {
+        return;
       }
     }
+    let propNo = propNoTemp;
+    let seqNo = null;
+
+    this.proposalList.forEach(proposal => {
+      if (proposal.ProposalId == propNo) {
+        seqNo = proposal.ProposalDetailId;
+      }
+    })
+
+    if (propNo != null && propNo != undefined && propNo.length != 0 &&
+      seqNo != null && seqNo != undefined && seqNo.length != 0) {
+      this.loading_details = true;
+      this.proposalReceiptService.getPropDetails(propNo.trim(), seqNo.trim()).subscribe(response => {
+        this.loading_details = false;
+        console.log(response.json());
+        this.basicDetail.AgentCode = response.json().agentCode;
+        this.basicDetail.CustomerName = response.json().custName;
+        this.basicDetail.CustTitle = response.json().custTitle;
+        this.basicDetail.ProductName = response.json().product;
+        this.basicDetail.Id = response.json().proposalNo;
+        this.basicDetail.SeqNo = response.json().seqNo;
+        this.basicDetail.Premium = response.json().premium;
+        this.basicDetail.PayAmount = response.json().amtPayble;
+        this.lastReceipt = new Array();
+
+        this.Amount.setValue(this.basicDetail.Premium);
+        this.convertAmountToWord();
+
+        response.json().lastReceiptSummeryDtos.forEach(element => {
+          let lastReceipt: LastReceipt = new LastReceipt();
+          lastReceipt.Credat = element.creadt;
+          lastReceipt.Doccod = element.doccod;
+          lastReceipt.Docnum = element.doctyp;
+          lastReceipt.Polnum = element.polnum;
+          lastReceipt.Pprnum = element.pprnum;
+          lastReceipt.Topprm = element.amount;
+          lastReceipt.Chqrel = element.chqrel;
+          lastReceipt.Paymod = element.paymod;
+          this.lastReceipt.push(lastReceipt);
+        });
+
+        let lastReceiptSize: number = this.lastReceipt.length;
+
+        if (lastReceiptSize < 2) {
+          for (let i = lastReceiptSize; i < 2; i++) {
+            this.lastReceipt.push(new LastReceipt("...", "...", "...", "...", "...", 0.00, "...", "..."));
+          }
+        }
+      }, error => {
+        this.alert("Oopz...", "Error at get Proposal Details", "error");
+        this.loading_details = false;
+      });
+    } else {
+      this.PropNo.setErrors({ 'incorrect': true });
+    }
+
 
   }
 
@@ -561,7 +573,7 @@ export class ProposalReceiptComponent implements OnInit {
     this.Credittransferno.reset();
     this.Remark.reset();
     this.lastReceipt = new Array();
-    let d : LastReceipt = new LastReceipt("...", "...", "...", "...", "...", 0.00, "...", "...");
+    let d: LastReceipt = new LastReceipt("...", "...", "...", "...", "...", 0.00, "...", "...");
     this.lastReceipt.push(d);
     this.lastReceipt.push(d);
   }

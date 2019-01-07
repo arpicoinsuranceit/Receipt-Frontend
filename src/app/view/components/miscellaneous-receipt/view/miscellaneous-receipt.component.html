@@ -30,6 +30,12 @@
                   <small> {{ branch.Description }} </small>
                 </mat-option>
               </mat-select>
+
+              <mat-error *ngIf="BranchCode.hasError('required')">
+                Pay Mode is
+                <strong>REQUIRED</strong>
+              </mat-error>
+
             </mat-form-field>
             <br>
 
@@ -58,9 +64,19 @@
                 </mat-option>
 
               </mat-autocomplete>
+              <mat-error *ngIf="AgentCode.hasError('required')">
+                Pay Mode is
+                <strong>REQUIRED</strong>
+              </mat-error>
+              
             </mat-form-field>
             <mat-form-field class="full-width">
               <input matInput placeholder="Remark" tabindex="4" aria-label="Remark" formControlName="remark">
+              <mat-error *ngIf="Remark.hasError('required')">
+                Remark is
+                <strong>REQUIRED</strong>
+              </mat-error>
+
             </mat-form-field>
             <mat-form-field>
               <mat-select placeholder="Payment Mode" tabindex="5" aria-label="Payment Mode" formControlName="paymode">
@@ -155,6 +171,10 @@
             <br>
             <mat-form-field class="full-width">
               <input matInput placeholder="Expence Remark" tabindex="9" formControlName="expenseRemark">
+              <mat-error *ngIf="ExpenceRemark.hasError('required')">
+                Pay Mode is
+                <strong>REQUIRED</strong>
+              </mat-error>
             </mat-form-field>
             <mat-form-field class="half-width">
               <input readonly type="number" matInput placeholder="Amount" formControlName="expenceAmount">
@@ -163,7 +183,7 @@
             </mat-form-field>
             <mat-form-field style="padding-left: 40px;" class="half-width">
               <input type="number" matInput placeholder="Quantity" tabindex="10" formControlName="expenceQty">
-              <mat-error *ngIf="ExpenceQty.hasError('valied')">
+              <mat-error *ngIf="ExpenceQty.hasError('valied') || ExpenceQty.hasError('required')  ">
                 Quantity is
                 <strong>REQUIRED</strong>
               </mat-error>

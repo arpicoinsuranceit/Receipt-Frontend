@@ -127,10 +127,10 @@ export class PolicyReceiptComponent implements OnInit {
 
     console.log(e.key)
 
-    if(e.key != "Enter"){
+    if (e.key != "Enter") {
       this.advance_search = !this.advance_search;
     }
-    
+
 
     console.log(this.advance_search);
   }
@@ -196,7 +196,7 @@ export class PolicyReceiptComponent implements OnInit {
         } catch (error) {
           this.alert("Error", "Data not Found", "error");
         }
-        
+
       }, error => {
         this.loading_adv_search = false;
         this.alert("Error", "Data not Found", "error");
@@ -337,7 +337,7 @@ export class PolicyReceiptComponent implements OnInit {
 
 
   LoadPolicies(event) {
-    console.log(this.PropNo.value.length >= 3 && event.key == "Enter");
+
     if (this.PropNo.value.length >= 3 && event.key == "Enter") {
       this.policyList = new Array();
       this.loading_form = true;
@@ -362,12 +362,22 @@ export class PolicyReceiptComponent implements OnInit {
             startWith(''),
             map(policy => this.filterPolicy(policy))
           );
+
+        if (this.policyList.length == 1) {
+          this.PropNo.setValue(this.policyList[0].PolicyCombine);
+          this.getPolicyDetails(null);
+        }
+        if(this.policyList.length == 0){
+          this.alert("Oopz...", "Policy Not Found", "error");
+        }
       }, errpr => {
         this.alert("Oopz...", "Error occour at Load Policies", "error");
         document.onkeydown = function (e) { return true; }
         this.loading_form = false;
       });
+
     }
+
   }
 
   filterPolicy(id: string) {
@@ -377,64 +387,68 @@ export class PolicyReceiptComponent implements OnInit {
 
   getPolicyDetails(e: any) {
     let polNoTemp: string = this.PropNo.value;
-    if (!e.isOpen) {
-      let polNo = polNoTemp;
-      let seqNo = null;
-
-      this.policyList.forEach(policy => {
-        if (policy.PolicyId == polNo) {
-          seqNo = policy.PolicyDetailId;
-        }
-      })
-
-      if (polNo != null && polNo != undefined && polNo.length != 0 &&
-        seqNo != null && seqNo != undefined && seqNo.length != 0) {
-        this.loading_details = true;
-        this.policyReceiptService.getPolDetails(polNo.trim(), seqNo.trim()).subscribe(response => {
-          this.loading_details = false;
-          console.log(response.json());
-          this.basicDetail.AgentCode = response.json().agentCode;
-          this.basicDetail.CustomerName = response.json().custName;
-          this.basicDetail.CustTitle = response.json().custTitle;
-          this.basicDetail.ProductName = response.json().product;
-          this.basicDetail.Id = response.json().proposalNo;
-          this.basicDetail.SeqNo = response.json().seqNo;
-          this.basicDetail.Premium = response.json().premium;
-          this.basicDetail.PayAmount = response.json().amtPayble;
-          this.lastReceipt = new Array();
-
-          this.Amount.setValue(this.basicDetail.Premium
-          );
-          this.convertAmountToWord();
-
-          response.json().lastReceiptSummeryDtos.forEach(element => {
-            let lastReceipt: LastReceipt = new LastReceipt();
-            lastReceipt.Credat = element.creadt;
-            lastReceipt.Doccod = element.doccod;
-            lastReceipt.Docnum = element.doctyp;
-            lastReceipt.Polnum = element.polnum;
-            lastReceipt.Pprnum = element.pprnum;
-            lastReceipt.Topprm = element.amount;
-            lastReceipt.Chqrel = element.chqrel;
-            lastReceipt.Paymod = element.paymod;
-            this.lastReceipt.push(lastReceipt);
-          });
-          let lastReceiptSize: number = this.lastReceipt.length;
-
-          if (lastReceiptSize < 2) {
-            for (let i = lastReceiptSize; i < 2; i++) {
-              this.lastReceipt.push(new LastReceipt("...", "...", "...", "...", "...", 0.00, "...", "..."));
-            }
-          }
-
-        }, errpr => {
-          this.alert("Oopz...", "Error occour at get Policy Details", "error");
-          this.loading_form = false;
-        });
-      } else {
-        this.PropNo.setErrors({ 'incorrect': true });
+    if (e != null) {
+      if (e.isOpen) {
+        return;
       }
     }
+    let polNo = polNoTemp;
+    let seqNo = null;
+
+    this.policyList.forEach(policy => {
+      if (policy.PolicyId == polNo) {
+        seqNo = policy.PolicyDetailId;
+      }
+    })
+
+    if (polNo != null && polNo != undefined && polNo.length != 0 &&
+      seqNo != null && seqNo != undefined && seqNo.length != 0) {
+      this.loading_details = true;
+      this.policyReceiptService.getPolDetails(polNo.trim(), seqNo.trim()).subscribe(response => {
+        this.loading_details = false;
+        console.log(response.json());
+        this.basicDetail.AgentCode = response.json().agentCode;
+        this.basicDetail.CustomerName = response.json().custName;
+        this.basicDetail.CustTitle = response.json().custTitle;
+        this.basicDetail.ProductName = response.json().product;
+        this.basicDetail.Id = response.json().proposalNo;
+        this.basicDetail.SeqNo = response.json().seqNo;
+        this.basicDetail.Premium = response.json().premium;
+        this.basicDetail.PayAmount = response.json().amtPayble;
+        this.lastReceipt = new Array();
+
+        this.Amount.setValue(this.basicDetail.Premium
+        );
+        this.convertAmountToWord();
+
+        response.json().lastReceiptSummeryDtos.forEach(element => {
+          let lastReceipt: LastReceipt = new LastReceipt();
+          lastReceipt.Credat = element.creadt;
+          lastReceipt.Doccod = element.doccod;
+          lastReceipt.Docnum = element.doctyp;
+          lastReceipt.Polnum = element.polnum;
+          lastReceipt.Pprnum = element.pprnum;
+          lastReceipt.Topprm = element.amount;
+          lastReceipt.Chqrel = element.chqrel;
+          lastReceipt.Paymod = element.paymod;
+          this.lastReceipt.push(lastReceipt);
+        });
+        let lastReceiptSize: number = this.lastReceipt.length;
+
+        if (lastReceiptSize < 2) {
+          for (let i = lastReceiptSize; i < 2; i++) {
+            this.lastReceipt.push(new LastReceipt("...", "...", "...", "...", "...", 0.00, "...", "..."));
+          }
+        }
+
+      }, errpr => {
+        this.alert("Oopz...", "Error occour at get Policy Details", "error");
+        this.loading_form = false;
+      });
+    } else {
+      this.PropNo.setErrors({ 'incorrect': true });
+    }
+
   }
 
   saveReceipt() {

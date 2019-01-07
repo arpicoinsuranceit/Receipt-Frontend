@@ -48,7 +48,7 @@ export class LoanReceiptComponent implements OnInit {
 
   lastReceipt: LastReceipt[] = new Array();
 
-  loanNoArray:number[]=new Array();
+  loanNoArray: number[] = new Array();
 
   receiptForm = new FormGroup({
     propNo: new FormControl("", Validators.required),
@@ -116,7 +116,7 @@ export class LoanReceiptComponent implements OnInit {
   }
 
   constructor(private commonService: CommonService, private policyReceiptService: PolicyReceiptService, public dialog: MatDialog, private blobService: BlobService,
-    private loanReceiptService:LoanReceiptService) { }
+    private loanReceiptService: LoanReceiptService) { }
 
   ngOnInit() {
     this.getBanks();
@@ -196,7 +196,7 @@ export class LoanReceiptComponent implements OnInit {
   //       } catch (error) {
   //         this.alert("Error", "Data not Found", "error");
   //       }
-        
+
   //     }, error => {
   //       this.loading_adv_search = false;
   //       this.alert("Error", "Data not Found", "error");
@@ -362,6 +362,14 @@ export class LoanReceiptComponent implements OnInit {
             startWith(''),
             map(policy => this.filterPolicy(policy))
           );
+
+        if (this.policyList.length == 1) {
+          this.PropNo.setValue(this.policyList[0].PolicyCombine);
+          this.getPolicyDetails(null);
+        }
+        if (this.policyList.length == 0) {
+          this.alert("Oopz...", "Policy Not Found", "error");
+        }
       }, errpr => {
         this.alert("Oopz...", "Error occour at Load Policies", "error");
         document.onkeydown = function (e) { return true; }
@@ -375,130 +383,145 @@ export class LoanReceiptComponent implements OnInit {
       proposal.PolicyId.toLowerCase().indexOf(id.toLowerCase()) === 0);
   }
 
-  getLoanNumbers(){
+  getLoanNumbers() {
     this.loanReceiptService.loadLoannumbers(this.PropNo.value).subscribe(response => {
       console.log(response.json());
-      this.loanNoArray=response.json();
+      this.loanNoArray = response.json();
+
+      if(this.loanNoArray.length == 1 ){
+        this.LoanNo.setValue(this.loanNoArray[0]);
+      }
+
+      if(this.loanNoArray.length == 0 ){
+        this.alert("Oopz...", "Loan Not Found", "error");
+      }
+
     });
   }
 
   getPolicyDetails(e: any) {
+
     let polNoTemp: string = this.PropNo.value;
-    if (!e.isOpen) {
-      let polNo = polNoTemp;
-      let seqNo = null;
-
-      this.policyList.forEach(policy => {
-        if (policy.PolicyId == polNo) {
-          seqNo = policy.PolicyDetailId;
-        }
-      })
-
-      if (polNo != null && polNo != undefined && polNo.length != 0 &&
-        seqNo != null && seqNo != undefined && seqNo.length != 0) {
-        this.loading_details = true;
-        this.loanReceiptService.getPolDetails(polNo.trim(), seqNo.trim()).subscribe(response => {
-          this.loading_details = false;
-          console.log(response.json());
-          this.basicDetail.AgentCode = response.json().agentCode;
-          this.basicDetail.CustomerName = response.json().custName;
-          this.basicDetail.CustTitle = response.json().custTitle;
-          this.basicDetail.ProductName = response.json().product;
-          this.basicDetail.Id = response.json().proposalNo;
-          this.basicDetail.SeqNo = response.json().seqNo;
-          this.basicDetail.Premium = response.json().premium;
-          this.basicDetail.PayAmount = response.json().amtPayble;
-          this.lastReceipt = new Array();
-
-          //this.Amount.setValue(this.basicDetail.Premium);
-          //this.convertAmountToWord();
-
-          response.json().lastReceiptSummeryDtos.forEach(element => {
-            let lastReceipt: LastReceipt = new LastReceipt();
-            lastReceipt.Credat = element.creadt;
-            lastReceipt.Doccod = element.doccod;
-            lastReceipt.Docnum = element.doctyp;
-            lastReceipt.Polnum = element.polnum;
-            lastReceipt.Pprnum = element.pprnum;
-            lastReceipt.Topprm = element.amount;
-            lastReceipt.Chqrel = element.chqrel;
-            lastReceipt.Paymod = element.paymod;
-            this.lastReceipt.push(lastReceipt);
-          });
-          let lastReceiptSize: number = this.lastReceipt.length;
-
-          if (lastReceiptSize < 2) {
-            for (let i = lastReceiptSize; i < 2; i++) {
-              this.lastReceipt.push(new LastReceipt("...", "...", "...", "...", "...", 0.00, "...", "..."));
-            }
-          }
-
-          this.getLoanNumbers();
-
-        }, error => {
-          this.alert("Oopz...", "Error occour at get Policy Details", "error");
-          this.loading_form = false;
-        });
-      } else {
-        this.PropNo.setErrors({ 'incorrect': true });
+    if (e != null) {
+      if (e.isOpen) {
+        return;
       }
+    }
+
+    let polNo = polNoTemp;
+    let seqNo = null;
+
+    this.policyList.forEach(policy => {
+      if (policy.PolicyId == polNo) {
+        seqNo = policy.PolicyDetailId;
+      }
+    })
+
+    if (polNo != null && polNo != undefined && polNo.length != 0 &&
+      seqNo != null && seqNo != undefined && seqNo.length != 0) {
+      this.loading_details = true;
+      this.loanReceiptService.getPolDetails(polNo.trim(), seqNo.trim()).subscribe(response => {
+        this.loading_details = false;
+        console.log(response.json());
+        this.basicDetail.AgentCode = response.json().agentCode;
+        this.basicDetail.CustomerName = response.json().custName;
+        this.basicDetail.CustTitle = response.json().custTitle;
+        this.basicDetail.ProductName = response.json().product;
+        this.basicDetail.Id = response.json().proposalNo;
+        this.basicDetail.SeqNo = response.json().seqNo;
+        this.basicDetail.Premium = response.json().premium;
+        this.basicDetail.PayAmount = response.json().amtPayble;
+        this.lastReceipt = new Array();
+
+        //this.Amount.setValue(this.basicDetail.Premium);
+        //this.convertAmountToWord();
+
+        response.json().lastReceiptSummeryDtos.forEach(element => {
+          let lastReceipt: LastReceipt = new LastReceipt();
+          lastReceipt.Credat = element.creadt;
+          lastReceipt.Doccod = element.doccod;
+          lastReceipt.Docnum = element.doctyp;
+          lastReceipt.Polnum = element.polnum;
+          lastReceipt.Pprnum = element.pprnum;
+          lastReceipt.Topprm = element.amount;
+          lastReceipt.Chqrel = element.chqrel;
+          lastReceipt.Paymod = element.paymod;
+          this.lastReceipt.push(lastReceipt);
+        });
+        let lastReceiptSize: number = this.lastReceipt.length;
+
+        if (lastReceiptSize < 2) {
+          for (let i = lastReceiptSize; i < 2; i++) {
+            this.lastReceipt.push(new LastReceipt("...", "...", "...", "...", "...", 0.00, "...", "..."));
+          }
+        }
+
+        this.getLoanNumbers();
+
+      }, error => {
+        this.alert("Oopz...", "Error occour at get Policy Details", "error");
+        this.loading_form = false;
+      });
+    } else {
+      this.PropNo.setErrors({ 'incorrect': true });
+
     }
   }
 
   saveReceipt() {
 
-    if(this.LoanNo.value != undefined && this.LoanNo.value != ''){
-      if(this.Amount.value != undefined && this.Amount.value != '' && this.Amount.value > 1){
-      let saveReceiptModel = new SaveReceiptModel();
-      saveReceiptModel.Amount = this.Amount.value;
-      saveReceiptModel.AgentCode = this.basicDetail.AgentCode
-      saveReceiptModel.BankCode = this.BankCode.value;
-      saveReceiptModel.PayAmountWord = this.AmountInWord.value;
-      saveReceiptModel.PayMode = this.PayMode.value;
-      saveReceiptModel.PolSeq = this.basicDetail.SeqNo;
-      saveReceiptModel.PolId = this.basicDetail.Id;
-      saveReceiptModel.Remark = this.Remark.value;
-      saveReceiptModel.ProductCode = this.basicDetail.ProductCode;
-      saveReceiptModel.BranchCode = this.basicDetail.BranchCode;
-      saveReceiptModel.Chequeno = this.Chequeno.value;
-      saveReceiptModel.Chequebank = this.Chequebank.value;
-      saveReceiptModel.Chequedate = this.Chequedate.value;
-      saveReceiptModel.Transferno = this.Credittransferno.value;
-      saveReceiptModel.Token = sessionStorage.getItem("token");
-      saveReceiptModel.LoanNo = this.LoanNo.value;
+    if (this.LoanNo.value != undefined && this.LoanNo.value != '') {
+      if (this.Amount.value != undefined && this.Amount.value != '' && this.Amount.value > 1) {
+        let saveReceiptModel = new SaveReceiptModel();
+        saveReceiptModel.Amount = this.Amount.value;
+        saveReceiptModel.AgentCode = this.basicDetail.AgentCode
+        saveReceiptModel.BankCode = this.BankCode.value;
+        saveReceiptModel.PayAmountWord = this.AmountInWord.value;
+        saveReceiptModel.PayMode = this.PayMode.value;
+        saveReceiptModel.PolSeq = this.basicDetail.SeqNo;
+        saveReceiptModel.PolId = this.basicDetail.Id;
+        saveReceiptModel.Remark = this.Remark.value;
+        saveReceiptModel.ProductCode = this.basicDetail.ProductCode;
+        saveReceiptModel.BranchCode = this.basicDetail.BranchCode;
+        saveReceiptModel.Chequeno = this.Chequeno.value;
+        saveReceiptModel.Chequebank = this.Chequebank.value;
+        saveReceiptModel.Chequedate = this.Chequedate.value;
+        saveReceiptModel.Transferno = this.Credittransferno.value;
+        saveReceiptModel.Token = sessionStorage.getItem("token");
+        saveReceiptModel.LoanNo = this.LoanNo.value;
 
 
-      console.log(saveReceiptModel);
+        console.log(saveReceiptModel);
 
-      this.loading_saving = true;
-      this.loanReceiptService.saveLoanReceipt(saveReceiptModel).subscribe(response => {
-        console.log("resp received");
-        this.loading_saving = false;
-        console.log(response.json());
-        let resp = response.json();
-        if (resp.code == "200") {
-          this.newReceipt();
-          this.loadLastReceipts();
-
-          this.alert("Success", "Successfully Saved. Receipt No : RCLN / "+resp.message, "success");
-
-          let blob = this.blobService.base64toBlob(resp.data, "application/pdf");
-          var fileURL = URL.createObjectURL(blob);
-
-          window.open(fileURL);
-
-        } else {
-          this.alert("Oopz...", "Error occour at Saving", "error");
+        this.loading_saving = true;
+        this.loanReceiptService.saveLoanReceipt(saveReceiptModel).subscribe(response => {
+          console.log("resp received");
           this.loading_saving = false;
-        }
-      }, error => {
-        this.loading_saving = false;
-        this.alert("Oopz...", "Error occour at Saving", "error");
-      });
-    }else{
-      this.alert("Oopz...", "Please Enter Amount..", "error");
-    }
-    }else{
+          console.log(response.json());
+          let resp = response.json();
+          if (resp.code == "200") {
+            this.newReceipt();
+            this.loadLastReceipts();
+
+            this.alert("Success", "Successfully Saved. Receipt No : RCLN / " + resp.message, "success");
+
+            let blob = this.blobService.base64toBlob(resp.data, "application/pdf");
+            var fileURL = URL.createObjectURL(blob);
+
+            window.open(fileURL);
+
+          } else {
+            this.alert("Oopz...", "Error occour at Saving", "error");
+            this.loading_saving = false;
+          }
+        }, error => {
+          this.loading_saving = false;
+          this.alert("Oopz...", "Error occour at Saving", "error");
+        });
+      } else {
+        this.alert("Oopz...", "Please Enter Amount..", "error");
+      }
+    } else {
       this.alert("Oopz...", "Please Select Loan No..", "error");
     }
   }

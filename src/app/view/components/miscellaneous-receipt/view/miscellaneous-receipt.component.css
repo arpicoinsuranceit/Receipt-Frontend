@@ -13,3 +13,7 @@
     background: #F7F7F7;
     background-position: center;
 }
+
+matInput {
+    max-height: 30px !important;
+}

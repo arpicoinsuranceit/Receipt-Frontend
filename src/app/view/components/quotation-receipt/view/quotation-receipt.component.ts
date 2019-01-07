@@ -59,7 +59,7 @@ export class QuotationReceiptComponent implements OnInit {
   quoReceiptForm = new FormGroup({
     quoNo: new FormControl("", Validators.required),
     agentCode: new FormControl("", Validators.required),
-    paymode: new FormControl("", Validators.required),
+    paymode: new FormControl("CS", Validators.required),
     bankCode: new FormControl("", Validators.required),
     chequedate: new FormControl(""),
     chequebank: new FormControl(""),

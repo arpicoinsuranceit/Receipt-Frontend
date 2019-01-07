@@ -10,7 +10,7 @@ export class PolicyReceiptService {
   constructor(private http: Http) { }
 
   loadPolicies(id){
-    return this.http.get("http://10.10.10.11:8089/policysearch/" + id);
+    return this.http.get("http://localhost:8088/policysearch/" + id);
   }
 
   getPolDetails(propId, seqNo) {
@@ -20,11 +20,11 @@ export class PolicyReceiptService {
 
     console.log("called");
 
-    return this.http.post("http://10.10.10.11:8089/getpolicydetail/", urlParams);
+    return this.http.post("http://localhost:8088/getpolicydetail/", urlParams);
   }
 
   savePolReceipt(saveReceiptModel : SaveReceiptModel){
-    return this.http.post("http://10.10.10.11:8089/savereceiptPol/",saveReceiptModel);
+    return this.http.post("http://localhost:8088/savereceiptPol/",saveReceiptModel);
   }
 
 }

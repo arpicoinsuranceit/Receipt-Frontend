@@ -41,7 +41,7 @@ export class MiscellaneousReceiptGlrcComponent implements OnInit {
   receiptForm = new FormGroup({
     branchCode: new FormControl("", Validators.required),
     bankCode: new FormControl("", Validators.required),
-    paymode: new FormControl("", Validators.required),
+    paymode: new FormControl("CS", Validators.required),
     chequedate: new FormControl(""),
     chequebank: new FormControl(""),
     chequeno: new FormControl(""),
@@ -168,6 +168,10 @@ export class MiscellaneousReceiptGlrcComponent implements OnInit {
           startWith(''),
           map(bank => this.filterBanks(bank))
         );
+
+      if (this.bankList.length == 1) {
+        this.BankCode.setValue(this.bankList[0].BankCode);
+      }
     }, error => {
       this.loading_saving = false;
     });
@@ -340,21 +344,21 @@ export class MiscellaneousReceiptGlrcComponent implements OnInit {
 
     this.loading_saving = true;
     this.miscellaneousReceiptGlService.saveReceipt(miscellaneosReceipt).subscribe(response => {
-         this.loading_saving = false;
-         let resp = response.json();
-         if (resp.code == '200') {
-           this.alert("Success", "Successfully Added Receipt NO : " + resp.message, "success");
+      this.loading_saving = false;
+      let resp = response.json();
+      if (resp.code == '200') {
+        this.alert("Success", "Successfully Added Receipt NO : " + resp.message, "success");
 
-           let blob = this.blobService.base64toBlob(resp.data, "application/pdf");
-           var fileURL = URL.createObjectURL(blob);
+        let blob = this.blobService.base64toBlob(resp.data, "application/pdf");
+        var fileURL = URL.createObjectURL(blob);
 
-           window.open(fileURL);
+        window.open(fileURL);
 
-           this.clear();
-           this.loadLastReceipts();
-         } else {
-           this.alert("Error", resp.message, "error");
-         }
+        this.clear();
+        this.loadLastReceipts();
+      } else {
+        this.alert("Error", resp.message, "error");
+      }
 
     }, error => {
       this.loading_saving = false;
@@ -375,13 +379,13 @@ export class MiscellaneousReceiptGlrcComponent implements OnInit {
 
     this.PayMode.setValue("");
     this.PayMode.reset();
-    
+
     this.Amount.setValue("");
     this.Amount.reset();
 
     this.AmountInWord.setValue("");
     this.AmountInWord.reset();
-    
+
     this.Chequedate.setValue("");
     this.Chequedate.reset();
 

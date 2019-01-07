@@ -44,21 +44,21 @@ export class MiscellaneousReceiptComponent implements OnInit {
   receiptForm = new FormGroup({
     branchCode: new FormControl("", Validators.required),
     bankCode: new FormControl("", Validators.required),
-    paymode: new FormControl("", Validators.required),
+    paymode: new FormControl("02.CASH", Validators.required),
     chequedate: new FormControl(""),
     chequebank: new FormControl(""),
     chequeno: new FormControl(""),
-    remark: new FormControl(""),
+    remark: new FormControl("", Validators.required),
     amount: new FormControl("", Validators.required),
     amountInWord: new FormControl(""),
-    agentCode: new FormControl("")
+    agentCode: new FormControl("", Validators.required)
   });
 
   expenceForm = new FormGroup({
     expenceId: new FormControl(""),
-    expenseRemark: new FormControl(""),
+    expenseRemark: new FormControl("", Validators.required),
     expenceAmount: new FormControl(""),
-    expenceQty: new FormControl("")
+    expenceQty: new FormControl("", Validators.required)
   });
 
   bankList: BankModel[] = new Array();
@@ -132,7 +132,7 @@ export class MiscellaneousReceiptComponent implements OnInit {
       event.key != "Tab" && event.key != "Enter" && event.key != "Backspace") {
       this.agentList = new Array();
       this.loading_form = true;
-      this.commonService.getAgent(this.AgentCode.value).subscribe(response => {
+      this.commonService.getAgentByBranch(this.AgentCode.value, this.BranchCode.value).subscribe(response => {
         this.loading_form = false;
         console.log(response.json());
         for (let i in response.json()) {
@@ -233,6 +233,10 @@ export class MiscellaneousReceiptComponent implements OnInit {
           startWith(''),
           map(bank => this.filterBanks(bank))
         );
+
+      if(this.bankList.length == 1){
+        this.BankCode.setValue(this.bankList[0].BankCode);
+      }
     }, error => {
       this.loading_form = false;
       this.alert("Oopz...", "Error occour at Loading Banks", "error");
@@ -329,7 +333,7 @@ export class MiscellaneousReceiptComponent implements OnInit {
       this.expencesCart = new Array();
 
 
-      let isClean : boolean = false;
+      let isClean: boolean = false;
 
       expenceCartTemp.forEach(e => {
         if (e.ExpenseId == expence.ExpenseId) {
@@ -362,7 +366,7 @@ export class MiscellaneousReceiptComponent implements OnInit {
 
       this.clearExpene();
 
-      if(isClean){
+      if (isClean) {
         this.ExpenceQty.setErrors({ 'valied': true });
       }
 
