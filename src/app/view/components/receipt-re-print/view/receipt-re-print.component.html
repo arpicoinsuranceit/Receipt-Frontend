@@ -1,6 +1,10 @@
 <div class="container" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
   <div fxFlex="100%">
-    <mat-card class="main-card" style="height: auto;">
+        <div [hidden]="!loading_print" class="loader">
+            <h5>Loading...</h5>
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        </div>
+    <mat-card [ngClass]="{'disabled': loading_print == true}" class="main-card" style="height: auto;">
 
       <mat-card-header>
         <mat-card-title>
@@ -21,6 +25,9 @@
                     </mat-option>
                     <mat-option value="RCPP">
                         RCPP
+                    </mat-option>
+                    <mat-option value="RCLN">
+                        RCLN
                     </mat-option>
                     <mat-option value="OIIS">
                         OIIS

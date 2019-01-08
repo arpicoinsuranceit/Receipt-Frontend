@@ -28,7 +28,7 @@ export class HomeLayoutComponent implements OnInit {
   }
 
   loadProposalInquiry(){
-    window.open("http://10.10.10.11:8083?token="+ encodeURIComponent(JSON.stringify(sessionStorage.getItem("token"))), "_blank");
+    window.open("http://localhost:4201?token="+ encodeURIComponent(JSON.stringify(sessionStorage.getItem("token"))), "_blank");
   }
 
   signout(){

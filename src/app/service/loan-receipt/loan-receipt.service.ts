@@ -10,11 +10,11 @@ export class LoanReceiptService {
   constructor(private http:Http) { }
 
   loadPolicies(id){
-    return this.http.get("http://10.10.10.11:8089/loan_receipt/policysearch/" + id);
+    return this.http.get("http://localhost:8088/loan_receipt/policysearch/" + id);
   }
 
   loadLoannumbers(polnum:string){
-    return this.http.post("http://10.10.10.11:8089/loan_receipt/getloannumbers",polnum);
+    return this.http.post("http://localhost:8088/loan_receipt/getloannumbers",polnum);
   }
 
   getPolDetails(propId, seqNo) {
@@ -24,11 +24,11 @@ export class LoanReceiptService {
 
     console.log("called");
 
-    return this.http.post("http://10.10.10.11:8089/loan_receipt/getpolicydetail/", urlParams);
+    return this.http.post("http://localhost:8088/loan_receipt/getpolicydetail/", urlParams);
   }
 
   saveLoanReceipt(saveReceiptModel : SaveReceiptModel){
-    return this.http.post("http://10.10.10.11:8089/loan_receipt/savereceiptLoan/",saveReceiptModel);
+    return this.http.post("http://localhost:8088/loan_receipt/savereceiptLoan/",saveReceiptModel);
   }
 
 }

@@ -31,15 +31,15 @@ export class ReceiptRegisterReportComponent implements OnInit {
   }
 
   yesConfirmation(){
-    this.loading_report=true;
-    this.reportService.receiptRegisterReport(this.rcptRegForm.get("fromDate").value,this.rcptRegForm.get("toDate").value,
-    sessionStorage.getItem("token")).subscribe(response =>{
-      var fileURL = URL.createObjectURL(response);
-      window.open(fileURL); // if you want to open it in new tab
-      this.dialogRef.close({result:'success'});
-    });
-
-    
+    if(this.rcptRegForm.get("fromDate").value != "" && this.rcptRegForm.get("toDate").value != ""){
+      this.loading_report=true;
+      this.reportService.receiptRegisterReport(this.rcptRegForm.get("fromDate").value,this.rcptRegForm.get("toDate").value,
+      sessionStorage.getItem("token")).subscribe(response =>{
+        var fileURL = URL.createObjectURL(response);
+        window.open(fileURL); // if you want to open it in new tab
+        this.dialogRef.close({result:'success'});
+      });
+    }
   }
 
   noConfirmation(){

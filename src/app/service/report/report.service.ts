@@ -9,9 +9,9 @@ export class ReportService {
   constructor(private http:Http) { }
 
   receiptRegisterReport(fromDate:string,toDate:string,token:string){
-    let resp = 'http://10.10.10.11:8089/report/receiptRegister/' + fromDate + "/" + toDate + "/" +token;
+    let resp = 'http://localhost:8088/report/receiptRegister/' + fromDate + "/" + toDate + "/" +token;
     let respArr: Array<string> = resp.split("/");
-    let url = "http://10.10.10.11:8089/report/receiptRegister";
+    let url = "http://localhost:8088/report/receiptRegister";
 
     for (var _i = 5; _i < respArr.length; _i++) {
       var text = respArr[_i];
@@ -26,9 +26,9 @@ export class ReportService {
   }
 
   lapsedSummeryReport(fromDate:string,toDate:string,branch:string){
-    let resp = 'http://10.10.10.11:8089/report/lapsedSummery/' + fromDate + "/" + toDate + "/" +branch;
+    let resp = 'http://localhost:8088/report/lapsedSummery/' + fromDate + "/" + toDate + "/" +branch;
     let respArr: Array<string> = resp.split("/");
-    let url = "http://10.10.10.11:8089/report/lapsedSummery";
+    let url = "http://localhost:8088/report/lapsedSummery";
 
     for (var _i = 5; _i < respArr.length; _i++) {
       var text = respArr[_i];
@@ -43,9 +43,9 @@ export class ReportService {
   }
 
   premiumDueReport(branch:string,agent:string){
-    let resp = 'http://10.10.10.11:8089/report/premiumDue/' + agent + "/" +branch;
+    let resp = 'http://localhost:8088/report/premiumDue/' + agent + "/" +branch;
     let respArr: Array<string> = resp.split("/");
-    let url = "http://10.10.10.11:8089/report/premiumDue";
+    let url = "http://localhost:8088/report/premiumDue";
 
     for (var _i = 5; _i < respArr.length; _i++) {
       var text = respArr[_i];
@@ -60,9 +60,9 @@ export class ReportService {
   }
 
   paymentHistoryReport(polnum:string){
-    let resp = 'http://10.10.10.11:8089/report/paymentHistory/' + polnum;
+    let resp = 'http://localhost:8088/report/paymentHistory/' + polnum;
     let respArr: Array<string> = resp.split("/");
-    let url = "http://10.10.10.11:8089/report/paymentHistory";
+    let url = "http://localhost:8088/report/paymentHistory";
 
     for (var _i = 5; _i < respArr.length; _i++) {
       var text = respArr[_i];
@@ -77,7 +77,7 @@ export class ReportService {
   }
 
   getAllAgentRelatedToBranches(locCodes:string){
-    return this.http.post("http://10.10.10.11:8089/report/getAgents",locCodes);
+    return this.http.post("http://localhost:8088/report/getAgents",locCodes);
   }
 
 }

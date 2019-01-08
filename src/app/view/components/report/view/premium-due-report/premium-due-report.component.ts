@@ -94,6 +94,7 @@ export class PremiumDueReportComponent implements OnInit {
   }
 
   yesConfirmation(){
+    if(this.preDueForm.get("branch").value != "" && this.preDueForm.get("agent").value != ""){
     this.loading_report=true;
 
     let branches:string="";
@@ -124,6 +125,8 @@ export class PremiumDueReportComponent implements OnInit {
       window.open(fileURL); // if you want to open it in new tab
       this.dialogRef.close({result:'success'});
     });
+
+  }
 
     
   }
