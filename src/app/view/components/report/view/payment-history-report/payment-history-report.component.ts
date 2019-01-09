@@ -29,12 +29,14 @@ export class PaymentHistoryReportComponent implements OnInit {
   }
 
   yesConfirmation(){
-    this.loading_report=true;
-    this.reportService.paymentHistoryReport(this.paymentHisForm.get("polNum").value).subscribe(response =>{
-      var fileURL = URL.createObjectURL(response);
-      window.open(fileURL); // if you want to open it in new tab
-      this.dialogRef.close({result:'success'});
-    });
+    if(this.paymentHisForm.get("polNum").value != ""){
+      this.loading_report=true;
+      this.reportService.paymentHistoryReport(this.paymentHisForm.get("polNum").value).subscribe(response =>{
+        var fileURL = URL.createObjectURL(response);
+        window.open(fileURL); // if you want to open it in new tab
+        this.dialogRef.close({result:'success'});
+      });
+    }
 
     
   }

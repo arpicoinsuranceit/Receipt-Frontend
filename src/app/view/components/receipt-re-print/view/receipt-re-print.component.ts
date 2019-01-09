@@ -12,6 +12,8 @@ import { ReceiptRePrintService } from '../../../../service/receipt-re-print/rece
 })
 export class ReceiptRePrintComponent implements OnInit {
 
+  loading_print=false;
+
   receiptRePrintForm=new FormGroup({
     receiptNo:new FormControl('',Validators.required),
     doccode:new FormControl('',Validators.required)
@@ -32,10 +34,12 @@ export class ReceiptRePrintComponent implements OnInit {
 
   rePrint(){
     if(this.receiptRePrintForm.valid){
+      this.loading_print=true;
       this.receiptRePrintService.receiptRePrint(this.DocCode.value,this.ReceiptNo.value).subscribe(response => {
         let resp = response.json();
 
         console.log(resp);
+        this.loading_print=false;
 
         if(resp.code == "200"){
           let blob = this.blobService.base64toBlob(resp.data, "application/pdf");

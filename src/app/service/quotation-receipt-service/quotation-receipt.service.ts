@@ -13,14 +13,14 @@ export class QuotationReceiptService {
   loadQuotation(id) {
 
     let token = sessionStorage.getItem("token");
-    return this.http.get("http://10.10.10.11:8086/quotationsearch/" + id + "/" + token);
+    return this.http.get("http://localhost:8084/quotationsearch/" + id + "/" + token);
   }
 
   getQuoDetails(quoId, seqNo): any {
-    return this.http.get("http://10.10.10.11:8086/getquotationdetail/" + quoId + "/" + seqNo);
+    return this.http.get("http://localhost:8084/getquotationdetail/" + quoId + "/" + seqNo);
   }
   loadQuotationProp(id) {
-    return this.http.get("http://10.10.10.11:8086/quotationsearchprop/" + id);
+    return this.http.get("http://localhost:8084/quotationsearchprop/" + id);
   }
 
   saveQupReceipt(data: SaveReceiptModel): any {

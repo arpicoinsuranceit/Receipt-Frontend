@@ -220,6 +220,8 @@ export class BranchUnderwriteComponent implements OnInit {
   retAge = 0;
   _bsaTotal = 0;
   spouseMedicalReqArray: MedicalRequirementsDto[] = new Array();
+  sumatRiskMain = 0;
+  sumatRiskSpouse = 0;
 
 
   get BankCode() {
@@ -523,7 +525,7 @@ export class BranchUnderwriteComponent implements OnInit {
     }
 
     encodeURIComponent(JSON.stringify(data));
-    window.open("http://10.10.10.11:8083?data=" + encodeURIComponent(JSON.stringify(data)), "_blank");
+    window.open("http://localhost:4201?data=" + encodeURIComponent(JSON.stringify(data)), "_blank");
   }
 
   loadQuotationDetails() {
@@ -751,6 +753,8 @@ export class BranchUnderwriteComponent implements OnInit {
           this.contribution = response.json()._plan.contribution;
           this.retAge = response.json()._plan.retAge;
           this._bsaTotal = response.json()._plan._bsaTotal;
+          this.sumatRiskMain = response.json()._plan.sumatRiskMain;
+          this.sumatRiskSpouse = response.json()._plan.sumatRiskSpouse;
 
           console.log(this.spouseBenefitsArray);
           this.loadSheduleDetails();
@@ -1137,6 +1141,7 @@ export class BranchUnderwriteComponent implements OnInit {
     }
     this.branchUWInsureForm.get("fullNameInsured").setValue(proposal.ppdnam);
     this.branchUWInsureForm.get("nicInsured").setValue(proposal.ppdnic);
+    console.log(proposal.ppdnic + " nic");
     this.branchUWInsureForm.get("smoker").setValue(proposal.smksta);
     this.branchUWInsureForm.get("title").setValue(proposal.ntitle);
     this.branchUWInsureForm.get("address1").setValue(proposal.ppdad1);
@@ -1603,6 +1608,37 @@ export class BranchUnderwriteComponent implements OnInit {
     }
 
 
+  }
+
+  removeNomineeRow(){
+    if (this.nomineeEditIndex != undefined && this.nomineeEditIndex != null) {
+      let nominee = this.nomineeArray[this.nomineeEditIndex];
+      console.log(this.nomineeArray);
+      if(nominee.Type !== "MSFB"){
+        let nomineeArrayTemp = new Array();
+
+        this.nomineeArray.forEach(n => {
+          if(n !== nominee){
+            nomineeArrayTemp.push(n);
+          }
+        });
+
+        console.log(nomineeArrayTemp);
+
+        this.nomineeArray = new Array();
+
+        nomineeArrayTemp.forEach(n => {
+          this.nomineeArray.push(n);
+        });
+      }
+
+      this.nomineeEditIndex = null;
+      this.branchUWNomineeForm.reset();
+      this.branchUWNomineeForm.get("type").setValue("NORMAL");
+
+      console.log(this.nomineeArray);
+
+    }
   }
 
   calculateDob() {

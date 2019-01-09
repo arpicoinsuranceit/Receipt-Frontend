@@ -23,7 +23,7 @@
               <div [ngClass]="{'disabled': loading_form == true}">
                 <mat-tab-group>
 
-                  <mat-tab label="PROPOSAL NO">
+                  <mat-tab label="PROPOSAL">
                     <form [formGroup]="propCodeTranForm" style="margin-top: 20px;">
                       <!-- <mat-form-field class="half-width">
                         <input matInput placeholder="Proposal No" aria-label="Proposal No"
@@ -156,7 +156,7 @@
 
                   </mat-tab>
 
-                  <mat-tab label="POLICY NO" disabled> 
+                  <mat-tab label="POLICY" disabled> 
                       <form [formGroup]="polCodeTranForm" style="margin-top: 20px;">
                           <mat-form-field class="half-width">
                             <input matInput placeholder="Policy No" aria-label="Policy No"
@@ -258,7 +258,7 @@
           <div [ngClass]="{'disabled2': loading_table == true}">
             <mat-tab-group>
 
-                <mat-tab label="PROPOSAL NO">
+                <mat-tab label="PROPOSAL">
                     <div style="overflow-x: auto;max-height: 180px;">
                         <mat-table [dataSource]="datasourcePendingCodeTranPpr">
                             <ng-container matColumnDef="pprNum" >
@@ -297,7 +297,7 @@
                     
                 </mat-tab>
 
-                <mat-tab label="POLICY NO" >
+                <mat-tab label="POLICY" >
                     <div style="overflow-x: auto;max-height: 180px;">
                         <mat-table [dataSource]="datasourcePendingCodeTranPol">
                             
@@ -356,7 +356,7 @@
             <div [ngClass]="{'disabled2': loading_table == true}">
               <mat-tab-group>
   
-                  <mat-tab label="PROPOSAL NO">
+                  <mat-tab label="PROPOSAL">
                       <div style="overflow-x: auto;max-height: 180px;">
                           <mat-table [dataSource]="datasourceCanceledCodeTranPpr">
                                 <ng-container matColumnDef="pprNum" >
@@ -399,7 +399,7 @@
                       
                   </mat-tab>
   
-                  <mat-tab label="POLICY NO">
+                  <mat-tab label="POLICY">
                       <div style="overflow-x: auto;max-height: 180px;">
                           <mat-table [dataSource]="datasourceCanceledCodeTranPol">
                                 <ng-container matColumnDef="pprNum" >

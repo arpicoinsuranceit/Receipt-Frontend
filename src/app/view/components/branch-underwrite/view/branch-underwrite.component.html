@@ -436,6 +436,7 @@
                               <mat-radio-group class="full-width" formControlName="preferredLanguage">
                                 <mat-radio-button value="S" color="primary">Sinhala</mat-radio-button>
                                 <mat-radio-button value="E" color="primary">English</mat-radio-button>
+                                <mat-radio-button value="T" color="primary">Tamil</mat-radio-button>
                               </mat-radio-group>
                             </td>
                           </tr>
@@ -875,6 +876,20 @@
                                   <td>:</td>
                                   <td>{{_frequance}}</td>
                                 </tr>
+
+                                <tr>
+                                  <td style="width: 150px;">Sum At Risk Main </td>
+                                  <td>:</td>
+                                  <td>{{sumatRiskMain}}</td>
+                                </tr>
+            
+                                <tr >
+                                  <td style="width: 150px;">Sum At Risk Spouse </td>
+                                  <td>:</td>
+                                  <td>{{sumatRiskSpouse}}</td>
+                                </tr>
+
+                                
             
                               </tbody>
                             </table>
@@ -1470,6 +1485,8 @@
                           (click)="editNomineeRow()" *ngIf="nomineeEditIndex != undefined && nomineeEditIndex != null">Save</button>
                         <button mat-raised-button matTooltip="Add" color="primary" style="float: right;margin-top: 10px;margin-right: 5px;margin-bottom: 5px"
                           (click)="addNewNominee()" *ngIf="nomineeEditIndex == undefined || nomineeEditIndex == null">Save</button>
+                        <button mat-raised-button matTooltip="Delete" color="warn" style="margin-top: 10px;margin-left: 5px;margin-right: 5px;margin-bottom: 5px;"
+                          (click)="removeNomineeRow()" *ngIf="nomineeEditIndex != undefined && nomineeEditIndex != null">Delete</button>
                       </mat-card-actions>
 
                     </mat-card>
@@ -1536,7 +1553,7 @@
               <button mat-raised-button (click)="stepper.reset()" color="primary" style="margin: 10px;">Reset</button>
               <button mat-raised-button (click)="saveUnderwrite()" color="primary" style="float: right;margin: 10px;">Save</button>
               <mat-checkbox [(ngModel)]="approve" color="primary" style="float: right;margin-top: 10px;">Send To
-                Approve</mat-checkbox>
+                Head Office</mat-checkbox>
             </div>
           </mat-step>
         </mat-horizontal-stepper>

@@ -46,26 +46,28 @@ export class LapsedSummeryReportComponent implements OnInit {
   }
 
   yesConfirmation(){
-    this.loading_report=true;
+    if(this.lapsedSumForm.get("fromDate").value != "" && this.lapsedSumForm.get("toDate").value != "" && this.lapsedSumForm.get("branch").value != "" ){
+      this.loading_report=true;
 
-    let branches:string="";
+      let branches:string="";
 
-    if(this.lapsedSumForm.get("branch").value == "ALL"){
-      this.branchArray.forEach(brn =>{
-        branches+="'"+brn+"'"+",";
+      if(this.lapsedSumForm.get("branch").value == "ALL"){
+        this.branchArray.forEach(brn =>{
+          branches+="'"+brn+"'"+",";
+        });
+      }else{
+        branches="'"+this.lapsedSumForm.get("branch").value+"'";
+      }
+
+      console.log(branches);
+
+      this.reportService.lapsedSummeryReport(this.lapsedSumForm.get("fromDate").value,this.lapsedSumForm.get("toDate").value,
+      branches).subscribe(response =>{
+        var fileURL = URL.createObjectURL(response);
+        window.open(fileURL); // if you want to open it in new tab
+        this.dialogRef.close({result:'success'});
       });
-    }else{
-      branches="'"+this.lapsedSumForm.get("branch").value+"'";
     }
-
-    console.log(branches);
-
-    this.reportService.lapsedSummeryReport(this.lapsedSumForm.get("fromDate").value,this.lapsedSumForm.get("toDate").value,
-    branches).subscribe(response =>{
-      var fileURL = URL.createObjectURL(response);
-      window.open(fileURL); // if you want to open it in new tab
-      this.dialogRef.close({result:'success'});
-    });
 
     
   }

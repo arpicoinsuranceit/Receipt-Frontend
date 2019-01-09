@@ -49,7 +49,7 @@ export class CommonService {
   }
 
   getOccupations() {
-    return this.http.get('http://10.10.10.11:8086/occupation');
+    return this.http.get('http://localhost:8084/occupation');
   }
 
 
@@ -124,13 +124,13 @@ export class CommonService {
     }
 
     if (nic.length == 12 || nic.length == 9) {
-      return this.http.post('http://10.10.10.11:8086/ageCalculate', nic);
+      return this.http.post('http://localhost:8084/ageCalculate', nic);
     }
 
   }
 
   loadAgeNominee(dob){
-    return this.http.post('http://10.10.10.11:8086/ageCalNominee', dob);
+    return this.http.post('http://localhost:8084/ageCalNominee', dob);
   }
 
   alert(title: string, message: string, type: string) {
