@@ -6,11 +6,11 @@
 <div [ngClass]="{'disabled': loading_saving == true}" class="container" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
     fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
 
-    <div fxFlex="50%">
-        <mat-card class="main-card" style="min-height: 741px;">
+    <div fxFlex="40%">
+        <mat-card class="main-card sk-style-mat-card" >
 
-            <mat-card-header style="border-top: solid #C4C4C4 1px; display: flex; 
-            justify-content: space-between;">
+            <mat-card-header style=" display: flex; 
+            justify-content: space-between; margin-top: -23px; margin-left: -13px;">
                 <mat-card-title>
                     <h3>Policy Receipt</h3>
                 </mat-card-title>
@@ -59,12 +59,12 @@
 
                         </div>
 
-                        <mat-card *ngIf="advance_search" style="margin-bottom: 10px;" [ngClass]="{'disabled': loading_adv_search == true}">
+                        <mat-card  *ngIf="advance_search"  [ngClass]="{'disabled': loading_adv_search == true}">
                             <div [hidden]="!loading_adv_search" class="loader">
                                 <h5>Loading...</h5>
                                 <mat-progress-bar mode="indeterminate"></mat-progress-bar>
                             </div>
-                            <mat-select placeholder="Type" tabindex="2" style="width: 150px; padding-right: 10px;"
+                            <mat-select placeholder="Type" tabindex="2" style="margin-left: 0px;margin-right: 0px;"
                                 aria-label="Type" formControlName="adv_type">
                                 <mat-option value="ppr">
                                     Proposal No
@@ -203,9 +203,9 @@
             </mat-card-actions>
         </mat-card>
     </div>
-    <div fxFlex="50%">
-        <mat-card class="main-card" style="height: 425px;">
-            <mat-card-header>
+    <div fxFlex="60%">
+        <mat-card class="main-card sk-style-mat-card-2" style="margin-top: 6px;margin-right: 6px; margin-bottom: 6px;">
+            <mat-card-header style=" margin-top: -23px; margin-left: -13px;">
                 <mat-card-title>
                     <h3>Basic Policy Details</h3>
                 </mat-card-title>
@@ -307,7 +307,7 @@
             </mat-card-content>
         </mat-card>
 
-        <mat-card class="main-card" style="height: 258px;">
+        <mat-card class="main-card" style="height: 262px; margin-top: 6px;margin-right: 6px; ">
 
             <div [hidden]="!loading_table" class="loader">
                 <h5>Loading...</h5>

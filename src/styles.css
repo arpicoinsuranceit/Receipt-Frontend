@@ -71,3 +71,27 @@ mat-card-header{
     background: #555; 
 }
 
+* {
+
+    font-size: 13px;
+    letter-spacing: 1px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-style: unset;
+    /* font-weight: bold; */
+    
+}
+.mat-card-header-sk-style{
+    margin-top: 20px;
+     margin-left: -13px;
+     display: flex; 
+    justify-content: space-between;
+    
+}
+
+.mat-k-sk-style{
+     min-height: 741px;
+      margin-top: 6px;
+      margin-left: 6px;
+      margin-right: 6px;
+       margin-bottom: 6px;
+}

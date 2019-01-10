@@ -13,3 +13,27 @@
     background: #F7F7F7;
     background-position: center;
 }
+
+*mat-card{
+    margin-top: 6px;
+    margin-right: 6px;
+    margin-bottom: 6px;
+}
+*mat-card-header{
+    margin-top: -23px;
+    margin-left: -13px;
+}
+
+.sk-style-mat-card{
+    min-height: 677px;
+     margin-top: 6px;
+     margin-left: 6px;
+     margin-right: -8px;
+      margin-bottom: 6px;
+}
+
+.sk-style-mat-card-2{
+    margin-top: 6px;
+    margin-right: 6px;
+     margin-bottom: 6px;
+}

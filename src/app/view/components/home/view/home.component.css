@@ -86,3 +86,12 @@
     background: #F7F7F7;
     background-position: center;
 }
+
+*mat-card{
+    min-height: 741px;
+     margin-top: 6px;
+     margin-left: 6px;
+     margin-right: 6px;
+      margin-bottom: 6px;
+}
+
