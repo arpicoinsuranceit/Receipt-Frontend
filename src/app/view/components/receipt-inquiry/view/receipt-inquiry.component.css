@@ -9,3 +9,17 @@
     background: #CCC;
     background-position: center;
 }
+
+.sk-style-mat-card{
+    min-height: 677px;
+     margin-top: 0px;
+     margin-left: 0px;
+     margin-right: 0px;
+      margin-bottom: 0px;
+}
+
+.sk-style-mat-card-2{
+    margin-top: 6px;
+    margin-right: 6px;
+     margin-bottom: 6px;
+}

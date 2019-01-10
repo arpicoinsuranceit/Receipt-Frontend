@@ -23,3 +23,19 @@
     background: #F7F7F7;
     background-position: center;
 }
+
+.new-Sk-header-styel{
+    display: flex; 
+        justify-content: space-between;
+         margin-top: -23px;
+          margin-left: -13px;
+}
+
+.sk-style-mat-card-3{
+   
+     margin-top: 6px;
+     margin-left: 6px;
+     margin-right: -8px;
+      margin-bottom: 6px;
+}
+

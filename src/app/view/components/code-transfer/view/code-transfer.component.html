@@ -7,9 +7,9 @@
     fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
 
   <div fxFlex="50%">
-      <mat-card class="main-card" style="height: 600px;">
+      <mat-card class="main-card sk-style-mat-card" style="height: 600px;">
 
-          <mat-card-header>
+          <mat-card-header class="new-Sk-header-styel">
               <mat-card-title>
                   <h3>Code Transfer</h3>
               </mat-card-title>
@@ -38,7 +38,7 @@
                       <!-- <button mat-raised-button color="primary" (click)="addToPprTable()" style="margin-left: 10px;">ADD</button> -->
 
                       <mat-card class="main-card" style="max-height: 150px;overflow-x: auto;">
-                        <mat-card-header>
+                        <mat-card-header class="new-Sk-header-styel">
                             <mat-card-title>
                                 <h4>Code Pending Proposals</h4>
                             </mat-card-title>
@@ -243,13 +243,13 @@
   </div>
 
   <div fxFlex="50%">
-      <mat-card class="main-card" style="height: 270px;">
+      <mat-card class="main-card" style="height: 270px; margin-right: 6px;margin-top: 6px;">
           <div [hidden]="!loading_table" class="loader">
               <h5>Loading...</h5>
               <mat-progress-bar mode="indeterminate"></mat-progress-bar>
           </div>
 
-          <mat-card-header>
+          <mat-card-header class="new-Sk-header-styel">
               <mat-card-title>
                   <h3>Pending Approvals </h3>
               </mat-card-title>
@@ -341,13 +341,13 @@
           </div>
       </mat-card>
 
-      <mat-card class="main-card" style="height: 270px;">
+      <mat-card class="main-card" style="height: 276px; margin-right: 6px; margin-top: -4px">
             <div [hidden]="!loading_table" class="loader">
                 <h5>Loading...</h5>
                 <mat-progress-bar mode="indeterminate"></mat-progress-bar>
             </div>
   
-            <mat-card-header>
+            <mat-card-header class="new-Sk-header-styel">
                 <mat-card-title>
                     <h3>Rejected Approvals </h3>
                 </mat-card-title>
