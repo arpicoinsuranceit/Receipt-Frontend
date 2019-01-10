@@ -37,6 +37,9 @@
     letter-spacing: 1px;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-style: unset;
+    
   
   }
-
+.new-sk-style{
+  background-color: aqua;
+}
