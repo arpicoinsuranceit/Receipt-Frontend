@@ -8,12 +8,12 @@
   }
   
   .sidenav {
-    width: 230px;
+    width: 210px;
     border-right: solid 2px #3F51B5;
   }
 
   .nav-header-title-image, .nav-header{
-    width: 180px;
+    width: 160px;
   }
 
   .nav-header{
@@ -40,6 +40,4 @@
     
   
   }
-.new-sk-style{
-  background-color: aqua;
-}
+/* sk-style */

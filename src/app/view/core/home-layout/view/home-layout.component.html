@@ -10,7 +10,7 @@
        
         <button *ngIf = "menuList.includes('RECEIPT')" mat-button [matMenuTriggerFor]="receipt" style="width: 210px; padding: 10; margin: 1px; text-align: left;">RECEIPT</button>
 
-        <mat-menu  #receipt="matMenu" style="background-color: blue;" yPosition="below" xPosition="before" >
+        <mat-menu  #receipt="matMenu"  yPosition="below" xPosition="before" >
             <button class="matMenuItem" *ngIf = "menuList.includes('RECEIPT_POLICY')" mat-menu-item routerLink="policyreceipt" >POLICY RECEIPT</button>
             <button class="matMenuItem" *ngIf = "menuList.includes('RECEIPT_PROPOSAL')" mat-menu-item routerLink="proposalreceipt">PROPOSAL RECEIPT</button>
             <button class="matMenuItem" *ngIf = "menuList.includes('RECEIPT_QUOTATION')" mat-menu-item routerLink="quoreceipt">QUOTATION RECEIPT</button>
