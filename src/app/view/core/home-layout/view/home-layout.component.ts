@@ -58,7 +58,7 @@ export class HomeLayoutComponent implements OnInit {
   }
 
   getTime(){
-    this.subscription = timer(0, 1000).pipe(
+    this.subscription = timer(0, 60000).pipe(
         switchMap(() => this.dashboardService.getDateTime())
       ).subscribe(
         (result)=>{
