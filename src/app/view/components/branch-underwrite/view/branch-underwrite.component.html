@@ -1293,16 +1293,11 @@
                   fxLayoutAlign="center" [ngClass]="{'disabled': loading7 == true}">
 
                   <div fxFlex="80">
-                    <mat-card style="margin-bottom: 10px;height: 420px;max-height: 430px;overflow-x: auto;">
-                      <mat-horizontal-stepper [linear]="true" #stepper>
-                        <mat-step [stepControl]="firstFormGroup">
-                          <ng-template matStepLabel>Details Of Nominee</ng-template>
-
-                          <mat-table [dataSource]="nomineeArray" class="mat-elevation-z8">
+                          <mat-table style="height: 469px; margin-left: -20px; overflow: auto;" [dataSource]="nomineeArray" class="mat-elevation-z8">
 
                             <ng-container matColumnDef="type">
-                              <mat-header-cell *matHeaderCellDef style="flex: 0 0 5%;"> Type </mat-header-cell>
-                              <mat-cell *matCellDef="let element" style="flex: 0 0 5%;"> {{element.type}} </mat-cell>
+                              <mat-header-cell *matHeaderCellDef style="flex: 0 0 7%;"> Type </mat-header-cell>
+                              <mat-cell *matCellDef="let element" style="flex: 0 0 7%;"> {{element.type}} </mat-cell>
                             </ng-container>
 
 
@@ -1313,8 +1308,8 @@
 
 
                             <ng-container matColumnDef="relationship">
-                              <mat-header-cell *matHeaderCellDef style="flex: 0 0 5%;"> Relat<br>ion<br>Ship </mat-header-cell>
-                              <mat-cell *matCellDef="let element" style="flex: 0 0 5%;"> {{element.relationship}}
+                              <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Relat<br>ion<br>Ship </mat-header-cell>
+                              <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.relationship}}
                               </mat-cell>
                             </ng-container>
 
@@ -1364,14 +1359,10 @@
                             <mat-header-row *matHeaderRowDef="displayedColumnsNominee"></mat-header-row>
                             <mat-row *matRowDef="let row; columns: displayedColumnsNominee;" (dblclick)="loadNomineeData(row)"></mat-row>
                           </mat-table>
-                        </mat-step>
-
-                      </mat-horizontal-stepper>
-                    </mat-card>
                   </div>
 
                   <div fxFlex="20">
-                    <mat-card style="margin-bottom: 10px;height: 420px;max-height: 430px;overflow-x: auto;">
+                    <mat-card style="margin-bottom: 10px;height: 420px; margin-right: -19px; max-height: 430px;overflow-x: auto;">
                       <form class="branch-uw-form" [formGroup]="branchUWNomineeForm">
                         <mat-form-field style="width: 80px;">
                           <mat-select placeholder="Type" aria-label="Type" formControlName="type" [disabled]="true">

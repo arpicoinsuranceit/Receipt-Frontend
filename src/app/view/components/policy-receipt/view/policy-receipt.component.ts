@@ -47,7 +47,7 @@ export class PolicyReceiptComponent implements OnInit {
   filteredPolicies: Observable<any[]>;
 
   lastReceipt: LastReceipt[] = new Array();
-
+   
 
   receiptForm = new FormGroup({
     propNo: new FormControl("", Validators.required),

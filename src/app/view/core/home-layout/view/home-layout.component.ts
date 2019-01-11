@@ -15,7 +15,9 @@ export class HomeLayoutComponent implements OnInit {
   menus : MenuModel [] = JSON.parse(sessionStorage.getItem("menus"));
 
   menuList : string [] = new Array();
+   
 
+  
   constructor(private router: Router) {
   }
 
