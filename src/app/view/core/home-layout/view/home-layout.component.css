@@ -17,7 +17,7 @@
   }
 
   .nav-header{
-    height: 140px;
+    height: 120px;
   }
 
   .nav-header-title-image{
@@ -32,20 +32,25 @@
     flex: 1 1 auto;
   }
   .matMenuItem,.logoutstyle{
+
     height: 35px;
-    font-size: 13px;
+    font-size: 14px;
     letter-spacing: 1px;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-style: unset;
+    font-weight: bold;
+    color: black;
+    /* vertical-align: middle;
+    display: flex;
+    align-content: center; */
     
   
   }
 
-  p{
-    text-align: center;
-    /* color: black; */
-    height: 5px;
-    font-size: 18px;
+  .matMenuItem:hover{
+      background-color: rgba(242, 110, 33, 0.24);
+      border-radius: 5px;
+      height: 35px;
   }
-  
 /* sk-style */
+
