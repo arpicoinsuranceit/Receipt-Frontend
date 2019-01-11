@@ -17,7 +17,7 @@
   }
 
   .nav-header{
-    height: 120px;
+    height: 140px;
   }
 
   .nav-header-title-image{
@@ -40,4 +40,12 @@
     
   
   }
+
+  p{
+    text-align: center;
+    /* color: black; */
+    height: 5px;
+    font-size: 18px;
+  }
+  
 /* sk-style */

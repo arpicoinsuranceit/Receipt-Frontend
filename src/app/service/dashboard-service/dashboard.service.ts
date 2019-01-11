@@ -48,4 +48,13 @@ export class DashboardService {
 
         return this.http.get("http://localhost:8088/datevspaymode/" + to + "/" + from + "/" + user + "/" + type);
     }
+
+    getDateTime(){
+        return this.http.get(("http://localhost:8088/dateTime"));
+     }
+ 
+     getDate(){
+         console.log("test 2")
+         return this.http.get(("http://localhost:8088/getdate"));
+      }
 }
