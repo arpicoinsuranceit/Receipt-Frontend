@@ -1,0 +1,82 @@
+ <mat-card class="main-card mat-k-sk-style">
+  <mat-card-header style="  margin-top: -20px;margin-left: -13px; display: flex; justify-content: space-between;">
+    <mat-card-title>
+      <h3>Not Realized Cheques</h3>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content style="max-height: 380px;overflow-x: auto;">
+    <div [hidden]="!loading1" class="loader">
+      <h5>Loading...</h5>
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </div>
+    <div [ngClass]="{'disabled': loading1 == true}">
+      <mat-table [dataSource]="datasourceNotRelCheques" class="mat-elevation-z8" style="padding: 20px;">
+        <ng-container matColumnDef="proposal">
+          <mat-header-cell *matHeaderCellDef> Proposal </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.Proposal}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="polnum">
+          <mat-header-cell *matHeaderCellDef> Policy No </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.Polnum}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="ppdnam">
+          <mat-header-cell *matHeaderCellDef> Cust. Name </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.Ppdnam}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="receipt">
+          <mat-header-cell *matHeaderCellDef style="padding-left: 10px;"> Receipt </mat-header-cell>
+          <mat-cell *matCellDef="let element"  style="padding-left: 10px;"> {{element.Receipt}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="creadt">
+          <mat-header-cell *matHeaderCellDef> Receipt Date </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.Creadt}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="chqnum">
+          <mat-header-cell *matHeaderCellDef> Cheque No </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.Chqnum}} </mat-cell>
+        </ng-container>
+        
+        
+        <ng-container matColumnDef="chqbnk">
+          <mat-header-cell *matHeaderCellDef> Cheque bank </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.Chqbnk}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="chqdat">
+          <mat-header-cell *matHeaderCellDef> Cheque Date </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.Chqdat}} </mat-cell>
+        </ng-container>
+        
+        <!-- <ng-container matColumnDef="agent">
+          <mat-header-cell *matHeaderCellDef> Agent </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.Agent}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="loccod">
+          <mat-header-cell *matHeaderCellDef> Location </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.Loccod}} </mat-cell>
+        </ng-container> -->
+
+        
+
+
+        
+
+        <ng-container matColumnDef="totprm">
+          <mat-header-cell *matHeaderCellDef style="display: flex; justify-content: flex-end; padding-right: 10px;"> Amount (Rs.) </mat-header-cell>
+          <mat-cell *matCellDef="let element" style="display: flex; justify-content: flex-end; padding-right: 10px;"> {{element.Totprm | number: '.2'}} </mat-cell>
+        </ng-container>
+        
+  
+        <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;" (dblclick)="loadData(row.proposalNo,row.sequenceNo,row.policyBranch,row.agent)"></mat-row>
+      </mat-table>
+    </div>
+    
+
+  </mat-card-content>
+</mat-card> 

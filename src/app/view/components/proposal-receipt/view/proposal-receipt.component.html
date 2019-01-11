@@ -206,6 +206,11 @@
                             <td style="width: 65%;">{{basicDetail.Id}}</td>
                         </tr>
                         <tr>
+                            <td>Policy No</td>
+                            <td> :</td>
+                            <td>{{basicDetail.Id2}}</td>
+                        </tr>
+                        <tr>
                             <td>Sequence No</td>
                             <td> :</td>
                             <td>{{basicDetail.SeqNo}}</td>
@@ -234,6 +239,14 @@
                             <td>Payble Amount</td>
                             <td> :</td>
                             <td>Rs. {{basicDetail.PayAmount | number: '.2'}}</td>
+                        </tr>
+                        <tr>
+                            <td>Proposal Status</td>
+                            <td> :</td>
+                            <td>{{basicDetail.Pprsta}}</td>
+                        </tr>
+                        <tr *ngIf="basicDetail.Mobile == 'false'">
+                            <td colspan="3" style="color: red">Mobile Number not in system. SMS Alert not send.</td>
                         </tr>
 
                     </table>
