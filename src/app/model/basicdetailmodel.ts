@@ -1,6 +1,7 @@
 export class BasicDetail {
     constructor(private branchCode?: string, private agentCode?: string, private custTitle?: string, private customerName?: string,
-        private seqNo?: number, private id?: number, private productCode?: string, private productName?: string, private premium?: number,private payAmount?: number, private polfee? :number) { }
+        private seqNo?: number, private id?: number, private productCode?: string, private productName?: string, private premium?: number,private payAmount?: number, private polfee? :number,
+        private mobile? : string, private pprsta? : string, private id2?: string) { }
 
     set BranchCode(branchCode: string) {
         this.branchCode = branchCode;
@@ -92,4 +93,27 @@ export class BasicDetail {
         return this.polfee;
     }
 
+    set Mobile(mobile: string) {
+        this.mobile = mobile;
+    }
+
+    get Mobile() {
+        return this.mobile;
+    }
+
+    set Pprsta(pprsta: string) {
+        this.pprsta = pprsta;
+    }
+
+    get Pprsta() {
+        return this.pprsta;
+    }
+
+    set Id2(id2: string) {
+        this.id2 = id2;
+    }
+
+    get Id2() {
+        return this.id2;
+    }
 }

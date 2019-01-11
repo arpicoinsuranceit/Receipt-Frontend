@@ -25,7 +25,7 @@
 }
 
 .sk-style-mat-card{
-    min-height: 677px;
+    min-height: 735px;
      margin-top: 6px;
      margin-left: 6px;
      margin-right: -8px;
@@ -33,6 +33,7 @@
 }
 
 .sk-style-mat-card-2{
+    min-height: 419px;
     margin-top: 6px;
     margin-right: 6px;
      margin-bottom: 6px;

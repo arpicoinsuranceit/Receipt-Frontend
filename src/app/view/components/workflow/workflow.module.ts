@@ -1,3 +1,4 @@
+import { ChequeNotRelComponent } from './view/cheque-not-rel/cheque-not-rel.component';
 import { ReceiptCancelationService } from './../../../service/receipt-cancelation-service/receipt-cancelation.service';
 import { WorkFlowService } from './../../../service/work-flow-service/work-flow.service';
 import { BranchUnderwriteService } from './../../../service/branch-underwrite/branch-underwrite.service';
@@ -45,7 +46,8 @@ import { PendingReqPopupComponent } from './view/pending-req-popup/pending-req-p
     ReceiptCancelationComponent,
     ShortPremiumComponent,
     TempLapsComponent,
-    UnderwriteComponent
+    UnderwriteComponent,
+    ChequeNotRelComponent
   ],
   providers: [BranchUnderwriteService, WorkFlowService, ReceiptCancelationService],
   entryComponents: [SettlementPopupComponent, PendingReqPopupComponent]
