@@ -1,3 +1,4 @@
+import { UnderwriteConfirmationAlertComponent } from './../../../core/underwrite-confirmation-alert/underwrite-confirmation-alert.component';
 import { MainlifeUnderwriteModel } from '../../../../model/mainlifeUnderwrite';
 import { SaveUnderwriteModel } from '../../../../model/saveunderwritemodel';
 import { Occupation } from '../../../../model/occupation';
@@ -222,6 +223,7 @@ export class BranchUnderwriteComponent implements OnInit {
   spouseMedicalReqArray: MedicalRequirementsDto[] = new Array();
   sumatRiskMain = 0;
   sumatRiskSpouse = 0;
+  confirmationResult: any;
 
 
   get BankCode() {
@@ -446,14 +448,16 @@ export class BranchUnderwriteComponent implements OnInit {
           this.branchUWGeneralInfo.get("quotationDetailId").setValue(seqNo);
           this.loadQuotationDetails();
         }
+
+        //this.loading2 = false;
       });
 
 
-      this.loading2 = false;
+     
     });
 
 
-
+    
   }
 
   loadSequnceId() {
@@ -752,9 +756,14 @@ export class BranchUnderwriteComponent implements OnInit {
           this._bsa = response.json()._plan._bsa;
           this.contribution = response.json()._plan.contribution;
           this.retAge = response.json()._plan.retAge;
-          this._bsaTotal = response.json()._plan._bsaTotal;
-          this.sumatRiskMain = response.json()._plan.sumatRiskMain;
-          this.sumatRiskSpouse = response.json()._plan.sumatRiskSpouse;
+          this._bsaTotal = response.json()._plan._bsaTotal;       
+          if(response.json()._plan.sumatRiskMain != null){
+            this.sumatRiskMain = response.json()._plan.sumatRiskMain;
+          }
+
+          if(response.json()._plan.sumatRiskSpouse != null){
+            this.sumatRiskSpouse = response.json()._plan.sumatRiskSpouse;
+          }
 
           console.log(this.spouseBenefitsArray);
           this.loadSheduleDetails();
@@ -768,6 +777,7 @@ export class BranchUnderwriteComponent implements OnInit {
         });
       }
 
+      this.loading2 = false;
       this.loading3 = false;
       this.loading4 = false;
       this.loading5 = false;
@@ -1150,10 +1160,21 @@ export class BranchUnderwriteComponent implements OnInit {
     this.branchUWInsureForm.get("telephoneInsured").setValue(proposal.ppdtel);
     this.branchUWInsureForm.get("bankCode").setValue(proposal.ban_no);
     this.branchUWInsureForm.get("bankAccountNo").setValue(proposal.accnum);
-    this.branchUWInsureForm.get("height").setValue(proposal.highcm);
-    this.branchUWInsureForm.get("weight").setValue(proposal.wighkg);
+
+    if(proposal.highcm > 0){
+      this.branchUWInsureForm.get("height").setValue(proposal.highcm);
+    }
+    if(proposal.wighkg > 0){
+      this.branchUWInsureForm.get("weight").setValue(proposal.wighkg);
+    }
+    
     this.branchUWInsureForm.get("occupation").setValue(occup.OccupationName);
     this.branchUWInsureForm.get("initialNameInsured").setValue(proposal.ppdini);
+
+    if(proposal.prflng != null && proposal.prflng != ""){
+      this.branchUWInsureForm.get("preferredLanguage").setValue(proposal.prflng);
+    }
+    
 
     if (proposal.sponam != null) {
       let occup = new Occupation();
@@ -1168,8 +1189,14 @@ export class BranchUnderwriteComponent implements OnInit {
       this.branchUWSpouseForm.get("initialNameSpouse").setValue(proposal.spoini);
       this.branchUWSpouseForm.get("titleSpouse").setValue(proposal.stitle);
       this.branchUWSpouseForm.get("occupationSpouse").setValue(occup.OccupationName);
-      this.branchUWSpouseForm.get("heightSpouse").setValue(proposal.shighc);
-      this.branchUWSpouseForm.get("weightSpouse").setValue(proposal.swighk);
+      if(proposal.shighc){
+        this.branchUWSpouseForm.get("heightSpouse").setValue(proposal.shighc);
+      }
+      
+      if(proposal.swighk){
+        this.branchUWSpouseForm.get("weightSpouse").setValue(proposal.swighk);
+      }
+      
     }
 
     this.loadPropFamDetails(proposal.inProposalsModelPK.pprnum, proposal.inProposalsModelPK.prpseq);
@@ -2023,10 +2050,11 @@ export class BranchUnderwriteComponent implements OnInit {
   }
 
   checkValidityBeforeSave(): boolean {
-    if (this.branchUWInsureForm.valid) {
+    if (this.branchUWInsureForm.valid && this.branchUWInsureForm.get("height").value > 0 && this.branchUWInsureForm.get("weight").value > 0) {
 
       if (this.spouseActive) {
-        if (this.branchUWSpouseForm.get("initialNameSpouse").value != "" && this.branchUWSpouseForm.get("heightSpouse").value != "" && this.branchUWSpouseForm.get("weightSpouse").value != "") {
+        if (this.branchUWSpouseForm.get("initialNameSpouse").value != "" && this.branchUWSpouseForm.get("heightSpouse").value != "" && this.branchUWSpouseForm.get("weightSpouse").value != ""
+        && this.branchUWSpouseForm.get("heightSpouse").value > 0 && this.branchUWSpouseForm.get("weightSpouse").value > 0) {
           if (this.branchUWFinalDecisionInfo.valid) {
             //alert("Success..");
             return true;
@@ -2036,7 +2064,7 @@ export class BranchUnderwriteComponent implements OnInit {
           }
 
         } else {
-          this.alert("Oopz...", "Please Fill Required Details", "error","");
+          this.alert("Oopz...", "Please Fill All Required Spouse Details", "error","");
           return false;
         }
       } else {
@@ -2050,7 +2078,7 @@ export class BranchUnderwriteComponent implements OnInit {
       }
 
     } else {
-      this.alert("Oopz...", "Please Fill Required Details", "error","");
+      this.alert("Oopz...", "Please Fill All Required Mainlife Details", "error","");
       return false;
     }
   }
@@ -2100,6 +2128,30 @@ export class BranchUnderwriteComponent implements OnInit {
     this.spouseActive = false;
   }
 
+  resetForms(){
+    this.generalInfo = new GeneralInfo();
+    this.branchUWGeneralInfo.reset();
+    this.branchUWFinalDecisionInfo.reset();
+    this.resetAllForms();
+    this.stepper.selectedIndex = 0;
+    this.loadProposalData();
+    this.quotationNo=null;
+    this.loading2=true;
+  }
+
+  isSendToHO(){
+
+    if(!this.approve){
+      let message : string [] = new Array();
+      message.push("Do you want to Transfer proposal level ?");
+      message.push("(After transfering proposal you can't rollback it.)");
+  
+      this.alertconfirmation("Are you sure !", message, "success","");
+    }
+    
+
+  }
+
   alert(title: string, message: string, type: string,id:string) {
     const dialogConfig = new MatDialogConfig();
 
@@ -2117,6 +2169,34 @@ export class BranchUnderwriteComponent implements OnInit {
     // dialogRef.afterClosed().subscribe(result => {
     //   alert("response: " + result)
     // });
+
+  }
+
+  alertconfirmation(title: string, message: string [], type: string, method: string) {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      id: method,
+      title: title,
+      message: message,
+      type: type
+    };
+
+    const dialogRef = this.dialog.open(UnderwriteConfirmationAlertComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+      this.confirmationResult=result.result;
+
+      if(this.confirmationResult === "yes"){
+        this.approve=true;
+      }else{
+        this.approve=false;
+      }
+
+    });
 
   }
 

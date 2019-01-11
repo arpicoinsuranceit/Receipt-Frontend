@@ -20,12 +20,13 @@ import { ConfirmationAlertComponent } from './view/core/confirmation-alert/confi
 import { ReceiptRegisterReportComponent } from './view/components/report/view/receipt-register-report/receipt-register-report.component';
 import { PaymentHistoryReportComponent } from './view/components/report/view/payment-history-report/payment-history-report.component';
 import { PremiumDueReportComponent } from './view/components/report/view/premium-due-report/premium-due-report.component';
+import { UnderwriteConfirmationAlertComponent } from './view/core/underwrite-confirmation-alert/underwrite-confirmation-alert.component';
 
 
 @NgModule({
   declarations: [
     AppComponent, LoginComponent, AlertComponent ,CourierpopupComponent,DashboardpopupComponent,ConfirmationAlertComponent,ReceiptRegisterReportComponent,
-    LapsedSummeryReportComponent,PaymentHistoryReportComponent,PremiumDueReportComponent
+    LapsedSummeryReportComponent,PaymentHistoryReportComponent,PremiumDueReportComponent,UnderwriteConfirmationAlertComponent
   ],
   imports: [
     BrowserModule,
@@ -40,6 +41,6 @@ import { PremiumDueReportComponent } from './view/components/report/view/premium
   providers: [AuthService, AuthGuard, CommonService],
   bootstrap: [AppComponent],
   entryComponents: [AlertComponent,CourierpopupComponent, DashboardpopupComponent,ConfirmationAlertComponent,ReceiptRegisterReportComponent,
-    LapsedSummeryReportComponent,PaymentHistoryReportComponent,PremiumDueReportComponent]
+    LapsedSummeryReportComponent,PaymentHistoryReportComponent,PremiumDueReportComponent,UnderwriteConfirmationAlertComponent]
 })
 export class AppModule { }

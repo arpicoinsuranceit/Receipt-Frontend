@@ -1,0 +1,14 @@
+<h2 mat-dialog-title style="text-align: center;border-bottom:solid #C4C4C4 1px">{{modalTitle}}</h2>
+<mat-dialog-content align="center" style="min-width: 250px;">
+  <img src="assets/images/giphy.gif" style="width: 70px; height: 70px;">  <br>
+
+  <div *ngFor = "let mes of modelMessage" style="width: 100%">
+    <label >{{mes}}</label><br>
+  </div>
+  
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+  <!-- <button mat-button mat-dialog-close style="background: #77B43F; color: white">DELETE</button> -->
+  <button mat-button mat-dialog-close style="background: #AA0001; color: white" (click)="yesConfirmation();" >YES</button>
+  <button mat-button style="background: rgb(77, 77, 77); color: white" mat-dialog-close (click)="noConfirmation();" >NO</button>
+</mat-dialog-actions>

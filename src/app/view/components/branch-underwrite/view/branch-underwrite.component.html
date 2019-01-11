@@ -29,6 +29,7 @@
                     <mat-form-field style="width: 100%;">
                       <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
                     </mat-form-field>
+                    
                     <mat-table [dataSource]="datasourceProposal" class="mat-elevation-z8" style="padding: 20px;">
                       <ng-container matColumnDef="proposalNo">
                         <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Proposal No </mat-header-cell>
@@ -721,14 +722,14 @@
 
 
                             <ng-container matColumnDef="sumassured">
-                              <mat-header-cell *matHeaderCellDef style="flex: 0 0 25%;"> Sum Assured</mat-header-cell>
-                              <mat-cell *matCellDef="let element" style="flex: 0 0 25%;"> {{element.sumassured}}
+                              <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;display: flex; justify-content: flex-end;"> Sum Assured</mat-header-cell>
+                              <mat-cell *matCellDef="let element" style="flex: 0 0 20%;display: flex; justify-content: flex-end;"> {{element.sumassured}}
                               </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="premium">
-                              <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;"> Premium </mat-header-cell>
-                              <mat-cell *matCellDef="let element" style="flex: 0 0 20%;"> {{element.premium}}
+                              <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;display: flex; justify-content: flex-end;"> Premium </mat-header-cell>
+                              <mat-cell *matCellDef="let element" style="flex: 0 0 20%;display: flex; justify-content: flex-end;"> {{element.premium.toLocaleString()}}
                               </mat-cell>
                             </ng-container>
 
@@ -882,13 +883,13 @@
                                 <tr>
                                   <td style="width: 150px;">Sum At Risk Main </td>
                                   <td>:</td>
-                                  <td>{{sumatRiskMain}}</td>
+                                  <td>{{sumatRiskMain.toLocaleString()}}</td>
                                 </tr>
             
                                 <tr >
                                   <td style="width: 150px;">Sum At Risk Spouse </td>
                                   <td>:</td>
-                                  <td>{{sumatRiskSpouse}}</td>
+                                  <td>{{sumatRiskSpouse.toLocaleString()}}</td>
                                 </tr>
 
                                 
@@ -977,14 +978,14 @@
 
 
                               <ng-container matColumnDef="sumassured">
-                                <mat-header-cell *matHeaderCellDef style="flex: 0 0 25%;"> Sum Assured</mat-header-cell>
-                                <mat-cell *matCellDef="let element" style="flex: 0 0 25%;"> {{element.sumassured}}
+                                <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;display: flex; justify-content: flex-end;"> Sum Assured (Rs.)</mat-header-cell>
+                                <mat-cell *matCellDef="let element" style="flex: 0 0 20%;display: flex; justify-content: flex-end;"> {{element.sumassured.toLocaleString()}}
                                 </mat-cell>
                               </ng-container>
 
                               <ng-container matColumnDef="premium">
-                                <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;"> Premium </mat-header-cell>
-                                <mat-cell *matCellDef="let element" style="flex: 0 0 20%;"> {{element.premium}}
+                                <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;display: flex; justify-content: flex-end;"> Premium (Rs.)</mat-header-cell>
+                                <mat-cell *matCellDef="let element" style="flex: 0 0 20%;display: flex; justify-content: flex-end;"> {{element.premium.toLocaleString()}}
                                 </mat-cell>
                               </ng-container>
 
@@ -1019,14 +1020,14 @@
 
 
                               <ng-container matColumnDef="sumassured">
-                                <mat-header-cell *matHeaderCellDef style="flex: 0 0 25%;"> Sum Assured</mat-header-cell>
-                                <mat-cell *matCellDef="let element" style="flex: 0 0 25%;"> {{element.sumassured}}
+                                <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;display: flex; justify-content: flex-end;"> Sum Assured (Rs.)</mat-header-cell>
+                                <mat-cell *matCellDef="let element" style="flex: 0 0 20%;display: flex; justify-content: flex-end;"> {{element.sumassured.toLocaleString()}}
                                 </mat-cell>
                               </ng-container>
 
                               <ng-container matColumnDef="premium">
-                                <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;"> Premium </mat-header-cell>
-                                <mat-cell *matCellDef="let element" style="flex: 0 0 20%;"> {{element.premium}}
+                                <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;display: flex; justify-content: flex-end;"> Premium (Rs.)</mat-header-cell>
+                                <mat-cell *matCellDef="let element" style="flex: 0 0 20%;display: flex; justify-content: flex-end;"> {{element.premium.toLocaleString()}}
                                 </mat-cell>
                               </ng-container>
 
@@ -1038,7 +1039,7 @@
                           <mat-step [stepControl]="firstFormGroup">
                             <ng-template matStepLabel>SCHEDULE</ng-template>
 
-                            <mat-table [dataSource]="sheduleArray" class="mat-elevation-z8" *ngIf="productCode == 'DTA' || productCode == 'DTAPL'">
+                            <mat-table [dataSource]="sheduleArray" class="mat-elevation-z8" *ngIf="productCode == 'DTA' || productCode == 'DTAPL'" style="overflow: auto;">
 
                               <ng-container matColumnDef="policyYear">
                                 <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Policy Year </mat-header-cell>
@@ -1073,7 +1074,7 @@
 
                               <ng-container matColumnDef="premium">
                                 <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Premium </mat-header-cell>
-                                <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.premium}}
+                                <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.premium.toLocaleString()}}
                                 </mat-cell>
                               </ng-container>
 
@@ -1081,7 +1082,7 @@
                               <mat-row *matRowDef="let row; columns: displayedColumnsShedule;"></mat-row>
                             </mat-table>
 
-                            <mat-table [dataSource]="sheduleArray" class="mat-elevation-z8" *ngIf="productCode == 'ARP'">
+                            <mat-table [dataSource]="sheduleArray" class="mat-elevation-z8" *ngIf="productCode == 'ARP'" style="overflow: auto;">
 
                               <ng-container matColumnDef="polyer">
                                 <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Policy Year </mat-header-cell>
@@ -1110,7 +1111,7 @@
 
                               <ng-container matColumnDef="isumas">
                                 <mat-header-cell *matHeaderCellDef style="flex: 0 0 16%;"> Inc:Sum:Assu </mat-header-cell>
-                                <mat-cell *matCellDef="let element" style="flex: 0 0 16%;"> {{element.isumas}} </mat-cell>
+                                <mat-cell *matCellDef="let element" style="flex: 0 0 16%;"> {{element.isumas.toLocaleString()}} </mat-cell>
                               </ng-container>
 
                               <ng-container matColumnDef="paidup">
@@ -1127,7 +1128,7 @@
                               <mat-row *matRowDef="let row; columns: displayedColumnsShedule;"></mat-row>
                             </mat-table>
 
-                            <mat-table [dataSource]="sheduleArray" class="mat-elevation-z8" *ngIf="productCode == 'ARTM'">
+                            <mat-table [dataSource]="sheduleArray" class="mat-elevation-z8" *ngIf="productCode == 'ARTM'" style="overflow: auto;">
 
                               <ng-container matColumnDef="polyer">
                                 <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Policy Year </mat-header-cell>
@@ -1136,14 +1137,14 @@
 
 
                               <ng-container matColumnDef="month">
-                                <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Month </mat-header-cell>
-                                <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.month}} </mat-cell>
+                                <mat-header-cell *matHeaderCellDef style="flex: 0 0 5%;"> Month </mat-header-cell>
+                                <mat-cell *matCellDef="let element" style="flex: 0 0 5%;"> {{element.month}} </mat-cell>
                               </ng-container>
 
 
                               <ng-container matColumnDef="contribution">
                                 <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Contribution </mat-header-cell>
-                                <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.contribution}}
+                                <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.contribution.toLocaleString()}}
                                 </mat-cell>
                               </ng-container>
 
@@ -1151,49 +1152,49 @@
                               <ng-container matColumnDef="fndBeforeInt">
                                 <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Fund Balance <br> Before
                                   Interest </mat-header-cell>
-                                <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.fndBeforeInt}}
+                                <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.fndBeforeInt.toLocaleString()}}
                                 </mat-cell>
                               </ng-container>
 
                               <ng-container matColumnDef="intRat1">
                                 <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Assumed Annual<br> Dividend
                                   <br> rate of 7% </mat-header-cell>
-                                <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.intRat1}}
+                                <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.intRat1.toLocaleString()}}
                                 </mat-cell>
                               </ng-container>
 
                               <ng-container matColumnDef="clsFnd1">
                                 <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Closing Fund <br> Balance <br>
                                   rate of 7% </mat-header-cell>
-                                <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.clsFnd1}}
+                                <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.clsFnd1.toLocaleString()}}
                                 </mat-cell>
                               </ng-container>
 
                               <ng-container matColumnDef="intRat2">
                                 <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Assumed Annual <br> Dividend
                                   <br>rate of 8% </mat-header-cell>
-                                <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.intRat2}}
+                                <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.intRat2.toLocaleString()}}
                                 </mat-cell>
                               </ng-container>
 
                               <ng-container matColumnDef="clsFnd2">
                                 <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Closing Fund<br> Balance <br>rate
                                   of 8% </mat-header-cell>
-                                <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.clsFnd2}}
+                                <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.clsFnd2.toLocaleString()}}
                                 </mat-cell>
                               </ng-container>
 
                               <ng-container matColumnDef="intRat3">
                                 <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Assumed Annual<br> Dividend
                                   <br>rate of 9% </mat-header-cell>
-                                <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.intRat3}}
+                                <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.intRat3.toLocaleString()}}
                                 </mat-cell>
                               </ng-container>
 
                               <ng-container matColumnDef="clsFnd3">
-                                <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Closing Fund<br> Balance <br>rate
+                                <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> Closing Fund<br> Balance <br>rate
                                   of 9% </mat-header-cell>
-                                <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.clsFnd3}}
+                                <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.clsFnd3.toLocaleString()}}
                                 </mat-cell>
                               </ng-container>
 
@@ -1208,7 +1209,7 @@
                               <div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%"
                             fxLayoutAlign="center" >
                                 <div fxFlex="50">
-                                  <mat-table [dataSource]="medicalReqArray" class="mat-elevation-z8">
+                                  <mat-table [dataSource]="medicalReqArray" class="mat-elevation-z8" >
 
                                     <ng-container matColumnDef="mediCode">
                                       <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;"> mediCode </mat-header-cell>
@@ -1295,16 +1296,11 @@
                   fxLayoutAlign="center" [ngClass]="{'disabled': loading7 == true}">
 
                   <div fxFlex="80">
-                    <mat-card style="margin-bottom: 10px;height: 420px;max-height: 430px;overflow-x: auto;">
-                      <mat-horizontal-stepper [linear]="true" #stepper>
-                        <mat-step [stepControl]="firstFormGroup">
-                          <ng-template matStepLabel>Details Of Nominee</ng-template>
-
-                          <mat-table [dataSource]="nomineeArray" class="mat-elevation-z8">
+                          <mat-table style="height: 469px; margin-left: -20px; overflow: auto;" [dataSource]="nomineeArray" class="mat-elevation-z8">
 
                             <ng-container matColumnDef="type">
-                              <mat-header-cell *matHeaderCellDef style="flex: 0 0 5%;"> Type </mat-header-cell>
-                              <mat-cell *matCellDef="let element" style="flex: 0 0 5%;"> {{element.type}} </mat-cell>
+                              <mat-header-cell *matHeaderCellDef style="flex: 0 0 7%;"> Type </mat-header-cell>
+                              <mat-cell *matCellDef="let element" style="flex: 0 0 7%;"> {{element.type}} </mat-cell>
                             </ng-container>
 
 
@@ -1315,20 +1311,20 @@
 
 
                             <ng-container matColumnDef="relationship">
-                              <mat-header-cell *matHeaderCellDef style="flex: 0 0 5%;"> Relat<br>ion<br>Ship </mat-header-cell>
-                              <mat-cell *matCellDef="let element" style="flex: 0 0 5%;"> {{element.relationship}}
+                              <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Relat<br>ion<br>Ship </mat-header-cell>
+                              <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.relationship}}
                               </mat-cell>
                             </ng-container>
 
 
                             <ng-container matColumnDef="nic">
-                              <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Nic </mat-header-cell>
-                              <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.nic}} </mat-cell>
+                              <mat-header-cell *matHeaderCellDef style="flex: 0 0 12%;"> Nic </mat-header-cell>
+                              <mat-cell *matCellDef="let element" style="flex: 0 0 12%;"> {{element.nic}} </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="dob">
-                              <mat-header-cell *matHeaderCellDef style="flex: 0 0 7%;"> Date Of<br> Birth </mat-header-cell>
-                              <mat-cell *matCellDef="let element" style="flex: 0 0 7%;"> {{element.NomineeDateofBirth}}
+                              <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> Date Of<br> Birth </mat-header-cell>
+                              <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.NomineeDateofBirth}}
                               </mat-cell>
                             </ng-container>
 
@@ -1345,14 +1341,14 @@
                             </ng-container>
 
                             <ng-container matColumnDef="guardianNic">
-                              <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Guard<br> Nic </mat-header-cell>
-                              <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.guardianNic}}
+                              <mat-header-cell *matHeaderCellDef style="flex: 0 0 12%;"> Guard<br> Nic </mat-header-cell>
+                              <mat-cell *matCellDef="let element" style="flex: 0 0 12%;"> {{element.guardianNic}}
                               </mat-cell>
                             </ng-container>
 
                             <ng-container matColumnDef="guardianDOB">
-                              <mat-header-cell *matHeaderCellDef style="flex: 0 0 7%;"> Guard <br> DOB </mat-header-cell>
-                              <mat-cell *matCellDef="let element" style="flex: 0 0 7%;"> {{element.guardianDOB}}
+                              <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> Guard <br> DOB </mat-header-cell>
+                              <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.guardianDOB}}
                               </mat-cell>
                             </ng-container>
 
@@ -1366,14 +1362,10 @@
                             <mat-header-row *matHeaderRowDef="displayedColumnsNominee"></mat-header-row>
                             <mat-row *matRowDef="let row; columns: displayedColumnsNominee;" (dblclick)="loadNomineeData(row)"></mat-row>
                           </mat-table>
-                        </mat-step>
-
-                      </mat-horizontal-stepper>
-                    </mat-card>
                   </div>
 
                   <div fxFlex="20">
-                    <mat-card style="margin-bottom: 10px;height: 420px;max-height: 430px;overflow-x: auto;">
+                    <mat-card style="margin-bottom: 10px;height: 420px; margin-right: -19px; max-height: 430px;overflow-x: auto;">
                       <form class="branch-uw-form" [formGroup]="branchUWNomineeForm">
                         <mat-form-field style="width: 80px;">
                           <mat-select placeholder="Type" aria-label="Type" formControlName="type" [disabled]="true">
@@ -1552,9 +1544,9 @@
 
             <div>
               <button mat-raised-button matStepperPrevious color="warn" style="margin: 10px;">Back</button>
-              <button mat-raised-button (click)="stepper.reset()" color="primary" style="margin: 10px;">Reset</button>
+              <button mat-raised-button (click)="resetForms()" color="primary" style="margin: 10px;">Reset</button>
               <button mat-raised-button (click)="saveUnderwrite()" color="primary" style="float: right;margin: 10px;">Save</button>
-              <mat-checkbox [(ngModel)]="approve" color="primary" style="float: right;margin-top: 10px;">Send To
+              <mat-checkbox [(ngModel)]="approve" color="primary" style="float: right;margin-top: 10px;" (click)="isSendToHO()">Send To
                 Head Office</mat-checkbox>
             </div>
           </mat-step>
