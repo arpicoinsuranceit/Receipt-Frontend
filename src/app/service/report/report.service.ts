@@ -8,7 +8,7 @@ export class ReportService {
 
   constructor(private http:Http) { }
 
-  receiptRegisterReport(fromDate:string,toDate:string,token:string){
+  receiptRegisterReport(fromDate:any,toDate:any,token:string){
     let resp = 'http://localhost:8088/report/receiptRegister/' + fromDate + "/" + toDate + "/" +token;
     let respArr: Array<string> = resp.split("/");
     let url = "http://localhost:8088/report/receiptRegister";
@@ -25,7 +25,7 @@ export class ReportService {
 
   }
 
-  lapsedSummeryReport(fromDate:string,toDate:string,branch:string){
+  lapsedSummeryReport(fromDate:any,toDate:any,branch:string){
     let resp = 'http://localhost:8088/report/lapsedSummery/' + fromDate + "/" + toDate + "/" +branch;
     let respArr: Array<string> = resp.split("/");
     let url = "http://localhost:8088/report/lapsedSummery";

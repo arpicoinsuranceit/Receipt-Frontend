@@ -49,6 +49,9 @@ export class LapsedSummeryReportComponent implements OnInit {
     if(this.lapsedSumForm.get("fromDate").value != "" && this.lapsedSumForm.get("toDate").value != "" && this.lapsedSumForm.get("branch").value != "" ){
       this.loading_report=true;
 
+      let fromDate:Date=new Date(this.lapsedSumForm.get("fromDate").value);
+      let toDate:Date=new Date(this.lapsedSumForm.get("toDate").value);
+
       let branches:string="";
 
       if(this.lapsedSumForm.get("branch").value == "ALL"){
@@ -61,7 +64,7 @@ export class LapsedSummeryReportComponent implements OnInit {
 
       console.log(branches);
 
-      this.reportService.lapsedSummeryReport(this.lapsedSumForm.get("fromDate").value,this.lapsedSumForm.get("toDate").value,
+      this.reportService.lapsedSummeryReport(fromDate,toDate,
       branches).subscribe(response =>{
         var fileURL = URL.createObjectURL(response);
         window.open(fileURL); // if you want to open it in new tab
