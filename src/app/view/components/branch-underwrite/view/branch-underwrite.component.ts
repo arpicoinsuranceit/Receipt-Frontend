@@ -748,7 +748,7 @@ export class BranchUnderwriteComponent implements OnInit {
           //load plan details
 
           this._term = response.json()._plan._term;
-          this._payingterm = response.json()._plan._term;
+          this._payingterm = response.json()._plan._payingterm;
           this.pensionPaingTerm = response.json()._plan.pensionPaingTerm;
           this._msfb = response.json()._plan._msfb;
           this._frequance = response.json()._plan._frequance;
