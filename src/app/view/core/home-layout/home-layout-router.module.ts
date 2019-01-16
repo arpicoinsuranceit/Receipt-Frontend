@@ -55,6 +55,10 @@ const routes: Routes = [
         loadChildren : "app/view/components/receipt-inquiry/receipt-inquiry.module#ReceiptInquiryModule"
       },
       {
+        path: 'agentinquiry',
+        loadChildren : "app/view/components/agent-inquiry/agent-inquiry.module#AgentInquiryModule"
+      },
+      {
         path: 'receiptcancelation',
         loadChildren : "app/view/components/receipt-cancelation/receipt-cancelation.module#ReceiptCancelationModule"
       },
@@ -77,6 +81,10 @@ const routes: Routes = [
       {
         path: 'report',
         loadChildren : "app/view/components/report/report.module#ReportModule"
+      },
+      {
+        path: 'changepassword',
+        loadChildren : "app/view/components/change-password/change-password.module#ChangePasswordModule"
       }
     ]
   }

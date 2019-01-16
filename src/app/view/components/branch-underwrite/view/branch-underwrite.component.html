@@ -219,10 +219,20 @@
                                   [(uppercase)]='_Name' [(ngModel)]="_Name" (blur)="setInsureInitialName()">
                               </mat-form-field>
                             </td>
-                            <td>
+                          </tr>
+                        </table>
+                        <table class="full-width" cellspacing="0">
+                          <tr>
+                            <td style="padding-right: 20px;">
                               <mat-form-field class="full-width">
                                 <input matInput placeholder="Name With Initials" aria-label="Name With Initials"
                                   formControlName="initialNameInsured" [(uppercase)]='_initName' [(ngModel)]="_initName">
+                              </mat-form-field>
+                            </td>
+                            <td >
+                              <mat-form-field class="full-width">
+                                <input matInput placeholder="Address1" aria-label="Address1" formControlName="address1"
+                                  [(uppercase)]='_Address1' [(ngModel)]="_Address1">
                               </mat-form-field>
                             </td>
                           </tr>
@@ -231,20 +241,10 @@
                           <tr>
                             <td style="padding-right: 20px;">
                               <mat-form-field class="full-width">
-                                <input matInput placeholder="Address1" aria-label="Address1" formControlName="address1"
-                                  [(uppercase)]='_Address1' [(ngModel)]="_Address1">
-                              </mat-form-field>
-                            </td>
-                            <td>
-                              <mat-form-field class="full-width">
                                 <input matInput placeholder="Address2" aria-label="Address2" formControlName="address2"
                                   [(uppercase)]='_Address2' [(ngModel)]="_Address2">
                               </mat-form-field>
                             </td>
-                          </tr>
-                        </table>
-                        <table class="full-width" cellspacing="0">
-                          <tr>
                             <td>
                               <mat-form-field class="full-width">
                                 <input matInput placeholder="Address3" aria-label="Address3" formControlName="address3"
@@ -253,6 +253,16 @@
                             </td>
                           </tr>
                         </table>
+                        <!-- <table class="full-width" cellspacing="0">
+                          <tr>
+                            <td>
+                              <mat-form-field class="full-width">
+                                <input matInput placeholder="Address3" aria-label="Address3" formControlName="address3"
+                                  [(uppercase)]='_Address3' [(ngModel)]="_Address3">
+                              </mat-form-field>
+                            </td>
+                          </tr>
+                        </table> -->
                         <table class="full-width" cellspacing="0">
                           <tr>
                             <td style="padding-right: 20px;">
