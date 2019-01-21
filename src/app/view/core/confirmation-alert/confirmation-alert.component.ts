@@ -33,7 +33,7 @@ export class ConfirmationAlertComponent implements OnInit {
 
   noConfirmation(){
     this.choise="no";
-    this.dialogRef.close({result:this.choise,method: this.method,couType:this.couType});
+    this.dialogRef.close({result:this.choise,method: 0,couType:this.couType});
   }
 
 }

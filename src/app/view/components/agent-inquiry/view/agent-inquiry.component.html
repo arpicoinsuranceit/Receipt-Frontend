@@ -1,3 +1,666 @@
-<p>
-  agent-inquiry works!
-</p>
+<div [hidden]="!loading" class="loader">
+  <h5>Loading...</h5>
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+<div [ngClass]="{'disabled': loading == true }" class="container" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
+  fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+  <div fxFlex="100%">
+    <mat-card class="main-card sk-style-mat-card ">
+
+      <mat-card-header style=" display: flex; 
+      justify-content: space-between; margin-top: -23px; margin-left: -13px;">
+        <mat-card-title>
+          <h3>AGENT INQUIRY</h3>
+        </mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content>
+        <mat-horizontal-stepper [linear]="isLinear" #stepper>
+          <mat-step>
+              <mat-card>
+                <mat-card-content style="max-height: 400px;overflow-x: auto;">
+                  <ng-template matStepLabel>Find</ng-template>
+
+                  <div fxFlex="100%" style="margin-bottom: 10px;max-height: 430px;overflow-x: auto;" [ngClass]="{'disabled': loading1 == true}">
+                    <div [hidden]="!loading1" class="loader">
+                      <h5>Loading...</h5>
+                      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                    </div>
+                    <mat-form-field style="width: 100%;">
+                      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
+                    </mat-form-field>
+                    
+                    <mat-table [dataSource]="datasourceAgent" class="mat-elevation-z8" style="padding: 20px;">
+                      <ng-container matColumnDef="agncod">
+                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 5%;"> Agn. Code </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="flex: 0 0 5%;"> {{element.agncod}} </mat-cell>
+                      </ng-container>
+
+
+                      <ng-container matColumnDef="agnnam">
+                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;"> Agn. Name </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="flex: 0 0 20%;"> {{element.agnnam}} </mat-cell>
+                      </ng-container>
+
+
+                      <ng-container matColumnDef="agnnic">
+                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> Agn. Nic </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.agnnic}} </mat-cell>
+                      </ng-container>
+
+
+                      <ng-container matColumnDef="agnsta">
+                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Status </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.agnsta}} </mat-cell>
+                      </ng-container>
+
+                      <ng-container matColumnDef="sliirg">
+                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> SLII No </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.sliirg}} </mat-cell>
+                      </ng-container>
+
+                      <ng-container matColumnDef="supvid">
+                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Sup. Code </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.supvid}} </mat-cell>
+                      </ng-container>
+
+                      <ng-container matColumnDef="subdcd">
+                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Designation </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.subdcd}} </mat-cell>
+                      </ng-container>
+
+                      <ng-container matColumnDef="agndob">
+                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> DOB </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.agndob | date : 'dd-MM-yyyy'}} </mat-cell>
+                      </ng-container>
+
+                      <ng-container matColumnDef="agnrdt">
+                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> App. Date </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.agnrdt | date : 'dd-MM-yyyy'}} </mat-cell>
+                      </ng-container>
+
+                      <mat-header-row *matHeaderRowDef="displayColumnAgent"></mat-header-row>
+                      <mat-row *matRowDef="let row; columns: displayColumnAgent;" (dblclick)="loadData(row)"></mat-row>
+                    </mat-table>
+
+                  </div>
+                </mat-card-content>
+                <mat-card-actions style="border-top: solid #C4C4C4 1px; display: flex; 
+                                              justify-content: space-between;">
+                  <mat-paginator [pageSizeOptions]="[5, 10, 25 , 50, 100]" (page)="loadNextData();"
+                    showFirstLastButtons></mat-paginator>
+
+                  <button mat-raised-button matStepperNext matTooltip="Go to Details " color="primary" style="float: right;margin-top: 10px;">Next</button>
+                </mat-card-actions>
+              </mat-card>
+          </mat-step>
+
+          <mat-step>
+              <mat-card>
+                <mat-card-content style="max-height: 400px;overflow-x: auto;">
+                  <ng-template matStepLabel>Details</ng-template>
+
+                  <div fxFlex="100%" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
+                  fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center" style="margin-bottom: 10px;max-height: 400px;overflow-x: auto;" [ngClass]="{'disabled': loadingBankDet == true}">
+                  <div fxFlex="50%">
+                    <table>
+                      <tr>
+                        <th style="text-align: left;">Agent Code</th>
+                        <th>: {{agentInquiryDetails.Code}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">Branch Code</th>
+                        <th>: {{agentInquiryDetails.Branch}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">Branch Name</th>
+                        <th>: {{agentInquiryDetails.Branch}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">Region</th>
+                        <th>: {{agentInquiryDetails.Region}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">Zone</th>
+                        <th>: {{agentInquiryDetails.Zone}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">Title</th>
+                        <th>: {{agentInquiryDetails.Title}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">First Name</th>
+                        <th>: {{agentInquiryDetails.FName}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">Middle Name</th>
+                        <th>: {{agentInquiryDetails.MName}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">Last Name</th>
+                        <th>: {{agentInquiryDetails.LName}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">Short Name</th>
+                        <th>: {{agentInquiryDetails.SName}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">Status</th>
+                        <th>: {{agentInquiryDetails.Status}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">Gender</th>
+                        <th>: {{agentInquiryDetails.Sex}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">Date of Resign</th>
+                        <th>: {{agentInquiryDetails.Code}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">Remarks</th>
+                        <th>: {{agentInquiryDetails.Remarks}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">Grants Status</th>
+                        <th>: {{agentInquiryDetails.GrantStatus}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">ORC Remark</th>
+                        <th>: {{agentInquiryDetails.OrcRem}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">Designation</th>
+                        <th>: {{agentInquiryDetails.Designation}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">Appointment Date</th>
+                        <th>: {{agentInquiryDetails.AppoinmentDate}}</th>
+                      </tr>
+                    </table>
+
+                  </div>  
+                 
+                  <div fxFlex="50%">
+                    <table>
+                      <tr>
+                        <th style="text-align: left;">Supervised By</th>
+                        <th>: {{agentInquiryDetails.Supervisor}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">Supervisor Name</th>
+                        <th>: {{agentInquiryDetails.Supervisor}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">Print Name</th>
+                        <th>: {{agentInquiryDetails.AppoinmentDate}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">Misappropriate</th>
+                        <th>: {{agentInquiryDetails.Misappropiate}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">Misapp.Remark</th>
+                        <th>: {{agentInquiryDetails.MissappRem}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">Agent Nature</th>
+                        <th>: {{agentInquiryDetails.AgnNat}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">Nic No</th>
+                        <th>: {{agentInquiryDetails.Nic}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">Epf No</th>
+                        <th>: {{agentInquiryDetails.Epf}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">SLII REG No</th>
+                        <th>: {{agentInquiryDetails.SliiRegNo}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">Remark</th>
+                        <th>: {{agentInquiryDetails.Remark}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">Maritial Status</th>
+                        <th>: {{agentInquiryDetails.CivlStatus}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">Date Of Birth</th>
+                        <th>: {{agentInquiryDetails.Dob}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">ORC Status</th>
+                        <th>: {{agentInquiryDetails.OcrStatus}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">Type</th>
+                        <th>: {{agentInquiryDetails.Type}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">Sub Designation</th>
+                        <th>: {{agentInquiryDetails.SubDesignation}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">Entered By</th>
+                        <th>: {{agentInquiryDetails.AgnNat}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">Approved By</th>
+                        <th>: {{agentInquiryDetails.AgnNat}}</th>
+                      </tr>
+                    </table>
+                  </div>
+ 
+                  </div>
+                </mat-card-content>
+                <mat-card-actions style="border-top: solid #C4C4C4 1px; display: flex; 
+                                              justify-content: space-between;">
+                  <button mat-raised-button matStepperPrevious matTooltip="Go to Find" color="warn" style="margin-top: 10px;">Back</button>
+
+                  <button mat-raised-button matStepperNext matTooltip="Go to Contact Person" color="primary" style="float: right;margin-top: 10px;">Next</button>
+                </mat-card-actions>
+              </mat-card>
+          </mat-step>
+
+          <mat-step >
+              <mat-card>
+                <mat-card-content style="max-height: 400px;overflow-x: auto;">
+                  <ng-template matStepLabel>Contact<br> Person</ng-template>
+ 
+                  <div fxFlex="100%" style="margin-bottom: 10px;max-height: 400px;overflow-x: auto;">
+                  
+                    <table>
+                      <tr>
+                        <th style="text-align: left;">Contact Person</th>
+                        <th>: {{agentInquiryDetails.ContactPerson}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">TEL. Office</th>
+                        <th>: {{agentInquiryDetails.ContactTelOffice}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">Telex</th>
+                        <th>: {{agentInquiryDetails.ContactTelx}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">TEL. Residence</th>
+                        <th>: {{agentInquiryDetails.ContactTelRecidence}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">Fax</th>
+                        <th>: {{agentInquiryDetails.ContactFax}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">Mobile</th>
+                        <th>: {{agentInquiryDetails.ContactMobile}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">E-mail</th>
+                        <th>: {{agentInquiryDetails.ContactEMail}}</th>
+                      </tr>
+                    </table>
+
+                  </div>
+                </mat-card-content>
+                <mat-card-actions style="border-top: solid #C4C4C4 1px; display: flex; 
+                                              justify-content: space-between;">
+                  <button mat-raised-button matStepperPrevious matTooltip="Go to Details" color="warn" style="margin-top: 10px;">Back</button>
+
+                  <button mat-raised-button matStepperNext matTooltip="Go to Address Details" color="primary" style="float: right;margin-top: 10px;">Next</button>
+                </mat-card-actions>
+              </mat-card>
+
+          </mat-step>
+
+          <mat-step>
+              <mat-card>
+                <mat-card-content style="max-height: 380px;overflow-x: auto;">
+                  <ng-template matStepLabel>Address<br>Details</ng-template>
+                  <div fxFlex="100%" style="margin-bottom: 10px;max-height: 430px;overflow-x: auto;">
+                    <table>
+                      <tr>
+                        <th style="text-align: left;">Address 1</th>
+                        <th>: {{agentInquiryDetails.Address1}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">Address 2</th>
+                        <th>: {{agentInquiryDetails.Address2}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">City</th>
+                        <th>: {{agentInquiryDetails.City}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">TEL. Office</th>
+                        <th>: {{agentInquiryDetails.TelOffice}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">Telex</th>
+                        <th>: {{agentInquiryDetails.TelX}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">TEL. Residence</th>
+                        <th>: {{agentInquiryDetails.TelRecidence}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">Fax</th>
+                        <th>: {{agentInquiryDetails.Fax}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">Mobile</th>
+                        <th>: {{agentInquiryDetails.Mobile}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">E-mail</th>
+                        <th>: {{agentInquiryDetails.Email}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">Website</th>
+                        <th>: {{agentInquiryDetails.Web}}</th>
+                      </tr>
+                      <tr>
+                        <th style="text-align: left;">Effective Date</th>
+                        <th>: {{agentInquiryDetails.EfficenciveDate}}</th>
+                      </tr>
+                    </table>
+
+                  </div>
+                </mat-card-content>
+                <mat-card-actions style="border-top: solid #C4C4C4 1px; display: flex; 
+                                              justify-content: space-between;">
+                  <button mat-raised-button matStepperPrevious matTooltip="Go to Contact Person" color="warn" style="margin-top: 10px;">Back</button>
+
+                  <button mat-raised-button matStepperNext matTooltip="Go to Settlement Details" color="primary" style="float: right;margin-top: 10px;">Next</button>
+                </mat-card-actions>
+              </mat-card>
+
+          </mat-step>
+
+          <mat-step>
+              <mat-card>
+                <mat-card-content style="max-height: 400px;overflow-x: auto;">
+                  <ng-template matStepLabel>Settlement<br> Details</ng-template>
+                  <div fxFlex="100%" style="margin-bottom: 10px;max-height: 400px;overflow-x: auto;">
+                    <mat-table [dataSource]="datasourceSettlement" class="mat-elevation-z8" style="padding: 20px;">
+                      <ng-container matColumnDef="type">
+                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 5%;"> Type </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="flex: 0 0 5%;"> {{element.type}} </mat-cell>
+                      </ng-container>
+
+                      <ng-container matColumnDef="bank">
+                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;"> Bank </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="flex: 0 0 20%;"> {{element.bank}} </mat-cell>
+                      </ng-container>
+
+                      <ng-container matColumnDef="branch">
+                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> Branch </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.branch}} </mat-cell>
+                      </ng-container>
+
+                      <ng-container matColumnDef="account">
+                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 25%;"> Account </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="flex: 0 0 25%;"> {{element.account}} </mat-cell>
+                      </ng-container>
+
+                      <ng-container matColumnDef="fromDate">
+                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> From Date </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.fromDate | date : 'dd-MM-yyyy'}} </mat-cell>
+                      </ng-container>
+
+                      <ng-container matColumnDef="toDate">
+                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> To Date </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.toDate | date : 'dd-MM-yyyy'}} </mat-cell>
+                      </ng-container>
+
+                      <mat-header-row *matHeaderRowDef="displayColumnSettlement"></mat-header-row>
+                      <mat-row *matRowDef="let row; columns: displayColumnSettlement;"></mat-row>
+                    </mat-table>
+
+                  </div>
+                </mat-card-content>
+                <mat-card-actions style="border-top: solid #C4C4C4 1px; display: flex; 
+                                              justify-content: space-between;">
+                  <button mat-raised-button matStepperPrevious matTooltip="Go to Address Details" color="warn" style="margin-top: 10px;">Back</button>
+                  <button mat-raised-button matStepperNext matTooltip="Go to Targets" color="primary" style="float: right;margin-top: 10px;">Next</button>
+                </mat-card-actions>
+              </mat-card>
+
+          </mat-step>
+
+          <mat-step>
+              <mat-card>
+                <mat-card-content style="max-height: 400px;overflow-x: auto;">
+                  <ng-template matStepLabel>Targets</ng-template>
+                  <div fxFlex="100%" style="margin-bottom: 10px;max-height: 400px;overflow-x: auto;">
+                    <mat-table [dataSource]="datasourceTarget" class="mat-elevation-z8" style="padding: 20px;">
+                      <ng-container matColumnDef="month">
+                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 5%;"> Month </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="flex: 0 0 5%;"> {{element.month}} </mat-cell>
+                      </ng-container>
+
+                      <ng-container matColumnDef="targetAmount">
+                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;"> Target Amount </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="flex: 0 0 20%;"> {{element.targetAmount}} </mat-cell>
+                      </ng-container>
+
+                      <ng-container matColumnDef="premium">
+                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> Premium </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.premium}} </mat-cell>
+                      </ng-container>
+
+                      <ng-container matColumnDef="orRate">
+                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 25%;"> OR Rate </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="flex: 0 0 25%;"> {{element.orRate}} </mat-cell>
+                      </ng-container>
+
+                      <ng-container matColumnDef="cfAmount">
+                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> C/F Amount </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.cfAmount}} </mat-cell>
+                      </ng-container>
+
+                      <ng-container matColumnDef="achAmount">
+                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> Ach. Amount </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.achAmount}} </mat-cell>
+                      </ng-container>
+
+                      <mat-header-row *matHeaderRowDef="displayColumnTarget"></mat-header-row>
+                      <mat-row *matRowDef="let row; columns: displayColumnTarget;"></mat-row>
+                    </mat-table>
+
+                  </div>
+                </mat-card-content>
+                <mat-card-actions style="border-top: solid #C4C4C4 1px; display: flex; 
+                                            justify-content: space-between;">
+                  <button mat-raised-button matStepperPrevious matTooltip="Go to Settlement Details" color="warn" style="margin-top: 10px;">Back</button>
+                  <button mat-raised-button matStepperNext matTooltip="Go to Hierarchy" color="primary" style="float: right;margin-top: 10px;">Next</button>
+                </mat-card-actions>
+              </mat-card>
+          </mat-step>
+
+          <mat-step>
+              <mat-card>
+                <mat-card-content style="max-height: 400px;overflow-x: auto;">
+                  <ng-template matStepLabel>Hierarchy</ng-template>
+                  <div fxFlex="100%" style="margin-bottom: 10px;max-height: 400px;overflow-x: auto;">
+                    <mat-tab-group>
+                      <mat-tab label="Hierarchy Transfer">
+                        <mat-table [dataSource]="datasourceHierarchy" class="mat-elevation-z8" style="padding: 20px;">
+                          <ng-container matColumnDef="masterSalesC">
+                            <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> Master Sales C </mat-header-cell>
+                            <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.masterSalesC}} </mat-cell>
+                          </ng-container>
+    
+                          <ng-container matColumnDef="name">
+                            <mat-header-cell *matHeaderCellDef style="flex: 0 0 40%;"> Name </mat-header-cell>
+                            <mat-cell *matCellDef="let element" style="flex: 0 0 40%;"> {{element.name}} </mat-cell>
+                          </ng-container>
+    
+                          <ng-container matColumnDef="cls">
+                            <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> Class </mat-header-cell>
+                            <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.cls}} </mat-cell>
+                          </ng-container>
+    
+                          <ng-container matColumnDef="from">
+                            <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> From </mat-header-cell>
+                            <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.from}} </mat-cell>
+                          </ng-container>
+    
+                          <ng-container matColumnDef="to">
+                            <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> To </mat-header-cell>
+                            <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.to}} </mat-cell>
+                          </ng-container>
+    
+                          <mat-header-row *matHeaderRowDef="displayColumnHierarchy"></mat-header-row>
+                          <mat-row *matRowDef="let row; columns: displayColumnHierarchy;"></mat-row>
+                        </mat-table>
+    
+                      </mat-tab>
+                      <mat-tab label="Designation">
+                        <mat-table [dataSource]="datasourceDesignation" class="mat-elevation-z8" style="padding: 20px;">
+                          <ng-container matColumnDef="desCode">
+                            <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> Des Code </mat-header-cell>
+                            <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.desCode}} </mat-cell>
+                          </ng-container>
+    
+                          <ng-container matColumnDef="name">
+                            <mat-header-cell *matHeaderCellDef style="flex: 0 0 40%;"> Name </mat-header-cell>
+                            <mat-cell *matCellDef="let element" style="flex: 0 0 40%;"> {{element.name}} </mat-cell>
+                          </ng-container>
+    
+                          <ng-container matColumnDef="from">
+                            <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> From </mat-header-cell>
+                            <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.from}} </mat-cell>
+                          </ng-container>
+    
+                          <ng-container matColumnDef="to">
+                            <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> To </mat-header-cell>
+                            <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.to}} </mat-cell>
+                          </ng-container>
+    
+                          <mat-header-row *matHeaderRowDef="displayColumnDesignation"></mat-header-row>
+                          <mat-row *matRowDef="let row; columns: displayColumnDesignation;"></mat-row>
+                        </mat-table>
+    
+                      </mat-tab>
+                    </mat-tab-group>
+                  </div>
+                </mat-card-content>
+                <mat-card-actions style="border-top: solid #C4C4C4 1px; display: flex; 
+                                          justify-content: space-between;">
+                  <button mat-raised-button matStepperPrevious matTooltip="Go to Targets" color="warn" style="margin-top: 10px;">Back</button>
+                  <button mat-raised-button matStepperNext matTooltip="Go to Letters" color="primary" style="float: right;margin-top: 10px;">Next</button>
+                </mat-card-actions>
+              </mat-card>
+
+          </mat-step>
+
+          <mat-step>
+              <mat-card>
+                <mat-card-content style="max-height: 400px;overflow-x: auto;">
+                  <ng-template matStepLabel>Letters</ng-template>
+                  <div fxFlex="100%" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
+                    fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center" style="margin-bottom: 10px;max-height: 400px;overflow-x: auto;" [ngClass]="{'disabled': loadingBankDet == true}">
+                    <div fxFlex="30%">
+                      <table>
+                        <tr>
+                          <th style="text-align: left;">Agengy Agreement</th>
+                          <th>: aaaaaa</th>
+                        </tr>
+                        <tr>
+                          <th style="text-align: left;">Inc.Supp.Agreement</th>
+                          <th>: aaaaaa</th>
+                        </tr>
+                        <tr>
+                          <th style="text-align: left;">Travel Allowance</th>
+                          <th>: aaaaaa</th>
+                        </tr>
+                      </table>
+                    </div>
+                    <div fxFlex="30%">
+                      <table>
+                        <tr>
+                          <th style="text-align: left;">Issued Date</th>
+                          <th>: aaaaaa</th>
+                        </tr>
+                        <tr>
+                          <th style="text-align: left;">Issued Date</th>
+                          <th>: aaaaaa</th>
+                        </tr>
+                        <tr>
+                          <th style="text-align: left;">Issued Date</th>
+                          <th>: aaaaaa</th>
+                        </tr>
+                      </table>
+                    </div>
+                    <div fxFlex="30%">
+                      <table>
+                        <tr>
+                          <th style="text-align: left;">Accepted Date</th>
+                          <th>: aaaaaa</th>
+                        </tr>
+                        <tr>
+                          <th style="text-align: left;">Accepted Date</th>
+                          <th>: aaaaaa</th>
+                        </tr>
+                        <tr>
+                          <th style="text-align: left;">Accepted Date</th>
+                          <th>: aaaaaa</th>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                </mat-card-content>
+                <mat-card-actions style="border-top: solid #C4C4C4 1px; display: flex; 
+                                        justify-content: space-between;">
+                  <button mat-raised-button matStepperPrevious matTooltip="Go to Hierarchy" color="warn" style="margin-top: 10px;">Back</button>
+                  <button mat-raised-button matStepperNext matTooltip="Go to Education" color="primary" style="float: right;margin-top: 10px;">Next</button>
+                </mat-card-actions>
+              </mat-card>
+
+          </mat-step>
+
+          <mat-step>
+              <mat-card>
+                <mat-card-content style="max-height: 400px;overflow-x: auto;">
+                  <ng-template matStepLabel>Education</ng-template>
+                  <div fxFlex="100%" style="margin-bottom: 10px;max-height: 400px;overflow-x: auto;">
+                    <mat-table [dataSource]="datasourceEducation" class="mat-elevation-z8" style="padding: 20px;">
+                      <ng-container matColumnDef="qualification">
+                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> Qualification </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.qualification}} </mat-cell>
+                      </ng-container>
+
+                      <ng-container matColumnDef="year">
+                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 40%;"> Year </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="flex: 0 0 40%;"> {{element.year}} </mat-cell>
+                      </ng-container>
+
+                      <ng-container matColumnDef="grade">
+                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Grade </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.grade}} </mat-cell>
+                      </ng-container>
+
+                      <mat-header-row *matHeaderRowDef="displayColumnEducation"></mat-header-row>
+                      <mat-row *matRowDef="let row; columns: displayColumnEducation;"></mat-row>
+                    </mat-table>
+
+                  </div>
+                </mat-card-content>
+                <mat-card-actions style="border-top: solid #C4C4C4 1px; display: flex; 
+                                      justify-content: space-between;">
+                  <button mat-raised-button matStepperPrevious matTooltip="Go to Letters" color="warn" style="margin-top: 10px;">Back</button>
+                </mat-card-actions>
+              </mat-card>
+ 
+          </mat-step>
+
+        </mat-horizontal-stepper>
+      </mat-card-content>
+
+    </mat-card>
+
+  </div>
+
+</div>
