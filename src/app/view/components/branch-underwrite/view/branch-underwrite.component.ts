@@ -478,6 +478,10 @@ export class BranchUnderwriteComponent implements OnInit {
         if (response.json() == "204") {
           this.alert("Oopz...", "Nic not match with age and gender", "error","");
           this.branchUWInsureForm.get("nicInsured").setValue("");
+        }else{
+          this.commonService.loadAgeAndDOBFromNic(this.branchUWInsureForm.get("nicInsured").value).subscribe(response => {
+            this.branchUWInsureForm.get("dateOfBirth").setValue(response.json().DOB);
+          });
         }
       });
     }
@@ -490,6 +494,10 @@ export class BranchUnderwriteComponent implements OnInit {
         if (response.json() == "204") {
           this.alert("Oopz...", "Nic not match with age and gender", "error","");
           this.branchUWSpouseForm.get("nicSpouse").setValue("");
+        }else{
+          this.commonService.loadAgeAndDOBFromNic(this.branchUWSpouseForm.get("nicSpouse").value).subscribe(response => {
+            this.branchUWSpouseForm.get("dateOfBirthSpouse").setValue(response.json().DOB);
+          });
         }
       });
     }
