@@ -479,34 +479,34 @@
                             <mat-card-content style="max-height: 500px;overflow-x: auto;">
                                 <div [ngClass]="{'disabled2': loading_table == true}">
 
-                                    <mat-accordion>
-                                        <mat-expansion-panel *ngFor="let cou of receivingCourierArray">
-                                            <mat-expansion-panel-header>
-                                                <mat-panel-title>
+                                    <mat-accordion multi="true">
+                                        <mat-expansion-panel *ngFor="let cou of receivingCourierArray" [expanded]="true">
+                                            <mat-expansion-panel-header  style="background-color: #3F51B5;">
+                                                <mat-panel-title style="color: white;">
                                                     Courier Token <br>
                                                     {{cou.token}}
                                                 </mat-panel-title>
-                                                <mat-panel-description>
+                                                <mat-panel-description style="color: white;">
                                                     Create Date <br>
                                                     {{cou.createDate | date: 'dd/MM/yyyy'}}
                                                 </mat-panel-description>
-                                                <mat-panel-description>
+                                                <mat-panel-description style="color: white;">
                                                     Send Date <br>
                                                     {{cou.sendDate | date: 'dd/MM/yyyy'}}
                                                 </mat-panel-description>
-                                                <mat-panel-description>
+                                                <mat-panel-description style="color: white;">
                                                     Send By <br>
                                                     {{cou.sendBy}}
                                                 </mat-panel-description>
-                                                <mat-panel-description>
+                                                <mat-panel-description style="color: white;">
                                                     From Branch <br>
                                                     {{cou.branchCode}}
                                                 </mat-panel-description>
-                                                <mat-panel-description>
+                                                <mat-panel-description style="color: white;">
                                                     Cou Type <br>
                                                     {{cou.couType}}
                                                 </mat-panel-description>
-                                                <mat-panel-description>
+                                                <mat-panel-description style="color: white;">
                                                     <button mat-raised-button color="warn" (click)="receiveCourier(cou)">RECEIVED</button>
                                                 </mat-panel-description>
 
@@ -593,38 +593,38 @@
                             <mat-card-content style="max-height: 500px;overflow-x: auto;">
                                 <div [ngClass]="{'disabled2': loading_table == true}">
 
-                                    <mat-accordion>
-                                        <mat-expansion-panel *ngFor="let cou of receivedCourierArray">
-                                            <mat-expansion-panel-header>
-                                                <mat-panel-title>
+                                    <mat-accordion multi="true">
+                                        <mat-expansion-panel *ngFor="let cou of receivedCourierArray" [expanded]="true">
+                                            <mat-expansion-panel-header style="background-color: #3F51B5;">
+                                                <mat-panel-title style="color: white;">
                                                     Courier Token <br>
                                                     {{cou.token}}
                                                 </mat-panel-title>
-                                                <mat-panel-description>
+                                                <mat-panel-description style="color: white;">
                                                     Create Date <br>
                                                     {{cou.createDate | date: 'dd/MM/yyyy'}}
                                                 </mat-panel-description>
-                                                <mat-panel-description>
+                                                <mat-panel-description style="color: white;">
                                                     Send Date <br>
                                                     {{cou.sendDate | date: 'dd/MM/yyyy'}}
                                                 </mat-panel-description>
-                                                <mat-panel-description>
+                                                <mat-panel-description style="color: white;">
                                                     Send By <br>
                                                     {{cou.sendBy}}
                                                 </mat-panel-description>
-                                                <mat-panel-description>
+                                                <mat-panel-description style="color: white;">
                                                     From Branch <br>
                                                     {{cou.branchCode}}
                                                 </mat-panel-description>
-                                                <mat-panel-description>
+                                                <mat-panel-description style="color: white;">
                                                     Received By <br>
                                                     {{cou.receivedBy}}
                                                 </mat-panel-description>
-                                                <mat-panel-description>
+                                                <mat-panel-description style="color: white;">
                                                     Received Date <br>
                                                     {{cou.receivedDate | date: 'dd/MM/yyyy'}}
                                                 </mat-panel-description>
-                                                <mat-panel-description>
+                                                <mat-panel-description style="color: white;">
                                                     Cou Type <br>
                                                     {{cou.couType}}
                                                 </mat-panel-description>
@@ -756,38 +756,38 @@
                             <mat-card-content style="max-height: 500px;overflow-x: auto;">
                                 <div [ngClass]="{'disabled2': loading_table == true}">
 
-                                    <mat-accordion>
-                                        <mat-expansion-panel *ngFor="let cou of completedCourierArray">
-                                            <mat-expansion-panel-header>
-                                                <mat-panel-title>
+                                    <mat-accordion multi="true">
+                                        <mat-expansion-panel *ngFor="let cou of completedCourierArray" [expanded]="true">
+                                            <mat-expansion-panel-header style="background-color: #3F51B5;">
+                                                <mat-panel-title style="color: white;">
                                                     Courier Token <br>
                                                     {{cou.token}}
                                                 </mat-panel-title>
-                                                <mat-panel-description>
+                                                <mat-panel-description style="color: white;">
                                                     Create Date <br>
                                                     {{cou.createDate | date: 'dd/MM/yyyy'}}
                                                 </mat-panel-description>
-                                                <mat-panel-description>
+                                                <mat-panel-description style="color: white;">
                                                     Send Date <br>
                                                     {{cou.sendDate | date: 'dd/MM/yyyy'}}
                                                 </mat-panel-description>
-                                                <mat-panel-description>
+                                                <mat-panel-description style="color: white;">
                                                     Send By <br>
                                                     {{cou.sendBy}}
                                                 </mat-panel-description>
-                                                <mat-panel-description>
+                                                <mat-panel-description style="color: white;">
                                                     From Branch <br>
                                                     {{cou.branchCode}}
                                                 </mat-panel-description>
-                                                <mat-panel-description>
+                                                <mat-panel-description style="color: white;">
                                                     Received By <br>
                                                     {{cou.receivedBy}}
                                                 </mat-panel-description>
-                                                <mat-panel-description>
+                                                <mat-panel-description style="color: white;">
                                                     Received Date <br>
                                                     {{cou.receivedDate | date: 'dd/MM/yyyy'}}
                                                 </mat-panel-description>
-                                                <mat-panel-description>
+                                                <mat-panel-description style="color: white;">
                                                     Cou Type <br>
                                                     {{cou.couType}}
                                                 </mat-panel-description>
