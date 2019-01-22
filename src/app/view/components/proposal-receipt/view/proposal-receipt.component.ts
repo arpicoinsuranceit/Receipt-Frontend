@@ -348,7 +348,7 @@ export class ProposalReceiptComponent implements OnInit {
   filterBanks(name: string) {
     try {
       return this.bankList.filter(bank =>
-        bank.BankName.toLowerCase().indexOf(name.toLowerCase()) === 0);
+        bank.BankCode.toLowerCase().indexOf(name.toLowerCase()) === 0);
     } catch (error) {
       return null;
     }
