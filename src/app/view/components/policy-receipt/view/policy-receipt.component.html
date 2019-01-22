@@ -116,8 +116,8 @@
                                 [matAutocomplete]="bank" formControlName="bankCode">
                             <mat-autocomplete #bank="matAutocomplete">
                                 <mat-option *ngFor="let bank of filteredBanks | async" [value]="bank.BankCode">
-                                    <span> {{ bank.BankName }} </span> |
-                                    <small> {{ bank.BankCode }} </small>
+                                    <span> {{ bank.BankCode }} </span> |
+                                    <small> {{ bank.BankName }} </small>
                                 </mat-option>
 
                             </mat-autocomplete>
