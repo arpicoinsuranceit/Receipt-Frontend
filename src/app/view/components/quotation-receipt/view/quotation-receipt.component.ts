@@ -18,7 +18,7 @@ import { QuotationModel } from '../../../../model/quotationmodel';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { delay } from 'q';
 import { MatDialogConfig, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
-import { DecimalPipe } from '@angular/common';
+import { DecimalPipe, formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-quotation-receipt',
@@ -55,6 +55,7 @@ export class QuotationReceiptComponent implements OnInit {
   pickAgent: boolean = false;
 
   lastReceipt: LastReceipt[] = new Array();
+  data_cpy: LastReceipt[] = new Array();
 
   quoReceiptForm = new FormGroup({
     quoNo: new FormControl("", Validators.required),
@@ -68,7 +69,8 @@ export class QuotationReceiptComponent implements OnInit {
     remark: new FormControl(""),
     amount: new FormControl("", Validators.required),
     amountInWord: new FormControl(""),
-    pickAgentCode: new FormControl("")
+    pickAgentCode: new FormControl(""),
+    custName: new FormControl("")
   });
 
   get QuoNo() {
@@ -111,6 +113,9 @@ export class QuotationReceiptComponent implements OnInit {
   get Credittransferno() {
     return this.quoReceiptForm.get("credittransferno");
   }
+  get CustName() {
+    return this.quoReceiptForm.get("custName");
+  }
 
   constructor(private commonService: CommonService, private quotationReceiptService: QuotationReceiptService, public dialog: MatDialog, private blobService: BlobService) {
 
@@ -123,6 +128,8 @@ export class QuotationReceiptComponent implements OnInit {
     for (var i = 0; i < 2; i++) {
       this.lastReceipt.push(new LastReceipt("...", "...", "...", "...", "...", 0.00, "...", "..."))
     }
+
+    this.CustName.disable();
   }
 
   convertAmountToWord() {
@@ -290,6 +297,8 @@ export class QuotationReceiptComponent implements OnInit {
             this.convertAmountToWord();
 
             this.AgentCode.setValue(this.basicDetail.AgentCode);
+            this.CustName.setValue(this.basicDetail.CustomerName);
+
 
             let isAgentCode: number = parseInt(this.basicDetail.AgentCode);
 
@@ -343,6 +352,18 @@ export class QuotationReceiptComponent implements OnInit {
       return;
     }
 
+    let date = null;
+    if (this.PayMode.value == "CQ") {
+
+      try {
+
+        date = formatDate(new Date(this.Chequedate.value), 'yyyy-MM-dd', "en-US");
+      } catch (e) {
+        this.alert("Error", "Cheque Date invalied", "error");
+        return;
+      }
+    }
+
     let saveReceiptModel = new SaveReceiptModel();
     saveReceiptModel.Amount = this.Amount.value;
     saveReceiptModel.BankCode = this.BankCode.value;
@@ -356,7 +377,7 @@ export class QuotationReceiptComponent implements OnInit {
     saveReceiptModel.BranchCode = this.basicDetail.BranchCode;
     saveReceiptModel.Chequeno = this.Chequeno.value;
     saveReceiptModel.Chequebank = this.Chequebank.value;
-    saveReceiptModel.Chequedate = this.Chequedate.value;
+    saveReceiptModel.Chequedate = date;
     saveReceiptModel.Transferno = this.Credittransferno.value;
     saveReceiptModel.Token = sessionStorage.getItem("token");
 
@@ -443,6 +464,7 @@ export class QuotationReceiptComponent implements OnInit {
     this.Chequeno.reset();
     this.Credittransferno.reset();
     this.Remark.reset();
+    this.CustName.reset()
   }
 
   loadLastReceipts() {
@@ -450,6 +472,8 @@ export class QuotationReceiptComponent implements OnInit {
     this.commonService.getLastReceipts().subscribe(response => {
       this.loading_table = false;
       this.data = new Array();
+
+      this.data_cpy = new Array();
 
       console.log(response.json());
 
@@ -465,6 +489,9 @@ export class QuotationReceiptComponent implements OnInit {
           lastReceipt.Chqrel = element.chqrel;
           lastReceipt.Paymod = element.paymod;
           this.data.push(lastReceipt);
+          if (this.data.length < 3) {
+            this.data_cpy.push(lastReceipt);
+          }
         }
       });
 

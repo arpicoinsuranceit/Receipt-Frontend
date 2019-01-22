@@ -14,6 +14,7 @@ import { PolicyReceiptService } from 'app/service/policy-receipt-service/policy-
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { BlobService } from 'app/service/blob-service/blob.service';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-loan-receipt',
@@ -40,6 +41,9 @@ export class LoanReceiptComponent implements OnInit {
   basicDetail: BasicDetail = new BasicDetail("", "", "", "", 0, 0, "", "", 0.0, 0.0);
 
   data: LastReceipt[] = new Array();
+
+  data_cpy: LastReceipt[] = new Array();
+
   bankList: BankModel[] = new Array();
   filteredBanks: Observable<any[]>;
 
@@ -65,7 +69,8 @@ export class LoanReceiptComponent implements OnInit {
     amountInWord: new FormControl(""),
     pickAgentCode: new FormControl(""),
     adv_type: new FormControl("ppr"),
-    adv_value: new FormControl()
+    adv_value: new FormControl(),
+    custName: new FormControl("")
   });
 
   get PropNo() {
@@ -115,6 +120,10 @@ export class LoanReceiptComponent implements OnInit {
     return this.receiptForm.get("adv_value");
   }
 
+  get CustName() {
+    return this.receiptForm.get("custName");
+  }
+
   constructor(private commonService: CommonService, private policyReceiptService: PolicyReceiptService, public dialog: MatDialog, private blobService: BlobService,
     private loanReceiptService: LoanReceiptService) { }
 
@@ -122,6 +131,7 @@ export class LoanReceiptComponent implements OnInit {
     this.getBanks();
     this.loadLastReceipts();
     this.AmountInWord.disable();
+    this.CustName.disable();
 
     for (var i = 0; i < 2; i++) {
       this.lastReceipt.push(new LastReceipt("...", "...", "...", "...", "...", 0.00, "...", "..."))
@@ -309,6 +319,7 @@ export class LoanReceiptComponent implements OnInit {
     this.commonService.getLastReceipts().subscribe(response => {
       this.loading_table = false;
       this.data = new Array();
+      this.data_cpy = new Array();
 
       console.log(response.json());
 
@@ -324,6 +335,11 @@ export class LoanReceiptComponent implements OnInit {
           lastReceipt.Chqrel = element.chqrel;
           lastReceipt.Paymod = element.paymod;
           this.data.push(lastReceipt);
+
+          if (this.data.length < 3) {
+            this.data_cpy.push(lastReceipt);
+          }
+
         }
 
       });
@@ -388,11 +404,11 @@ export class LoanReceiptComponent implements OnInit {
       console.log(response.json());
       this.loanNoArray = response.json();
 
-      if(this.loanNoArray.length == 1 ){
+      if (this.loanNoArray.length == 1) {
         this.LoanNo.setValue(this.loanNoArray[0]);
       }
 
-      if(this.loanNoArray.length == 0 ){
+      if (this.loanNoArray.length == 0) {
         this.alert("Oopz...", "Loan Not Found", "error");
       }
 
@@ -433,6 +449,9 @@ export class LoanReceiptComponent implements OnInit {
         this.basicDetail.PayAmount = response.json().amtPayble;
         this.lastReceipt = new Array();
 
+
+        this.CustName.setValue(this.basicDetail.CustomerName);
+
         //this.Amount.setValue(this.basicDetail.Premium);
         //this.convertAmountToWord();
 
@@ -472,6 +491,19 @@ export class LoanReceiptComponent implements OnInit {
 
     if (this.LoanNo.value != undefined && this.LoanNo.value != '') {
       if (this.Amount.value != undefined && this.Amount.value != '' && this.Amount.value > 1) {
+
+        let date = null;
+        if (this.PayMode.value == "CQ") {
+
+          try {
+
+            date = formatDate(new Date(this.Chequedate.value), 'yyyy-MM-dd', "en-US");
+          } catch (e) {
+            this.alert("Error", "Cheque Date invalied", "error");
+            return;
+          }
+        }
+
         let saveReceiptModel = new SaveReceiptModel();
         saveReceiptModel.Amount = this.Amount.value;
         saveReceiptModel.AgentCode = this.basicDetail.AgentCode
@@ -485,7 +517,7 @@ export class LoanReceiptComponent implements OnInit {
         saveReceiptModel.BranchCode = this.basicDetail.BranchCode;
         saveReceiptModel.Chequeno = this.Chequeno.value;
         saveReceiptModel.Chequebank = this.Chequebank.value;
-        saveReceiptModel.Chequedate = this.Chequedate.value;
+        saveReceiptModel.Chequedate = date;
         saveReceiptModel.Transferno = this.Credittransferno.value;
         saveReceiptModel.Token = sessionStorage.getItem("token");
         saveReceiptModel.LoanNo = this.LoanNo.value;
@@ -553,6 +585,7 @@ export class LoanReceiptComponent implements OnInit {
     this.LoanNo.reset();
     this.lastReceipt = new Array();
     this.loanNoArray = new Array();
+    this.CustName.reset()
 
     let d: LastReceipt = new LastReceipt("...", "...", "...", "...", "...", 0.00, "...", "...");
     this.lastReceipt.push(d);

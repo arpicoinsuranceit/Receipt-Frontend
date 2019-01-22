@@ -17,6 +17,7 @@ import { Observable } from 'rxjs/Observable';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { DISABLED } from '@angular/forms/src/model';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-miscellaneous-receipt-glrc',
@@ -34,6 +35,9 @@ export class MiscellaneousReceiptGlrcComponent implements OnInit {
   displayedColumns = ['doccod', 'docnum', 'credat', 'agent', 'amount'];
 
   data: RmsDocTxnmGridModel[] = new Array();
+
+  data_cpy: RmsDocTxnmGridModel[] = new Array();
+
   accounts: AccountModel[] = new Array();
   accountCart: AccountModel[] = new Array();
   branches: BranchModel[] = new Array(); S
@@ -192,6 +196,8 @@ export class MiscellaneousReceiptGlrcComponent implements OnInit {
     this.commonService.getLastReceiptsMiscellGL().subscribe(response => {
       this.loading_table = false;
       this.data = new Array();
+      
+      this.data_cpy = new Array();
 
       console.log(response.json());
 
@@ -204,6 +210,11 @@ export class MiscellaneousReceiptGlrcComponent implements OnInit {
           lastReceipt.DocCode = element.docCode;
           lastReceipt.DocNo = element.donNo;
           this.data.push(lastReceipt);
+
+          if(this.data.length < 3){
+            this.data_cpy.push(lastReceipt);
+          }
+
         }
       });
     }, error => {
@@ -326,6 +337,20 @@ export class MiscellaneousReceiptGlrcComponent implements OnInit {
   }
 
   saveReceipt() {
+
+   
+    let date  =  null;
+    if(this.PayMode.value == "CQ"){
+
+      try{
+
+        date = formatDate(new Date(this.Chequedate.value), 'yyyy-MM-dd', "en-US");
+      } catch (e){
+        this.alert("Error", "Cheque Date invalied", "error");
+        return;
+      }
+    }
+
     let miscellaneosReceipt: MiscellaneousReceiptModel = new MiscellaneousReceiptModel();
 
     miscellaneosReceipt.Branch = this.BranchCode.value;
@@ -334,7 +359,7 @@ export class MiscellaneousReceiptGlrcComponent implements OnInit {
     miscellaneosReceipt.Paymode = this.PayMode.value;
     miscellaneosReceipt.ChqNo = this.Chequeno.value;
     miscellaneosReceipt.ChqBank = this.Chequebank.value;
-    miscellaneosReceipt.ChqDate = this.Chequedate.value;
+    miscellaneosReceipt.ChqDate = date;
     miscellaneosReceipt.Amount = this.Amount.value;
     miscellaneosReceipt.AmtInWord = this.AmountInWord.value;
     //miscellaneosReceipt.Expencess = this.accountCart;

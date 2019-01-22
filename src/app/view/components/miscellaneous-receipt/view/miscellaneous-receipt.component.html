@@ -24,6 +24,17 @@
         </div>
 
         <div [ngClass]="{'disabled': loading_form == true}">
+
+            <div>
+                <table style="width: 100%">
+                    <tr *ngFor = "let lstrct of data_cpy">
+                        <td>{{lstrct.DocCode}} / {{lstrct.DocNo}}</td>
+                        <td>{{lstrct.Date}}</td>
+                        <td style="text-align: right">{{lstrct.Amount | number: '.2' }}</td>
+                    </tr>
+                </table>
+            </div>
+
           <form class="proposal-receipt-form" [formGroup]="receiptForm">
             <mat-form-field>
               <mat-select formControlName="branchCode" tabindex="1" placeholder="Branch">

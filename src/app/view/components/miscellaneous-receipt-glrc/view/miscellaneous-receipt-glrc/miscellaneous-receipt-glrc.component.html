@@ -6,9 +6,9 @@
 <div [ngClass]="{'disabled': loading_saving == true}" class="container" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
   fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
   <div fxFlex="40%">
-    <mat-card class="main-card sk-style-mat-card" >
+    <mat-card class="main-card sk-style-mat-card">
 
-        <mat-card-header style=" display: flex; 
+      <mat-card-header style=" display: flex; 
         justify-content: space-between; margin-top: -23px; margin-left: -13px;">
         <mat-card-title>
           <h3>Miscellaneous Receipt (GL)</h3>
@@ -23,6 +23,15 @@
         </div>
 
         <div [ngClass]="{'disabled': loading_form == true}">
+          <div>
+            <table style="width: 100%">
+              <tr *ngFor="let lstrct of data_cpy">
+                <td>{{lstrct.DocCode}} / {{lstrct.DocNo}}</td>
+                <td>{{lstrct.Date}}</td>
+                <td style="text-align: right">{{lstrct.Amount | number: '.2' }}</td>
+              </tr>
+            </table>
+          </div>
           <form class="proposal-receipt-form" [formGroup]="receiptForm">
             <mat-form-field>
               <mat-select tabindex="1" formControlName="branchCode" placeholder="Branch">
@@ -122,7 +131,7 @@
   </div>
   <div fxFlex="60%">
     <mat-card class="main-card sk-style-mat-card-2" style="margin-top: 6px;margin-right: 6px; margin-bottom: 6px;">
-        <mat-card-header style=" margin-top: -23px; margin-left: -13px;">
+      <mat-card-header style=" margin-top: -23px; margin-left: -13px;">
         <mat-card-title>
           <h3>Account</h3>
         </mat-card-title>
