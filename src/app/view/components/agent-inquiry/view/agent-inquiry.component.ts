@@ -23,6 +23,8 @@ export class AgentInquiryComponent implements OnInit {
   designationArray:Designation[]=new Array();
   educationArray:Education[]=new Array();
 
+  isLinear=true;
+
   displayColumnAgent: string[] = ['agncod','agnnam','agnnic','agnsta','sliirg','supvid','subdcd','agndob','agnrdt'];
 
   displayColumnSettlement: string[] = ['type','bank','branch','account','fromDate','toDate'];
