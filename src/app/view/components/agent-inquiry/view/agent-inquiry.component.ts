@@ -3,7 +3,7 @@ import { Targets } from './../../../../model/targets';
 import { AgnInqAgnListModel } from './../../../../model/agninqagnlist';
 import { AgentInquiryService } from './../../../../service/agent-inquiry-service/agent-inquiry.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatTableDataSource, MatPaginator } from '@angular/material';
+import { MatTableDataSource, MatPaginator, MatStepper } from '@angular/material';
 import { SettlementDetails } from 'app/model/settlementdetails';
 import { Designation } from 'app/model/designation';
 import { Education } from 'app/model/education';
@@ -41,8 +41,12 @@ export class AgentInquiryComponent implements OnInit {
   agentInquiryDetails:AgentInquiryDetails=new AgentInquiryDetails();
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild('stepper') stepper: MatStepper;
+  
   loading1: boolean= true;
   loading: boolean= true;
+  hideData: boolean = true;
+  isLinear = false;
 
   constructor(private agentInquiryService:AgentInquiryService) { }
 
@@ -97,6 +101,7 @@ export class AgentInquiryComponent implements OnInit {
 
   loadData(row:AgnInqAgnListModel){
     this.loading=true;
+    this.hideData=true;
     this.agentInquiryService.getFullAgentDetails(row.Agncod).subscribe(response => {
 
       console.log(response.json());
@@ -240,7 +245,10 @@ export class AgentInquiryComponent implements OnInit {
 
       this.datasourceEducation.data = this.educationArray;
 
+      this.stepper.selectedIndex=1;
+
       this.loading=false;
+      this.hideData=false;
 
     });
   }
