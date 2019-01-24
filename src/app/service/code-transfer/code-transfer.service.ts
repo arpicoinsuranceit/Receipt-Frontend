@@ -1,4 +1,4 @@
-import { Http } from '@angular/http';
+import { Http , URLSearchParams} from '@angular/http';
 import { Injectable } from '@angular/core';
 import { CodeTransferHelperModel } from 'app/model/codetransferhelpermodel';
 
@@ -10,23 +10,33 @@ export class CodeTransferService {
   constructor(private http:Http) { }
 
   loadPendingCodeTranPrp(token){
-    return this.http.get("http://localhost:8088/code_transfer/getPendingCodeTransfersPrp/"+token);
+    let urlParams = new URLSearchParams();
+    urlParams.append('token', token);
+    return this.http.post("http://localhost:8088/code_transfer/getPendingCodeTransfersPrp",urlParams);
   }
 
   loadPendingCodeTranPol(token){
-    return this.http.get("http://localhost:8088/code_transfer/getCanceledCodeTransfersPol/"+token);
+    let urlParams = new URLSearchParams();
+    urlParams.append('token', token);
+    return this.http.post("http://localhost:8088/code_transfer/getPendingCodeTransfersPol",urlParams);
   }
 
   loadCanceledCodeTranPrp(token){
-    return this.http.get("http://localhost:8088/code_transfer/getCanceledCodeTransfersPrp/"+token);
+    let urlParams = new URLSearchParams();
+    urlParams.append('token', token);
+    return this.http.post("http://localhost:8088/code_transfer/getCanceledCodeTransfersPrp",urlParams);
   }
 
   loadCanceledCodeTranPol(token){
-    return this.http.get("http://localhost:8088/code_transfer/getPendingCodeTransfersPol/"+token);
+    let urlParams = new URLSearchParams();
+    urlParams.append('token', token);
+    return this.http.post("http://localhost:8088/code_transfer/getCanceledCodeTransfersPol",urlParams);
   }
 
   loadCodePendingProposal(token){
-    return this.http.get("http://localhost:8088/code_transfer/getCodePendingProposalDetails/"+token);
+    let urlParams = new URLSearchParams();
+    urlParams.append('token', token);
+    return this.http.post("http://localhost:8088/code_transfer/getCodePendingProposalDetails",urlParams);
   }
 
   checkProposalNoCanTransfer(pprNum,token){
