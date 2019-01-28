@@ -1,0 +1,18 @@
+.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+    background: #F7F7F7;
+    background-position: center;
+}
+
+.display-none{
+    display: none;
+}
+
+.mat-tab-label {
+    min-width: 1px !important;
+  }
+
+  i {
+      padding-right: 5px;
+  }

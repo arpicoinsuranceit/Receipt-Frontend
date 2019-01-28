@@ -136,6 +136,9 @@ export class MiscellaneousReceiptComponent implements OnInit {
       event.key != "Tab" && event.key != "Enter" && event.key != "Backspace") {
       this.agentList = new Array();
       this.loading_form = true;
+
+      console.log(this.AgentCode.value, this.BranchCode.value);
+
       this.commonService.getAgentByBranch(this.AgentCode.value, this.BranchCode.value).subscribe(response => {
         this.loading_form = false;
         console.log(response.json());

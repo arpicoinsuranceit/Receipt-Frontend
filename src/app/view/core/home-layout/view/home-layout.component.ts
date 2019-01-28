@@ -46,9 +46,9 @@ export class HomeLayoutComponent implements OnInit {
     console.log(this.menuList);
   }
 
-  loadProposalInquiry(){
-    window.open("http://localhost:4201?token="+ encodeURIComponent(JSON.stringify(sessionStorage.getItem("token"))), "_blank");
-  }
+  // loadProposalInquiry(){
+  //   window.open("http://localhost:4201?token="+ encodeURIComponent(JSON.stringify(sessionStorage.getItem("token"))), "_blank");
+  // }
 
   signout(){
     sessionStorage.removeItem("token");

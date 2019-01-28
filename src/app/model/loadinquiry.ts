@@ -5,7 +5,9 @@ export class LoadInquiry {
         private policyNo?: string,
         private mainLifeName?: string,
         private nic?: string,
-        private product?: string) { }
+        private product?: string,
+        private status?: string,
+        private advisorCode?: string) { }
 
 
     set ProposalNo(proposalNo: string) {
@@ -39,4 +41,19 @@ export class LoadInquiry {
     get Product() {
         return this.product;
     }
+
+    set Status(status: string) {
+        this.status = status;
+    }
+    get Status() {
+        return this.status;
+    }
+
+    set AdvisorCode(advisorCode: string) {
+        this.advisorCode = advisorCode;
+    }
+    get AdvisorCode() {
+        return this.advisorCode;
+    }
+    
 }

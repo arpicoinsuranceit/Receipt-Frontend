@@ -1,0 +1,992 @@
+<div [ngClass]="{'disabled': loading4 == true}" class="container" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
+  fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center">
+
+  <div fxFlex="100%">
+    <mat-card class="mat-k-sk-style">
+
+      <mat-card-header style="margin-top: -20px; margin-left: -13px;">
+        <mat-card-title>
+          <h3>Proposal Inquiry</h3>
+        </mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content [ngClass]="{'display-none': daiplay == true}">
+
+        <!-- <mat-horizontal-stepper [linear]="isLinear" #stepper>
+          <mat-step [stepControl]="firstFormGroup"> -->
+        <mat-card>
+          <mat-card-content style="max-height: 400px;overflow-x: auto;">
+            <!-- <ng-template matStepLabel>RECEIPT DETAILS</ng-template> -->
+            <div fxFlex="100%" style="margin-bottom: 10px;max-height: 400px;overflow-x: auto;">
+              <div [hidden]="!loading" class="loader">
+                <h5>Loading...</h5>
+                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+              </div>
+
+              <div class="mat-elevation-z8" [ngClass]="{'disabled': loading == true}">
+
+                <div>
+                  <form [formGroup]="form_search">
+                    <mat-radio-group formControlName="equality">
+                      <mat-radio-button color="primary" labelPosition="before" value="equal" style="padding-right: 5px;">Equal</mat-radio-button>
+                      <mat-radio-button color="primary" labelPosition="before" value="with" style="padding-right: 15px;">With</mat-radio-button>
+                    </mat-radio-group>
+
+                    <mat-form-field style="padding-right: 15px;">
+                      <mat-select formControlName="column" placeholder="Type">
+                        <mat-option value="pprnum">Proposal No</mat-option>
+                        <mat-option value="polnum">Policy No </mat-option>
+                        <mat-option value="ppdini">Main Life Name </mat-option>
+                        <mat-option value="ppdnic">Nic </mat-option>
+                        <mat-option value="prdcod">Product </mat-option>
+                        <mat-option value="pprsta">Proposal Status </mat-option>
+                        <mat-option value="advcod">Advisor Code </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                      <input matInput formControlName="data" placeholder="Search">
+                    </mat-form-field>
+                    <button mat-raised-button color="primary" (click)="loadCount()">Search</button>
+                  </form>
+
+                </div>
+                <div>
+                  <mat-table [dataSource]="datasourceInquiry" style="max-height: 320px;overflow-x: auto;">
+                    <ng-container matColumnDef="proposalNo">
+                      <mat-header-cell *matHeaderCellDef> Proposal No</mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.ProposalNo}} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="policyNo">
+                      <mat-header-cell *matHeaderCellDef> Policy No</mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.PolicyNo}} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="mainLifeName">
+                      <mat-header-cell *matHeaderCellDef style="flex: 0 0 35%;"> Main Life Name</mat-header-cell>
+                      <mat-cell *matCellDef="let element" style="flex: 0 0 35%;"> {{element.MainLifeName}} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="nic">
+                      <mat-header-cell *matHeaderCellDef> NIC</mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.Nic}} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="product">
+                      <mat-header-cell *matHeaderCellDef> Product</mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.Product}} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="proposalStatus">
+                      <mat-header-cell *matHeaderCellDef style="padding-right: 5px;"> Proposal Status</mat-header-cell>
+                      <mat-cell *matCellDef="let element" style="padding-right: 5px;"> {{element.Status}} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="advisorCode">
+                      <mat-header-cell *matHeaderCellDef> Advisor Code</mat-header-cell>
+                      <mat-cell *matCellDef="let element"> {{element.AdvisorCode}} </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumnsProposalGrid; sticky: true"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumnsProposalGrid;" (dblclick)="loadProposalInq(row)"></mat-row>
+                  </mat-table>
+                </div>
+
+              </div>
+            </div>
+
+          </mat-card-content>
+          <mat-card-actions style="border-top: solid #C4C4C4 1px; display: flex; 
+                    justify-content: space-between;">
+            <mat-paginator [pageSizeOptions]="[5, 10]" (page)="loadNextData();" showFirstLastButtons></mat-paginator>
+          </mat-card-actions>
+        </mat-card>
+
+        <!-- </mat-step>
+        </mat-horizontal-stepper> -->
+      </mat-card-content>
+
+      <mat-card-content [ngClass]="{'display-none': daiplay == false}">
+        <button mat-raised-button color="primary" (click)="disable()" style="margin-top: 10px;">Back</button>
+
+        <div style="padding-top: 10px; background: #f1f1f1;margin-top: 5px;">
+          <div fxFlex="50%" style="padding: 10px;">
+
+            <table class="tbl-layout">
+              <tbody>
+                <tr>
+                  <td style="width: 160px;">Proposal No</td>
+                  <td>:</td>
+                  <td>{{propInqGenData.ProposalNo}}</td>
+                </tr>
+                <tr>
+                  <td>Policy No</td>
+                  <td>:</td>
+                  <td>{{propInqGenData.PolicyNo}}</td>
+                </tr>
+                <tr>
+                  <td>Commencement Date</td>
+                  <td>:</td>
+                  <td>{{propInqGenData.CommencementDate}}</td>
+                </tr>
+                <tr>
+                  <td>Proposal Status</td>
+                  <td>:</td>
+                  <td>{{propInqGenData.ProposalStatus}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div fxFlex="50%" style="padding: 10px;">
+
+            <table class="tbl-layout">
+              <tbody>
+                <tr>
+                  <td style="width: 160px;">Branch Code</td>
+                  <td>:</td>
+                  <td>{{propInqGenData.BranchCode}}</td>
+                </tr>
+                <tr>
+                  <td>Product Name</td>
+                  <td>:</td>
+                  <td>{{propInqGenData.ProductName}} /{{propInqGenData.ProductCode}} </td>
+                </tr>
+                <tr>
+                  <td>Expire Date</td>
+                  <td>:</td>
+                  <td>{{propInqGenData.ExpDate}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+        <mat-tab-group>
+
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <i class="fas fa-user-tie"></i>
+              Insured
+            </ng-template>
+            <table style="margin-top: 10px;">
+              <tbody>
+
+                <tr>
+                  <td style="width: 160px;">Full Name </td>
+                  <td style="width: 10px;">:</td>
+                  <td colspan="4">{{propInqGenData.MainLifeName}}</td>
+                </tr>
+
+                <tr>
+                  <td>Name with Initials </td>
+                  <td>:</td>
+                  <td colspan="4">{{propInqGenData.MainLifeNameIni}}</td>
+                </tr>
+
+                <tr>
+                  <td>Address </td>
+                  <td>:</td>
+                  <td colspan="4">{{propInqGenData.MainlifeAddress}}</td>
+                </tr>
+
+                <tr>
+                  <td>Nic. No </td>
+                  <td>:</td>
+                  <td colspan="4">{{this.propInqGenData.MainLifeNic}}</td>
+                </tr>
+
+                <tr>
+                  <td>Mobile </td>
+                  <td>:</td>
+                  <td colspan="4">{{propInqGenData.MainLifeMob}}</td>
+                </tr>
+
+                <tr>
+                  <td style="width: 110px;">Tele. No </td>
+                  <td style="width: 10px;">:</td>
+                  <td colspan="4">{{propInqGenData.MainLifeTel}}</td>
+                </tr>
+
+                <tr>
+                  <td>Bank Code </td>
+                  <td>:</td>
+                  <td colspan="4">{{propInqGenData.MankNo}}</td>
+                </tr>
+
+                <tr>
+                  <td>Bank Account No </td>
+                  <td>:</td>
+                  <td colspan="4">{{propInqGenData.AccountNo}}</td>
+                </tr>
+                <tr>
+                  <td>Previlage Card No </td>
+                  <td>:</td>
+                  <td colspan="4">{{propInqGenData.PrevilageCardNo}}</td>
+                </tr>
+                <tr>
+                  <td>Email </td>
+                  <td>:</td>
+                  <td colspan="4">{{propInqGenData.MainLifeEmail}}</td>
+                </tr>
+                <tr>
+                  <td>Date of Birth </td>
+                  <td>:</td>
+                  <td colspan="4">{{propInqGenData.MainLifeDob}}</td>
+                </tr>
+                <tr>
+                  <td>Age next Birthday </td>
+                  <td>:</td>
+                  <td colspan="4">{{propInqGenData.MainLifeNextAge}}</td>
+                </tr>
+                <tr>
+                  <td>Sex </td>
+                  <td>:</td>
+                  <td colspan="4">{{propInqGenData.MainLifesex}}</td>
+                </tr>
+                <tr>
+                  <td>Civil Status </td>
+                  <td>:</td>
+                  <td colspan="4">{{propInqGenData.MainLifeStatus}}</td>
+                </tr>
+                <tr>
+                  <td>Occupation/ Professtion </td>
+                  <td>:</td>
+                  <td colspan="4">{{propInqGenData.MainLifeOcu}}</td>
+                </tr>
+
+              </tbody>
+            </table>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <i class="fas fa-user-friends"></i>
+              Spouse
+            </ng-template>
+            <table style="margin-top: 10px;">
+              <tbody>
+                <tr>
+                  <td style="width: 160px;">Title </td>
+                  <td>:</td>
+                  <td></td>
+                </tr>
+
+                <tr>
+                  <td>Full Name </td>
+                  <td>:</td>
+                  <td>{{propInqGenData.SpouseName}}</td>
+                </tr>
+
+                <tr>
+                  <td>Name with Initials </td>
+                  <td>:</td>
+                  <td>{{propInqGenData.SpouseNameIni}}</td>
+                </tr>
+                <tr>
+                  <td>Nic. No </td>
+                  <td>:</td>
+                  <td>{{propInqGenData.SpouseNic}}</td>
+                </tr>
+
+                <tr>
+                  <td>Date of Birth </td>
+                  <td>:</td>
+                  <td>{{propInqGenData.SpouseDob}}</td>
+                </tr>
+                <tr>
+                  <td>Occupation/ Professtion </td>
+                  <td>:</td>
+                  <td>{{propInqGenData.Spouseocu}}</td>
+                </tr>
+
+              </tbody>
+            </table>
+          </mat-tab>
+
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <i class="fas fa-users"></i>
+              Children
+            </ng-template>
+            <table mat-table [dataSource]="childrenList" class="mat-elevation-z8" style="width: 100%">
+
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef> Name </th>
+                <td mat-cell *matCellDef="let element"> {{element.Name}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="relation">
+                <th mat-header-cell *matHeaderCellDef> Relation </th>
+                <td mat-cell *matCellDef="let element"> {{element.Relation}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="dob">
+                <th mat-header-cell *matHeaderCellDef> DOB </th>
+                <td mat-cell *matCellDef="let element"> {{element.Dob}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="age">
+                <th mat-header-cell *matHeaderCellDef> Age </th>
+                <td mat-cell *matCellDef="let element"> {{element.Age}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="sex">
+                <th mat-header-cell *matHeaderCellDef> Gender </th>
+                <td mat-cell *matCellDef="let element"> {{element.Sex}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="cibc">
+                <th mat-header-cell *matHeaderCellDef> CIBC </th>
+                <td mat-cell *matCellDef="let element"> {{element.Cibc}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="hcbc">
+                <th mat-header-cell *matHeaderCellDef> HCBC </th>
+                <td mat-cell *matCellDef="let element"> {{element.Hrbc}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="hbc">
+                <th mat-header-cell *matHeaderCellDef> HBC </th>
+                <td mat-cell *matCellDef="let element"> {{element.Hbc}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="shcbc">
+                <th mat-header-cell *matHeaderCellDef> SHCBC </th>
+                <td mat-cell *matCellDef="let element"> {{element.Suhrbc}} </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="childrendisplayedColumns; sticky : true"></tr>
+              <tr mat-row *matRowDef="let row; columns: childrendisplayedColumns;"></tr>
+            </table>
+
+          </mat-tab>
+
+
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <i class="fab fa-product-hunt"></i>
+              Pre. / Ben. Details
+            </ng-template>
+
+            <div>
+              <div fxFlex="40%" style="padding: 10px;">
+
+                <table class="tbl-layout">
+                  <tbody>
+                    <tr>
+                      <td style="width: 160px;">Payment Frequancy</td>
+                      <td>:</td>
+                      <td>{{propInqGenData.PayTerm}}</td>
+                    </tr>
+                    <tr>
+                      <td>Term</td>
+                      <td>:</td>
+                      <td>{{propInqGenData.TopTerm}}</td>
+                    </tr>
+                    <tr>
+                      <td>Basic Sum Assured</td>
+                      <td>:</td>
+                      <td>{{propInqGenData.BasicSum}}</td>
+                    </tr>
+                    <tr>
+                      <td>Premium for B.S.A Rs.</td>
+                      <td>:</td>
+                      <td>{{propInqGenData.PremiumForBasicSum}}</td>
+                    </tr>
+                    <tr>
+                      <td>Total Premium</td>
+                      <td>:</td>
+                      <td>{{propInqGenData.TotalPremiun}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div fxFlex="40%" style="padding: 10px;">
+
+                <table class="tbl-layout">
+                  <tbody>
+                    <tr>
+                      <td style="width: 160px;">Target Premium</td>
+                      <td>:</td>
+                      <td>{{propInqGenData.TargetPremium}}</td>
+                    </tr>
+                    <tr>
+                      <td>Relife Term</td>
+                      <td>:</td>
+                      <td>{{propInqGenData.RelTerm}}</td>
+                    </tr>
+                    <tr>
+                      <td>Sum at Risk Main</td>
+                      <td>:</td>
+                      <td>{{propInqGenData.SumAtRiskMain}}</td>
+                    </tr>
+                    <tr>
+                      <td>Sum at Risk Spouse</td>
+                      <td>:</td>
+                      <td>{{propInqGenData.SumAtRiskSpouses}}</td>
+                    </tr>
+                    <tr>
+                      <td>&nbsp;</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+            </div>
+
+            <mat-tab-group>
+              <mat-tab label="Main Life">
+                <div style="height: 300px; overflow: auto;">
+                  <table mat-table [dataSource]="datasourceBenMainLife" class="mat-elevation-z8" style="width: 100%; height: 300px; overflow: auto;">
+
+                    <ng-container matColumnDef="rdrCod">
+                      <th mat-header-cell *matHeaderCellDef> Rider Code </th>
+                      <td mat-cell *matCellDef="let element"> {{element.RiderCode}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="rdrNam">
+                      <th mat-header-cell *matHeaderCellDef> Rider name </th>
+                      <td mat-cell *matCellDef="let element"> {{element.RiderName}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="term">
+                      <th mat-header-cell *matHeaderCellDef> Term </th>
+                      <td mat-cell *matCellDef="let element"> {{element.Term}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="sumAssu">
+                      <th mat-header-cell *matHeaderCellDef> Sum Assured </th>
+                      <td mat-cell *matCellDef="let element"> {{element.SumAssured}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="premium">
+                      <th mat-header-cell *matHeaderCellDef> Premium </th>
+                      <td mat-cell *matCellDef="let element"> {{element.Premium}} </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="benefictdisplayedColumns; sticky : true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: benefictdisplayedColumns;"></tr>
+                  </table>
+                </div>
+
+              </mat-tab>
+              <mat-tab label="Spouse">
+                <div style="height: 300px; overflow: auto;">
+                  <table mat-table [dataSource]="datasourceBenSpouse" class="mat-elevation-z8" style="width: 100%; height: 300px; overflow: auto;">
+
+                    <ng-container matColumnDef="rdrCod">
+                      <th mat-header-cell *matHeaderCellDef> Rider Code </th>
+                      <td mat-cell *matCellDef="let element"> {{element.RiderCode}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="rdrNam">
+                      <th mat-header-cell *matHeaderCellDef> Rider name </th>
+                      <td mat-cell *matCellDef="let element"> {{element.RiderName}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="term">
+                      <th mat-header-cell *matHeaderCellDef> Term </th>
+                      <td mat-cell *matCellDef="let element"> {{element.Term}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="sumAssu">
+                      <th mat-header-cell *matHeaderCellDef> Sum Assured </th>
+                      <td mat-cell *matCellDef="let element"> {{element.SumAssured}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="premium">
+                      <th mat-header-cell *matHeaderCellDef> Premium </th>
+                      <td mat-cell *matCellDef="let element"> {{element.Premium}} </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="benefictdisplayedColumns; sticky : true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: benefictdisplayedColumns;"></tr>
+                  </table>
+                </div>
+
+              </mat-tab>
+              <mat-tab label="Children">
+                <div style="height: 300px; overflow: auto;">
+                  <table mat-table [dataSource]="datasourceBenChild" class="mat-elevation-z8" style="width: 100%;">
+
+                    <ng-container matColumnDef="rdrCod">
+                      <th mat-header-cell *matHeaderCellDef> Rider Code </th>
+                      <td mat-cell *matCellDef="let element"> {{element.RiderCode}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="rdrNam">
+                      <th mat-header-cell *matHeaderCellDef> Rider name </th>
+                      <td mat-cell *matCellDef="let element"> {{element.RiderName}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="term">
+                      <th mat-header-cell *matHeaderCellDef> Term </th>
+                      <td mat-cell *matCellDef="let element"> {{element.Term}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="sumAssu">
+                      <th mat-header-cell *matHeaderCellDef> Sum Assured </th>
+                      <td mat-cell *matCellDef="let element"> {{element.SumAssured}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="premium">
+                      <th mat-header-cell *matHeaderCellDef> Premium </th>
+                      <td mat-cell *matCellDef="let element"> {{element.Premium}} </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="benefictdisplayedColumns; sticky : true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: benefictdisplayedColumns;"></tr>
+                  </table>
+                </div>
+
+              </mat-tab>
+            </mat-tab-group>
+
+          </mat-tab>
+
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <i class="fas fa-user-alt"></i>
+              Nominee
+            </ng-template>
+
+            <table mat-table [dataSource]="datasourceNominee" class="mat-elevation-z8" style="width: 100%">
+
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef> Name </th>
+                <td mat-cell *matCellDef="let element"> {{element.Name}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="rel">
+                <th mat-header-cell *matHeaderCellDef> Relation </th>
+                <td mat-cell *matCellDef="let element"> {{element.Relationship}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="nic">
+                <th mat-header-cell *matHeaderCellDef> NIC </th>
+                <td mat-cell *matCellDef="let element"> {{element.Nic}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="dob">
+                <th mat-header-cell *matHeaderCellDef> DOB </th>
+                <td mat-cell *matCellDef="let element"> {{element.DOB}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="share">
+                <th mat-header-cell *matHeaderCellDef> Share (%) </th>
+                <td mat-cell *matCellDef="let element"> {{element.Share}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="guard">
+                <th mat-header-cell *matHeaderCellDef> Guardian Name </th>
+                <td mat-cell *matCellDef="let element"> {{element.GuardianName}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="guardN">
+                <th mat-header-cell *matHeaderCellDef> Guardian NIC </th>
+                <td mat-cell *matCellDef="let element"> {{element.GuardianNic}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="guardD">
+                <th mat-header-cell *matHeaderCellDef> Guardian DOB </th>
+                <td mat-cell *matCellDef="let element"> {{element.GuardianDOB}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="guardR">
+                <th mat-header-cell *matHeaderCellDef> Guardian Relation </th>
+                <td mat-cell *matCellDef="let element"> {{element.GuardianRelation}} </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="nomineedisplayedColumns; sticky : true"></tr>
+              <tr mat-row *matRowDef="let row; columns: nomineedisplayedColumns;"></tr>
+            </table>
+          </mat-tab>
+
+
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <i class="fas fa-dollar-sign"></i>
+              Settlement
+            </ng-template>
+
+            <table mat-table [dataSource]="datasourceSettlement" class="mat-elevation-z8" style="width: 100%">
+
+              <ng-container matColumnDef="number">
+                <th mat-header-cell *matHeaderCellDef> Number </th>
+                <td mat-cell *matCellDef="let element"> {{element.Docnum}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="code">
+                <th mat-header-cell *matHeaderCellDef> Code </th>
+                <td mat-cell *matCellDef="let element"> {{element.DocCode}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef> Name </th>
+                <td mat-cell *matCellDef="let element"> {{element.Name}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="amt">
+                <th mat-header-cell *matHeaderCellDef> Amount </th>
+                <td mat-cell *matCellDef="let element"> {{element.TotPremium}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="branch">
+                <th mat-header-cell *matHeaderCellDef> Branch </th>
+                <td mat-cell *matCellDef="let element"> {{element.Branch}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef> Status </th>
+                <td mat-cell *matCellDef="let element"> {{element.ChqRel}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="mode">
+                <th mat-header-cell *matHeaderCellDef> Mode </th>
+                <td mat-cell *matCellDef="let element"> {{element.PayMode}} </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="settlementDisplayedColumns; sticky : true"></tr>
+              <tr mat-row *matRowDef="let row; columns: settlementDisplayedColumns;"></tr>
+            </table>
+          </mat-tab>
+
+
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <i class="fas fa-asterisk"></i>
+              Requirments
+            </ng-template>
+            <mat-tab-group>
+              <mat-tab label="Main Life">
+                <div style="height: 450px; overflow: auto;">
+                  <table mat-table [dataSource]="datasourceReqMain" class="mat-elevation-z8" style="width: 100%">
+
+                    <ng-container matColumnDef="code">
+                      <th mat-header-cell *matHeaderCellDef> Test Code </th>
+                      <td mat-cell *matCellDef="let element"> {{element.TestCode}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="name">
+                      <th mat-header-cell *matHeaderCellDef> Test Name </th>
+                      <td mat-cell *matCellDef="let element"> {{element.TestName}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="origin">
+                      <th mat-header-cell *matHeaderCellDef> Origin </th>
+                      <td mat-cell *matCellDef="let element"> {{element.Origin}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="rcv">
+                      <th mat-header-cell *matHeaderCellDef> Recived </th>
+                      <td mat-cell *matCellDef="let element"> {{element.Recived}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="hospital">
+                      <th mat-header-cell *matHeaderCellDef> Hospital </th>
+                      <td mat-cell *matCellDef="let element"> {{element.Hospital}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="date">
+                      <th mat-header-cell *matHeaderCellDef> Date </th>
+                      <td mat-cell *matCellDef="let element"> {{element.TestDate}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="amt">
+                      <th mat-header-cell *matHeaderCellDef> Amount </th>
+                      <td mat-cell *matCellDef="let element"> {{element.PayAmount}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="status">
+                      <th mat-header-cell *matHeaderCellDef> Status </th>
+                      <td mat-cell *matCellDef="let element"> {{element.PayStatus}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="addnot">
+                      <th mat-header-cell *matHeaderCellDef> Additional Notes</th>
+                      <td mat-cell *matCellDef="let element"> {{element.AdditionalNotes}} </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="medicaldisplayedColumns; sticky : true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: medicaldisplayedColumns;"></tr>
+                  </table>
+
+                </div>
+              </mat-tab>
+              <mat-tab label="Spouse">
+                <div style="height: 450px; overflow: auto;">
+                  <table mat-table [dataSource]="datasourceReqSpouse" class="mat-elevation-z8" style="width: 100%">
+
+                    <ng-container matColumnDef="code">
+                      <th mat-header-cell *matHeaderCellDef> Test Code </th>
+                      <td mat-cell *matCellDef="let element"> {{element.TestCode}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="name">
+                      <th mat-header-cell *matHeaderCellDef> Test Name </th>
+                      <td mat-cell *matCellDef="let element"> {{element.TestName}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="origin">
+                      <th mat-header-cell *matHeaderCellDef> Origin </th>
+                      <td mat-cell *matCellDef="let element"> {{element.Origin}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="rcv">
+                      <th mat-header-cell *matHeaderCellDef> Recived </th>
+                      <td mat-cell *matCellDef="let element"> {{element.Recived}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="hospital">
+                      <th mat-header-cell *matHeaderCellDef> Hospital </th>
+                      <td mat-cell *matCellDef="let element"> {{element.Hospital}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="date">
+                      <th mat-header-cell *matHeaderCellDef> Date </th>
+                      <td mat-cell *matCellDef="let element"> {{element.TestDate}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="amt">
+                      <th mat-header-cell *matHeaderCellDef> Amount </th>
+                      <td mat-cell *matCellDef="let element"> {{element.PayAmount}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="status">
+                      <th mat-header-cell *matHeaderCellDef> Status </th>
+                      <td mat-cell *matCellDef="let element"> {{element.PayStatus}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="addnot">
+                      <th mat-header-cell *matHeaderCellDef> Additional Notes</th>
+                      <td mat-cell *matCellDef="let element"> {{element.AdditionalNotes}} </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="medicaldisplayedColumns; sticky : true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: medicaldisplayedColumns;"></tr>
+                  </table>
+
+                </div>
+              </mat-tab>
+              <mat-tab label="Children">
+                <div style="height: 400px; overflow: auto;">
+                  <table mat-table [dataSource]="datasourceReqChild" class="mat-elevation-z8" style="width: 100%">
+
+                    <ng-container matColumnDef="code">
+                      <th mat-header-cell *matHeaderCellDef> Test Code </th>
+                      <td mat-cell *matCellDef="let element"> {{element.TestCode}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="name">
+                      <th mat-header-cell *matHeaderCellDef> Test Name </th>
+                      <td mat-cell *matCellDef="let element"> {{element.TestName}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="origin">
+                      <th mat-header-cell *matHeaderCellDef> Origin </th>
+                      <td mat-cell *matCellDef="let element"> {{element.Origin}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="rcv">
+                      <th mat-header-cell *matHeaderCellDef> Recived </th>
+                      <td mat-cell *matCellDef="let element"> {{element.Recived}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="hospital">
+                      <th mat-header-cell *matHeaderCellDef> Hospital </th>
+                      <td mat-cell *matCellDef="let element"> {{element.Hospital}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="date">
+                      <th mat-header-cell *matHeaderCellDef> Date </th>
+                      <td mat-cell *matCellDef="let element"> {{element.TestDate}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="amt">
+                      <th mat-header-cell *matHeaderCellDef> Amount </th>
+                      <td mat-cell *matCellDef="let element"> {{element.PayAmount}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="status">
+                      <th mat-header-cell *matHeaderCellDef> Status </th>
+                      <td mat-cell *matCellDef="let element"> {{element.PayStatus}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="addnot">
+                      <th mat-header-cell *matHeaderCellDef> Additional Notes</th>
+                      <td mat-cell *matCellDef="let element"> {{element.AdditionalNotes}} </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="medicaldisplayedColumns; sticky : true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: medicaldisplayedColumns;"></tr>
+                  </table>
+
+                </div>
+              </mat-tab>
+
+            </mat-tab-group>
+
+          </mat-tab>
+
+
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <i class="fas fa-exchange-alt"></i>
+              Transfer Info
+            </ng-template>
+
+            <table mat-table [dataSource]="datasourceTransHistory" class="mat-elevation-z8" style="width: 100%">
+
+                <ng-container matColumnDef="code">
+                  <th mat-header-cell *matHeaderCellDef> Agent Code </th>
+                  <td mat-cell *matCellDef="let element"> {{element.AgentCode}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="name">
+                  <th mat-header-cell *matHeaderCellDef> Agent Name </th>
+                  <td mat-cell *matCellDef="let element"> {{element.Name}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="class">
+                  <th mat-header-cell *matHeaderCellDef> Agent Class </th>
+                  <td mat-cell *matCellDef="let element"> {{element.AgentClass}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="from">
+                  <th mat-header-cell *matHeaderCellDef> From Date </th>
+                  <td mat-cell *matCellDef="let element"> {{element.FromDate}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="to">
+                  <th mat-header-cell *matHeaderCellDef> To Date </th>
+                  <td mat-cell *matCellDef="let element"> {{element.ToDate}} </td>
+                </ng-container>
+
+                
+
+                <tr mat-header-row *matHeaderRowDef="transHistorydisplayedColumns; sticky : true"></tr>
+                <tr mat-row *matRowDef="let row; columns: transHistorydisplayedColumns;"></tr>
+              </table>
+          </mat-tab>
+
+
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <i class="fas fa-money-bill-alt"></i>
+              Payment History
+            </ng-template>
+
+            <div style="height: 400px; overflow: auto;">
+                <table mat-table [dataSource]="datasourcePaymentHistory" class="mat-elevation-z8" style="width: 100%">
+
+                  <ng-container matColumnDef="year">
+                    <th mat-header-cell *matHeaderCellDef> Year </th>
+                    <td mat-cell *matCellDef="let element"> {{element.Year}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="month">
+                    <th mat-header-cell *matHeaderCellDef> Month </th>
+                    <td mat-cell *matCellDef="let element"> {{element.Month}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="date">
+                    <th mat-header-cell *matHeaderCellDef> Date </th>
+                    <td mat-cell *matCellDef="let element"> {{element.Date}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="amtSet">
+                    <th mat-header-cell *matHeaderCellDef> Amount Settled </th>
+                    <td mat-cell *matCellDef="let element"> {{element.SettledAmt}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="amtDue">
+                    <th mat-header-cell *matHeaderCellDef> Amount Due </th>
+                    <td mat-cell *matCellDef="let element"> {{element.DueAmt}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="outstanding">
+                    <th mat-header-cell *matHeaderCellDef> Outstanding </th>
+                    <td mat-cell *matCellDef="let element"> {{element.Outstanding}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="ref">
+                    <th mat-header-cell *matHeaderCellDef> Ref </th>
+                    <td mat-cell *matCellDef="let element"> {{element.Remark}} </td>
+                  </ng-container>
+
+                 
+                  <tr mat-header-row *matHeaderRowDef="paymentHistorydisplayedColumns; sticky : true"></tr>
+                  <tr mat-row *matRowDef="let row; columns: paymentHistorydisplayedColumns;"></tr>
+                </table>
+
+              </div>
+          </mat-tab>
+
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <i class="fas fa-list"></i>
+              Dispatch. / Acknow.
+            </ng-template>
+
+            <table class="tbl-layout" style="min-width: 530px;">
+                <tbody>
+                  <tr>
+                    <td colspan="3">
+                      <h2>Policy Dispatch Details</h2>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="width: 160px;">Dispatch Date </td>
+                    <td style="width: 10px;">:</td>
+                    <td colspan="2">{{dispatchAch.Dspdat}}</td>
+                  </tr>
+
+                  <tr>
+                    <td style="width: 160px;">Dispatch to </td>
+                    <td style="width: 10px;">:</td>
+                    <td>{{dispatchAch.Agncod}}</td>
+                    <td>{{dispatchAch.Agnnam}}</td>
+                  </tr>
+
+                  <hr>
+
+                  <tr>
+                    <td colspan="3">
+                      <h2>Acknowledgement Details</h2>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="width: 160px;">Acknowledge Date </td>
+                    <td style="width: 10px;">:</td>
+                    <td colspan="2">{{dispatchAch.Ackdat}}</td>
+                  </tr>
+
+                  <tr>
+                    <td style="width: 160px;">Customer Sing Date </td>
+                    <td style="width: 10px;">:</td>
+                    <td>{{dispatchAch.Cusdat}}</td>
+                  </tr>
+
+                  <hr>
+
+                  <tr>
+                    <td colspan="3">
+                      <h2>ACH Card Dispatch</h2>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="width: 160px;">Dispatch Date </td>
+                    <td style="width: 10px;">:</td>
+                    <td colspan="2">{{dispatchAch.Cadsdt}}</td>
+                  </tr>
+
+                  <tr>
+                    <td style="width: 160px;">Remarks </td>
+                    <td style="width: 10px;">:</td>
+                    <td>{{dispatchAch.Remark}}</td>
+                  </tr>
+
+                </tbody>
+              </table>
+          </mat-tab>
+
+        </mat-tab-group>
+
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
