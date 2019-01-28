@@ -48,7 +48,6 @@ export class AgentInquiryComponent implements OnInit {
   loading1: boolean= true;
   loading: boolean= true;
   hideData: boolean = true;
-  isLinear = false;
 
   constructor(private agentInquiryService:AgentInquiryService) { }
 
