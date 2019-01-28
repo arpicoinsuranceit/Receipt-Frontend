@@ -22,8 +22,13 @@
                 <div [ngClass]="{'disabled': loading_form == true}">
                     <div>
                         <table style="width: 100%">
+                            <tr>
+                                <td>Policy / Proposal</td>
+                                <td>Date</td>
+                                <td style="text-align: right">Amount</td>
+                            </tr>
                             <tr *ngFor="let lstrct of data_cpy">
-                                <td>{{lstrct.Doccod}} / {{lstrct.Docnum}}</td>
+                                <td>{{lstrct.Polnum}} / {{lstrct.Pprnum}}</td>
                                 <td>{{lstrct.credat}}</td>
                                 <td style="text-align: right">{{lstrct.topprm | number: '.2' }}</td>
                             </tr>

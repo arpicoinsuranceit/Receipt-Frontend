@@ -11,6 +11,15 @@
       justify-content: space-between; margin-top: -23px; margin-left: -13px;">
         <mat-card-title>
           <h3>AGENT INQUIRY</h3>
+          <table *ngIf="!hideData">
+            <tr>
+              <th >Agent Code </th>
+              <th >: {{agentInquiryDetails.Code}}</th>
+              <th > / </th>
+              <th style="text-align: right;">Agent Name </th>
+              <th style="text-align: right;">: {{agentInquiryDetails.SName}}</th>
+            </tr>
+          </table>
         </mat-card-title>
       </mat-card-header>
 
@@ -105,76 +114,76 @@
                   <div fxFlex="50%">
                     <table>
                       <tr>
-                        <th style="text-align: left;">Agent Code</th>
-                        <th>: {{agentInquiryDetails.Code}}</th>
+                        <th style="text-align: left;width: 30%;">Agent Code</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.Code}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">Branch Code</th>
-                        <th>: {{agentInquiryDetails.Branch}}</th>
+                        <th style="text-align: left;width: 30%;">Branch Code</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.Branch}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">Branch Name</th>
-                        <th>: {{agentInquiryDetails.Branch}}</th>
+                        <th style="text-align: left;width: 30%;">Branch Name</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.BranchName}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">Region</th>
-                        <th>: {{agentInquiryDetails.Region}}</th>
+                        <th style="text-align: left;width: 30%;">Region</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.Region}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">Zone</th>
-                        <th>: {{agentInquiryDetails.Zone}}</th>
+                        <th style="text-align: left;width: 30%;">Zone</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.Zone}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">Title</th>
-                        <th>: {{agentInquiryDetails.Title}}</th>
+                        <th style="text-align: left;width: 30%;">Title</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.Title}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">First Name</th>
-                        <th>: {{agentInquiryDetails.FName}}</th>
+                        <th style="text-align: left;width: 30%;">First Name</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.FName}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">Middle Name</th>
-                        <th>: {{agentInquiryDetails.MName}}</th>
+                        <th style="text-align: left;width: 30%;">Middle Name</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.MName}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">Last Name</th>
-                        <th>: {{agentInquiryDetails.LName}}</th>
+                        <th style="text-align: left;width: 30%;">Last Name</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.LName}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">Short Name</th>
-                        <th>: {{agentInquiryDetails.SName}}</th>
+                        <th style="text-align: left;width: 30%;">Short Name</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.SName}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">Status</th>
-                        <th>: {{agentInquiryDetails.Status}}</th>
+                        <th style="text-align: left;width: 30%;">Status</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.Status}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">Gender</th>
-                        <th>: {{agentInquiryDetails.Sex}}</th>
+                        <th style="text-align: left;width: 30%;">Gender</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.Sex}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">Date of Resign</th>
-                        <th>: {{agentInquiryDetails.Code}}</th>
+                        <th style="text-align: left;width: 30%;">Date of Resign</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.Code}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">Remarks</th>
-                        <th>: {{agentInquiryDetails.Remarks}}</th>
+                        <th style="text-align: left;width: 30%;">Remarks</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.Remarks}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">Grants Status</th>
-                        <th>: {{agentInquiryDetails.GrantStatus}}</th>
+                        <th style="text-align: left;width: 30%;">Grants Status</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.GrantStatus}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">ORC Remark</th>
-                        <th>: {{agentInquiryDetails.OrcRem}}</th>
+                        <th style="text-align: left;width: 30%;">ORC Remark</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.OrcRem}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">Designation</th>
-                        <th>: {{agentInquiryDetails.Designation}}</th>
+                        <th style="text-align: left;width: 30%;">Designation</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.Designation}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">Appointment Date</th>
-                        <th>: {{agentInquiryDetails.AppoinmentDate}}</th>
+                        <th style="text-align: left;width: 30%;">Appointment Date</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.AppoinmentDate}}</th>
                       </tr>
                     </table>
 
@@ -183,72 +192,72 @@
                   <div fxFlex="50%">
                     <table>
                       <tr>
-                        <th style="text-align: left;">Supervised By</th>
-                        <th>: {{agentInquiryDetails.Supervisor}}</th>
+                        <th style="text-align: left;width: 30%;">Supervised By</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.Supervisor}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">Supervisor Name</th>
-                        <th>: {{agentInquiryDetails.Supervisor}}</th>
+                        <th style="text-align: left;width: 30%;">Supervisor Name</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.Supervisor}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">Print Name</th>
-                        <th>: {{agentInquiryDetails.AppoinmentDate}}</th>
+                        <th style="text-align: left;width: 30%;">Print Name</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.AppoinmentDate}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">Misappropriate</th>
-                        <th>: {{agentInquiryDetails.Misappropiate}}</th>
+                        <th style="text-align: left;width: 30%;">Misappropriate</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.Misappropiate}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">Misapp.Remark</th>
-                        <th>: {{agentInquiryDetails.MissappRem}}</th>
+                        <th style="text-align: left;width: 30%;">Misapp.Remark</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.MissappRem}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">Agent Nature</th>
-                        <th>: {{agentInquiryDetails.AgnNat}}</th>
+                        <th style="text-align: left;width: 30%;">Agent Nature</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.AgnNat}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">Nic No</th>
-                        <th>: {{agentInquiryDetails.Nic}}</th>
+                        <th style="text-align: left;width: 30%;">Nic No</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.Nic}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">Epf No</th>
-                        <th>: {{agentInquiryDetails.Epf}}</th>
+                        <th style="text-align: left;width: 30%;">Epf No</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.Epf}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">SLII REG No</th>
-                        <th>: {{agentInquiryDetails.SliiRegNo}}</th>
+                        <th style="text-align: left;width: 30%;">SLII REG No</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.SliiRegNo}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">Remark</th>
-                        <th>: {{agentInquiryDetails.Remark}}</th>
+                        <th style="text-align: left;width: 30%;">Remark</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.Remark}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">Maritial Status</th>
-                        <th>: {{agentInquiryDetails.CivlStatus}}</th>
+                        <th style="text-align: left;width: 30%;">Maritial Status</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.CivlStatus}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">Date Of Birth</th>
-                        <th>: {{agentInquiryDetails.Dob}}</th>
+                        <th style="text-align: left;width: 30%;">Date Of Birth</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.Dob}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">ORC Status</th>
-                        <th>: {{agentInquiryDetails.OcrStatus}}</th>
+                        <th style="text-align: left;width: 30%;">ORC Status</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.OcrStatus}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">Type</th>
-                        <th>: {{agentInquiryDetails.Type}}</th>
+                        <th style="text-align: left;width: 30%;">Type</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.Type}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">Sub Designation</th>
-                        <th>: {{agentInquiryDetails.SubDesignation}}</th>
+                        <th style="text-align: left;width: 30%;">Sub Designation</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.SubDesignation}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">Entered By</th>
-                        <th>: {{agentInquiryDetails.AgnNat}}</th>
+                        <th style="text-align: left;width: 30%;">Entered By</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.EnteredBy}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">Approved By</th>
-                        <th>: {{agentInquiryDetails.AgnNat}}</th>
+                        <th style="text-align: left;width: 30%;">Approved By</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.ApprovedBy}}</th>
                       </tr>
                     </table>
                   </div>
@@ -273,32 +282,32 @@
                   
                     <table>
                       <tr>
-                        <th style="text-align: left;">Contact Person</th>
-                        <th>: {{agentInquiryDetails.ContactPerson}}</th>
+                        <th style="text-align: left;width: 30%;">Contact Person</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.ContactPerson}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">TEL. Office</th>
-                        <th>: {{agentInquiryDetails.ContactTelOffice}}</th>
+                        <th style="text-align: left;width: 30%;">TEL. Office</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.ContactTelOffice}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">Telex</th>
-                        <th>: {{agentInquiryDetails.ContactTelx}}</th>
+                        <th style="text-align: left;width: 30%;">Telex</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.ContactTelx}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">TEL. Residence</th>
-                        <th>: {{agentInquiryDetails.ContactTelRecidence}}</th>
+                        <th style="text-align: left;width: 30%;">TEL. Residence</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.ContactTelRecidence}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">Fax</th>
-                        <th>: {{agentInquiryDetails.ContactFax}}</th>
+                        <th style="text-align: left;width: 30%;">Fax</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.ContactFax}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">Mobile</th>
-                        <th>: {{agentInquiryDetails.ContactMobile}}</th>
+                        <th style="text-align: left;width: 30%;">Mobile</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.ContactMobile}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">E-mail</th>
-                        <th>: {{agentInquiryDetails.ContactEMail}}</th>
+                        <th style="text-align: left;width: 30%;">E-mail</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.ContactEMail}}</th>
                       </tr>
                     </table>
 
@@ -321,48 +330,48 @@
                   <div fxFlex="100%" style="margin-bottom: 10px;max-height: 430px;overflow-x: auto;">
                     <table>
                       <tr>
-                        <th style="text-align: left;">Address 1</th>
-                        <th>: {{agentInquiryDetails.Address1}}</th>
+                        <th style="text-align: left;width: 30%;">Address 1</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.Address1}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">Address 2</th>
-                        <th>: {{agentInquiryDetails.Address2}}</th>
+                        <th style="text-align: left;width: 30%;">Address 2</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.Address2}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">City</th>
-                        <th>: {{agentInquiryDetails.City}}</th>
+                        <th style="text-align: left;width: 30%;">City</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.City}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">TEL. Office</th>
-                        <th>: {{agentInquiryDetails.TelOffice}}</th>
+                        <th style="text-align: left;width: 30%;">TEL. Office</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.TelOffice}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">Telex</th>
-                        <th>: {{agentInquiryDetails.TelX}}</th>
+                        <th style="text-align: left;width: 30%;">Telex</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.TelX}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">TEL. Residence</th>
-                        <th>: {{agentInquiryDetails.TelRecidence}}</th>
+                        <th style="text-align: left;width: 30%;">TEL. Residence</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.TelRecidence}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">Fax</th>
-                        <th>: {{agentInquiryDetails.Fax}}</th>
+                        <th style="text-align: left;width: 30%;">Fax</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.Fax}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">Mobile</th>
-                        <th>: {{agentInquiryDetails.Mobile}}</th>
+                        <th style="text-align: left;width: 30%;">Mobile</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.Mobile}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">E-mail</th>
-                        <th>: {{agentInquiryDetails.Email}}</th>
+                        <th style="text-align: left;width: 30%;">E-mail</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.Email}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">Website</th>
-                        <th>: {{agentInquiryDetails.Web}}</th>
+                        <th style="text-align: left;width: 30%;">Website</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.Web}}</th>
                       </tr>
                       <tr>
-                        <th style="text-align: left;">Effective Date</th>
-                        <th>: {{agentInquiryDetails.EfficenciveDate}}</th>
+                        <th style="text-align: left;width: 30%;">Effective Date</th>
+                        <th style="text-align: left;">: {{agentInquiryDetails.EfficenciveDate}}</th>
                       </tr>
                     </table>
 
@@ -436,8 +445,8 @@
                   <div fxFlex="100%" style="margin-bottom: 10px;max-height: 400px;overflow-x: auto;">
                     <mat-table [dataSource]="datasourceTarget" class="mat-elevation-z8" style="padding: 20px;">
                       <ng-container matColumnDef="month">
-                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 5%;"> Month </mat-header-cell>
-                        <mat-cell *matCellDef="let element" style="flex: 0 0 5%;"> {{element.month}} </mat-cell>
+                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> Month </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.month}} </mat-cell>
                       </ng-container>
 
                       <ng-container matColumnDef="targetAmount">
@@ -451,8 +460,8 @@
                       </ng-container>
 
                       <ng-container matColumnDef="orRate">
-                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 25%;"> OR Rate </mat-header-cell>
-                        <mat-cell *matCellDef="let element" style="flex: 0 0 25%;"> {{element.orRate}} </mat-cell>
+                        <mat-header-cell *matHeaderCellDef style="flex: 0 0 15%;"> OR Rate </mat-header-cell>
+                        <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.orRate}} </mat-cell>
                       </ng-container>
 
                       <ng-container matColumnDef="cfAmount">
@@ -465,7 +474,7 @@
                         <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.achAmount}} </mat-cell>
                       </ng-container>
 
-                      <mat-header-row *matHeaderRowDef="displayColumnTarget"></mat-header-row>
+                      <mat-header-row *matHeaderRowDef="displayColumnTarget;sticky:true;"></mat-header-row>
                       <mat-row *matRowDef="let row; columns: displayColumnTarget;"></mat-row>
                     </mat-table>
 
@@ -530,13 +539,13 @@
                           </ng-container>
     
                           <ng-container matColumnDef="from">
-                            <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> From </mat-header-cell>
-                            <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.from}} </mat-cell>
+                            <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;"> From </mat-header-cell>
+                            <mat-cell *matCellDef="let element" style="flex: 0 0 20%;"> {{element.from}} </mat-cell>
                           </ng-container>
     
                           <ng-container matColumnDef="to">
-                            <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> To </mat-header-cell>
-                            <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.to}} </mat-cell>
+                            <mat-header-cell *matHeaderCellDef style="flex: 0 0 20%;"> To </mat-header-cell>
+                            <mat-cell *matCellDef="let element" style="flex: 0 0 20%;"> {{element.to}} </mat-cell>
                           </ng-container>
     
                           <mat-header-row *matHeaderRowDef="displayColumnDesignation"></mat-header-row>
@@ -566,15 +575,15 @@
                       <table>
                         <tr>
                           <th style="text-align: left;">Agengy Agreement</th>
-                          <th>: aaaaaa</th>
+                          <th>: </th>
                         </tr>
                         <tr>
                           <th style="text-align: left;">Inc.Supp.Agreement</th>
-                          <th>: aaaaaa</th>
+                          <th>: </th>
                         </tr>
                         <tr>
                           <th style="text-align: left;">Travel Allowance</th>
-                          <th>: aaaaaa</th>
+                          <th>: </th>
                         </tr>
                       </table>
                     </div>
@@ -582,15 +591,15 @@
                       <table>
                         <tr>
                           <th style="text-align: left;">Issued Date</th>
-                          <th>: aaaaaa</th>
+                          <th>: </th>
                         </tr>
                         <tr>
                           <th style="text-align: left;">Issued Date</th>
-                          <th>: aaaaaa</th>
+                          <th>: </th>
                         </tr>
                         <tr>
                           <th style="text-align: left;">Issued Date</th>
-                          <th>: aaaaaa</th>
+                          <th>: </th>
                         </tr>
                       </table>
                     </div>
@@ -598,15 +607,15 @@
                       <table>
                         <tr>
                           <th style="text-align: left;">Accepted Date</th>
-                          <th>: aaaaaa</th>
+                          <th>: </th>
                         </tr>
                         <tr>
                           <th style="text-align: left;">Accepted Date</th>
-                          <th>: aaaaaa</th>
+                          <th>: </th>
                         </tr>
                         <tr>
                           <th style="text-align: left;">Accepted Date</th>
-                          <th>: aaaaaa</th>
+                          <th>: </th>
                         </tr>
                       </table>
                     </div>

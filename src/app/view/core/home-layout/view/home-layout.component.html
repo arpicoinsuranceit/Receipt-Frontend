@@ -5,44 +5,91 @@
                 {{dateText}} {{timetext}}
             </p>
             <mat-card-title class="nav-header-title" style="margin: 0; padding: 0;">
-                <img class="nav-header-title-image"  routerLink="home" mat-carad-image src="assets/images/logo.png" alt="ARPICO INSURANCE">
+                <img class="nav-header-title-image" routerLink="home" mat-carad-image src="assets/images/logo.png" alt="ARPICO INSURANCE">
             </mat-card-title>
         </mat-card>
-<br>
-        <button class="matMenuItem" mat-menu-item routerLink="workflow" style="width: 210px;   text-align: left; "> &nbsp; <mat-icon style="margin-left: -20px; color: black;" class="fas fa-building 1x"></mat-icon>Workflow</button>
-       
-        <button class="matMenuItem" *ngIf = "menuList.includes('RECEIPT')" mat-menu-item [matMenuTriggerFor]="receipt" style="width: 210px; padding: 10; margin: 1px; text-align: left;">&nbsp; <mat-icon style="margin-left: -20px;color: black;" class="fas fa-receipt 1x"></mat-icon>Receipt    <mat-icon style="margin-left: 65px;color: black;" class="fas fa-angle-right 1x"></mat-icon>                      </button>
-        
-        <mat-menu  #receipt="matMenu"  yPosition="below" xPosition="before" >
-            <button class="matMenuItem" *ngIf = "menuList.includes('RECEIPT_POLICY')" mat-menu-item routerLink="policyreceipt" ><mat-icon style="color: black; margin-right: -10px;" class="fas fa-caret-right 0x"></mat-icon>Policy Receipt</button>
-            <button class="matMenuItem" *ngIf = "menuList.includes('RECEIPT_PROPOSAL')" mat-menu-item routerLink="proposalreceipt"><mat-icon style="color: black;margin-right: -10px;" class="fas fa-caret-right 0x "></mat-icon>Proposal Receipt</button>
-            <button class="matMenuItem" *ngIf = "menuList.includes('RECEIPT_QUOTATION')" mat-menu-item routerLink="quoreceipt"><mat-icon style="color: black;margin-right: -10px;" class="fas fa-caret-right 0x "></mat-icon>Quotation Receipt</button>
-            <hr *ngIf = "menuList.includes('RECEIPT_MISCLLANEOUS') || menuList.includes('RECEIPT_MISCLLANEOUS_GL')">
+        <br>
+        <button class="matMenuItem" mat-menu-item routerLink="workflow" style="width: 210px;   text-align: left; ">
+            &nbsp; <mat-icon style="margin-left: -20px; color: black;" class="fas fa-building 1x"></mat-icon>Workflow</button>
+
+        <button class="matMenuItem" *ngIf="menuList.includes('RECEIPT')" mat-menu-item [matMenuTriggerFor]="receipt"
+            style="width: 210px; padding: 10; margin: 1px; text-align: left;">&nbsp; <mat-icon style="margin-left: -20px;color: black;"
+                class="fas fa-receipt 1x"></mat-icon>Receipt <mat-icon style="margin-left: 65px;color: black;" class="fas fa-angle-right 1x"></mat-icon>
+        </button>
+
+        <mat-menu #receipt="matMenu" yPosition="below" xPosition="before">
+            <button class="matMenuItem" *ngIf="menuList.includes('RECEIPT_POLICY')" mat-menu-item routerLink="policyreceipt">
+                <mat-icon style="color: black; margin-right: -10px;" class="fas fa-caret-right 0x"></mat-icon>Policy
+                Receipt
+            </button>
+            <button class="matMenuItem" *ngIf="menuList.includes('RECEIPT_PROPOSAL')" mat-menu-item routerLink="proposalreceipt">
+                <mat-icon style="color: black;margin-right: -10px;" class="fas fa-caret-right 0x "></mat-icon>Proposal
+                Receipt
+            </button>
+            <button class="matMenuItem" *ngIf="menuList.includes('RECEIPT_QUOTATION')" mat-menu-item routerLink="quoreceipt">
+                <mat-icon style="color: black;margin-right: -10px;" class="fas fa-caret-right 0x "></mat-icon>Quotation
+                Receipt
+            </button>
+            <hr *ngIf="menuList.includes('RECEIPT_MISCLLANEOUS') || menuList.includes('RECEIPT_MISCLLANEOUS_GL')">
             <!-- <button *ngIf = "menuList.includes('RECEIPT_MISCLLANEOUS')" mat-menu-item routerLink="miscellaneousreceipt">MISCELLANEOUS RECEIPT</button> -->
-            <button class="matMenuItem" *ngIf = "menuList.includes('RECEIPT_MISCELLANEANEOUS ')" mat-menu-item routerLink="miscellaneousreceipt"><mat-icon style="color: black;margin-right: -10px;" class="fas fa-caret-right 0x "></mat-icon>Miscellaneous Receipt INV</button>
-            <button class="matMenuItem" *ngIf = "menuList.includes('RECEIPT_MISCELLANEANEOUS_GL ')" mat-menu-item routerLink="miscellaneousreceiptgl"><mat-icon style="color: black;margin-right: -10px;" class="fas fa-caret-right 0x "></mat-icon>Miscellaneous Receipt GL</button>
-            <button class="matMenuItem" *ngIf = "menuList.includes('RECEIPT_LOAN ')" mat-menu-item routerLink="loanreceipt"><mat-icon style="color: black;margin-right: -10px;" class="fas fa-caret-right 0x "></mat-icon>Loan Receipt</button>
-            <hr  *ngIf = "menuList.includes('RECEIPT_CANCELATION') || menuList.includes('RECEIPT_RE_PRINT')">
-            <button class="matMenuItem" *ngIf = "menuList.includes('RECEIPT_CANCELATION')" mat-menu-item routerLink="receiptcancelation"><mat-icon style="color: black;margin-left: -9px;" class="fas fa-ban 0x "></mat-icon>Receipt Cancelation</button>
-            <button class="matMenuItem" *ngIf = "menuList.includes('RECEIPT_RE_PRINT')" mat-menu-item routerLink="receiptreprint"><mat-icon style="color: black;margin-left: -9px;" class="fas fa-print 0x "></mat-icon>Receipt Re Print</button>
-           
+            <button class="matMenuItem" *ngIf="menuList.includes('RECEIPT_MISCELLANEANEOUS ')" mat-menu-item routerLink="miscellaneousreceipt">
+                <mat-icon style="color: black;margin-right: -10px;" class="fas fa-caret-right 0x "></mat-icon>Miscellaneous
+                Receipt INV
+            </button>
+            <button class="matMenuItem" *ngIf="menuList.includes('RECEIPT_MISCELLANEANEOUS_GL ')" mat-menu-item
+                routerLink="miscellaneousreceiptgl">
+                <mat-icon style="color: black;margin-right: -10px;" class="fas fa-caret-right 0x "></mat-icon>Miscellaneous
+                Receipt GL
+            </button>
+            <button class="matMenuItem" *ngIf="menuList.includes('RECEIPT_LOAN ')" mat-menu-item routerLink="loanreceipt">
+                <mat-icon style="color: black;margin-right: -10px;" class="fas fa-caret-right 0x "></mat-icon>Loan
+                Receipt
+            </button>
+            <hr *ngIf="menuList.includes('RECEIPT_CANCELATION') || menuList.includes('RECEIPT_RE_PRINT')">
+            <button class="matMenuItem" *ngIf="menuList.includes('RECEIPT_CANCELATION')" mat-menu-item routerLink="receiptcancelation">
+                <mat-icon style="color: black;margin-left: -9px;" class="fas fa-ban 0x "></mat-icon>Receipt Cancelation
+            </button>
+            <button class="matMenuItem" *ngIf="menuList.includes('RECEIPT_RE_PRINT')" mat-menu-item routerLink="receiptreprint">
+                <mat-icon style="color: black;margin-left: -9px;" class="fas fa-print 0x "></mat-icon>Receipt Re Print
+            </button>
+
         </mat-menu>
 
-        <button class="matMenuItem" *ngIf = "menuList.includes('UNDERWRITE')" mat-menu-item routerLink="underwrite" style="width: 210px;padding: 10;  text-align: left;">&nbsp; <mat-icon style="margin-left: -20px;color: black;" class="fas fa-pen-square 1x"></mat-icon>Underwrite</button>
+        <button class="matMenuItem" *ngIf="menuList.includes('UNDERWRITE')" mat-menu-item routerLink="underwrite" style="width: 210px;padding: 10;  text-align: left;">&nbsp;
+            <mat-icon style="margin-left: -20px;color: black;" class="fas fa-pen-square 1x"></mat-icon>Underwrite</button>
 
-        <button class="matMenuItem" *ngIf = "menuList.includes('INQUIRY')" mat-menu-item [matMenuTriggerFor]="inquiry" style="width: 210px;padding: 10;  text-align: left;">&nbsp; <mat-icon style="margin-left: -20px;color: black;" class="fas fa-search 1x"></mat-icon>Inquiry<mat-icon style="margin-left: 73px;color: black;" class="fas fa-angle-right 1x"></mat-icon></button>
+        <button class="matMenuItem" *ngIf="menuList.includes('INQUIRY')" mat-menu-item [matMenuTriggerFor]="inquiry"
+            style="width: 210px;padding: 10;  text-align: left;">&nbsp; <mat-icon style="margin-left: -20px;color: black;"
+                class="fas fa-search 1x"></mat-icon>Inquiry<mat-icon style="margin-left: 73px;color: black;" class="fas fa-angle-right 1x"></mat-icon></button>
 
-        <mat-menu #inquiry="matMenu" yPosition="below" xPosition="before" >
-            <button class="matMenuItem" *ngIf = "menuList.includes('RECEIPT_INQUIRY')" mat-menu-item routerLink="receiptinquiry"><mat-icon style="color: black;margin-right: -10px;" class="fas fa-caret-right 0x "></mat-icon>Receipt Inquiry</button>
-            <button class="matMenuItem" *ngIf = "menuList.includes('PROPOSAL_INQUIRY')" mat-menu-item routerLink="proposalinquiry"><mat-icon style="color: black;margin-right: -10px;" class="fas fa-caret-right 0x "></mat-icon>Proposal Inquiry</button>
-            <!-- <button class="matMenuItem" mat-menu-item routerLink="agentinquiry"><mat-icon style="color: black;margin-right: -10px;" class="fas fa-caret-right 0x "></mat-icon>Agent Inquiry</button> -->
+        <mat-menu #inquiry="matMenu" yPosition="below" xPosition="before">
+            <button class="matMenuItem" *ngIf="menuList.includes('RECEIPT_INQUIRY')" mat-menu-item routerLink="receiptinquiry">
+                <mat-icon style="color: black;margin-right: -10px;" class="fas fa-caret-right 0x "></mat-icon>Receipt
+                Inquiry
+            </button>
+
+            <button class="matMenuItem" *ngIf="menuList.includes('PROPOSAL_INQUIRY')" mat-menu-item routerLink="proposalinquiry">
+                <mat-icon style="color: black;margin-right: -10px;" class="fas fa-caret-right 0x "></mat-icon>Proposal
+                Inquiry
+            </button>
+
+            <button class="matMenuItem" *ngIf="menuList.includes('AGENT_INQUIRY')" mat-menu-item routerLink="agentinquiry">
+                <mat-icon style="color: black;margin-right: -10px;" class="fas fa-caret-right 0x "></mat-icon>Agent
+                Inquiry
+            </button>
+
         </mat-menu>
 
-        <button class="matMenuItem" *ngIf = "menuList.includes('COURIER')" mat-menu-item routerLink="courierdocument" style="width: 210px;padding: 10;  text-align: left;">&nbsp; <mat-icon style="margin-left: -20px;color: black;" class="fas fa-book 1x"></mat-icon>Courier Document</button>
+        <button class="matMenuItem" *ngIf="menuList.includes('COURIER')" mat-menu-item routerLink="courierdocument"
+            style="width: 210px;padding: 10;  text-align: left;">&nbsp; <mat-icon style="margin-left: -20px;color: black;"
+                class="fas fa-book 1x"></mat-icon>Courier Document</button>
 
-        <button class="matMenuItem" *ngIf = "menuList.includes('CODETRANSFER')" mat-menu-item routerLink="codetransfer" style="width: 210px;padding: 10; text-align: left;">&nbsp; <mat-icon style="margin-left: -20px;color: black;" class="fas fa-stream 1x"></mat-icon>Code Transfer</button>
+        <button class="matMenuItem" *ngIf="menuList.includes('CODETRANSFER')" mat-menu-item routerLink="codetransfer"
+            style="width: 210px;padding: 10; text-align: left;">&nbsp; <mat-icon style="margin-left: -20px;color: black;"
+                class="fas fa-stream 1x"></mat-icon>Code Transfer</button>
 
-        <button class="matMenuItem" mat-menu-item routerLink="report" style="width: 210px;padding: 10;  text-align: left;">&nbsp; <mat-icon style="margin-left: -20px;color: black;" class="fas fa-list-alt 1x"></mat-icon>Report</button>
+        <button class="matMenuItem" mat-menu-item routerLink="report" style="width: 210px;padding: 10;  text-align: left;">&nbsp;
+            <mat-icon style="margin-left: -20px;color: black;" class="fas fa-list-alt 1x"></mat-icon>Report</button>
 
     </mat-drawer>
 
@@ -54,10 +101,10 @@
             <span class="spacer"></span>
             <button mat-button [matMenuTriggerFor]="menu">{{user}}</button>
             <mat-menu #menu="matMenu">
-                <button class="logoutstyle" mat-menu-item (click) = "signout()">Sign out</button>
+                <button class="logoutstyle" mat-menu-item (click)="signout()">Sign out</button>
                 <button class="logoutstyle" mat-menu-item routerLink="changepassword">Change Password</button>
             </mat-menu>
-        </mat-toolbar> 
+        </mat-toolbar>
         <router-outlet></router-outlet>
     </div>
 </mat-drawer-container>

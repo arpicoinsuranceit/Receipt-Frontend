@@ -196,7 +196,7 @@ export class MiscellaneousReceiptGlrcComponent implements OnInit {
     this.commonService.getLastReceiptsMiscellGL().subscribe(response => {
       this.loading_table = false;
       this.data = new Array();
-      
+
       this.data_cpy = new Array();
 
       console.log(response.json());
@@ -211,7 +211,7 @@ export class MiscellaneousReceiptGlrcComponent implements OnInit {
           lastReceipt.DocNo = element.donNo;
           this.data.push(lastReceipt);
 
-          if(this.data.length < 3){
+          if (this.data.length < 3) {
             this.data_cpy.push(lastReceipt);
           }
 
@@ -249,6 +249,13 @@ export class MiscellaneousReceiptGlrcComponent implements OnInit {
   }
 
   addToCart() {
+
+    let rem : string = this.AccRemark.value
+
+      if(rem.length > 30){
+        this.alert("Oopz...", "Remark is too Long", "error");
+        return;
+      }
 
     if (this.AccountId.value != null && this.AccountId.value != "" &&
       this.AccRemark.value != null && this.AccRemark.value != "" &&
@@ -338,14 +345,20 @@ export class MiscellaneousReceiptGlrcComponent implements OnInit {
 
   saveReceipt() {
 
-   
-    let date  =  null;
-    if(this.PayMode.value == "CQ"){
+    let rem: string = this.Remark.value
 
-      try{
+    if (rem.length > 60) {
+      this.alert("Oopz...", "Remark is too Long", "error");
+      return;
+    }
+
+    let date = null;
+    if (this.PayMode.value == "CQ") {
+
+      try {
 
         date = formatDate(new Date(this.Chequedate.value), 'yyyy-MM-dd', "en-US");
-      } catch (e){
+      } catch (e) {
         this.alert("Error", "Cheque Date invalied", "error");
         return;
       }
@@ -396,8 +409,8 @@ export class MiscellaneousReceiptGlrcComponent implements OnInit {
     this.BranchCode.setValue("");
     this.BranchCode.reset();
 
-    this.BankCode.setValue("");
-    this.BankCode.reset();
+    // this.BankCode.setValue("");
+    // this.BankCode.reset();
 
     this.Remark.setValue("");
     this.Remark.reset();

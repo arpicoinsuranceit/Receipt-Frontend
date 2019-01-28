@@ -144,7 +144,9 @@ export class ProposalInquiryComponent implements OnInit {
   loadProposalInq(row: any) {
     console.log(row.ProposalNo);
 
+    this.loading = true;
     this.propsoalInquiryService.getInfo(row.ProposalNo).subscribe(resp => {
+      this.loading = false;
       this.daiplay = true;
       console.log(resp.json());
 
