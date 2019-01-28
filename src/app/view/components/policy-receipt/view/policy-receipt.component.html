@@ -34,6 +34,17 @@
                     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
                 </div>
                 <div [ngClass]="{'disabled': loading_form == true}">
+
+                    <div>
+                        <table style="width: 100%">
+                            <tr *ngFor = "let lstrct of data_cpy">
+                                <td>{{lstrct.Doccod}} / {{lstrct.Docnum}}</td>
+                                <td>{{lstrct.credat}}</td>
+                                <td style="text-align: right">{{lstrct.topprm | number: '.2' }}</td>
+                            </tr>
+                        </table>
+                    </div>
+
                     <form class="quotation-receipt-form" [formGroup]="receiptForm">
                         <div style="border-top: solid #C4C4C4 1px; display: flex; 
                         justify-content: space-between;">
@@ -111,6 +122,12 @@
 
 
                         <br>
+
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="Customer Name" disabled aria-label="Customer Name"
+                                formControlName="custName">
+                        </mat-form-field>
+
                         <mat-form-field class="full-width">
                             <input matInput placeholder="Bank Code *" tabindex="5" aria-label="Bank Code"
                                 [matAutocomplete]="bank" formControlName="bankCode">

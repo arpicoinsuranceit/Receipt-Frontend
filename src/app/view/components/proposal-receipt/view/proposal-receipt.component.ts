@@ -14,7 +14,7 @@ import { CommonService } from '../../../../service/common-service/common.service
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { ProposalModel } from '../../../../model/proposalmodel';
-import { DecimalPipe } from '@angular/common';
+import { DecimalPipe, formatDate } from '@angular/common';
 import { SearchModel } from 'app/model/search';
 
 @Component({
@@ -50,6 +50,7 @@ export class ProposalReceiptComponent implements OnInit {
   filteredAgents: Observable<any[]>;
 
   data: LastReceipt[] = new Array();
+  data_cpy: LastReceipt[] = new Array();
 
   lastReceipt: LastReceipt[] = new Array();
 
@@ -69,7 +70,8 @@ export class ProposalReceiptComponent implements OnInit {
     amountInWord: new FormControl(""),
     pickAgentCode: new FormControl(""),
     adv_type: new FormControl("quo"),
-    adv_value: new FormControl()
+    adv_value: new FormControl(),
+    custName: new FormControl("")
   });
 
   get PropNo() {
@@ -113,6 +115,10 @@ export class ProposalReceiptComponent implements OnInit {
 
   get Adv_value() {
     return this.quoReceiptForm.get("adv_value");
+  }
+
+  get CustName() {
+    return this.quoReceiptForm.get("custName");
   }
 
 
@@ -182,6 +188,8 @@ export class ProposalReceiptComponent implements OnInit {
     this.getBanks();
     this.loadLastReceipts();
     this.AmountInWord.disable();
+
+    this.CustName.disable();
 
   }
 
@@ -276,7 +284,7 @@ export class ProposalReceiptComponent implements OnInit {
       this.basicDetail.Premium = response.json().premium;
       this.basicDetail.PayAmount = response.json().amtPayble;
       this.lastReceipt = new Array();
-
+      this.CustName.setValue(this.basicDetail.CustomerName);
       this.Amount.setValue(this.basicDetail.Premium);
       this.convertAmountToWord();
 
@@ -409,6 +417,8 @@ export class ProposalReceiptComponent implements OnInit {
       this.loading_table = false;
       this.data = new Array();
 
+      this.data_cpy = new Array();
+
       console.log(response.json());
 
       response.json().forEach(element => {
@@ -423,6 +433,9 @@ export class ProposalReceiptComponent implements OnInit {
           lastReceipt.Chqrel = element.chqrel;
           lastReceipt.Paymod = element.paymod;
           this.data.push(lastReceipt);
+          if (this.data.length < 3) {
+            this.data_cpy.push(lastReceipt);
+          }
         }
       });
 
@@ -466,7 +479,7 @@ export class ProposalReceiptComponent implements OnInit {
         this.basicDetail.Pprsta = response.json().status;
         this.basicDetail.Id2 = response.json().id2;
         this.lastReceipt = new Array();
-
+        this.CustName.setValue(this.basicDetail.CustomerName);
         this.Amount.setValue(this.basicDetail.Premium);
         this.convertAmountToWord();
 
@@ -502,7 +515,17 @@ export class ProposalReceiptComponent implements OnInit {
   }
 
   saveReceipt() {
+    let date = null;
+    if (this.PayMode.value == "CQ") {
 
+      try {
+
+        date = formatDate(new Date(this.Chequedate.value), 'yyyy-MM-dd', "en-US");
+      } catch (e) {
+        this.alert("Error", "Cheque Date invalied", "error");
+        return;
+      }
+    }
 
     let saveReceiptModel = new SaveReceiptModel();
     saveReceiptModel.Amount = this.Amount.value;
@@ -517,7 +540,7 @@ export class ProposalReceiptComponent implements OnInit {
     saveReceiptModel.BranchCode = this.basicDetail.BranchCode;
     saveReceiptModel.Chequeno = this.Chequeno.value;
     saveReceiptModel.Chequebank = this.Chequebank.value;
-    saveReceiptModel.Chequedate = this.Chequedate.value;
+    saveReceiptModel.Chequedate = date;
     saveReceiptModel.Transferno = this.Credittransferno.value;
     saveReceiptModel.Token = sessionStorage.getItem("token");
 
@@ -579,6 +602,7 @@ export class ProposalReceiptComponent implements OnInit {
     let d: LastReceipt = new LastReceipt("...", "...", "...", "...", "...", 0.00, "...", "...");
     this.lastReceipt.push(d);
     this.lastReceipt.push(d);
+    this.CustName.reset()
   }
 
   alert(title: string, message: string, type: string) {

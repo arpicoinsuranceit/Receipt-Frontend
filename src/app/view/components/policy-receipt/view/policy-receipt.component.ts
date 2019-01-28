@@ -12,7 +12,7 @@ import { LastReceipt } from '../../../../model/lastreceipt';
 import { CommonService } from '../../../../service/common-service/common.service';
 import { Component, OnInit } from '@angular/core';
 import { PolicyModel } from '../../../../model/policymodel';
-import { DecimalPipe } from '@angular/common';
+import { DecimalPipe, formatDate } from '@angular/common';
 import { SearchModel } from 'app/model/search';
 
 @Component({
@@ -48,6 +48,8 @@ export class PolicyReceiptComponent implements OnInit {
 
   lastReceipt: LastReceipt[] = new Array();
 
+  data_cpy: LastReceipt[] = new Array();
+
 
   receiptForm = new FormGroup({
     propNo: new FormControl("", Validators.required),
@@ -63,7 +65,8 @@ export class PolicyReceiptComponent implements OnInit {
     amountInWord: new FormControl(""),
     pickAgentCode: new FormControl(""),
     adv_type: new FormControl("ppr"),
-    adv_value: new FormControl()
+    adv_value: new FormControl(),
+    custName: new FormControl("")
   });
 
   get PropNo() {
@@ -109,6 +112,10 @@ export class PolicyReceiptComponent implements OnInit {
     return this.receiptForm.get("adv_value");
   }
 
+  get CustName() {
+    return this.receiptForm.get("custName");
+  }
+
 
   constructor(private commonService: CommonService, private policyReceiptService: PolicyReceiptService, public dialog: MatDialog, private blobService: BlobService) { }
 
@@ -116,6 +123,7 @@ export class PolicyReceiptComponent implements OnInit {
     this.getBanks();
     this.loadLastReceipts();
     this.AmountInWord.disable();
+    this.CustName.disable();
 
     for (var i = 0; i < 2; i++) {
       this.lastReceipt.push(new LastReceipt("...", "...", "...", "...", "...", 0.00, "...", "..."))
@@ -223,8 +231,11 @@ export class PolicyReceiptComponent implements OnInit {
       this.basicDetail.PayAmount = response.json().amtPayble;
       this.lastReceipt = new Array();
 
-      this.Amount.setValue(this.basicDetail.Premium
-      );
+      console.log(this.basicDetail);
+
+      this.CustName.setValue(this.basicDetail.CustomerName);
+
+      this.Amount.setValue(this.basicDetail.Premium);
       this.convertAmountToWord();
 
       response.json().lastReceiptSummeryDtos.forEach(element => {
@@ -309,6 +320,7 @@ export class PolicyReceiptComponent implements OnInit {
     this.commonService.getLastReceipts().subscribe(response => {
       this.loading_table = false;
       this.data = new Array();
+      this.data_cpy = new Array();
 
       console.log(response.json());
 
@@ -324,6 +336,11 @@ export class PolicyReceiptComponent implements OnInit {
           lastReceipt.Chqrel = element.chqrel;
           lastReceipt.Paymod = element.paymod;
           this.data.push(lastReceipt);
+
+          if (this.data.length < 3) {
+            this.data_cpy.push(lastReceipt);
+          }
+
         }
 
       });
@@ -367,7 +384,7 @@ export class PolicyReceiptComponent implements OnInit {
           this.PropNo.setValue(this.policyList[0].PolicyCombine);
           this.getPolicyDetails(null);
         }
-        if(this.policyList.length == 0){
+        if (this.policyList.length == 0) {
           this.alert("Oopz...", "Policy Not Found", "error");
         }
       }, errpr => {
@@ -420,8 +437,8 @@ export class PolicyReceiptComponent implements OnInit {
         this.basicDetail.Id2 = response.json().id2;
         this.lastReceipt = new Array();
 
-        this.Amount.setValue(this.basicDetail.Premium
-        );
+        this.CustName.setValue(this.basicDetail.CustomerName);
+        this.Amount.setValue(this.basicDetail.Premium);
         this.convertAmountToWord();
 
         response.json().lastReceiptSummeryDtos.forEach(element => {
@@ -455,7 +472,17 @@ export class PolicyReceiptComponent implements OnInit {
   }
 
   saveReceipt() {
+    let date = null;
+    if (this.PayMode.value == "CQ") {
 
+      try {
+
+        date = formatDate(new Date(this.Chequedate.value), 'yyyy-MM-dd', "en-US");
+      } catch (e) {
+        this.alert("Error", "Cheque Date invalied", "error");
+        return;
+      }
+    }
 
     let saveReceiptModel = new SaveReceiptModel();
     saveReceiptModel.Amount = this.Amount.value;
@@ -470,7 +497,7 @@ export class PolicyReceiptComponent implements OnInit {
     saveReceiptModel.BranchCode = this.basicDetail.BranchCode;
     saveReceiptModel.Chequeno = this.Chequeno.value;
     saveReceiptModel.Chequebank = this.Chequebank.value;
-    saveReceiptModel.Chequedate = this.Chequedate.value;
+    saveReceiptModel.Chequedate = date;
     saveReceiptModel.Transferno = this.Credittransferno.value;
     saveReceiptModel.Token = sessionStorage.getItem("token");
 
@@ -502,6 +529,7 @@ export class PolicyReceiptComponent implements OnInit {
       this.loading_saving = false;
       this.alert("Oopz...", "Error occour at Saving", "error");
     });
+
   }
 
   newReceipt() {
@@ -529,6 +557,7 @@ export class PolicyReceiptComponent implements OnInit {
     this.Credittransferno.reset();
     this.Remark.reset();
     this.lastReceipt = new Array();
+    this.CustName.reset()
 
     let d: LastReceipt = new LastReceipt("...", "...", "...", "...", "...", 0.00, "...", "...");
     this.lastReceipt.push(d);

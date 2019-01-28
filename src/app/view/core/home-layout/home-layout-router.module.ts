@@ -85,6 +85,10 @@ const routes: Routes = [
       {
         path: 'changepassword',
         loadChildren : "app/view/components/change-password/change-password.module#ChangePasswordModule"
+      },
+      {
+        path: 'proposalinquiry',
+        loadChildren : "app/view/components/proposal-inquiry/proposal-inquiry.module#ProposalInquiryModule"
       }
     ]
   }
