@@ -1,3 +1,4 @@
+import { MedicalReqDetailsInq } from './../../../../model/medreqinq';
 import { DispatchAch } from './../../../../model/dispatchach';
 import { PaymentHistoryInq } from './../../../../model/paymenthistoryinq';
 import { TransferHistory } from './../../../../model/transferhistory';
@@ -11,7 +12,6 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { LoadInquiry } from './../../../../model/loadinquiry';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatStepper } from '@angular/material';
-import { MedicalReqDetailsInq } from 'app/model/medreqinq';
 
 @Component({
   selector: 'app-proposal-inquiry',
