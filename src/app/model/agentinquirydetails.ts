@@ -4,7 +4,7 @@ import { Targets } from './targets';
 import { SettlementDetails } from 'app/model/settlementdetails';
 import { Education } from './education';
 export class AgentInquiryDetails{
-    constructor(private code?:string,private branch?:string,private region?:string,
+    constructor(private code?:string,private branch?:string,private branchName?:string,private region?:string,
         private zone?:string,private title?:string,private fName?:string,private lName?:string,private mName?:string,
         private sName?:string,private status?:string,private sex?:string,private dateOfResign?:string,private remark?:string,private grantStatus?:string,
         private appoinmentDate?:string,private orcRem?:string, private designation?:string,private supervisor?:string,
@@ -14,6 +14,7 @@ export class AgentInquiryDetails{
         private contactFax?:string,private contactMobile?:string,private contactEMail?:string,private address1?:string,private address2?:string,
         private city?:string,private telOffice?:string,private telRecidence?:string,private telX?:string,
         private fax?:string,private mobile?:string,private web?:string,private email?:string,private efficenciveDate?:string,
+        private enteredBy?:string,private approvedBy?:string,
         private agencyAgreement?:string,private agencyAgreementIsuDat?:string,private agencyAgreementAcpDat?:string,
         private supAgreement?:string,private supAgreementIsuDat?:string,private supAgreementAcpDat?:string,
         private travelAllow?:string,private travelAllowIsuDat?:string,private travelAllowAcpDat?:string,
@@ -35,6 +36,14 @@ export class AgentInquiryDetails{
 
     set Branch(branch:string) {
         this.branch = branch;
+    }
+
+    get BranchName() {
+        return this.branchName;
+    }
+
+    set BranchName(branchName:string) {
+        this.branchName = branchName;
     }
     
     get Region() {
@@ -403,6 +412,22 @@ export class AgentInquiryDetails{
 
     set EfficenciveDate(efficenciveDate) {
         this.efficenciveDate = efficenciveDate;
+    }
+
+    get EnteredBy(){
+        return this.enteredBy;
+    }
+
+    set EnteredBy(enteredBy:string){
+        this.enteredBy=enteredBy;
+    }
+
+    get ApprovedBy(){
+        return this.approvedBy;
+    }
+
+    set ApprovedBy(approvedBy:string){
+        this.approvedBy=approvedBy;
     }
 
     get AgencyAgreement(){
