@@ -183,6 +183,10 @@
                                   <mat-header-cell *matHeaderCellDef style="flex: 0 0 35%;"> Gm Remark </mat-header-cell>
                                   <mat-cell *matCellDef="let element" style="flex: 0 0 35%;"> {{element.GmRemark}} </mat-cell>
                               </ng-container>
+                              <ng-container matColumnDef="requestBy">
+                                <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Request By </mat-header-cell>
+                                <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.requestBy}} </mat-cell>
+                              </ng-container>
                               <ng-container matColumnDef="requestDate">
                                   <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Request Date </mat-header-cell>
                                   <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.RequestDate | date: 'dd/MM/yyyy'}} </mat-cell>
@@ -240,6 +244,10 @@
                               <ng-container matColumnDef="gmRemark">
                                   <mat-header-cell *matHeaderCellDef style="flex: 0 0 35%;"> Gm Remark </mat-header-cell>
                                   <mat-cell *matCellDef="let element" style="flex: 0 0 35%;"> {{element.GmRemark}} </mat-cell>
+                              </ng-container>
+                              <ng-container matColumnDef="requestBy">
+                                <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Request By </mat-header-cell>
+                                <mat-cell *matCellDef="let element" style="flex: 0 0 10%;"> {{element.requestBy}} </mat-cell>
                               </ng-container>
                               <ng-container matColumnDef="requestDate">
                                   <mat-header-cell *matHeaderCellDef style="flex: 0 0 10%;"> Request Date </mat-header-cell>

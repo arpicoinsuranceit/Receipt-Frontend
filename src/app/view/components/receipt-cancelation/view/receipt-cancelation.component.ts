@@ -29,7 +29,7 @@ export class ReceiptCancelationComponent implements OnInit {
 
   displayedColumnsRequest: string[] = ['docCode', 'receiptNo',  'amount' , 'status', 'reason' ,'requestDate'];
 
-  displayedColumnsCanceledRequest: string[] = ['docCode', 'receiptNo',  'amount' , 'status' , 'gmRemark' ,'requestDate' ,'approvedDate'];
+  displayedColumnsCanceledRequest: string[] = ['docCode', 'receiptNo',  'amount' , 'status' , 'gmRemark' , 'requestBy','requestDate' ,'approvedDate'];
 
   datasourcePendingRequest= new MatTableDataSource<CanceledReceiptDto>(this.pendingRequestArray);
 
