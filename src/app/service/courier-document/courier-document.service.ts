@@ -16,7 +16,7 @@ export class CourierDocumentService {
   }
 
   getPhysicalBranches(){
-    return this.http.get("http://localhost:8086/physicalBranchAll");
+    return this.http.get("http://localhost:8086/UserManagement/physicalBranchAll");
   }
 
   getRefTypes(){
