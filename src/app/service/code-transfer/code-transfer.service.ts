@@ -36,6 +36,8 @@ export class CodeTransferService {
   loadCodePendingProposal(token){
     let urlParams = new URLSearchParams();
     urlParams.append('token', token);
+    urlParams.append('dashPara', "");
+    urlParams.append('userType', "UW");
     return this.http.post("http://localhost:8088/code_transfer/getCodePendingProposalDetails",urlParams);
   }
 
