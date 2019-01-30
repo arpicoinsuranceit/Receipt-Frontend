@@ -26,6 +26,8 @@ export class ProposalInquiryComponent implements OnInit {
 
   daiplay = false;
 
+  settlementTot ; number = 0.0;
+
   @ViewChild('stepper') stepper: MatStepper;
 
   displayedColumnsProposalGrid: string[] = ['proposalNo', 'policyNo', 'mainLifeName', 'nic', 'product', 'proposalStatus', 'advisorCode'];
@@ -144,7 +146,9 @@ export class ProposalInquiryComponent implements OnInit {
   loadProposalInq(row: any) {
     console.log(row.ProposalNo);
 
+    this.loading = true;
     this.propsoalInquiryService.getInfo(row.ProposalNo).subscribe(resp => {
+      this.loading = false;
       this.daiplay = true;
       console.log(resp.json());
 
@@ -231,6 +235,8 @@ export class ProposalInquiryComponent implements OnInit {
 
       this.datasourceSettlement = new Array()
 
+      let tot = 0;
+
       resp.json().settlementDtos.forEach(element => {
 
         let model: SettlementInq = new SettlementInq();
@@ -243,9 +249,18 @@ export class ProposalInquiryComponent implements OnInit {
         model.PayMode = element.payMode;
         model.TotPremium = element.totPremium;
 
+        let prem : string = element.totPremium;
+
+        tot = tot +  parseFloat(prem);
+
+        console.log(model.TotPremium);
+
         this.datasourceSettlement.push(model);
       });
 
+      this.settlementTot = tot;
+      console.log(this.settlementTot);
+      
 
       this.datasourceReqMain= new Array();
       this.datasourceReqSpouse = new Array();

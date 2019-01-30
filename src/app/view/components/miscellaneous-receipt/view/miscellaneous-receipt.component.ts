@@ -331,6 +331,13 @@ export class MiscellaneousReceiptComponent implements OnInit {
 
     if (this.ExpenceQty.value != null && this.ExpenceQty.value != "" /*&& parseInt(this.ExpenceQty.value) > 0*/) {
 
+      let rem : string = this.ExpenceRemark.value
+
+      if(rem.length > 30){
+        this.alert("Oopz...", "Remark is too Long", "error");
+        return;
+      }
+
       let amount: number = 0.0
 
       let expence: ExpenseModel = new ExpenseModel();
@@ -433,6 +440,13 @@ export class MiscellaneousReceiptComponent implements OnInit {
 
   saveReceipt() {
 
+    let rem : string = this.Remark.value
+
+      if(rem.length > 60){
+        this.alert("Oopz...", "Remark is too Long", "error");
+        return;
+      }
+
     let date  =  null;
     if(this.PayMode.value == "01.CHEQUE"){
 
@@ -502,8 +516,8 @@ export class MiscellaneousReceiptComponent implements OnInit {
     this.BranchCode.setValue("");
     this.BranchCode.reset();
 
-    this.BankCode.setValue("");
-    this.BankCode.reset();
+    // this.BankCode.setValue("");
+    // this.BankCode.reset();
 
     this.Remark.setValue("");
     this.Remark.reset();
