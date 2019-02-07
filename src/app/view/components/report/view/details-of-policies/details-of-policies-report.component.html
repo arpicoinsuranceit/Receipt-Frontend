@@ -1,0 +1,68 @@
+<!-- <span *ngIf="loading_report == true" >Loading....</span><br> -->
+<img src="assets/images/report.gif" style="width: 40px; height: 40px;" *ngIf="loading_report == true">
+<div [ngClass]="{'hidedialog': loading_report == true}" >
+<h2 mat-dialog-title style="text-align: center;border-bottom:solid #C4C4C4 1px">Details Of Policies Report</h2>
+<mat-dialog-content align="center" >
+  <!-- <img src="assets/images/giphy.gif" style="width: 70px; height: 70px;">  <br> -->
+
+  <div style="width: 100%">
+    <form [formGroup]="detOfPolForm">
+        <mat-form-field style="width: 100%">
+          <input matInput [matDatepicker]="picker1" placeholder="From Date (YYYY-MM-DD)" name="fromDate"
+            formControlName="fromDate">
+          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-datepicker #picker1 [disabled]="false"></mat-datepicker>
+        </mat-form-field><br>
+  
+        <mat-form-field style="width: 100%">
+          <input matInput [matDatepicker]="picker2" placeholder="To Date (YYYY-MM-DD)" name="toDate"
+            formControlName="toDate" >
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2 [disabled]="false"></mat-datepicker>
+        </mat-form-field><br>
+
+        <mat-form-field style="width: 100%">
+          <input matInput placeholder="IC" aria-label="IC" [matAutocomplete]="ic"
+            formControlName="ic" (keyup)="getAgents($event)">
+          <mat-autocomplete #ic="matAutocomplete">
+            <mat-option *ngFor="let agent of filteredAgents | async" [value]="agent">
+              <span> {{ agent }} </span>
+            </mat-option>
+
+          </mat-autocomplete>
+
+        </mat-form-field><br>
+
+        <mat-form-field style="width: 100%">
+          <input matInput placeholder="UL" aria-label="UL" formControlName="unl">
+        </mat-form-field><br>
+
+        <mat-form-field style="width: 100%">
+          <mat-select placeholder="Branch" aria-label="Branch" formControlName="branch">
+              <mat-option *ngFor="let branch of branchArray" [value]="branch">
+                  <span> {{ branch }} </span>
+              </mat-option>
+          </mat-select>
+        </mat-form-field><br>
+
+        <mat-form-field style="width: 100%">
+          <mat-select placeholder="SP" aria-label="SP" formControlName="sp">
+              <mat-option value="0">No</mat-option>
+              <mat-option value="1">Yes</mat-option>
+          </mat-select>
+        </mat-form-field><br>
+    </form>
+  </div>
+
+  <div *ngIf="invalidForm" style="background-color: crimson;height: 20px;color: white;">
+    Please Fill All Data Correctly
+  </div>
+  
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+  
+  <button mat-button style="background: rgb(77, 77, 77); color: white" mat-dialog-close (click)="noConfirmation();" >CANCEL</button>
+  <button mat-button style="background:#3F51B5; color: white" (click)="yesConfirmation();" >VIEW</button>
+</mat-dialog-actions>
+
+</div>

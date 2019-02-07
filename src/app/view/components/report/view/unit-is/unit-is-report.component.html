@@ -1,0 +1,92 @@
+<!-- <span *ngIf="loading_report == true" >Loading....</span><br> -->
+<img src="assets/images/report.gif" style="width: 40px; height: 40px;" *ngIf="loading_report == true">
+<div [ngClass]="{'hidedialog': loading_report == true}" >
+<h2 mat-dialog-title style="text-align: center;border-bottom:solid #C4C4C4 1px">Business Performance Details UNL</h2>
+<mat-dialog-content align="center" >
+  <!-- <img src="assets/images/giphy.gif" style="width: 70px; height: 70px;">  <br> -->
+
+  <div style="width: 100%">
+    <form [formGroup]="unitIsPerfSummForm">
+
+      <mat-form-field style="width: 100%">
+        <input matInput [matDatepicker]="picker1" placeholder="From Date (YYYY-MM-DD)" name="fromDate"
+          formControlName="fromDate">
+        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1 [disabled]="false"></mat-datepicker>
+      </mat-form-field><br>
+
+      <mat-form-field style="width: 100%">
+        <input matInput [matDatepicker]="picker2" placeholder="To Date (YYYY-MM-DD)" name="toDate"
+          formControlName="toDate" >
+        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+        <mat-datepicker #picker2 [disabled]="false"></mat-datepicker>
+      </mat-form-field><br>
+
+      <mat-form-field style="width: 100%">
+        <mat-select placeholder="Branch" aria-label="Branch" formControlName="branch" (selectionChange)="loadAgents();">
+            <mat-option *ngFor="let branch of branchArray" [value]="branch">
+                <span> {{ branch }} </span>
+            </mat-option>
+        </mat-select>
+      </mat-form-field><br>
+
+      <mat-form-field style="width: 100%">
+        <input matInput placeholder="UL" aria-label="UL" formControlName="unl">
+      </mat-form-field><br>
+
+      <mat-form-field style="width: 100%">
+        <mat-select placeholder="Product" aria-label="Product" formControlName="product">
+            <mat-option value="ALL">ALL</mat-option>
+            <mat-option value="END1">END1</mat-option>
+            <mat-option value="ARP">ARP</mat-option>
+            <mat-option value="ASFP">ASFP</mat-option>
+            <mat-option value="INVP">INVP</mat-option>
+            <mat-option value="ATRM">ATRM</mat-option>
+            <mat-option value="ASIP">ASIP</mat-option>
+            <mat-option value="AIP">AIP</mat-option>
+            <mat-option value="DTA">DTA</mat-option>
+            <mat-option value="DTAPL">DTAPL</mat-option>
+            <mat-option value="ATP">ATP</mat-option>
+            <mat-option value="DTAP">DTAP</mat-option>
+            <mat-option value="ARTM">ARTM</mat-option>
+        </mat-select>
+      </mat-form-field><br>
+
+      <mat-form-field style="width: 100%">
+        <mat-select placeholder="Frequency" aria-label="Frequency" formControlName="frequency">
+            <mat-option value="ALL">ALL</mat-option>
+            <mat-option value="1">Monthly</mat-option>
+            <mat-option value="12">Yearly</mat-option>
+            <mat-option value="3">Quartely</mat-option>
+            <mat-option value="6">Half Yearly</mat-option>
+            <mat-option value="S">Single</mat-option>
+        </mat-select>
+      </mat-form-field><br>
+
+      <mat-form-field style="width: 100%">
+        <mat-select placeholder="Type" aria-label="Type" formControlName="type">
+            <mat-option value="ALL">ALL</mat-option>
+            <mat-option value="NU">NU</mat-option>
+            <mat-option value="P">P</mat-option>
+            <mat-option value="NI">NI</mat-option>
+            <mat-option value="PU">PU</mat-option>
+            <mat-option value="PI">PI</mat-option>
+            <mat-option value="NP">NP</mat-option>
+        </mat-select>
+      </mat-form-field><br>
+
+    </form>
+  </div>
+
+  <div *ngIf="invalidForm" style="background-color: crimson;height: 20px;color: white;">
+    Please Fill All Data Correctly
+  </div>
+  
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+  
+  <button mat-button style="background: rgb(77, 77, 77); color: white" mat-dialog-close (click)="noConfirmation();" >CANCEL</button>
+  <button mat-button style="background:#3F51B5; color: white" (click)="yesConfirmation();" >VIEW</button>
+</mat-dialog-actions>
+
+</div>

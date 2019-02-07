@@ -68,6 +68,66 @@
     background: #beb5f5; 
 }
 
+.first-div{
+    border-left: solid 5px rgb(162, 135, 168); 
+    background: rgb(223, 173, 209); 
+    margin-top: 0px;
+    cursor: pointer;
+}
+
+.first-div:hover{
+    border-left: solid 5px rgb(167, 130, 170); 
+    background: rgb(228, 164, 233); 
+}
+
+.second-div{
+    border-left: solid 5px rgb(173, 228, 9); 
+    background: rgb(217, 241, 137); 
+    margin-top: 0px;
+    cursor: pointer;
+}
+
+.second-div:hover{
+    border-left: solid 5px rgb(196, 219, 120); 
+    background: rgb(226, 240, 175); 
+}
+
+.third-div{
+    border-left: solid 5px #00C0FF; 
+    background: rgb(164, 228, 221); 
+    margin-top: 0px;
+    cursor: pointer;
+}
+
+.third-div:hover{
+    border-left: solid 5px rgb(0, 191, 255); 
+    background: rgb(138, 199, 219); 
+}
+
+.forth-div{
+    border-left: solid 5px #FF342B; 
+    background: rgb(235, 149, 145); 
+    margin-top: 0px;
+    cursor: pointer;
+}
+
+.forth-div:hover{
+    border-left: solid 5px #FF342B; 
+    background: rgb(241, 166, 162); 
+}
+
+.fifth-div{
+    border-left: solid 5px rgb(245, 230, 94); 
+    background: #F7EFAC; 
+    margin-top: 0px;
+    cursor: pointer;
+}
+
+.fifth-div:hover{
+    border-left: solid 5px rgb(238, 226, 115); 
+    background: rgb(248, 242, 185); 
+}
+
 .flex-box{
     width: 100%; height: 100%; 
     display: flex; 

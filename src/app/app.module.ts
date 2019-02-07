@@ -1,3 +1,6 @@
+import { PolicyAcknowledgementReportComponent } from './view/components/report/view/policy-acknowledgement/policy-acknowledgement-report.component';
+import { McfpReportComponent } from './view/components/report/view/mcfp/mcfp-report.component';
+import { DetailsOfPoliciesReportComponent } from './view/components/report/view/details-of-policies/details-of-policies-report.component';
 import { LapsedSummeryReportComponent } from './view/components/report/view/lapsed-summery-report/lapsed-summery-report.component';
 import { DashboardpopupComponent } from './view/core/dashboardpopup/dashboardpopup.component';
 import { CourierpopupComponent } from './view/core/courierpopup/courierpopup.component';
@@ -21,12 +24,20 @@ import { ReceiptRegisterReportComponent } from './view/components/report/view/re
 import { PaymentHistoryReportComponent } from './view/components/report/view/payment-history-report/payment-history-report.component';
 import { PremiumDueReportComponent } from './view/components/report/view/premium-due-report/premium-due-report.component';
 import { UnderwriteConfirmationAlertComponent } from './view/core/underwrite-confirmation-alert/underwrite-confirmation-alert.component';
+import { PendingRequirementsReportComponent } from './view/components/report/view/pending-requirements/pending-requirements-report.component';
+import { ProposalRegisterReportComponent } from './view/components/report/view/proposal-register/proposal-register-report.component';
+import { BusinessGrantReportComponent } from './view/components/report/view/business-grant/business-grant-report.component';
+import { SalesPerfDetailsReportComponent } from './view/components/report/view/sales-perf-details/sales-perf-details-report.component';
+import { SalesPerfSummeryReportComponent } from './view/components/report/view/sales-perf-summery/sales-perf-summery-report.component';
+import { UnitIsPerfSummeryReportComponent } from './view/components/report/view/unit-is/unit-is-report.component';
 
 
 @NgModule({
   declarations: [
     AppComponent, LoginComponent, AlertComponent ,CourierpopupComponent,DashboardpopupComponent,ConfirmationAlertComponent,ReceiptRegisterReportComponent,
-    LapsedSummeryReportComponent,PaymentHistoryReportComponent,PremiumDueReportComponent,UnderwriteConfirmationAlertComponent
+    LapsedSummeryReportComponent,PaymentHistoryReportComponent,PremiumDueReportComponent,UnderwriteConfirmationAlertComponent,DetailsOfPoliciesReportComponent
+    ,PendingRequirementsReportComponent,ProposalRegisterReportComponent,McfpReportComponent,PolicyAcknowledgementReportComponent,BusinessGrantReportComponent,
+    SalesPerfDetailsReportComponent,SalesPerfSummeryReportComponent,UnitIsPerfSummeryReportComponent
   ],
   imports: [
     BrowserModule,
@@ -41,6 +52,9 @@ import { UnderwriteConfirmationAlertComponent } from './view/core/underwrite-con
   providers: [AuthService, AuthGuard, CommonService],
   bootstrap: [AppComponent],
   entryComponents: [AlertComponent,CourierpopupComponent, DashboardpopupComponent,ConfirmationAlertComponent,ReceiptRegisterReportComponent,
-    LapsedSummeryReportComponent,PaymentHistoryReportComponent,PremiumDueReportComponent,UnderwriteConfirmationAlertComponent]
+    LapsedSummeryReportComponent,PaymentHistoryReportComponent,PremiumDueReportComponent,UnderwriteConfirmationAlertComponent,
+    DetailsOfPoliciesReportComponent,PendingRequirementsReportComponent,ProposalRegisterReportComponent,McfpReportComponent
+    ,PolicyAcknowledgementReportComponent,BusinessGrantReportComponent,SalesPerfDetailsReportComponent,SalesPerfSummeryReportComponent
+    ,UnitIsPerfSummeryReportComponent]
 })
 export class AppModule { }

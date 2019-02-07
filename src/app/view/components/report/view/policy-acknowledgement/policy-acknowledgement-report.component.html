@@ -1,0 +1,55 @@
+<!-- <span *ngIf="loading_report == true" >Loading....</span><br> -->
+<img src="assets/images/report.gif" style="width: 40px; height: 40px;" *ngIf="loading_report == true">
+<div [ngClass]="{'hidedialog': loading_report == true}" >
+<h2 mat-dialog-title style="text-align: center;border-bottom:solid #C4C4C4 1px">Policy Acknowledgement Report</h2>
+<mat-dialog-content align="center" >
+  <!-- <img src="assets/images/giphy.gif" style="width: 70px; height: 70px;">  <br> -->
+
+  <div style="width: 100%">
+    <form [formGroup]="polAckForm">
+
+      <mat-form-field style="width: 100%">
+        <input matInput placeholder="Year" aria-label="Year" formControlName="year">
+      </mat-form-field><br>
+
+      <mat-form-field style="width: 100%">
+        <mat-select placeholder="Month" aria-label="Month" formControlName="month">
+            <mat-option value="ALL">ALL</mat-option>
+            <mat-option value="1">January</mat-option>
+            <mat-option value="2">February</mat-option>
+            <mat-option value="3">March</mat-option>
+            <mat-option value="4">April</mat-option>
+            <mat-option value="5">May</mat-option>
+            <mat-option value="6">June</mat-option>
+            <mat-option value="7">July</mat-option>
+            <mat-option value="8">August</mat-option>
+            <mat-option value="9">September</mat-option>
+            <mat-option value="10">October</mat-option>
+            <mat-option value="11">November</mat-option>
+            <mat-option value="12">December</mat-option>
+        </mat-select>
+      </mat-form-field><br>
+
+      <mat-form-field style="width: 100%">
+        <mat-select placeholder="Branch" aria-label="Branch" formControlName="branch" >
+            <mat-option *ngFor="let branch of branchArray" [value]="branch">
+                <span> {{ branch }} </span>
+            </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    </form>
+  </div>
+
+  <div *ngIf="invalidForm" style="background-color: crimson;height: 20px;color: white;">
+    Please Fill All Data Correctly
+  </div>
+  
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+  
+  <button mat-button style="background: rgb(77, 77, 77); color: white" mat-dialog-close (click)="noConfirmation();" >CANCEL</button>
+  <button mat-button style="background:#3F51B5; color: white" (click)="yesConfirmation();" >VIEW</button>
+</mat-dialog-actions>
+
+</div>
