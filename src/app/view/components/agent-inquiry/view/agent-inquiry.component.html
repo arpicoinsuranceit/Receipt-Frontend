@@ -27,19 +27,44 @@
         <mat-horizontal-stepper [linear]="isLinear" #stepper>
           <mat-step>
               <mat-card>
-                <mat-card-content style="max-height: 400px;overflow-x: auto;">
+                <mat-card-content style="max-height: 400px;">
                   <ng-template matStepLabel>Find</ng-template>
 
-                  <div fxFlex="100%" style="margin-bottom: 10px;max-height: 430px;overflow-x: auto;" [ngClass]="{'disabled': loading1 == true}">
+                  <div fxFlex="100%" style="margin-bottom: 10px;" [ngClass]="{'disabled': loading1 == true}">
                     <div [hidden]="!loading1" class="loader">
                       <h5>Loading...</h5>
                       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
                     </div>
-                    <mat-form-field style="width: 100%;">
-                      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
-                    </mat-form-field>
+                    <div>
+                      <form [formGroup]="form_search">
+                        <mat-radio-group formControlName="equality">
+                          <mat-radio-button color="primary" labelPosition="before" value="equal" style="padding-right: 5px;">Equal</mat-radio-button>
+                          <mat-radio-button color="primary" labelPosition="before" value="with" style="padding-right: 15px;">With</mat-radio-button>
+                        </mat-radio-group>
+    
+                        <mat-form-field style="padding-right: 15px;">
+                          <mat-select formControlName="column" placeholder="Type">
+                            <mat-option value="agncod">Agent Code</mat-option>
+                            <mat-option value="agnnam">Agent Name </mat-option>
+                            <mat-option value="agnnic">Agent Nic </mat-option>
+                            <mat-option value="agnsta">Agent Status </mat-option>
+                            <mat-option value="sliirg">SLII No </mat-option>
+                            <mat-option value="supvid">Sup. Code </mat-option>
+                            <mat-option value="subdcd">Designation </mat-option>
+                            <mat-option value="agndob">DOB </mat-option>
+                            <mat-option value="agnrdt">App. Date </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+    
+                        <mat-form-field>
+                          <input matInput formControlName="data" placeholder="Search">
+                        </mat-form-field>
+                        <button mat-raised-button color="primary" (click)="getAgentToViewCount()">Search</button>
+                      </form>
+    
+                    </div>
                     
-                    <mat-table [dataSource]="datasourceAgent" class="mat-elevation-z8" style="padding: 20px;">
+                    <mat-table [dataSource]="datasourceAgent" class="mat-elevation-z8" style="padding-bottom: 20px;padding-left: 20px;padding-right: 20px;max-height: 310px;overflow-x: auto;">
                       <ng-container matColumnDef="agncod">
                         <mat-header-cell *matHeaderCellDef style="flex: 0 0 5%;"> Agn. Code </mat-header-cell>
                         <mat-cell *matCellDef="let element" style="flex: 0 0 5%;"> {{element.agncod}} </mat-cell>
@@ -88,7 +113,7 @@
                         <mat-cell *matCellDef="let element" style="flex: 0 0 15%;"> {{element.agnrdt | date : 'dd-MM-yyyy'}} </mat-cell>
                       </ng-container>
 
-                      <mat-header-row *matHeaderRowDef="displayColumnAgent"></mat-header-row>
+                      <mat-header-row *matHeaderRowDef="displayColumnAgent; sticky: true"></mat-header-row>
                       <mat-row *matRowDef="let row; columns: displayColumnAgent;" (dblclick)="loadData(row)"></mat-row>
                     </mat-table>
 

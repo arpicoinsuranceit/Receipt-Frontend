@@ -8,6 +8,7 @@ import { SettlementDetails } from 'app/model/settlementdetails';
 import { Designation } from 'app/model/designation';
 import { Education } from 'app/model/education';
 import { AgentInquiryDetails } from 'app/model/agentinquirydetails';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-agent-inquiry',
@@ -49,13 +50,29 @@ export class AgentInquiryComponent implements OnInit {
   loading: boolean= true;
   hideData: boolean = true;
 
+  form_search = new FormGroup({
+    equality: new FormControl("equal"),
+    column: new FormControl("agncod"),
+    data: new FormControl("", Validators.required)
+  });
+
+  get Equality() {
+    return this.form_search.get("equality").value;
+  }
+  get Column() {
+    return this.form_search.get("column").value;
+  }
+  get Data() {
+    return this.form_search.get("data").value;
+  }
+
   constructor(private agentInquiryService:AgentInquiryService) { }
 
   ngOnInit() {
     this.paginator.pageIndex = 0;
     this.paginator.pageSize = 5;
     this.getAgentToViewCount();
-    this.loadAgentToView();
+    //this.loadAgentToView();
   }
 
   applyFilter(filterValue: string) {
@@ -63,15 +80,19 @@ export class AgentInquiryComponent implements OnInit {
   }
 
   getAgentToViewCount(){
-    this.agentInquiryService.getAgentsToViewCount(sessionStorage.getItem("token")).subscribe(response => {
+    this.agentInquiryService.getAgentsToViewCount(this.Equality, this.Column, this.Data,sessionStorage.getItem("token")).subscribe(response => {
       console.log(response.json());
       this.paginator.length = response.json();
+      this.loadAgentToView();
+    }, error => {
+      alert("alert : paginator");
+      this.loadAgentToView();
     });
   }
 
   loadAgentToView(){
     this.loading1=true;
-    this.agentInquiryService.getAgentsToView(sessionStorage.getItem("token"), this.paginator.pageIndex, this.paginator.pageSize).subscribe(response => {
+    this.agentInquiryService.getAgentsToView(this.Equality, this.Column, this.Data,sessionStorage.getItem("token"), this.paginator.pageIndex, this.paginator.pageSize).subscribe(response => {
       console.log(response.json());
       this.agentArray = new Array();
       response.json().forEach(i => {
