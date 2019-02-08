@@ -249,7 +249,7 @@ export class BranchUnderwriteComponent implements OnInit {
   ngOnInit() {
     //this.datasourceProposal.paginator = this.paginator;
     this.paginator.pageIndex = 0;
-    this.paginator.pageSize = 5;
+    this.paginator.pageSize = 25;
     this.loadProposalData();
     this.getBanks();
     this.getOccupations();
