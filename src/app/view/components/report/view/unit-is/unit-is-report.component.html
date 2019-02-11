@@ -23,7 +23,7 @@
       </mat-form-field><br>
 
       <mat-form-field style="width: 100%">
-        <mat-select placeholder="Branch" aria-label="Branch" formControlName="branch" (selectionChange)="loadAgents();">
+        <mat-select placeholder="Branch" aria-label="Branch" formControlName="branch">
             <mat-option *ngFor="let branch of branchArray" [value]="branch">
                 <span> {{ branch }} </span>
             </mat-option>
