@@ -150,6 +150,8 @@ export class ProposalReceiptComponent implements OnInit {
       this.basicDetail.SeqNo = response.json().seqNo;
       this.basicDetail.Premium = response.json().premium;
       this.basicDetail.PayAmount = response.json().amtPayble;
+      this.basicDetail.AgentName = response.json().agentName;
+      this.basicDetail.AgentLoc = response.json().location;
       this.lastReceipt = new Array();
 
       this.Amount.setValue(this.basicDetail.Premium);
@@ -283,6 +285,8 @@ export class ProposalReceiptComponent implements OnInit {
       this.basicDetail.SeqNo = response.json().seqNo;
       this.basicDetail.Premium = response.json().premium;
       this.basicDetail.PayAmount = response.json().amtPayble;
+      this.basicDetail.AgentName = response.json().agentName;
+      this.basicDetail.AgentLoc = response.json().location;
       this.lastReceipt = new Array();
       this.CustName.setValue(this.basicDetail.CustomerName);
       this.Amount.setValue(this.basicDetail.Premium);
@@ -478,6 +482,8 @@ export class ProposalReceiptComponent implements OnInit {
         this.basicDetail.Mobile = response.json().mobile;
         this.basicDetail.Pprsta = response.json().status;
         this.basicDetail.Id2 = response.json().id2;
+        this.basicDetail.AgentName = response.json().agentName;
+        this.basicDetail.AgentLoc = response.json().location;
         this.lastReceipt = new Array();
         this.CustName.setValue(this.basicDetail.CustomerName);
         this.Amount.setValue(this.basicDetail.Premium);
